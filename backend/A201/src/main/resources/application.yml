@@ -22,3 +22,7 @@ spring:
 logging:
   level:
     com.example : DEBUG
+jwt:
+  secret: VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4=VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4= # ??? ???? Base64? ???? ?
+  refresh-token-validity-in-seconds: 1209600 # 14?
+  access-token-validity-in-seconds: 43200 # 12??
