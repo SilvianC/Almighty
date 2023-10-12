@@ -7,6 +7,10 @@ spring:
         path: /h2
   datasource:
         url: jdbc:h2:mem:test
+  redis:
+    host: 52.79.213.201
+    port: 6379
+
   hikari:
       maximum-pool-size: 10
   jpa:

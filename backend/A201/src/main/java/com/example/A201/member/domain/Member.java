@@ -1,5 +1,6 @@
 package com.example.A201.member.domain;
 
+import com.example.A201.member.dto.AuthDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +29,31 @@ public class Member {
 
     private Boolean is_activated;
 
+    private String email;
+
+    private String tel;
+
     private LocalDate createDate;
 
+    public static Member registerMember(AuthDto.SignupDto signupDto){
+        Member member = new Member();
+        member.loginId = signupDto.getLoginId();
+        member.password = signupDto.getPassword();
+        member.company = signupDto.getCompany();
+        member.createDate = LocalDate.now();
+        member.tel = signupDto.getTel();
+        member.email = signupDto.getEmail();
+        member.role = Role.USER;
+        member.is_activated = true;
+        return member;
+    }
+
+    public void deactivated() {
+        this.is_activated = false;
+    }
+
+    public void update(String password) {
+        this.password = password;
+    }
 
 }
