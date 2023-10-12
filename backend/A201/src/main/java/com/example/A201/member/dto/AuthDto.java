@@ -27,12 +27,16 @@ public class AuthDto {
         private String loginId;
         private String password;
         private String company;
+        private String email;
+        private String tel;
 
         @Builder
-        public SignupDto(String loginId, String password, String company) {
+        public SignupDto(String loginId, String password, String company, String email, String tel) {
             this.loginId = loginId;
             this.password = password;
             this.company = company;
+            this.tel = tel;
+            this.email = email;
         }
 
         public static SignupDto encodePassword(SignupDto signupDto, String encodedPassword) {
@@ -40,6 +44,8 @@ public class AuthDto {
             newSignupDto.loginId = signupDto.getLoginId();
             newSignupDto.password = encodedPassword;
             newSignupDto.company = signupDto.getCompany();
+            newSignupDto.email = signupDto.getEmail();
+            newSignupDto.tel = signupDto.getTel();
             return newSignupDto;
         }
     }

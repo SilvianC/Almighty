@@ -24,4 +24,8 @@ public class MemberDTO {
     private Boolean is_activated;
 
     private LocalDate createDate;
+
+    private String email;
+
+    private String tel;
 }
