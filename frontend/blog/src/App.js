@@ -7,12 +7,12 @@ import * as utils from "./utils";
 function App() {
   return (
     <div className="App">
-      <S.ContentContainer>
+  
         <Routes>
           <Route path={utils.URL.HOME.MAIN} element={<pages.Main/>} />
           <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp/>} />
         </Routes>
-      </S.ContentContainer>
+    
     </div>
   );
 }
