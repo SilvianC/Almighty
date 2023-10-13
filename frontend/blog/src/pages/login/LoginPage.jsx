@@ -5,11 +5,11 @@ import { login } from "../../api/member";
 
 const LoginPage = () => {
   const requestLogin = () => {
-    console.log("skfj");
     login(
-      inputs,
+      { loginId, password },
       ({ data }) => {
         console.log(data);
+        navigate("/main");
       },
       (error) => {
         console.log(error);
@@ -18,13 +18,13 @@ const LoginPage = () => {
   };
   const navigate = useNavigate();
   const [inputs, setinputs] = useState({
-    id: "",
+    loginId: "",
     password: "",
   });
   const gotoSignUpForm = () => {
     navigate("/signup");
   };
-  const { id, password } = inputs;
+  const { loginId, password } = inputs;
 
   const onChange = (e) => {
     const value = e.target.value;
@@ -40,8 +40,8 @@ const LoginPage = () => {
       <div>
         <input
           type="text"
-          id="id"
-          value={id}
+          id="loginId"
+          value={loginId}
           placeholder="아이디"
           onChange={onChange}
         />
