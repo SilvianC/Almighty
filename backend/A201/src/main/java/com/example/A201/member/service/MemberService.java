@@ -77,4 +77,8 @@ public class MemberService {
         return uuid;
     }
 
+    public boolean existsByLoginId(String loginId) {
+        return memberRepository.findByLoginId(loginId).isPresent();
+    }
+
 }

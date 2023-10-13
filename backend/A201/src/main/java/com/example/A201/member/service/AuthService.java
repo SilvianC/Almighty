@@ -2,6 +2,9 @@ package com.example.A201.member.service;
 
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.dto.AuthDto;
+import com.example.A201.member.exception.MemberException;
+import com.example.A201.member.exception.NotActivatedException;
+import com.example.A201.member.exception.PasswordException;
 import com.example.A201.member.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,9 +37,9 @@ public class AuthService {
 
         Member member = memberService.getMemberByLoginId(loginDto.getLoginId());
 
-        if (member == null) throw new RuntimeException("존재하지 않는 유저입니다.");
+        if (member == null) throw new MemberException("아이디 또는 비밀번호가 틀렸습니다.");
 
-        if (!encoder.matches(loginDto.getPassword(), member.getPassword())) throw new RuntimeException("아이디 또는 비밀번호가 틀렸습니다.");
+        if (!encoder.matches(loginDto.getPassword(), member.getPassword())) throw new PasswordException("아이디 또는 비밀번호가 틀렸습니다.");
 
         UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(loginDto.getLoginId(), loginDto.getPassword());
@@ -46,7 +49,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         if (memberService.getMemberByLoginId(loginDto.getLoginId()).getIs_activated() != true) {
-            throw new RuntimeException("탈퇴한 회원입니다.");
+            throw new NotActivatedException("탈퇴한 회원입니다.");
         }
 
         return generateToken(SERVER, authentication.getName(), getAuthorities(authentication));
