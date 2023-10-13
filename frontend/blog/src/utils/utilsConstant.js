@@ -1,8 +1,11 @@
 export const URL = {
-  HOME: {
+  LOGIN: {
     MAIN: "/",
   },
-  SIGNUP:{
-    MAIN:"/signup"
-  }
+  SIGNUP: {
+    MAIN: "/signup",
+  },
+  MAIN: {
+    MAIN: "/main",
+  },
 };
