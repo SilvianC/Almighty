@@ -53,6 +53,6 @@ public class Testdata {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
-    private Metadata metadataId;
+    private Metadata metadata;
 
 }
