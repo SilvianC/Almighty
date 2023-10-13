@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import MetaGraph from "./../../components/graph/MetaGraph";
 import TestGraph from "./../../components/graph/TestGraph";
+import http from "../../api/http";
 
 const ddata = [
   {
@@ -215,7 +215,14 @@ const dtest = [
 const BatteryBoard = () => {
   const [test, setTestData] = useState(dtest);
   const [data, setData] = useState(ddata);
-
+  // http
+  //   .get(`url`)
+  //   .then(({ data }) => {
+  //     setData(() => {
+  //       return data;
+  //     });
+  //   })
+  //   .catch();
   return (
     <>
       <MetaGraph data={data} type="Capacity"></MetaGraph>
