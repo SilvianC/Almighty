@@ -4,26 +4,38 @@ import { joinMember } from "../../../api/member";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
+  
   const navigate = useNavigate();
+
   const postMember = () => {
     joinMember(
-      inputs,
-      ({ data }) => {},
+      {
+        company,
+        loginId,
+        password,
+        email,
+        tel,
+      },
+      ({ data }) => {
+        console.log(data);
+        navigate("/");
+      },
       ({ error }) => {
         console.log(error);
       }
     );
   };
+  
   const [inputs, setinputs] = useState({
     company: "",
-    id: "",
+    loginId: "",
     password: "",
     email: "",
     tel: "",
     selectedValue: "",
   });
 
-  const { email, tel, id, password, company, selectedValue } = inputs;
+  const { email, tel, loginId, password, company, selectedValue } = inputs;
 
   const onChange = (e) => {
     const value = e.target.value;
@@ -49,8 +61,8 @@ const SignUpForm = () => {
       <div>
         <input
           type="text"
-          id="id"
-          value={id}
+          id="loginId"
+          value={loginId}
           placeholder="아이디"
           onChange={onChange}
         />
