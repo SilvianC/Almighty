@@ -32,7 +32,15 @@ public class AuthApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
+    // loginId 중복 체크
+    @GetMapping("/check/{loginId}")
+    public ResponseEntity<?> checkDuplication(@PathVariable String loginId) {
+        if (memberService.existsByLoginId(loginId)) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 사용 중인 loginId 입니다.");
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 loginId 입니다.");
+        }
+    }
     // 로그인 -> 토큰 발급
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthDto.LoginDto loginDto) {
