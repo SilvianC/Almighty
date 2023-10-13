@@ -37,22 +37,22 @@ public class Testdata {
     private Long time;
 
     @Column(name = "Sense_current")
-    private Double senseCurrent;
+    private String senseCurrent;
 
     @Column(name = "Battery_current")
-    private Double batteryCurrent;
+    private String batteryCurrent;
 
     @Column(name = "Current_ratio")
-    private Double currentRatio;
+    private String currentRatio;
 
     @Column(name = "Battery_impedance")
-    private Double batteryImpedance;
+    private String batteryImpedance;
 
     @Column(name = "Rectified_Impedance")
-    private Double rectifiedImpedance;
+    private String rectifiedImpedance;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "uid")
-    private Metadata metadataId;
+    private Metadata metadata;
 
 }
