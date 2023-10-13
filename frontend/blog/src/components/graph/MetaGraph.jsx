@@ -21,8 +21,6 @@ const MetaGraph = ({ data, type }) => {
             data: [],
           },
         ];
-  console.log(newData);
-
   if (type === "Capacity") {
     const filter = data.filter(
       (item) => Object.keys(item).includes("Capacity") && item["Capacity"]
