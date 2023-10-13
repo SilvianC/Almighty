@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface MetadataService {
     List<MetadataResponse> getMetadataCode(String code);
-    List<MetadataResponse> getMetadataType(String code);
+    List<MetadataResponse> getMetadataType(String code,String type);
 }

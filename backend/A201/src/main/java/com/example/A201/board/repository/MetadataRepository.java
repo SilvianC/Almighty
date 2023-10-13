@@ -7,8 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-public interface MetadataRepository extends JpaRepository<Metadata,Long> {
-    Optional<List<Metadata>> findByBatteryIdAndType(Battery battery,String type);
-    Optional<List<Metadata>> findByBatteryId(Battery battery);
+public interface MetadataRepository extends JpaRepository<Metadata, Long> {
+    List<Metadata> findByBatteryIdAndType(Battery battery, String type);
+
+    List<Metadata> findByBatteryId(Battery battery);
 
 }

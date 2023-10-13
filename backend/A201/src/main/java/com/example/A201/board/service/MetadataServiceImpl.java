@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -22,13 +23,19 @@ public class MetadataServiceImpl implements MetadataService{
     public List<MetadataResponse> getMetadataCode(String code) {
         Battery battery = batteryRepository.findByCode(code).orElseThrow(
                 () -> new CustomException(ErrorCode.BATTERY_NOT_FOUND));
-        List<Metadata> metadata = metadataRepository.findByBatteryId(battery).orElseThrow(
-                () -> new CustomException(ErrorCode.METADATA_NOT_FOUND));
-        return null;
+        List<Metadata> metadata = metadataRepository.findByBatteryId(battery);
+        if(metadata.isEmpty()) throw new CustomException(ErrorCode.METADATA_NOT_FOUND);
+        return metadata.stream().map(m-> MetadataResponse.MetadataResponse(m)
+        ).collect(Collectors.toList());
     }
 
     @Override
-    public List<MetadataResponse> getMetadataType(String code) {
-        return null;
+    public List<MetadataResponse> getMetadataType(String code,String type) {
+        Battery battery = batteryRepository.findByCode(code).orElseThrow(
+                () -> new CustomException(ErrorCode.BATTERY_NOT_FOUND));
+        List<Metadata> metadata = metadataRepository.findByBatteryIdAndType(battery,type);
+        if(metadata.isEmpty()) throw new CustomException(ErrorCode.METADATA_NOT_FOUND);
+        return metadata.stream().map(m-> MetadataResponse.MetadataResponse(m)
+        ).collect(Collectors.toList());
     }
 }
