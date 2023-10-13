@@ -4,25 +4,38 @@ import { joinMember } from "../../../api/member";
 import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-    const navigate = useNavigate();
+  
+  const navigate = useNavigate();
+
   const postMember = () => {
-    joinMember(inputs,
-        ({data})=>{
-            
-        },
-        ({error})=>{
-            console.log(error)
-        })
+    joinMember(
+      {
+        company,
+        loginId,
+        password,
+        email,
+        tel,
+      },
+      ({ data }) => {
+        console.log(data);
+        navigate("/");
+      },
+      ({ error }) => {
+        console.log(error);
+      }
+    );
   };
+  
   const [inputs, setinputs] = useState({
     company: "",
-    id: "",
+    loginId: "",
     password: "",
     email: "",
     tel: "",
+    selectedValue: "",
   });
 
-  const { email, tel, id, password, company } = inputs;
+  const { email, tel, loginId, password, company, selectedValue } = inputs;
 
   const onChange = (e) => {
     const value = e.target.value;
@@ -42,19 +55,15 @@ const SignUpForm = () => {
           id="company"
           value={company}
           placeholder="회사명"
-          maxlength="20"
-          autocapitalize="off"
           onChange={onChange}
         />
       </div>
       <div>
         <input
           type="text"
-          id="id"
-          value={id}
+          id="loginId"
+          value={loginId}
           placeholder="아이디"
-          maxlength="20"
-          autocapitalize="off"
           onChange={onChange}
         />
       </div>
@@ -64,8 +73,6 @@ const SignUpForm = () => {
           id="password"
           value={password}
           placeholder="비밀번호"
-          maxlength="20"
-          autocapitalize="off"
           onChange={onChange}
         />
       </div>
@@ -75,12 +82,16 @@ const SignUpForm = () => {
           id="email"
           value={email}
           placeholder="이메일"
-          autocapitalize="off"
           onChange={onChange}
         />
       </div>
-      <div class="select_box" id="selNationNo">
-        <select id="nationNo" name="nationNo" class="select">
+      <div className="select_box" id="selNationNo">
+        <select
+          id="nationNo"
+          value={selectedValue}
+          onChange={onChange}
+          className="select"
+        >
           <option value="233">가나 +233</option>
           <option value="241">가봉 +241</option>
           <option value="592">가이아나 +592</option>
@@ -106,7 +117,7 @@ const SignUpForm = () => {
           <option value="690">뉴질랜드령토켈라우제도 +690</option>
           <option value="227">니제르 +227</option>
           <option value="505">니카라과 +505</option>
-          <option value="82" selected>
+          <option value="82" selected={true}>
             대한민국 +82
           </option>
           <option value="45">덴마크 +45</option>
@@ -304,9 +315,8 @@ const SignUpForm = () => {
           type="tel"
           id="tel"
           placeholder="휴대전화번호"
-          class="input"
+          className="input"
           value={tel}
-          maxlength="16"
           onChange={onChange}
         />
       </div>
