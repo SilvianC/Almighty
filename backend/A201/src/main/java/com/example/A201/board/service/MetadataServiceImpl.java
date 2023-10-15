@@ -30,8 +30,8 @@ public class MetadataServiceImpl implements MetadataService {
 
         if (metadata.isEmpty()) throw new CustomException(ErrorCode.METADATA_NOT_FOUND);
 
-        return metadata.stream().map(m -> MetadataResponse.MetadataResponse(m)
-        ).collect(Collectors.toList());
+        return metadata.stream().map(m -> MetadataResponse.MetadataResponse(m))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -42,7 +42,7 @@ public class MetadataServiceImpl implements MetadataService {
 
         if (metadata.isEmpty()) throw new CustomException(ErrorCode.METADATA_NOT_FOUND);
 
-        return metadata.stream().map(m -> MetadataResponse.MetadataResponse(m)
-        ).collect(Collectors.toList());
+        return metadata.stream().map(m -> MetadataResponse.MetadataResponse(m))
+                .collect(Collectors.toList());
     }
 }
