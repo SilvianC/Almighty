@@ -3,7 +3,7 @@ import { ResponsiveLine } from "@nivo/line";
 
 const MetaGraph = ({ data, type }) => {
   const newData =
-    type === "Capacity"
+    type === "capacity"
       ? [
           {
             id: "Capacity",
@@ -21,30 +21,30 @@ const MetaGraph = ({ data, type }) => {
             data: [],
           },
         ];
-  if (type === "Capacity") {
+  if (type === "capacity") {
     const filter = data.filter(
-      (item) => Object.keys(item).includes("Capacity") && item["Capacity"]
+      (item) => Object.keys(item).includes("capacity") && item["capacity"]
     );
     newData[0]["data"] = filter.map((item) => {
       return {
-        x: item["test_id"],
-        y: item["Capacity"],
+        x: item["testId"],
+        y: item["capacity"],
       };
     });
   } else {
     const filter = data.filter(
-      (item) => Object.keys(item).includes("Re") && item["Re"]
+      (item) => Object.keys(item).includes("re") && item["re"]
     );
     newData[0]["data"] = filter.map((item) => {
       return {
-        x: item["test_id"],
-        y: item["Re"],
+        x: item["testId"],
+        y: item["re"],
       };
     });
     newData[1]["data"] = filter.map((item) => {
       return {
-        x: item["test_id"],
-        y: item["Rct"],
+        x: item["testId"],
+        y: item["rct"],
       };
     });
   }

@@ -213,20 +213,29 @@ const dtest = [
 ];
 
 const BatteryBoard = () => {
-  const [test, setTestData] = useState(dtest);
-  const [data, setData] = useState(ddata);
-  // http
-  //   .get(`url`)
-  //   .then(({ data }) => {
-  //     setData(() => {
-  //       return data;
-  //     });
-  //   })
-  //   .catch();
+  const [test, setTestData] = useState([]);
+  const [data, setData] = useState([]);
+  const [code, setCode] = useState("B0047");
+
+  useEffect(() => {
+    http
+      .get(`/api/dashboard/metadata/${code}`)
+      .then(({ data }) => {
+        setData(() => {
+          return data["data"];
+        });
+      })
+      .catch();
+  }, []);
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
+
   return (
     <>
-      <MetaGraph data={data} type="Capacity"></MetaGraph>
-      <MetaGraph data={data} type="Re"></MetaGraph>
+      <MetaGraph data={data} type="capacity"></MetaGraph>
+      <MetaGraph data={data} type="re"></MetaGraph>
       <TestGraph data={test} type="Voltage_measured"></TestGraph>
     </>
   );
