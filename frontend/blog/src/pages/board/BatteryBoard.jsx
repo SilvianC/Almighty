@@ -44,14 +44,15 @@ const BatteryBoard = () => {
   }, [testId]);
   return (
     <>
-      <MetaGraph data={data} type="capacity"></MetaGraph>
-      <MetaGraph data={data} type="re"></MetaGraph>
       <MetaGraph2
         data={data}
         type="capacity"
         clickPoint={clickPoint}
       ></MetaGraph2>
       <TestGraph data={test} type="voltageMeasured"></TestGraph>
+      <br/>
+      <MetaGraph data={data} type="capacity"></MetaGraph>
+      <MetaGraph data={data} type="re"></MetaGraph>
     </>
   );
 };

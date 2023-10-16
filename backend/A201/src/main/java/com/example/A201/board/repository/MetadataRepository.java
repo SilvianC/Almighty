@@ -5,7 +5,6 @@ import com.example.A201.board.domain.Metadata;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface MetadataRepository extends JpaRepository<Metadata, Long> {
     List<Metadata> findByBatteryIdAndType(Battery battery, String type);
