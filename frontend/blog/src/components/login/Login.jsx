@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/member";
 import LoginIcon from "../../assets/images/icon-login.png";
+import { CompanyState, EmailState, LoginIdState, RoleState, TelState, AccessTokenState, RefreshTokenState } from "../../states/states";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -24,15 +26,33 @@ const Login = () => {
 		});
 	};
 
+  const [id, setId] = useRecoilState(LoginIdState);
+  const [company, setCompany] = useRecoilState(CompanyState);
+  const [role, setRole] = useRecoilState(RoleState);
+  const [email, setEmail] = useRecoilState(EmailState);
+  const [tel, setTel] = useRecoilState(TelState);
+  const [accessToken, setAccessToken] = useRecoilState(AccessTokenState);
+  const [refreshToken, setRefreshToken] = useRecoilState(RefreshTokenState);
+
 	const requestLogin = () => {
 		login(
 			{ loginId, password },
-			({ data }) => {
-				console.log(data);
+			( data ) => {
+				console.log(data.data);
+        setId(data.data.loginId);
+        setCompany(data.data.company);
+        setRole(data.data.role);
+        setEmail(data.data.email);
+        setTel(data.data.tel);
+        setAccessToken(data.headers.authorization);
+        setRefreshToken(data.headers.refresh_token);
 				navigate("/main");
 			},
 			(error) => {
 				console.log(error);
+        if(error.response.data === "존재하지 않는 유저입니다."){
+          alert("아이디 또는 비밀번호를 정확히 입력해주세요");
+        }
 			}
 		);
 	};
@@ -206,6 +226,10 @@ const S = {
       color: #ffffff;
       font-size: 0.5rme;
       font-weight: bold;
+      cursor: pointer;
+      &:hover {
+        background-color: #4F84C9;
+      }
     }
   `,
 };
