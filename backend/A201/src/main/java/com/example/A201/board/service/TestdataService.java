@@ -5,5 +5,5 @@ import com.example.A201.board.vo.TestdataResponse;
 import java.util.List;
 
 public interface TestdataService {
-    List<TestdataResponse> readTestdataList(Long uid);
+    List<TestdataResponse> readTestdataList(String batteryId, Long testId);
 }

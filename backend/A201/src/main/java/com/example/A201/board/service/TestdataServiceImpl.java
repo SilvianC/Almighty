@@ -17,8 +17,8 @@ public class TestdataServiceImpl implements TestdataService {
     private final TestdataRepository testdataRepository;
 
     @Override
-    public List<TestdataResponse> readTestdataList(Long uid){
-        List<Testdata> dataList = testdataRepository.findByMetadataId(uid);
+    public List<TestdataResponse> readTestdataList(String batteryId, Long testId){
+        List<Testdata> dataList = testdataRepository.findByBatteryAndTestId(batteryId, testId);
         List<TestdataResponse> responses = new ArrayList<>();
         for (Testdata testdata : dataList) {
             responses.add(TestdataResponse.testdataResponse(testdata));

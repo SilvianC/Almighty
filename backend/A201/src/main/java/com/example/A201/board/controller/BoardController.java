@@ -6,6 +6,7 @@ import com.example.A201.board.vo.TestdataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,9 +32,9 @@ public class BoardController {
         return SuccessResponseEntity.toResponseEntity("베터리 코드와 타입별 데이터 불러오기 성공", metadataService.getMetadataCode(code));
     }
 
-    @GetMapping("/{uid}/testdatas")
-    public ResponseEntity<?> readTestdataList(@PathVariable("uid") Long uid) {
-        List<TestdataResponse> responses = testdataService.readTestdataList(uid);
+    @GetMapping("/{battery_id}/tests/{test_id}/testdatas")
+    public ResponseEntity<?> readTestdataList(@PathVariable("battery_id") String batteryId, @PathVariable("test_id") Long testId) {
+        List<TestdataResponse> responses = testdataService.readTestdataList(batteryId, testId);
         return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
     }
 
