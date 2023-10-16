@@ -14,7 +14,8 @@ const TestGraph = ({ data, type }) => {
     };
   });
   return (
-    <div style={{ width: "800px", height: "500px", margin: "0 auto" }}>
+    <div style={{ width: "800px", height: "500px", margin: "0 auto", border:"2px solid", borderRadius:"50px", borderColor:"#eee6c4", padding: "10px", marginBottom: "100px"}}>
+      <h3>Test Data Chart</h3>
       <ResponsiveLine
         data={[newData]}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
