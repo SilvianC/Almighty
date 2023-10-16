@@ -17,23 +17,11 @@ public class TestdataServiceImpl implements TestdataService {
     private final TestdataRepository testdataRepository;
 
     @Override
-    public List<TestdataResponse> readTestdataList(long uid){
+    public List<TestdataResponse> readTestdataList(Long uid){
         List<Testdata> dataList = testdataRepository.findByMetadataId(uid);
         List<TestdataResponse> responses = new ArrayList<>();
         for (Testdata testdata : dataList) {
-            responses.add(TestdataResponse.builder()
-                    .voltageMeasured(testdata.getVoltageMeasured())
-                    .currentMeasured(testdata.getCurrentMeasured())
-                    .temperatureMeasured(testdata.getTemperatureMeasured())
-                    .currentLoad(testdata.getCurrentLoad())
-                    .voltageLoad(testdata.getVoltageLoad())
-                    .time(testdata.getTime())
-                    .senseCurrent(testdata.getSenseCurrent())
-                    .batteryCurrent(testdata.getBatteryCurrent())
-                    .currentRatio(testdata.getCurrentRatio())
-                    .batteryImpedance(testdata.getBatteryImpedance())
-                    .rectifiedImpedance(testdata.getRectifiedImpedance())
-                    .build());
+            responses.add(TestdataResponse.testdataResponse(testdata));
         }
         return responses;
     }

@@ -32,9 +32,9 @@ public class BoardController {
     }
 
     @GetMapping("/{uid}/testdatas")
-    public ResponseEntity<?> readTestdataList(@PathVariable("uid") long uid) {
+    public ResponseEntity<?> readTestdataList(@PathVariable("uid") Long uid) {
         List<TestdataResponse> responses = testdataService.readTestdataList(uid);
-        return ResponseEntity.ok().body(responses);
+        return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
     }
 
 }
