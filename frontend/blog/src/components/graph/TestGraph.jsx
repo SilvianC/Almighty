@@ -2,7 +2,6 @@ import * as React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const TestGraph = ({ data, type }) => {
-  console.log(data);
   const newData = {
     id: type,
     color: "hsl(68, 70%, 50%)",

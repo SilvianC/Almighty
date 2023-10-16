@@ -8,8 +8,10 @@ const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("B0047");
-  const uid = 1;
-
+  const [testId, setTestId] = useState(0);
+  const clickPoint = (id) => {
+    setTestId(() => id);
+  };
   useEffect(() => {
     http
       .get(`/api/dashboard/metadata/${code}`)
@@ -21,7 +23,7 @@ const BatteryBoard = () => {
       .catch();
 
     http
-      .get(`/api/dashboard/${uid}/testdatas`)
+      .get(`/api/dashboard/${code}/tests/${0}/testdatas`)
       .then(({ data }) => {
         setTestData(() => {
           return data["data"];
@@ -29,11 +31,26 @@ const BatteryBoard = () => {
       })
       .catch();
   }, []);
+
+  useEffect(() => {
+    http
+      .get(`/api/dashboard/${code}/tests/${testId}/testdatas`)
+      .then(({ data }) => {
+        setTestData(() => {
+          return data["data"];
+        });
+      })
+      .catch();
+  }, [testId]);
   return (
     <>
       <MetaGraph data={data} type="capacity"></MetaGraph>
       <MetaGraph data={data} type="re"></MetaGraph>
-      <MetaGraph2 data={data} type="capacity"></MetaGraph2>
+      <MetaGraph2
+        data={data}
+        type="capacity"
+        clickPoint={clickPoint}
+      ></MetaGraph2>
       <TestGraph data={test} type="voltageMeasured"></TestGraph>
     </>
   );

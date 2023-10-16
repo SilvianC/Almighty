@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const MetaGraph2 = ({ data, type }) => {
+const MetaGraph2 = ({ data, type, clickPoint }) => {
   const filter = data.filter(
     (item) => Object.keys(item).includes("capacity") && item["capacity"]
   );
@@ -53,6 +53,13 @@ const MetaGraph2 = ({ data, type }) => {
       {
         name: "Capacity",
         data: d,
+        point: {
+          events: {
+            click: function () {
+              clickPoint(this.x);
+            },
+          },
+        },
       },
 
       {
