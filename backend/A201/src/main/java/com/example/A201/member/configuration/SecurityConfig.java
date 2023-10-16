@@ -23,7 +23,7 @@ import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true)
 @RequiredArgsConstructor
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
@@ -34,35 +34,52 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        // ACL(Access Control List, 접근 제어 목록)의 예외 URL 설정
+        return (web)
+                -> web
+                .ignoring()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()); // 정적 리소스들
+    }
+
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        // 인터셉터로 요청을 안전하게 보호하는 방법 설정
         http
+                // jwt 토큰 사용을 위한 설정
                 .csrf().disable()
                 .httpBasic().disable()
                 .formLogin().disable()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+
+                // 예외 처리
                 .and()
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint) //customEntryPoint
+                .accessDeniedHandler(jwtAccessDeniedHandler) // cutomAccessDeniedHandler
+
                 .and()
-                .authorizeRequests()
-                .antMatchers("/api/**", "/api/auth/**")
-                .permitAll()
-                //.antMatchers("/api/users").hasRole("ADMIN")
+                .authorizeRequests() // '인증'이 필요하다
+                .antMatchers("/api/**").permitAll()
+                //.requestMatchers("/api/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
+
+
                 .and()
                 .headers()
                 .frameOptions().sameOrigin()
                 .xssProtection()
                 .and()
                 .contentSecurityPolicy("script-src 'self'");
+
+        return http.build();
     }
 
     @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
+
 }
