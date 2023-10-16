@@ -50,6 +50,7 @@ const MetaGraph = ({ data, type }) => {
   }
   return (
     <div style={{ width: "800px", height: "500px", margin: "0 auto" }}>
+      <h3>NIVO CHART</h3>
       <ResponsiveLine
         data={newData}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
