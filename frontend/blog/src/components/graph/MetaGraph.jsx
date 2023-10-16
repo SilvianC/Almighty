@@ -48,7 +48,6 @@ const MetaGraph = ({ data, type }) => {
       };
     });
   }
-  console.log(newData);
   return (
     <div style={{ width: "800px", height: "500px", margin: "0 auto" }}>
       <ResponsiveLine
