@@ -6,8 +6,8 @@ const MetaGraph2 = ({ data, type }) => {
   const filter = data.filter(
     (item) => Object.keys(item).includes("capacity") && item["capacity"]
   );
-  const y = filter.map((item) => {
-    return item["capacity"];
+  const d = filter.map((item) => {
+    return [item["testId"], item["capacity"]];
   });
   const x = filter.map((item) => {
     return item["testId"];
@@ -34,7 +34,7 @@ const MetaGraph2 = ({ data, type }) => {
       accessibility: {
         rangeDescription: "Range: 2010 to 2020",
       },
-      categories: x,
+      // categories: x,
     },
 
     legend: {
@@ -44,36 +44,30 @@ const MetaGraph2 = ({ data, type }) => {
     },
 
     plotOptions: {
-      series: [
-        {
-          label: {
-            connectorAllowed: false,
-          },
-        },
-        {
-          type: "line",
-          name: "Regression Line",
-          data: [
-            [0, 1.11],
-            [180, 4.51],
-          ],
-          marker: {
-            enabled: false,
-          },
-          states: {
-            hover: {
-              lineWidth: 0,
-            },
-          },
-          enableMouseTracking: false,
-        },
-      ],
+      label: {
+        connectorAllowed: false,
+      },
     },
 
     series: [
       {
         name: "Capacity",
-        data: y,
+        data: d,
+      },
+
+      {
+        type: "line",
+        name: "Regression Line",
+        data: [d[0], d[d.length - 1]],
+        marker: {
+          enabled: false,
+        },
+        states: {
+          hover: {
+            lineWidth: 3,
+          },
+        },
+        enableMouseTracking: false,
       },
     ],
 
