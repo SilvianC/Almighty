@@ -2,6 +2,7 @@ import * as React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
 const TestGraph = ({ data, type }) => {
+  console.log(data);
   const newData = {
     id: type,
     color: "hsl(68, 70%, 50%)",
@@ -9,7 +10,7 @@ const TestGraph = ({ data, type }) => {
   };
   newData["data"] = data.map((item) => {
     return {
-      x: item["Time"],
+      x: item["time"],
       y: item[type],
     };
   });
