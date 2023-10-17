@@ -8,8 +8,11 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const postMember = () => {
-    if (checkDupDone === false) {
+    if (!checkDupDone) {
       alert("아이디 중복 확인을 해주세요");
+    }
+    else if (!equalPw) {
+      alert("비밀번호를 확인해주세요");
     }
     else if (checkDupDone === true && usableId === true) {
       joinMember(
@@ -34,7 +37,7 @@ const SignUp = () => {
   const [checkDupDone, setCheckDupDone] = useState(false);
   const [usableId, setUsableId] = useState(false);
   const checkDup = () => {
-    if(!loginId){
+    if (!loginId) {
       alert("아이디를 입력해주세요");
     }
     checkDuplication(
@@ -57,8 +60,17 @@ const SignUp = () => {
   }
 
   const idChange = () => {
-    console.log("아이디 입력 중");
     setCheckDupDone(false);
+  }
+
+  const [equalPw, setEqualPw] = useState(false);
+  const pwChange = (e) => {
+    const value = e.target.value;
+    if (password && value && password === value) {
+      setEqualPw(true);
+    } else {
+      setEqualPw(false);
+    }
   }
 
   const [inputs, setinputs] = useState({
@@ -131,9 +143,17 @@ const SignUp = () => {
             id="password_check"
             value={password_check}
             placeholder="비밀번호 확인"
-            onChange={onChange}
+            onChange={(e) => {
+              onChange(e);
+              pwChange(e);
+            }}
           />
-          <p>비밀번호를 확인해주세요</p>
+          {password && password_check && !equalPw
+            ? (<p>비밀번호를 확인해주세요</p>)
+            : null}
+          {password && password_check && equalPw
+            ? (<p>비밀번호가 일치합니다</p>)
+            : null}
           <input
             type="email"
             id="email"
