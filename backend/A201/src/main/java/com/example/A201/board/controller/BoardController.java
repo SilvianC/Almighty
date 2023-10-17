@@ -1,7 +1,9 @@
 package com.example.A201.board.controller;
 
+import com.example.A201.board.service.BatteryService;
 import com.example.A201.board.service.MetadataService;
 import com.example.A201.board.service.TestdataService;
+import com.example.A201.board.vo.BatteryResponse;
 import com.example.A201.board.vo.TestdataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +22,7 @@ import java.util.List;
 public class BoardController {
     private final MetadataService metadataService;
     private final TestdataService testdataService;
-
+    private final BatteryService batteryService;
     @GetMapping("/metadata/{code}/{type}")
     public ResponseEntity<SuccessResponseEntity> getMetadataType(@PathVariable("code") String code,
                                                                  @PathVariable("type") String type) {
@@ -36,6 +38,12 @@ public class BoardController {
     public ResponseEntity<?> readTestdataList(@PathVariable("battery_id") String batteryId, @PathVariable("test_id") Long testId) {
         List<TestdataResponse> responses = testdataService.readTestdataList(batteryId, testId);
         return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
+    }
+
+    @GetMapping("/batteries")
+    public ResponseEntity<?> readTestdataList() {
+        List<BatteryResponse> responses = batteryService.getBatteries();
+        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }
 
 }
