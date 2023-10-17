@@ -1,23 +1,37 @@
 import * as React from "react";
 import { ResponsiveLine } from "@nivo/line";
 
-const TestGraph = ({ data, type }) => {
-  const newData = {
-    id: type,
-    color: "hsl(68, 70%, 50%)",
-    data: [],
-  };
-  newData["data"] = data.map((item) => {
-    return {
-      x: item["time"],
-      y: item[type],
+const TestGraph = ({ data, type, num }) => {
+  const datas = [];
+  for (const t of type) {
+    const newData = {
+      id: t,
+      data: [],
     };
-  });
+    newData["data"] = data.map((item) => {
+      return {
+        x: item["time"],
+        y: item[t],
+      };
+    });
+    datas.push(newData);
+  }
   return (
-    <div style={{ width: "800px", height: "500px", margin: "0 auto", border:"2px solid", borderRadius:"50px", borderColor:"#eee6c4", padding: "10px", marginBottom: "100px"}}>
-      <h3>Test Data Chart</h3>
+    <div
+      style={{
+        width: "800px",
+        height: "500px",
+        margin: "0 auto",
+        border: "2px solid",
+        borderRadius: "50px",
+        borderColor: "#eee6c4",
+        padding: "10px",
+        marginBottom: "100px",
+      }}
+    >
+      <h3>Test {num} Data Chart</h3>
       <ResponsiveLine
-        data={[newData]}
+        data={datas}
         margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
         xScale={{ type: "point" }}
         xFormat=" >-.2f"
