@@ -7,25 +7,21 @@ import http from "../../api/http";
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
-  const [code, setCode] = useState("B0047");
+  const [code, setCode] = useState("");
+  const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
   const clickPoint = (id) => {
     setTestId(() => id);
   };
+  const handleCode = (e) => {
+    setCode(() => e.target.value);
+    console.log(e.target.value);
+  };
   useEffect(() => {
     http
-      .get(`/api/dashboard/metadata/${code}`)
+      .get(`/api/dashboard/batteries`)
       .then(({ data }) => {
-        setData(() => {
-          return data["data"];
-        });
-      })
-      .catch();
-
-    http
-      .get(`/api/dashboard/${code}/tests/${0}/testdatas`)
-      .then(({ data }) => {
-        setTestData(() => {
+        setBatteries(() => {
           return data["data"];
         });
       })
@@ -33,26 +29,69 @@ const BatteryBoard = () => {
   }, []);
 
   useEffect(() => {
-    http
-      .get(`/api/dashboard/${code}/tests/${testId}/testdatas`)
-      .then(({ data }) => {
-        setTestData(() => {
-          return data["data"];
-        });
-      })
-      .catch();
+    if (code) {
+      http
+        .get(`/api/dashboard/${code}/tests/${testId}/testdatas`)
+        .then(({ data }) => {
+          setTestData(() => {
+            return data["data"];
+          });
+        })
+        .catch();
+    }
   }, [testId]);
+
+  useEffect(() => {
+    if (!code && batteries.length) {
+      setCode(() => batteries[0].code);
+    }
+  }, [batteries]);
+
+  useEffect(() => {
+    if (code) {
+      http
+        .get(`/api/dashboard/metadata/${code}`)
+        .then(({ data }) => {
+          setData(() => {
+            return data["data"];
+          });
+        })
+        .catch();
+    }
+  }, [code]);
   return (
     <>
+      <select
+        onChange={(e) => {
+          handleCode(e);
+        }}
+      >
+        {batteries.map((battery, idx) => {
+          return (
+            <option value={battery.code} key={idx}>
+              {battery.code}
+            </option>
+          );
+        })}
+      </select>
       <MetaGraph2
         data={data}
         type="capacity"
         clickPoint={clickPoint}
       ></MetaGraph2>
-      <TestGraph data={test} type="voltageMeasured"></TestGraph>
-      <br/>
-      <MetaGraph data={data} type="capacity"></MetaGraph>
-      <MetaGraph data={data} type="re"></MetaGraph>
+      {code ? (
+        <>
+          <TestGraph
+            data={test}
+            type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
+            num={testId}
+          ></TestGraph>
+          <br />
+
+          <MetaGraph data={data} type="capacity"></MetaGraph>
+          <MetaGraph data={data} type="re"></MetaGraph>
+        </>
+      ) : null}
     </>
   );
 };

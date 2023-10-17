@@ -6,11 +6,8 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
   const filter = data.filter(
     (item) => Object.keys(item).includes("capacity") && item["capacity"]
   );
-  const d = filter.map((item) => {
+  const d2 = filter.map((item) => {
     return [item["testId"], item["capacity"]];
-  });
-  const x = filter.map((item) => {
-    return item["testId"];
   });
 
   const option = {
@@ -20,7 +17,7 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     },
 
     subtitle: {
-      text: 'Capacity change',
+      text: "",
       align: "left",
     },
 
@@ -52,7 +49,7 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     series: [
       {
         name: "Capacity",
-        data: d,
+        data: d2,
         point: {
           events: {
             click: function () {
@@ -65,7 +62,7 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
       {
         type: "line",
         name: "Regression Line",
-        data: [d[0], d[d.length - 1]],
+        data: [d2[0], d2[d2.length - 1]],
         marker: {
           enabled: false,
         },
