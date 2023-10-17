@@ -2,6 +2,7 @@ package com.example.A201.member.service;
 
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.dto.AuthDto;
+import com.example.A201.member.dto.MemberDTO;
 import com.example.A201.member.exception.MemberException;
 import com.example.A201.member.exception.NotActivatedException;
 import com.example.A201.member.exception.PasswordException;
@@ -35,7 +36,7 @@ public class AuthService {
     @Transactional
     public AuthDto.TokenDto login(AuthDto.LoginDto loginDto) {
 
-        Member member = memberService.getMemberByLoginId(loginDto.getLoginId());
+        MemberDTO member = memberService.getMemberByLoginId(loginDto.getLoginId());
 
         if (member == null) throw new MemberException("아이디 또는 비밀번호가 틀렸습니다.");
 
