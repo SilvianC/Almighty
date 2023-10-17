@@ -8,35 +8,57 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const postMember = () => {
-    joinMember(
-      {
-        company,
-        loginId,
-        password,
-        email,
-        tel,
-      },
-      ({ data }) => {
-        console.log(data);
-        navigate("/");
-      },
-      ({ error }) => {
-        console.log(error);
-      }
-    );
+    if (checkDupDone === false) {
+      alert("아이디 중복 확인을 해주세요");
+    }
+    else if (checkDupDone === true && usableId === true) {
+      joinMember(
+        {
+          company,
+          loginId,
+          password,
+          email,
+          tel,
+        },
+        ({ data }) => {
+          console.log(data);
+          navigate("/");
+        },
+        ({ error }) => {
+          console.log(error);
+        }
+      );
+    }
   };
 
+  const [checkDupDone, setCheckDupDone] = useState(false);
+  const [usableId, setUsableId] = useState(false);
   const checkDup = () => {
+    if(!loginId){
+      alert("아이디를 입력해주세요");
+    }
     checkDuplication(
       loginId,
       ({ data }) => {
         console.log(data);
+        setCheckDupDone(true);
+        if (data === "이미 사용 중인 loginId 입니다.") {
+          setUsableId(false);
+        }
+        else if (data === "사용 가능한 loginId 입니다.") {
+          setUsableId(true)
+        }
       },
       ({ error }) => {
         console.log(error);
       }
     )
 
+  }
+
+  const idChange = () => {
+    console.log("아이디 입력 중");
+    setCheckDupDone(false);
   }
 
   const [inputs, setinputs] = useState({
@@ -77,11 +99,19 @@ const SignUp = () => {
               id="loginId"
               value={loginId}
               placeholder="아이디"
-              onChange={onChange}
+              onChange={(e) => {
+                onChange(e);
+                idChange();
+              }}
             />
             <button onClick={checkDup}>중복확인</button>
           </S.InputId>
-          <p>아이디 중복확인을 해주세요</p>
+          {checkDupDone && !usableId
+            ? (<p>이미 사용 중인 아이디 입니다</p>)
+            : null}
+          {checkDupDone && usableId
+            ? (<p>사용 가능한 아이디 입니다</p>)
+            : null}
           <input
             type="text"
             id="company"
