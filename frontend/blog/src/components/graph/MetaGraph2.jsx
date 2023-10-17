@@ -15,12 +15,12 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
 
   const option = {
     title: {
-      text: "U.S Solar Employment Growth",
+      text: "Discharge Battery Metadata",
       align: "left",
     },
 
     subtitle: {
-      text: 'By Job Category. Source: <a href="https://irecusa.org/programs/solar-jobs-census/" target="_blank">IREC</a>.',
+      text: 'Capacity change',
       align: "left",
     },
 
