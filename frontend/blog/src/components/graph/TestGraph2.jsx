@@ -2,11 +2,17 @@ import * as React from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
+const transName = {
+  voltageMeasured: "전압(Volts)",
+  currentMeasured: "전류(Amps)",
+  temperatureMeasured: "온도(°C)",
+};
+
 const TestGraph = ({ data, type, num }) => {
   const datas = [];
   for (const t of type) {
     const newData = {
-      name: t,
+      name: transName[t],
       data: data.map((item) => {
         return [item["time"], item[t]];
       }),
@@ -32,6 +38,9 @@ const TestGraph = ({ data, type, num }) => {
     },
 
     xAxis: {
+      title: {
+        text: "Time",
+      },
       accessibility: {
         rangeDescription: "Range: 2010 to 2020",
       },
