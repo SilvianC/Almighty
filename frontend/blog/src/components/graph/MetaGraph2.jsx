@@ -35,9 +35,10 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     },
 
     legend: {
+      floating: true, // 레전드를 그래프 위에 표시
       layout: "vertical",
       align: "right",
-      verticalAlign: "middle",
+      verticalAlign: "top",
     },
 
     plotOptions: {
@@ -50,6 +51,11 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
       {
         name: "Capacity",
         data: d2,
+        // marker: {
+        //   symbol: "square", // 점을 사각형으로 설정
+        //   enabled: true, // 점을 표시할지 여부를 설정합니다.
+        //   radius: 4, // 점의 반지름 설정
+        // },
         point: {
           events: {
             click: function () {
