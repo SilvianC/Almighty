@@ -36,7 +36,7 @@ public class AuthApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    // loginId 중복 체크
+    // loginId
     @GetMapping("/check/{loginId}")
     public ResponseEntity<?> checkDuplication(@PathVariable String loginId) {
         if (memberService.existsByLoginId(loginId)) {
