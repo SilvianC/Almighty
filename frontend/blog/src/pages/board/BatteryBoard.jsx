@@ -6,6 +6,7 @@ import http from "../../api/http";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
@@ -87,6 +88,11 @@ const BatteryBoard = () => {
             ></MetaGraph2>
           </Col>
           <Col md={6}>
+            <MetaGraphImpedance data={data}></MetaGraphImpedance>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <TestGraph2
               data={test}
               type={[
@@ -99,8 +105,6 @@ const BatteryBoard = () => {
           </Col>
         </Row>
       </Container>
-      <MetaGraph data={data} type="capacity"></MetaGraph>
-      <MetaGraph data={data} type="re"></MetaGraph>
     </>
   );
 };
