@@ -2,17 +2,20 @@ import React, { useEffect, useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
 
-const MetaGraph2 = ({ data, type, clickPoint }) => {
+const MetaGraphImpedance = ({ data }) => {
   const filter = data.filter(
-    (item) => Object.keys(item).includes("capacity") && item["capacity"]
+    (item) => Object.keys(item).includes("re") && item["re"]
   );
   const d = filter.map((item) => {
-    return [item["testId"], item["capacity"]];
+    return [item["testId"], item["re"]];
+  });
+  const d2 = filter.map((item) => {
+    return [item["testId"], item["rct"]];
   });
 
   const option = {
     title: {
-      text: "Discharge Battery Metadata",
+      text: "Impedance Battery Metadata",
       align: "left",
     },
 
@@ -23,7 +26,7 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
 
     yAxis: {
       title: {
-        text: "Capacity",
+        text: "Ohms",
       },
     },
 
@@ -49,35 +52,12 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
 
     series: [
       {
-        name: "Capacity",
+        name: "Re",
         data: d,
-        // marker: {
-        //   symbol: "square", // 점을 사각형으로 설정
-        //   enabled: true, // 점을 표시할지 여부를 설정합니다.
-        //   radius: 4, // 점의 반지름 설정
-        // },
-        point: {
-          events: {
-            click: function () {
-              clickPoint(this.x);
-            },
-          },
-        },
       },
-
       {
-        type: "line",
-        name: "Regression Line",
-        data: [d[0], d[d.length - 1]],
-        marker: {
-          enabled: false,
-        },
-        states: {
-          hover: {
-            lineWidth: 3,
-          },
-        },
-        enableMouseTracking: false,
+        name: "Rct",
+        data: d2,
       },
     ],
 
@@ -104,4 +84,4 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     </>
   );
 };
-export default MetaGraph2;
+export default MetaGraphImpedance;
