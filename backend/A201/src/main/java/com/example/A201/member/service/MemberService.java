@@ -36,8 +36,22 @@ public class MemberService {
         return dto;
     }
 
-    public Member getMemberByLoginId(String loginId){
-        return memberRepository.findByLoginId(loginId).orElse(null);
+    public MemberDTO getMemberByLoginId(String loginId){
+        Member member = memberRepository.findByLoginId(loginId).orElseThrow(() -> new NoSuchElementException("존재하지 않는 유저입니다."));
+        MemberDTO dto = MemberDTO.builder()
+                .createDate(member.getCreateDate())
+                .memberId(member.getMemberId())
+                .role(member.getRole())
+                .loginId(member.getLoginId())
+                .password(member.getPassword())
+                .tel(member.getTel())
+                .email(member.getEmail())
+                .is_activated(member.getIs_activated())
+                .company(member.getCompany())
+                .build();
+
+        return dto;
+        //return memberRepository.findByLoginId(loginId).orElse(null);
     }
 
     @Transactional

@@ -1,9 +1,11 @@
 package com.example.A201.member.controller;
 
 import com.example.A201.member.dto.AuthDto;
+import com.example.A201.member.dto.MemberDTO;
 import com.example.A201.member.service.AuthService;
 import com.example.A201.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
+@Slf4j
 public class AuthApiController {
     private final AuthService authService;
     private final BCryptPasswordEncoder encoder;
@@ -36,7 +39,7 @@ public class AuthApiController {
     @GetMapping("/check/{loginId}")
     public ResponseEntity<?> checkDuplication(@PathVariable String loginId) {
         if (memberService.existsByLoginId(loginId)) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("이미 사용 중인 loginId 입니다.");
+            return ResponseEntity.status(HttpStatus.OK).body("이미 사용 중인 loginId 입니다.");
         } else {
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 loginId 입니다.");
         }
@@ -48,6 +51,9 @@ public class AuthApiController {
 //        loginDto.setPassword("{noop}" + loginDto.getPassword());
         AuthDto.TokenDto tokenDto = authService.login(loginDto);
 
+        String loginId = loginDto.getLoginId();
+        MemberDTO member = memberService.getMemberByLoginId(loginId);
+
         // RT 저장
 //        HttpCookie httpCookie = ResponseCookie.from("refresh-token", tokenDto.getRefreshToken())
 //                .maxAge(COOKIE_EXPIRATION)
@@ -55,6 +61,13 @@ public class AuthApiController {
 //                .secure(true)
 //                .build();
 
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .header("REFRESH_TOKEN", tokenDto.getRefreshToken())
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
+                .body(member);
+
+/*
         return ResponseEntity.ok()
 //                .header("REFRESH_TOKEN", httpCookie.toString())
                 .header("REFRESH_TOKEN", tokenDto.getRefreshToken())
@@ -62,6 +75,7 @@ public class AuthApiController {
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
                 .build();
 //        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("이메일 인증 안됨");
+*/
     }
 
     @PostMapping("/validate")

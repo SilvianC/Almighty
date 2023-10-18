@@ -61,6 +61,7 @@ public class JwtTokenProvider implements InitializingBean {
     public AuthDto.TokenDto createToken(String loginId, String authorities){
         Long now = System.currentTimeMillis();
 
+
         String accessToken = Jwts.builder()
                 .setHeaderParam("typ", "JWT")
                 .setHeaderParam("alg", "HS512")

@@ -14,6 +14,7 @@ public class configure implements WebMvcConfigurer {
             registry.addMapping("/**")
                     .allowedOrigins("http://localhost:3000","http://localhost:8080")
                     .allowedMethods("PUT", "DELETE","POST","GET")
+                    .exposedHeaders("*")
                     .allowCredentials(false).maxAge(3600);
         }
     }
