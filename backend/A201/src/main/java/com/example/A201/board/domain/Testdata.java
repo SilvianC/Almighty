@@ -30,6 +30,12 @@ public class Testdata {
     @Column(name = "Current_load")
     private Double currentLoad;
 
+    @Column(name = "Current_charge")
+    private Double currentCharge;
+
+    @Column(name = "Voltage_charge")
+    private Double voltageCharge;
+
     @Column(name = "Voltage_load")
     private Double voltageLoad;
 
