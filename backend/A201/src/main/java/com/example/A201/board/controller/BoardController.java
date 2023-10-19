@@ -34,8 +34,8 @@ public class BoardController {
         return SuccessResponseEntity.toResponseEntity("베터리 코드와 타입별 데이터 불러오기 성공", metadataService.getMetadataCode(code));
     }
 
-    @GetMapping("/{battery_id}/tests/{test_id}/testdatas")
-    public ResponseEntity<?> readTestdataList(@PathVariable("battery_id") String batteryId, @PathVariable("test_id") Long testId) {
+    @GetMapping("/{code}/tests/{test_id}/testdatas")
+    public ResponseEntity<?> readTestdataList(@PathVariable("code") String batteryId, @PathVariable("test_id") Long testId) {
         List<TestdataResponse> responses = testdataService.readTestdataList(batteryId, testId);
         return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
     }
