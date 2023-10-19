@@ -1,12 +1,19 @@
 import React from "react";
+import styled from "styled-components";
 import BatteryBoard from "./BatteryBoard";
 
 const Board = () => {
   return (
-    <div>
-      <h1>배터리 그래프</h1>
+    <S.Container>
       <BatteryBoard></BatteryBoard>
-    </div>
+    </S.Container>
   );
 };
+
+const S = {
+  Container: styled.div`
+  `
+};
+
+
 export default Board;
