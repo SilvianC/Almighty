@@ -13,7 +13,10 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
   const option = {
     title: {
       text: "Discharge Battery Metadata",
-      align: "left",
+      align: "center",
+      style: {
+        color: "#4F84C9", // 원하는 색상으로 설정
+      },
     },
 
     subtitle: {
@@ -36,9 +39,10 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
 
     legend: {
       floating: true, // 레전드를 그래프 위에 표시
-      layout: "vertical",
+      layout: "horizontal",
       align: "right",
       verticalAlign: "top",
+      y: 15, // y 좌표를 조절
     },
 
     plotOptions: {
@@ -63,6 +67,9 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
             },
           },
         },
+        marker: {
+          enabled: false,
+        },
       },
 
       {
@@ -82,16 +89,19 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     ],
 
     responsive: {
+      //반응형 처리에 필요
       rules: [
         {
+          //반응 조건
           condition: {
             maxWidth: 500,
           },
+          //반응 동작
           chartOptions: {
             legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
+              layout: "vertical",
+              align: "right",
+              verticalAlign: "top",
             },
           },
         },

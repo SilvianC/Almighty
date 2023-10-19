@@ -16,7 +16,10 @@ const MetaGraphImpedance = ({ data }) => {
   const option = {
     title: {
       text: "Impedance Battery Metadata",
-      align: "left",
+      align: "center",
+      style: {
+        color: "#4F84C9", // 원하는 색상으로 설정
+      },
     },
 
     subtitle: {
@@ -39,9 +42,10 @@ const MetaGraphImpedance = ({ data }) => {
 
     legend: {
       floating: true, // 레전드를 그래프 위에 표시
-      layout: "vertical",
+      layout: "horizontal",
       align: "right",
       verticalAlign: "top",
+      y: 15,
     },
 
     plotOptions: {
@@ -69,9 +73,9 @@ const MetaGraphImpedance = ({ data }) => {
           },
           chartOptions: {
             legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
+              layout: "vertical",
+              align: "right",
+              verticalAlign: "top",
             },
           },
         },
