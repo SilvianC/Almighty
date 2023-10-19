@@ -1,6 +1,7 @@
 import * as React from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import styled from "styled-components";
 
 const transName = {
   voltageMeasured: "전압(Volts)",
@@ -16,14 +17,33 @@ const TestGraph = ({ data, type, num }) => {
       data: data.map((item) => {
         return [item["time"], item[t]];
       }),
+      zones:
+        t === "temperatureMeasured"
+          ? [
+              {
+                value: 9,
+                color: "green",
+              },
+              {
+                color: "red",
+              },
+            ]
+          : null,
+      color: t === "temperatureMeasured" ? "green" : null,
     };
     datas.push(newData);
   }
 
   const option = {
+    chart: {
+      height: "100%",
+    },
     title: {
       text: `Test ${num} data`,
-      align: "left",
+      align: "center",
+      style: {
+        color: "#4F84C9", // 원하는 색상으로 설정
+      },
     },
 
     subtitle: {
@@ -49,9 +69,10 @@ const TestGraph = ({ data, type, num }) => {
 
     legend: {
       floating: true, // 레전드를 그래프 위에 표시
-      layout: "vertical",
+      layout: "horizontal",
       align: "right",
       verticalAlign: "top",
+      y: 15,
     },
 
     plotOptions: {
@@ -80,9 +101,13 @@ const TestGraph = ({ data, type, num }) => {
     },
   };
   return (
-    <>
+    <S.Wrap>
       <HighchartsReact highcharts={Highcharts} options={option} />
-    </>
+    </S.Wrap>
   );
+};
+
+const S = {
+  Wrap: styled.div``,
 };
 export default TestGraph;
