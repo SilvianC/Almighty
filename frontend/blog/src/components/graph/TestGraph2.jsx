@@ -90,11 +90,11 @@ const TestGraph = ({ data, type, num }) => {
             maxWidth: 500,
           },
           chartOptions: {
-            legend: {
-              layout: "horizontal",
-              align: "center",
-              verticalAlign: "bottom",
-            },
+            // legend: {
+            //   layout: "horizontal",
+            //   align: "center",
+            //   verticalAlign: "bottom",
+            // },
           },
         },
       ],
