@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
+import styled from "styled-components";
 
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
@@ -134,6 +135,20 @@ const BatteryBoard = () => {
       </Row>
     </S.Wrap>
   );
+};
+
+const S = {
+  Wrap: styled.div`
+    border: 1px solid #d3d3d3;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 40px;
+  `,
+  Title: styled.span`
+    font-size: 20px;
+    font-weight: bold;
+    color: #1428a0;
+  `,
 };
 
 const S = {
