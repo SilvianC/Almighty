@@ -20,10 +20,6 @@ const MetaGraphImpedance = ({ data }) => {
       style: {
         color: "#4F84C9", // 원하는 색상으로 설정
       },
-      align: "center",
-      style: {
-        color: "#4F84C9", // 원하는 색상으로 설정
-      },
     },
 
     subtitle: {
@@ -47,10 +43,8 @@ const MetaGraphImpedance = ({ data }) => {
     legend: {
       floating: true, // 레전드를 그래프 위에 표시
       layout: "horizontal",
-      layout: "horizontal",
       align: "right",
       verticalAlign: "top",
-      y: 15,
       y: 15,
     },
 
