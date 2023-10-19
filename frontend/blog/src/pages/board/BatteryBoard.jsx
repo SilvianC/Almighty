@@ -65,20 +65,21 @@ const BatteryBoard = () => {
   }, [code]);
   return (
     <>
-      <select
-        onChange={(e) => {
-          handleCode(e);
-        }}
-      >
-        {batteries.map((battery, idx) => {
-          return (
-            <option value={battery.code} key={idx}>
-              {battery.code}
-            </option>
-          );
-        })}
-      </select>
       <Container>
+        <h1>배터리 그래프</h1>
+        <select
+          onChange={(e) => {
+            handleCode(e);
+          }}
+        >
+          {batteries.map((battery, idx) => {
+            return (
+              <option value={battery.code} key={idx}>
+                {battery.code}
+              </option>
+            );
+          })}
+        </select>
         <Row>
           <Col md={6}>
             <MetaGraph2
