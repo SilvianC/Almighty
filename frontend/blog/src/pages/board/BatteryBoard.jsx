@@ -7,6 +7,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
+import styled from "styled-components";
 
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
@@ -64,49 +65,57 @@ const BatteryBoard = () => {
     }
   }, [code]);
   return (
-    <>
-      <Container>
-        <h1>배터리 그래프</h1>
-        <select
-          onChange={(e) => {
-            handleCode(e);
-          }}
-        >
-          {batteries.map((battery, idx) => {
-            return (
-              <option value={battery.code} key={idx}>
-                {battery.code}
-              </option>
-            );
-          })}
-        </select>
-        <Row>
-          <Col md={6}>
-            <MetaGraph2
-              data={data}
-              type="capacity"
-              clickPoint={clickPoint}
-            ></MetaGraph2>
-          </Col>
-          <Col md={6}>
-            <MetaGraphImpedance data={data}></MetaGraphImpedance>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <TestGraph2
-              data={test}
-              type={[
-                "voltageMeasured",
-                "currentMeasured",
-                "temperatureMeasured",
-              ]}
-              num={testId}
-            ></TestGraph2>
-          </Col>
-        </Row>
-      </Container>
-    </>
+    <S.Wrap>
+      <Row>
+        <Col>
+          <S.Title>배터리 데이터</S.Title>
+          <select
+            onChange={(e) => {
+              handleCode(e);
+            }}
+          >
+            {batteries.map((battery, idx) => {
+              return (
+                <option value={battery.code} key={idx}>
+                  {battery.code}
+                </option>
+              );
+            })}
+          </select>
+        </Col>
+      </Row>
+      <Row>
+        <Col md={5}>
+          <MetaGraph2
+            data={data}
+            type="capacity"
+            clickPoint={clickPoint}
+          ></MetaGraph2>
+          <MetaGraphImpedance data={data}></MetaGraphImpedance>
+        </Col>
+        <Col md={7}>
+          <TestGraph2
+            data={test}
+            type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
+            num={testId}
+          ></TestGraph2>
+        </Col>
+      </Row>
+    </S.Wrap>
   );
+};
+
+const S = {
+  Wrap: styled.div`
+    border: 1px solid #d3d3d3;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 40px;
+  `,
+  Title: styled.span`
+    font-size: 20px;
+    font-weight: bold;
+    color: #1428a0;
+  `,
 };
 export default BatteryBoard;
