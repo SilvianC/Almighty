@@ -72,11 +72,11 @@ const MetaGraphImpedance = ({ data }) => {
             maxWidth: 500,
           },
           chartOptions: {
-            legend: {
-              layout: "vertical",
-              align: "right",
-              verticalAlign: "top",
-            },
+            // legend: {
+            //   layout: "vertical",
+            //   align: "right",
+            //   verticalAlign: "top",
+            // },
           },
         },
       ],

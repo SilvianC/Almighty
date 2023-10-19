@@ -98,11 +98,11 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
           },
           //반응 동작
           chartOptions: {
-            legend: {
-              layout: "vertical",
-              align: "right",
-              verticalAlign: "top",
-            },
+            // legend: {
+            //   layout: "vertical",
+            //   align: "right",
+            //   verticalAlign: "top",
+            // },
           },
         },
       ],
