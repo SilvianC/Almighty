@@ -17,10 +17,6 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
       style: {
         color: "#4F84C9", // 원하는 색상으로 설정
       },
-      align: "center",
-      style: {
-        color: "#4F84C9", // 원하는 색상으로 설정
-      },
     },
 
     subtitle: {
@@ -44,10 +40,8 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
     legend: {
       floating: true, // 레전드를 그래프 위에 표시
       layout: "horizontal",
-      layout: "horizontal",
       align: "right",
       verticalAlign: "top",
-      y: 15, // y 좌표를 조절
       y: 15, // y 좌표를 조절
     },
 
@@ -76,9 +70,6 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
         marker: {
           enabled: false,
         },
-        marker: {
-          enabled: false,
-        },
       },
 
       {
@@ -99,15 +90,12 @@ const MetaGraph2 = ({ data, type, clickPoint }) => {
 
     responsive: {
       //반응형 처리에 필요
-      //반응형 처리에 필요
       rules: [
         {
-          //반응 조건
           //반응 조건
           condition: {
             maxWidth: 500,
           },
-          //반응 동작
           //반응 동작
           chartOptions: {
             // legend: {
