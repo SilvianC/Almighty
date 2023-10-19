@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
+import styled from "styled-components";
 
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
@@ -20,7 +21,9 @@ const BatteryBoard = () => {
   };
   const handleCode = (e) => {
     setCode(() => e.target.value);
-    console.log(e.target.value);
+  };
+  const handleTest = (e) => {
+    setTestId(() => e.target.value);
   };
   useEffect(() => {
     http
@@ -64,6 +67,21 @@ const BatteryBoard = () => {
         .catch();
     }
   }, [code]);
+
+  useEffect(() => {
+    if (code) {
+      if (testId === 0)
+        http
+          .get(`/api/dashboard/${code}/tests/0/testdatas`)
+          .then(({ data }) => {
+            setTestData(() => {
+              return data["data"];
+            });
+          })
+          .catch();
+      else setTestId(() => 0);
+    }
+  }, [data]);
   return (
     <S.Wrap>
       <Row>
@@ -78,6 +96,20 @@ const BatteryBoard = () => {
               return (
                 <option value={battery.code} key={idx}>
                   {battery.code}
+                </option>
+              );
+            })}
+          </select>
+          <select
+            onChange={(e) => {
+              handleTest(e);
+            }}
+            value={testId}
+          >
+            {data.map((item, idx) => {
+              return (
+                <option value={item.testId} key={idx}>
+                  {item.testId} : {item.type}
                 </option>
               );
             })}
@@ -103,6 +135,20 @@ const BatteryBoard = () => {
       </Row>
     </S.Wrap>
   );
+};
+
+const S = {
+  Wrap: styled.div`
+    border: 1px solid #d3d3d3;
+    margin: 20px;
+    padding: 20px;
+    border-radius: 40px;
+  `,
+  Title: styled.span`
+    font-size: 20px;
+    font-weight: bold;
+    color: #1428a0;
+  `,
 };
 
 const S = {
