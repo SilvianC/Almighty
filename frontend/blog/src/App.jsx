@@ -11,7 +11,7 @@ import Header from "./components/layout/Header";
 const App = () =>{
   return (
   <>
-    <Header></Header>
+    <Header />
     <Routes>
       <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
       <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp />} />
