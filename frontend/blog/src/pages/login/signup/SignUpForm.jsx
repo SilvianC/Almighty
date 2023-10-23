@@ -4,7 +4,7 @@ import * as components from "../../../components"
 const SignUpForm = () => {
   return (
     <S.Wrap>
-        <components.Signup></components.Signup>
+      <components.Signup></components.Signup>
     </S.Wrap>
   );
 };
