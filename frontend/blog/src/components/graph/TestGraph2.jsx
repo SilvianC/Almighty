@@ -17,19 +17,28 @@ const TestGraph = ({ data, type, num }) => {
       data: data.map((item) => {
         return [item["time"], item[t]];
       }),
-      zones:
-        t === "temperatureMeasured"
-          ? [
-              {
-                value: 9,
-                color: "green",
-              },
-              {
-                color: "red",
-              },
-            ]
-          : null,
-      color: t === "temperatureMeasured" ? "green" : null,
+    zones:
+      t === "temperatureMeasured"
+    ? [
+        {
+          value: 10.5,
+          color: "green",
+        },
+        {
+          color: "red",
+        },
+      ]
+    : t === "voltageMeasured"
+    ? [
+        {
+          color: "blue",
+        },
+        {
+          value: 3,
+          color: "red",
+        },
+      ]
+    : null,
     };
     datas.push(newData);
   }
