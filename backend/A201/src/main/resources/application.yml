@@ -9,7 +9,7 @@ spring:
   #        url: jdbc:h2:mem:test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://{db_url}/test?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://{db_url}/{db_name}?serverTimezone=Asia/Seoul
     username: "{db_id}"
     password: "{db_pw}"
 
