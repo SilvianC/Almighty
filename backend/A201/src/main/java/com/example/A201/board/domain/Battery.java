@@ -4,6 +4,7 @@ import com.example.A201.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -20,4 +21,8 @@ public class Battery {
     private Member memberId;
 
     private String code;
+
+    private LocalDate madeDate;
+
+    private LocalDate receiveDate;
 }

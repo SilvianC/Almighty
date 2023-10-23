@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,7 @@ public class AuthApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-    // loginId 중복 체크
+    // loginId
     @GetMapping("/check/{loginId}")
     public ResponseEntity<?> checkDuplication(@PathVariable String loginId) {
         if (memberService.existsByLoginId(loginId)) {
@@ -61,9 +62,15 @@ public class AuthApiController {
 //                .secure(true)
 //                .build();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .header("REFRESH_TOKEN", tokenDto.getRefreshToken())
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", tokenDto.getRefreshToken())
+                .maxAge(COOKIE_EXPIRATION)
+                .httpOnly(true)
+                .secure(false) // 로컬에서는 false, 실제 환경에서는 true로 변경
+                .path("/")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + tokenDto.getAccessToken())
                 .body(member);
 
@@ -95,32 +102,26 @@ public class AuthApiController {
         String requestRefreshToken = headers.get("refresh_token");
         AuthDto.TokenDto reissuedTokenDto = authService.reissue(requestAccessToken, requestRefreshToken);
 
-        if (reissuedTokenDto != null) { // 토큰 재발급 성공
-            // RT 저장
-//            ResponseCookie responseCookie = ResponseCookie.from("refresh-token", reissuedTokenDto.getRefreshToken())
-//                    .maxAge(COOKIE_EXPIRATION)
-//                    .httpOnly(true)
-//                    .secure(true)
-//                    .build();
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-//                    .header("REFRESH_TOKEN", responseCookie.toString())
-                    .header("REFRESH_TOKEN", reissuedTokenDto.getRefreshToken())
-                    // AT 저장
-                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + reissuedTokenDto.getAccessToken())
+        if (reissuedTokenDto != null) {
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", reissuedTokenDto.getRefreshToken())
+                    .maxAge(COOKIE_EXPIRATION)
+                    .httpOnly(true)
+                    .secure(false)
+                    .path("/")
                     .build();
 
-        } else { // Refresh Token 탈취 가능성
-            System.out.println("재로그인 유도");
-            // Cookie 삭제 후 재로그인 유도
-//            ResponseCookie responseCookie = ResponseCookie.from("refresh-token", "")
-//                    .maxAge(0)
-//                    .path("/")
-//                    .build();
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-//                    .header("REFRESH_TOKEN", responseCookie.toString())
-                    .header("REFRESH_TOKEN", "")
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
+                    .header(HttpHeaders.AUTHORIZATION, "Bearer " + reissuedTokenDto.getAccessToken())
+                    .build();
+        } else {
+            ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", "")
+                    .maxAge(0)
+                    .path("/")
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                     .build();
         }
     }
@@ -129,15 +130,13 @@ public class AuthApiController {
     @PostMapping("/logout")
     public ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken) {
         authService.logout(requestAccessToken);
-//        ResponseCookie responseCookie = ResponseCookie.from("refresh-token", "")
-//                .maxAge(0)
-//                .path("/")
-//                .build();
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh-token", "")
+                .maxAge(0)
+                .path("/")
+                .build();
 
-        return ResponseEntity
-                .status(HttpStatus.OK)
-//                .header("REFRESH_TOKEN", responseCookie.toString())
-                .header("REFRESH_TOKEN", "")
+        return ResponseEntity.status(HttpStatus.OK)
+                .header(HttpHeaders.SET_COOKIE, refreshTokenCookie.toString())
                 .build();
     }
 

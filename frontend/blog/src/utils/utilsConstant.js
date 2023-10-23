@@ -8,4 +8,7 @@ export const URL = {
   MAIN: {
     MAIN: "/main",
   },
+  RETURN: {
+    MAIN: "/return",
+  },
 };
