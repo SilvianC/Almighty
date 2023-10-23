@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import http from '../../api/http';
-
+import styled from "styled-components";
 const ChatComponent = () => {
     const [message, setMessage] = useState(''); // 사용자가 입력하는 메시지
     const [chatLog, setChatLog] = useState([]); // 채팅 로그
@@ -23,6 +23,7 @@ const ChatComponent = () => {
     };
 
     return (
+        <S.MainContent>
         <div>
             <div className="chat-box">
                 {chatLog.map((entry, index) => (
@@ -38,7 +39,13 @@ const ChatComponent = () => {
             />
             <button onClick={sendMessage}>Send</button>
         </div>
+        </S.MainContent>
     );
 };
-
+const S = {
+    MainContent: styled.div`
+      padding-top: 60px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+      padding-left: 100px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    `,
+  };
 export default ChatComponent;

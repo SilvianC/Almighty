@@ -18,6 +18,7 @@ const S = {
     font-size: 30px;
     font-weight: bold;
     color: #1428a0;
+    
   `,
 };
 
