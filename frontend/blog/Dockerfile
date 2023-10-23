@@ -18,7 +18,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY nginx/nginx.conf /etc/nginx/conf.d
 
-COPY /var/log/letsencrypt/ /etc/letsencrypt/
+COPY ./letsencrypt/ /etc/letsencrypt/
 
 EXPOSE 80 443
 
