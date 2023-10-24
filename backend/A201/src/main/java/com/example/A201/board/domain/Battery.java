@@ -22,21 +22,21 @@ public class Battery {
 
     private String code;
 
-    private float overVoltage;   // 과전압 임계값
+    private Double overVoltage;   // 과전압 임계값
 
-    private float underVoltage;  // 저전압 임계값
+    private Double underVoltage;  // 저전압 임계값
 
-    private float chargingOverCurrent; // 충전시 과전류 임계값
+    private Double chargingOverCurrent; // 충전시 과전류 임계값
 
-    private float dischargingOverCurrent;  // 방전시 과전류 임계값
+    private Double chargingMaxTemperature; // 충전시 최고 온도 임계값
 
-    private int chargingMaxTemperature; // 충전시 최고 온도 임계값
+    private Double chargingMinTemperature;  // 충전시 최저 온도 임계값
 
-    private int chargingMinTemperature;  // 충전시 최저 온도 임계값
+    private Double dischargingOverCurrent;  // 방전시 과전류 임계값
 
-    private int dischargingMaxTemperature;  // 방전시 최고 온도 임계값
+    private Double dischargingMaxTemperature;  // 방전시 최고 온도 임계값
 
-    private int dischargingMinTemperature;  // 방전시 최저 온도 임계값
+    private Double dischargingMinTemperature;  // 방전시 최저 온도 임계값
 
     private LocalDate madeDate;
 

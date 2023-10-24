@@ -14,6 +14,7 @@ const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
+  const [battery, setBattery] = useState([]);
   const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
   const clickPoint = (id) => {
@@ -61,6 +62,14 @@ const BatteryBoard = () => {
         .get(`/api/dashboard/metadata/${code}`)
         .then(({ data }) => {
           setData(() => {
+            return data["data"];
+          });
+        })
+        .catch();
+      http
+        .get(`/api/dashboard/battery/${code}`)
+        .then(({ data }) => {
+          setBattery(() => {
             return data["data"];
           });
         })
@@ -130,6 +139,7 @@ const BatteryBoard = () => {
         <Col md={7}>
           <TestGraph2
             data={test}
+            threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
           ></TestGraph2>

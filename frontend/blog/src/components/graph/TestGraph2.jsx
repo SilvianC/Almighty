@@ -9,7 +9,7 @@ const transName = {
   temperatureMeasured: "온도(°C)",
 };
 
-const TestGraph = ({ data, type, num }) => {
+const TestGraph = ({ data, threshold, type, num }) => {
   const datas = [];
   for (const t of type) {
     const newData = {
@@ -34,7 +34,7 @@ const TestGraph = ({ data, type, num }) => {
           color: "blue",
         },
         {
-          value: 3,
+          value: threshold.underVoltage,
           color: "red",
         },
       ]

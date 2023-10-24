@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useEffect, useState } from "react";
+import { getAnalytics } from "firebase/analytics";
 function FirebaseComponent() {
   const firebaseConfig = {
     apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
@@ -13,6 +14,7 @@ function FirebaseComponent() {
   };
 
   const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
   const messaging = getMessaging(app);
 
   useEffect(() => {
@@ -25,17 +27,21 @@ function FirebaseComponent() {
       }
       console.log("알림 권한이 허용됨");
 
-      const token = await getToken(messaging, {
-        vapidKey:"BIW70JkV0rCqXX0NUYzz9RNfKG1GxoWb6TTAIb22ZnG3-yqJL0L1ieBlJoZ_S_ALdyoJe_Zq4-AEKLql1BvYYRo",
-      });
-
-      if (token) console.log("token: ", token);
-      else console.log("Can not get Token");
-
-      onMessage(messaging, (payload) => {
-        console.log("메시지가 도착했습니다.", payload);
-        // ...
-      });
+      try {
+        const token = await getToken(messaging, {
+          vapidKey:
+            "BIW70JkV0rCqXX0NUYzz9RNfKG1GxoWb6TTAIb22ZnG3-yqJL0L1ieBlJoZ_S_ALdyoJe_Zq4-AEKLql1BvYYRo",
+        });
+        if (token) console.log("token: ", token);
+        else console.log("Can not get Token");
+        console.log("왜ㅑ 안도냐이ㅣ");
+        onMessage(messaging, (payload) => {
+          console.log("메시지가 도착했습니다.", payload);
+          // ...
+        });
+      } catch (error) {
+        console.log("알림 설정 필요", error);
+      }
     }
     requestPermission();
   }, []);
