@@ -1,28 +1,35 @@
-package com.example.A201.returning.domain;
+package com.example.A201.board.domain;
 
-import com.example.A201.board.domain.Battery;
 import com.example.A201.board.constant.Status;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Returning {
+public class StatusHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "return_id")
-    private Long id;
+    @Column(name = "history_id")
+    private Long historyId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_id")
     private Battery batteryId;
 
+    @Enumerated(EnumType.STRING)
+    private Status fromStatue;
+
+    @Enumerated(EnumType.STRING)
+    private Status toStatus;
+
+    private LocalDate date;
+
     private String reason;
 
-    private Status status;
 }
