@@ -12,10 +12,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BatteryResponse {
-    private String code;
+public class BatterydataResponse {
+    private Double overVoltage;
+    private Double underVoltage;
 
-    public static BatteryResponse batteryResponse(Battery battery){
-        return BatteryResponse.builder().code(battery.getCode()).build();
+    public static BatterydataResponse batteryResponse(Battery battery){
+        return BatterydataResponse.builder()
+                .overVoltage(battery.getOverVoltage())
+                .underVoltage(battery.getUnderVoltage())
+                .build();
     }
 }
