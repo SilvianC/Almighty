@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
+import { BiSolidChart } from "react-icons/bi";
 
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
@@ -85,7 +86,9 @@ const BatteryBoard = () => {
     <S.Wrap>
       <Row>
         <Col>
-          <S.Title>배터리 데이터</S.Title>
+          <S.Title className="d-flex align-items-center">
+            <BiSolidChart></BiSolidChart>배터리 데이터
+          </S.Title>
           <select
             onChange={(e) => {
               handleCode(e);
@@ -141,8 +144,8 @@ const S = {
     border: 1px solid #d3d3d3;
     margin: 20px;
     padding: 60px;
-    padding-top: 60px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 100px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+    padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
     border-radius: 40px;
   `,
   Title: styled.span`
