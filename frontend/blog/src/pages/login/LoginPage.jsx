@@ -13,6 +13,7 @@ const S = {
   Wrap: styled.div`
     width: 100%;
     padding-top: 10%;
+  
   `,
 };
 
