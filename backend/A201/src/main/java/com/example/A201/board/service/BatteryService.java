@@ -1,12 +1,12 @@
 package com.example.A201.board.service;
 
-import com.example.A201.board.domain.Battery;
-import com.example.A201.board.vo.BatteryResponse;
+import com.example.A201.board.vo.BatteryCodeResponse;
+import com.example.A201.board.vo.BatterydataResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface BatteryService {
-    List<BatteryResponse> getBatteries();
+    List<BatteryCodeResponse> getBatteries();
 
+    BatterydataResponse getBattery(String code);
 }
