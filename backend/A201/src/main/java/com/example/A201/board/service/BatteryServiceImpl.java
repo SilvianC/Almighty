@@ -21,4 +21,9 @@ public class BatteryServiceImpl implements BatteryService{
         List<Battery> batteries = batteryRepository.findAll();
         return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
     }
+    @Override
+    public BatteryResponse getBattery(String code){
+        return batteryRepository.findByCode(code).map(battery -> BatteryResponse.batteryResponse(battery))
+                .orElseThrow(() -> new IllegalStateException("해당 배터리를 찾을 수 없습니다"));
+    }
 }

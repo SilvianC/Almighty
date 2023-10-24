@@ -40,8 +40,14 @@ public class BoardController {
         return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
     }
 
+    @GetMapping("/battery")
+    public ResponseEntity<?> readBattery() {
+        List<BatteryResponse> responses = batteryService.getBatteries();
+        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
+    }
+
     @GetMapping("/batteries")
-    public ResponseEntity<?> readTestdataList() {
+    public ResponseEntity<?> readBatteryList() {
         List<BatteryResponse> responses = batteryService.getBatteries();
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }

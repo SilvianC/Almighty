@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface BatteryService {
     List<BatteryResponse> getBatteries();
 
+    BatteryResponse getBattery(String code);
 }

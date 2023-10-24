@@ -13,6 +13,7 @@ const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
+  const [battery, setBattery] = useState([]);
   const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
   const clickPoint = (id) => {
