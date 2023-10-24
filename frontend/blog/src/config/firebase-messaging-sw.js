@@ -34,7 +34,7 @@ function FirebaseComponent() {
         });
         if (token) console.log("token: ", token);
         else console.log("Can not get Token");
-
+        console.log("왜ㅑ 안도냐이ㅣ");
         onMessage(messaging, (payload) => {
           console.log("메시지가 도착했습니다.", payload);
           // ...
