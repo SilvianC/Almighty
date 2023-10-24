@@ -29,7 +29,7 @@ public class JwtTokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "role";
     private static final String LOGINID_KEY = "login_id";
-    private static final String url = "https://localhost:8080";
+    private static final String url = "http://k9a201.p.ssafy.io:8080";
     private static final String MEMBER_ID = "member_id";
 
     private final String secretKey;
