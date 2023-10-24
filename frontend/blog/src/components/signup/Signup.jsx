@@ -3,8 +3,10 @@ import styled from "styled-components";
 import { checkDuplication, joinMember } from "../../api/member";
 import { useNavigate } from "react-router-dom";
 import JoinInIcon from "../../assets/images/icon-joinIn.png"
+import FirebaseComponent from "../../config/firebase-messaging-sw";
 
 const SignUp = () => {
+  FirebaseComponent();
   const navigate = useNavigate();
 
   const postMember = () => {
