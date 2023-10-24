@@ -1,9 +1,7 @@
 import styled from "styled-components";
 import * as components from "../../../components"
-import FirebaseComponent from "../../../config/firebaseConfig";
 
 const SignUpForm = () => {
-  FirebaseComponent();
   return (
     <S.Wrap>
         <components.Signup></components.Signup>
