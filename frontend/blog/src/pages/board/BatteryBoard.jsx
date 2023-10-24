@@ -140,7 +140,9 @@ const S = {
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
     margin: 20px;
-    padding: 20px;
+    padding: 60px;
+    padding-top: 60px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+    padding-left: 100px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
     border-radius: 40px;
   `,
   Title: styled.span`

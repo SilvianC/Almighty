@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { login } from "../../api/member";
 import LoginIcon from "../../assets/images/icon-login.png";
-import { CompanyState, EmailState, LoginIdState, RoleState, TelState, AccessTokenState, RefreshTokenState } from "../../states/states";
+import { CompanyState, EmailState, LoginIdState, RoleState, TelState, AccessTokenState, RefreshTokenState, MemberIdState } from "../../states/states";
 
 const Login = () => {
 	const navigate = useNavigate();
@@ -33,12 +33,14 @@ const Login = () => {
   const [tel, setTel] = useRecoilState(TelState);
   const [accessToken, setAccessToken] = useRecoilState(AccessTokenState);
   const [refreshToken, setRefreshToken] = useRecoilState(RefreshTokenState);
+  const [memberId, setMemberId] = useRecoilState(MemberIdState);
 
 	const requestLogin = () => {
 		login(
 			{ loginId, password },
 			( data ) => {
 				console.log(data.data);
+        setMemberId(data.data.memberId);
         setId(data.data.loginId);
         setCompany(data.data.company);
         setRole(data.data.role);
