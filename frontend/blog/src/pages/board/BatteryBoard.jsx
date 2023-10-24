@@ -65,6 +65,14 @@ const BatteryBoard = () => {
           });
         })
         .catch();
+      http
+        .get(`/api/dashboard/battery/${code}`)
+        .then(({ data }) => {
+          setBattery(() => {
+            return data["data"];
+          });
+        })
+        .catch();
     }
   }, [code]);
 
@@ -128,6 +136,7 @@ const BatteryBoard = () => {
         <Col md={7}>
           <TestGraph2
             data={test}
+            threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
           ></TestGraph2>
