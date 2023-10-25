@@ -1,6 +1,7 @@
 package com.example.A201.battery.controller;
 
 import com.example.A201.battery.service.BatteryService;
+import com.example.A201.battery.service.ModelService;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
@@ -18,10 +19,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BatteryController {
     private final BatteryService batteryService;
-
     @GetMapping("/battery/{code}")
     public ResponseEntity<?> getBattery(@PathVariable("code") String code) {
         BatterydataResponse response = batteryService.getBattery(code);
+
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", response);
     }
 
