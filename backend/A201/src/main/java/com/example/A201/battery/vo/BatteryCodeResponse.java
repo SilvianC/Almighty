@@ -1,6 +1,6 @@
-package com.example.A201.board.vo;
+package com.example.A201.battery.vo;
 
-import com.example.A201.board.domain.Battery;
+import com.example.A201.battery.domain.Battery;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BatteryResponse {
+public class BatteryCodeResponse {
     private String code;
 
-    public static BatteryResponse batteryResponse(Battery battery){
-        return BatteryResponse.builder().code(battery.getCode()).build();
+    public static BatteryCodeResponse batteryCodeResponse(Battery battery){
+        return BatteryCodeResponse.builder().code(battery.getCode()).build();
     }
 }
