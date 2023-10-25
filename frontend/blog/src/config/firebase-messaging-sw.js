@@ -43,7 +43,7 @@ function FirebaseComponent() {
         };
 
         const response = await axios.post(
-          "https:/k9a201.p.ssafy.io/api/v1/notification",
+          "https://k9a201.p.ssafy.io/api/v1/notification",
           postData2,
           {
             headers: {
