@@ -9,7 +9,7 @@ const transName = {
   temperatureMeasured: "온도(°C)",
 };
 
-const TestGraph = ({ data, type, num }) => {
+const TestGraph = ({ data, threshold, type, num }) => {
   const datas = [];
   for (const t of type) {
     const newData = {
@@ -17,19 +17,28 @@ const TestGraph = ({ data, type, num }) => {
       data: data.map((item) => {
         return [item["time"], item[t]];
       }),
-      zones:
-        t === "temperatureMeasured"
-          ? [
-              {
-                value: 9,
-                color: "green",
-              },
-              {
-                color: "red",
-              },
-            ]
-          : null,
-      color: t === "temperatureMeasured" ? "green" : null,
+    zones:
+      t === "temperatureMeasured"
+    ? [
+        {
+          value: 10.5,
+          color: "green",
+        },
+        {
+          color: "red",
+        },
+      ]
+    : t === "voltageMeasured"
+    ? [
+        {
+          color: "blue",
+        },
+        {
+          value: threshold.underVoltage,
+          color: "red",
+        },
+      ]
+    : null,
     };
     datas.push(newData);
   }
