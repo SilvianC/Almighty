@@ -18,8 +18,8 @@ public class BatterydataResponse {
 
     public static BatterydataResponse batteryResponse(Battery battery){
         return BatterydataResponse.builder()
-                .overVoltage(battery.getOverVoltage())
-                .underVoltage(battery.getUnderVoltage())
+                .overVoltage(battery.getModel().getOverVoltage())
+                .underVoltage(battery.getModel().getUnderVoltage())
                 .build();
     }
 }
