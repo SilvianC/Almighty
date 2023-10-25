@@ -28,7 +28,7 @@ const BatteryBoard = () => {
   };
   useEffect(() => {
     http
-      .get(`/api/dashboard/batteries`)
+      .get(`/api/batteries`)
       .then(({ data }) => {
         setBatteries(() => {
           return data["data"];
@@ -67,7 +67,7 @@ const BatteryBoard = () => {
         })
         .catch();
       http
-        .get(`/api/dashboard/battery/${code}`)
+        .get(`/api/batteries/battery/${code}`)
         .then(({ data }) => {
           setBattery(() => {
             return data["data"];

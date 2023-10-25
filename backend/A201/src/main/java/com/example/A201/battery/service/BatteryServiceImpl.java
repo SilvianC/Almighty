@@ -1,9 +1,9 @@
-package com.example.A201.board.service;
+package com.example.A201.battery.service;
 
-import com.example.A201.board.domain.Battery;
-import com.example.A201.board.repository.BatteryRepository;
-import com.example.A201.board.vo.BatteryCodeResponse;
-import com.example.A201.board.vo.BatterydataResponse;
+import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.repository.BatteryRepository;
+import com.example.A201.battery.vo.BatteryCodeResponse;
+import com.example.A201.battery.vo.BatterydataResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

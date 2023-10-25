@@ -1,4 +1,4 @@
-package com.example.A201.board.domain;
+package com.example.A201.battery.domain;
 
 import com.example.A201.member.domain.Member;
 import lombok.*;
