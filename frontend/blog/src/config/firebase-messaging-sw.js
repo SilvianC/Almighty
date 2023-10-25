@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useEffect, useState } from "react";
 import { getAnalytics } from "firebase/analytics";
+import axios from "axios";
 function FirebaseComponent() {
   const firebaseConfig = {
     apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
@@ -34,11 +35,23 @@ function FirebaseComponent() {
         });
         if (token) console.log("token: ", token);
         else console.log("Can not get Token");
-        console.log("왜ㅑ 안도냐이ㅣ");
-        onMessage(messaging, (payload) => {
-          console.log("메시지가 도착했습니다.", payload);
-          // ...
-        });
+        const postData2 = {
+          targetUserId: 1,
+          title: "되라 ㅜㅜ",
+          body: "누군가가 당신에게 투표했습니다.",
+          token: token,
+        };
+
+        const response = await axios.post(
+          "https:/k9a201.p.ssafy.io/api/v1/notification",
+          postData2,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        console.log("전송 완료", response);
       } catch (error) {
         console.log("알림 설정 필요", error);
       }
