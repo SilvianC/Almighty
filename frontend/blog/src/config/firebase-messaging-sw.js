@@ -42,7 +42,7 @@ function FirebaseComponent() {
           token: token
         };
 
-        const response = await axios.post("http://localhost:8080/api/v1/notification", postData2, {
+        const response = await axios.post("https://k9a201.p.ssafy.io//api/v1/notification", postData2, {
           headers: {
             "Content-Type": "application/json",
           }
