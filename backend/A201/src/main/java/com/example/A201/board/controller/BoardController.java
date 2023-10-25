@@ -1,10 +1,10 @@
 package com.example.A201.board.controller;
 
-import com.example.A201.board.service.BatteryService;
+import com.example.A201.battery.service.BatteryService;
 import com.example.A201.board.service.MetadataService;
 import com.example.A201.board.service.TestdataService;
-import com.example.A201.board.vo.BatteryCodeResponse;
-import com.example.A201.board.vo.BatterydataResponse;
+import com.example.A201.battery.vo.BatteryCodeResponse;
+import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.board.vo.TestdataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
@@ -39,17 +39,4 @@ public class BoardController {
         List<TestdataResponse> responses = testdataService.readTestdataList(batteryId, testId);
         return SuccessResponseEntity.toResponseEntity("테스트 데이터 불러오기 성공", responses);
     }
-
-    @GetMapping("/battery/{code}")
-    public ResponseEntity<?> getBattery(@PathVariable("code") String code) {
-        BatterydataResponse response = batteryService.getBattery(code);
-        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", response);
-    }
-
-    @GetMapping("/batteries")
-    public ResponseEntity<?> getBatteryList() {
-        List<BatteryCodeResponse> responses = batteryService.getBatteries();
-        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
-    }
-
 }
