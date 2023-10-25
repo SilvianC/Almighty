@@ -16,24 +16,15 @@ const App = () => {
     <>
       <Sidebar></Sidebar>
       <Header></Header>
-<<<<<<< HEAD
-      <Routes>
-        <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
-        <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp />} />
-        <Route path={utils.URL.MAIN.MAIN} element={<pages.Main />} />
-        <Route path={utils.URL.RETURN.MAIN} element={<pages.Return />} />
-        <Route path={utils.URL.USEHISTORY.MAIN} element={<pages.ServiceUseHistory />} />
-      </Routes>
-=======
       <S.MainContent>
         <Routes>
           <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
           <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp />} />
           <Route path={utils.URL.MAIN.MAIN} element={<pages.Main />} />
           <Route path={utils.URL.RETURN.MAIN} element={<pages.Return />} />
+          <Route path={utils.URL.USEHISTORY.MAIN} element={<pages.ServiceUseHistory />} />
         </Routes>
       </S.MainContent>
->>>>>>> ace3676461a9e71b275cb83c597dcf3b29deabc3
     </>
   );
 };
