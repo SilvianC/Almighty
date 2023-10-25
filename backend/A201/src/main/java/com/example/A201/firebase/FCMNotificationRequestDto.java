@@ -10,6 +10,7 @@ public class FCMNotificationRequestDto {
     private Long targetUserId;
     private String title;
     private String body;
+    private String token;
 
     @Builder
     public FCMNotificationRequestDto(Long targetUserId, String title, String body) {

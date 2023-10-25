@@ -1,5 +1,6 @@
 package com.example.A201.board.domain;
 
+import com.example.A201.battery.domain.Battery;
 import lombok.*;
 
 import javax.persistence.*;

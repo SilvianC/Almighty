@@ -1,6 +1,6 @@
-package com.example.A201.board.vo;
+package com.example.A201.battery.vo;
 
-import com.example.A201.board.domain.Battery;
+import com.example.A201.battery.domain.Battery;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

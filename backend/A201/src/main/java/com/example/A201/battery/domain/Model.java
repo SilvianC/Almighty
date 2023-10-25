@@ -1,26 +1,21 @@
-package com.example.A201.board.domain;
+package com.example.A201.battery.domain;
 
-import com.example.A201.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Battery {
+public class Model {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "battery_id")
+    @Column(name = "model_id")
     private Long id;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member memberId;
 
-    private String code;
+    private String modelName;
 
     private Double overVoltage;   // 과전압 임계값
 
@@ -37,9 +32,4 @@ public class Battery {
     private Double dischargingMaxTemperature;  // 방전시 최고 온도 임계값
 
     private Double dischargingMinTemperature;  // 방전시 최저 온도 임계값
-
-    private LocalDate madeDate;
-
-    private LocalDate receiveDate;
-
 }
