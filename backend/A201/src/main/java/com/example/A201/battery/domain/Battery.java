@@ -25,10 +25,6 @@ public class Battery {
     @JoinColumn(name = "model_id")
     private Model model;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "model_id")
-    private Model model;
-
     private String code;
 
     private LocalDate madeDate;
