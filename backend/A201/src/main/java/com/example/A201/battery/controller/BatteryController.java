@@ -32,7 +32,7 @@ public class BatteryController {
     }
 
     @GetMapping("/member/{memberid}")
-    public ResponseEntity<?> getBattery(@PathVariable("memberid") Long memberId) {
+    public ResponseEntity<?> getMemberBattery(@PathVariable("memberid") Long memberId) {
         List<BatteryResponse> responses = batteryService.getBatteries(memberId);
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }
