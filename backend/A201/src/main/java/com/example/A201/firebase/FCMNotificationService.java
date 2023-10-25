@@ -1,8 +1,5 @@
 package com.example.A201.firebase;
 
-import com.example.A201.exception.CustomException;
-import com.example.A201.exception.ErrorCode;
-import com.example.A201.member.domain.Member;
 import com.example.A201.member.repository.MemberRepository;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingException;
@@ -16,12 +13,12 @@ import org.springframework.stereotype.Service;
 public class FCMNotificationService {
 
     private final FirebaseMessaging firebaseMessaging;
-    private final MemberRepository memberRepository;
+//    private final MemberRepository memberRepository;
 
     public String sendNotificationByToken(FCMNotificationRequestDto requestDto) {
 
-        Member member = memberRepository.findById(requestDto.getTargetUserId()).orElseThrow(() ->
-                new CustomException(ErrorCode.USER_NOT_FOUND));
+//        Member member = memberRepository.findById(requestDto.getTargetUserId()).orElseThrow(() ->
+//                new CustomException(ErrorCode.USER_NOT_FOUND));
 
 
         Notification notification = Notification.builder()
@@ -31,7 +28,7 @@ public class FCMNotificationService {
                 .build();
 
         Message message = Message.builder()
-//                .setToken(member.getFirebaseToken())
+                .setToken(requestDto.getToken())
                 .setNotification(notification)
                 // .putAllData(requestDto.getData())
                 .build();

@@ -19,7 +19,11 @@ public class Battery {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Member memberId;
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_id")
+    private Model model;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "model_id")
