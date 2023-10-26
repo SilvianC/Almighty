@@ -13,5 +13,8 @@ export const URL = {
   },
   USEHISTORY:{
     MAIN: "/usehistory"
-  }
+  },
+  RETURNCONFIRM: {
+    MAIN: "/returnconfirm",
+  },
 };
