@@ -22,6 +22,14 @@ const App = () => {
           <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp />} />
           <Route path={utils.URL.MAIN.MAIN} element={<pages.Main />} />
           <Route path={utils.URL.RETURN.MAIN} element={<pages.Return />} />
+          <Route
+            path={utils.URL.SERVICEHISTORY.MAIN}
+            element={<pages.ServiceHistory />}
+          />
+          <Route
+            path={utils.URL.RETURNCONFIRM.MAIN}
+            element={<pages.ReturnConfirm />}
+          />
         </Routes>
       </S.MainContent>
     </>
@@ -30,6 +38,7 @@ const App = () => {
 const S = {
   MainContent: styled.div`
     padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    padding-top : 80px;
   `,
 };
 export default App;

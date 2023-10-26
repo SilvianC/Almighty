@@ -21,7 +21,8 @@ public class BatteryResponse {
 
     private LocalDate receiveDate;
 
+    private Long modelId;
     public static BatteryResponse batteryCodeResponse(Battery battery){
-        return BatteryResponse.builder().code(battery.getCode()).madeDate(battery.getMadeDate()).receiveDate(battery.getReceiveDate()).build();
+        return BatteryResponse.builder().code(battery.getCode()).madeDate(battery.getMadeDate()).receiveDate(battery.getReceiveDate()).modelId(battery.getModel().getId()).build();
     }
 }
