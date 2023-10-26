@@ -85,6 +85,7 @@ const S = {
       padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
       padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
       border-radius: 40px;
+      min-height: calc(100vh - 120px); // 화면의 높이에서 마진 20px * 2를 뺀 높이로 설정
     `,
     Title: styled.span`
       font-size: 20px;
