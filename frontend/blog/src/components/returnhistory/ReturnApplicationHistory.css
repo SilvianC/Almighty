@@ -1,0 +1,39 @@
+.return-application-history {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .icons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .icon {
+    padding: 10px 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .icon.active {
+    border-color: blue; /* 활성화된 아이콘의 테두리 색상 변경 */
+    background-color: rgba(0, 0, 255, 0.1); /* 활성화된 아이콘의 배경 색상 변경 */
+  }
+  
+  .product-list {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .product-list li {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .product-list li:hover {
+    background-color: #f0f0f0;
+  }
