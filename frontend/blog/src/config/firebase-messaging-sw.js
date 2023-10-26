@@ -39,14 +39,18 @@ function FirebaseComponent() {
           targetUserId: 1,
           title: "되라 ㅜㅜ",
           body: "누군가가 당신에게 투표했습니다.",
-          token: token
+          token: token,
         };
 
-        const response = await axios.post("https://k9a201.p.ssafy.io//api/v1/notification", postData2, {
-          headers: {
-            "Content-Type": "application/json",
+        const response = await axios.post(
+          "https://k9a201.p.ssafy.io/api/v1/notification",
+          postData2,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
           }
-        });
+        );
         console.log("전송 완료", response);
       } catch (error) {
         console.log("알림 설정 필요", error);

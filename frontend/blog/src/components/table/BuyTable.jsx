@@ -7,21 +7,8 @@ import { BsFillCartFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { Col, Row } from "react-bootstrap";
 
-const data = [
-  {
-    code: "B0053",
-    company: "asd",
-    createDate: "1999-08-08",
-    deliveryDate: "2023-07-07",
-  },
-  {
-    code: "B0053",
-    company: "dsa",
-    createDate: "1999-08-08",
-    deliveryDate: "2023-07-07",
-  },
-];
-const BuyTable = ({}) => {
+const BuyTable = ({ data }) => {
+  console.log(data);
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -35,7 +22,6 @@ const BuyTable = ({}) => {
             <tr>
               <th className="w-auto"></th>
               <th className="w-auto text-center">제품명</th>
-              <th className="w-auto text-center">제조사</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
               <th className="w-auto text-center">정보</th>
@@ -49,9 +35,8 @@ const BuyTable = ({}) => {
                     <Form.Check value={item.code}></Form.Check>
                   </td>
                   <td>{item.code}</td>
-                  <td>{item.company}</td>
-                  <td>{item.createDate}</td>
-                  <td>{item.deliveryDate}</td>
+                  <td>{item.madeDate}</td>
+                  <td>{item.receiveDate}</td>
                   <td className="text-center">
                     <BiCaretRight />
                   </td>

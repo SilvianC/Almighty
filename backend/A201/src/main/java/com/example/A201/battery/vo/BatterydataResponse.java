@@ -17,6 +17,7 @@ public class BatterydataResponse {
     private Double underVoltage;
 
     public static BatterydataResponse batteryResponse(Battery battery){
+        if(battery.getModel() == null) return BatterydataResponse.builder().build();
         return BatterydataResponse.builder()
                 .overVoltage(battery.getModel().getOverVoltage())
                 .underVoltage(battery.getModel().getUnderVoltage())
