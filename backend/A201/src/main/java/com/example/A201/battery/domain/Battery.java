@@ -31,4 +31,5 @@ public class Battery {
 
     private LocalDate receiveDate;
 
+
 }
