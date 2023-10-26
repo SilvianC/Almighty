@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import http from '../../api/http';
