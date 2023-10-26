@@ -3,8 +3,6 @@ package com.example.A201.board.controller;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.board.service.MetadataService;
 import com.example.A201.board.service.TestdataService;
-import com.example.A201.battery.vo.BatteryCodeResponse;
-import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.board.vo.TestdataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;

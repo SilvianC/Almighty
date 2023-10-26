@@ -14,4 +14,7 @@ export const URL = {
   SERVICEHISTORY: {
     MAIN: "/service-history",
   },
+  RETURNCONFIRM: {
+    MAIN: "/returnconfirm",
+  },
 };
