@@ -10,8 +10,9 @@ function Header() {
     <>
       <S.TopNavBar>
         <S.Logo onClick={() => navigate("/main")} src={Logo}></S.Logo>
-        <S.UserIcon onClick={() => navigate("/usehistory")} src={Logos}></S.UserIcon>
+        <S.UserIcon onClick={() => navigate("/service-history")} src={Logos}></S.UserIcon>
         <S.UserIcon onClick={() => navigate("/returnconfirm")} src={Logos}></S.UserIcon>
+        <S.UserIcon onClick={() => navigate("/return")} src={Logos}></S.UserIcon>
       </S.TopNavBar>
     </>
   );

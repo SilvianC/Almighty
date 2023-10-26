@@ -11,8 +11,8 @@ export const URL = {
   RETURN: {
     MAIN: "/return",
   },
-  USEHISTORY:{
-    MAIN: "/usehistory"
+  SERVICEHISTORY: {
+    MAIN: "/service-history",
   },
   RETURNCONFIRM: {
     MAIN: "/returnconfirm",

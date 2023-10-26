@@ -3,11 +3,23 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { BiCaretRight } from "react-icons/bi";
 import styled from "styled-components";
-import { BsFillCartFill } from "react-icons/bs";
+import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import { Col, Row } from "react-bootstrap";
-
+import { Modal,Col, Row } from "react-bootstrap";
+import ModelTable from "./ModelTable";
 const BuyTable = ({ data }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedModelId, setSelectedModelId] = useState(null);
+
+  const handleIconClick = (modelId, code) => {
+    setSelectedModelId(modelId);
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedModelId(null);
+  };
   console.log(data);
   return (
     <S.Wrap>
@@ -24,7 +36,7 @@ const BuyTable = ({ data }) => {
               <th className="w-auto text-center">제품명</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
-              <th className="w-auto text-center">정보</th>
+              <th className="w-auto text-center">상세 정보</th>
             </tr>
           </thead>
           <tbody>
@@ -34,11 +46,11 @@ const BuyTable = ({ data }) => {
                   <td className="text-center">
                     <Form.Check value={item.code}></Form.Check>
                   </td>
-                  <td>{item.code}</td>
-                  <td>{item.madeDate}</td>
-                  <td>{item.receiveDate}</td>
+                  <td className="text-center">{item.code}</td>
+                  <td className="text-center">{item.madeDate}</td>
+                  <td className="text-center">{item.receiveDate}</td>
                   <td className="text-center">
-                    <BiCaretRight />
+                    <BsFillFileEarmarkTextFill onClick={() => handleIconClick(item.modelId)} />
                   </td>
                 </tr>
               );
@@ -51,6 +63,9 @@ const BuyTable = ({ data }) => {
           </Col>
         </Row>
       </Form>
+      <Modal show={showModal} onHide={handleClose}>
+        <ModelTable modelId={selectedModelId} />
+      </Modal>
     </S.Wrap>
   );
 };

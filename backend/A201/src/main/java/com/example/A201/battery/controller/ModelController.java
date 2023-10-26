@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ModelController {
     private final ModelService modelService;
 
-    @GetMapping("/{code}")
-    public ResponseEntity<?> getModel(@PathVariable("id")Long id){
+    @GetMapping("/{modelId}")
+    public ResponseEntity<?> getModel(@PathVariable("modelId")Long id){
         Model model = modelService.getModelById(id);
 
         return SuccessResponseEntity.toResponseEntity("모델 불러오기 성공", model);
