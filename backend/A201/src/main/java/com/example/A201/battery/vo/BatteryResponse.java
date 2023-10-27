@@ -1,5 +1,6 @@
 package com.example.A201.battery.vo;
 
+import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
@@ -22,7 +23,15 @@ public class BatteryResponse {
     private LocalDate receiveDate;
 
     private Long modelId;
-    public static BatteryResponse batteryCodeResponse(Battery battery){
-        return BatteryResponse.builder().code(battery.getCode()).madeDate(battery.getMadeDate()).receiveDate(battery.getReceiveDate()).modelId(battery.getModel().getId()).build();
+
+    private String status;
+    public static BatteryResponse batteryResponse(Battery battery){
+        return BatteryResponse.builder()
+                .code(battery.getCode())
+                .madeDate(battery.getMadeDate())
+                .receiveDate(battery.getReceiveDate())
+                .modelId(battery.getModel().getId())
+                .status(battery.getBatteryStatus() == null ? Status.Normal.name() : battery.getBatteryStatus().name())
+                .build();
     }
 }

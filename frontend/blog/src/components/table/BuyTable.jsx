@@ -5,12 +5,25 @@ import { BiCaretRight } from "react-icons/bi";
 import styled from "styled-components";
 import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import { Modal,Col, Row } from "react-bootstrap";
+import { Modal, Col, Row } from "react-bootstrap";
 import ModelTable from "./ModelTable";
+import http from "../../api/http";
 const BuyTable = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState(null);
+  const [checkedInputs, setCheckedInputs] = useState([]);
+  const handleSave = () => {
+    console.log(checkedInputs);
+    http.put(`/api/batteries/request`, checkedInputs).then().catch();
+  };
 
+  const handleCheck = (e) => {
+    if (e.target.checked) {
+      setCheckedInputs((prev) => [...prev, e.target.value]);
+    } else {
+      setCheckedInputs(checkedInputs.filter((item) => item !== e.target.value));
+    }
+  };
   const handleIconClick = (modelId, code) => {
     setSelectedModelId(modelId);
     setShowModal(true);
@@ -20,7 +33,6 @@ const BuyTable = ({ data }) => {
     setShowModal(false);
     setSelectedModelId(null);
   };
-  console.log(data);
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -44,13 +56,25 @@ const BuyTable = ({ data }) => {
               return (
                 <tr key={idx}>
                   <td className="text-center">
-                    <Form.Check value={item.code}></Form.Check>
+                    {item.status === "Request" ? (
+                      <>진행 중</>
+                    ) : (
+                      <Form.Check
+                        value={item.code}
+                        onChange={(e) => {
+                          handleCheck(e);
+                        }}
+                        checked={checkedInputs.includes(item.code)}
+                      ></Form.Check>
+                    )}
                   </td>
                   <td className="text-center">{item.code}</td>
                   <td className="text-center">{item.madeDate}</td>
                   <td className="text-center">{item.receiveDate}</td>
                   <td className="text-center">
-                    <BsFillFileEarmarkTextFill onClick={() => handleIconClick(item.modelId)} />
+                    <BsFillFileEarmarkTextFill
+                      onClick={() => handleIconClick(item.modelId)}
+                    />
                   </td>
                 </tr>
               );
@@ -59,7 +83,7 @@ const BuyTable = ({ data }) => {
         </Table>
         <Row>
           <Col className="d-flex justify-content-end">
-            <Button>반품 요청</Button>
+            <Button onClick={() => handleSave()}>반품 요청</Button>
           </Col>
         </Row>
       </Form>
@@ -86,5 +110,8 @@ const S = {
     font-weight: bold;
     color: #1428a0;
     padding-bottom: 30px;
+  `,
+  Status: styled.span`
+    font-size: 10px;
   `,
 };

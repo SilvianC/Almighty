@@ -2,15 +2,14 @@ package com.example.A201.battery.service;
 
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.dto.BatteryDTO;
 import com.example.A201.battery.repository.BatteryRepository;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
-import com.google.cloud.storage.Option;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +23,7 @@ public class BatteryServiceImpl implements BatteryService{
     @Override
     public List<BatteryResponse> getBatteriesAll() {
         List<Battery> batteries = batteryRepository.findAll();
-        return batteries.stream().map(battery -> BatteryResponse.batteryCodeResponse(battery)).collect(Collectors.toList());
+        return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
     }
     @Override
     public BatterydataResponse getBattery(String code){
@@ -43,12 +42,23 @@ public class BatteryServiceImpl implements BatteryService{
     @Override
     public List<BatteryResponse> getBatteries(Long memberId){
         List<Battery> batteries = batteryRepository.findByMember(memberId);
-        return batteries.stream().map(battery -> BatteryResponse.batteryCodeResponse(battery)).collect(Collectors.toList());
+        return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
     }
 
     @Override
     public List<BatteryResponse> getRequestBatteries(){
         List<Battery> batteries = batteryRepository.findByBatteryStatus();
-        return batteries.stream().map(battery -> BatteryResponse.batteryCodeResponse(battery)).collect(Collectors.toList());
+        return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void updateBatteriesStatus(List<String> list){
+        list.stream().forEach(code -> {
+            Battery battery = batteryRepository.findByCode(code).orElseThrow(
+                    () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
+            );
+            battery.setBatteryStatus(Status.Request);
+        });
     }
 }

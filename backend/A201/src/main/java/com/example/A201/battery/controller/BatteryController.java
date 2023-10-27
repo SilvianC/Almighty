@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BatteryController {
     private final BatteryService batteryService;
+
     @GetMapping("/battery/{code}")
     public ResponseEntity<?> getBattery(@PathVariable("code") String code) {
         BatterydataResponse response = batteryService.getBattery(code);
@@ -48,5 +49,11 @@ public class BatteryController {
     public ResponseEntity<?> getRequestBattery() {
         List<BatteryResponse> responses = batteryService.getRequestBatteries();
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
+    }
+
+    @PutMapping("/request")
+    public ResponseEntity<?> updateBatteriesStatus(@RequestBody List<String> list) {
+        batteryService.updateBatteriesStatus(list);
+        return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
 }
