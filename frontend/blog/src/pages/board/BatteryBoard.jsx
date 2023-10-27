@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import MetaGraph from "./../../components/graph/MetaGraph";
 import TestGraph2 from "./../../components/graph/TestGraph2";
 import MetaGraph2 from "../../components/graph/MetaGraph2";
@@ -10,6 +10,8 @@ import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
 import { BiSolidChart } from "react-icons/bi";
 
+var index = 0; //테스트용
+
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
@@ -17,6 +19,8 @@ const BatteryBoard = () => {
   const [battery, setBattery] = useState([]);
   const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
+  const testRef = useRef();
+
   const clickPoint = (id) => {
     setTestId(() => id);
   };
@@ -91,6 +95,23 @@ const BatteryBoard = () => {
       else setTestId(() => 0);
     }
   }, [data]);
+
+  useEffect(() => {
+    // index = 0;
+    // if (testRef.current) {
+    //   const timer = setInterval(() => {
+    //     if (!test.length) {
+    //       clearInterval(timer);
+    //       return;
+    //     }
+    //     testRef.current.addData(
+    //       test[index]["time"] + 7000,
+    //       Math.round(Math.random() * 4)
+    //     );
+    //     index++;
+    //   }, 1000);
+    // }
+  }, [test]);
   return (
     <S.Wrap>
       <Row>
@@ -142,6 +163,7 @@ const BatteryBoard = () => {
             threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
+            ref={testRef}
           ></TestGraph2>
         </Col>
       </Row>

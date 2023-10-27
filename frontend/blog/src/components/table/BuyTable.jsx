@@ -3,25 +3,24 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import { BiCaretRight } from "react-icons/bi";
 import styled from "styled-components";
-import { BsFillCartFill } from "react-icons/bs";
+import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import { Col, Row } from "react-bootstrap";
+import { Modal,Col, Row } from "react-bootstrap";
+import ModelTable from "./ModelTable";
+const BuyTable = ({ data }) => {
+  const [showModal, setShowModal] = useState(false);
+  const [selectedModelId, setSelectedModelId] = useState(null);
 
-const data = [
-  {
-    code: "B0053",
-    company: "asd",
-    createDate: "1999-08-08",
-    deliveryDate: "2023-07-07",
-  },
-  {
-    code: "B0053",
-    company: "dsa",
-    createDate: "1999-08-08",
-    deliveryDate: "2023-07-07",
-  },
-];
-const BuyTable = ({}) => {
+  const handleIconClick = (modelId, code) => {
+    setSelectedModelId(modelId);
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedModelId(null);
+  };
+  console.log(data);
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -35,10 +34,9 @@ const BuyTable = ({}) => {
             <tr>
               <th className="w-auto"></th>
               <th className="w-auto text-center">제품명</th>
-              <th className="w-auto text-center">제조사</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
-              <th className="w-auto text-center">정보</th>
+              <th className="w-auto text-center">상세 정보</th>
             </tr>
           </thead>
           <tbody>
@@ -48,12 +46,11 @@ const BuyTable = ({}) => {
                   <td className="text-center">
                     <Form.Check value={item.code}></Form.Check>
                   </td>
-                  <td>{item.code}</td>
-                  <td>{item.company}</td>
-                  <td>{item.createDate}</td>
-                  <td>{item.deliveryDate}</td>
+                  <td className="text-center">{item.code}</td>
+                  <td className="text-center">{item.madeDate}</td>
+                  <td className="text-center">{item.receiveDate}</td>
                   <td className="text-center">
-                    <BiCaretRight />
+                    <BsFillFileEarmarkTextFill onClick={() => handleIconClick(item.modelId)} />
                   </td>
                 </tr>
               );
@@ -66,6 +63,9 @@ const BuyTable = ({}) => {
           </Col>
         </Row>
       </Form>
+      <Modal show={showModal} onHide={handleClose}>
+        <ModelTable modelId={selectedModelId} />
+      </Modal>
     </S.Wrap>
   );
 };

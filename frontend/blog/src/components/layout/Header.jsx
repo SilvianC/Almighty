@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/images/logo-battery.gif";
-
+import Logos from "../../assets/images/basic_psa.jpg";
 function Header() {
   const navigate = useNavigate();
 
@@ -10,6 +10,9 @@ function Header() {
     <>
       <S.TopNavBar>
         <S.Logo onClick={() => navigate("/main")} src={Logo}></S.Logo>
+        <S.UserIcon onClick={() => navigate("/service-history")} src={Logos}></S.UserIcon>
+        <S.UserIcon onClick={() => navigate("/returnconfirm")} src={Logos}></S.UserIcon>
+        <S.UserIcon onClick={() => navigate("/return")} src={Logos}></S.UserIcon>
       </S.TopNavBar>
     </>
   );
@@ -17,6 +20,7 @@ function Header() {
 
 const S = {
   TopNavBar: styled.div`
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -31,6 +35,13 @@ const S = {
     height: 50px;
     cursor: pointer;
   `,
+  UserIcon: styled.img` // img로 수정
+    margin-left: auto; // 오른쪽 정렬
+    margin-right: 20px; // 오른쪽 패딩 추가
+    width: 24px; // 아이콘 크기
+    height: 24px; // 아이콘 크기
+    cursor: pointer;
+  `
 };
 
 export default Header;
