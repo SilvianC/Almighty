@@ -1,5 +1,6 @@
 package com.example.A201.battery.repository;
 
+import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -16,4 +17,7 @@ public interface BatteryRepository extends JpaRepository<Battery,Long> {
 
     Optional<Battery> findById(Long batteryId);
     Battery save(Battery battery);
+
+    @Query("select b from Battery b where b.batteryStatus = 'Request'")
+    List<Battery> findByBatteryStatus();
 }

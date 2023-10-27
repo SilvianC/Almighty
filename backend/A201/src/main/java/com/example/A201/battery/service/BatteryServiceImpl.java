@@ -40,8 +40,15 @@ public class BatteryServiceImpl implements BatteryService{
         return batteryRepository.save(battery.get());
     }
 
+    @Override
     public List<BatteryResponse> getBatteries(Long memberId){
         List<Battery> batteries = batteryRepository.findByMember(memberId);
+        return batteries.stream().map(battery -> BatteryResponse.batteryCodeResponse(battery)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<BatteryResponse> getRequestBatteries(){
+        List<Battery> batteries = batteryRepository.findByBatteryStatus();
         return batteries.stream().map(battery -> BatteryResponse.batteryCodeResponse(battery)).collect(Collectors.toList());
     }
 }

@@ -43,4 +43,10 @@ public class BatteryController {
         List<BatteryResponse> responses = batteryService.getBatteries(memberId);
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }
+
+    @GetMapping("/request")
+    public ResponseEntity<?> getRequestBattery() {
+        List<BatteryResponse> responses = batteryService.getRequestBatteries();
+        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
+    }
 }
