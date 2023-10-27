@@ -1,5 +1,6 @@
 package com.example.A201.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -18,4 +19,5 @@ public class configure implements WebMvcConfigurer {
                     .allowCredentials(false).maxAge(3600);
         }
     }
+
 }
