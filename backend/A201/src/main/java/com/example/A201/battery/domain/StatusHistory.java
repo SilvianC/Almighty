@@ -19,6 +19,7 @@ public class StatusHistory {
     @Column(name = "history_id")
     private Long historyId;
 
+    @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_id")
     private Battery batteryId;
@@ -33,9 +34,14 @@ public class StatusHistory {
 
     private String reason;
 
-    public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO){
+    public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO,Battery battery){
         StatusHistory history = new StatusHistory();
-        history.batteryId = statusHistoryDTO.getBatteryId();
-        2
+        history.batteryId = battery;
+        history.fromStatus = statusHistoryDTO.getFromStatus();
+        history.toStatus = statusHistoryDTO.getToStatus();
+        history.date = LocalDate.now();
+        history.reason = statusHistoryDTO.getReason();
+        return history;
     }
+
 }
