@@ -9,6 +9,24 @@ import { Col, Row } from "react-bootstrap";
 import http from "../../api/http";
 
 const ReturnConfirmTable = ({ data }) => {
+  const [accept, setAccept] = useState([]);
+  const [reject, setReject] = useState([]);
+  const handleAccept = (e) => {
+    if (e.target.checked) {
+      setReject(reject.filter((item) => item !== e.target.value));
+      setAccept((prev) => [...prev, e.target.value]);
+    } else {
+      setAccept(accept.filter((item) => item !== e.target.value));
+    }
+  };
+  const handleReject = (e) => {
+    if (e.target.checked) {
+      setAccept(accept.filter((item) => item !== e.target.value));
+      setReject((prev) => [...prev, e.target.value]);
+    } else {
+      setReject(reject.filter((item) => item !== e.target.value));
+    }
+  };
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -33,10 +51,22 @@ const ReturnConfirmTable = ({ data }) => {
               return (
                 <tr key={idx}>
                   <td className="text-center">
-                    <Form.Check value={item.code}></Form.Check>
+                    <Form.Check
+                      value={item.code}
+                      onChange={(e) => {
+                        handleAccept(e);
+                      }}
+                      checked={accept.includes(item.code)}
+                    ></Form.Check>
                   </td>
                   <td className="text-center">
-                    <Form.Check value={item.code}></Form.Check>
+                    <Form.Check
+                      value={item.code}
+                      onChange={(e) => {
+                        handleReject(e);
+                      }}
+                      checked={reject.includes(item.code)}
+                    ></Form.Check>
                   </td>
                   <td className="text-center">{item.code}</td>
                   <td className="text-center">{item.madeDate}</td>
