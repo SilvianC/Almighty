@@ -1,5 +1,6 @@
 package com.example.A201.alarm.domain;
 
+import com.example.A201.alarm.domain.constant.Receiver;
 import com.example.A201.alarm.domain.constant.Title;
 import com.example.A201.common.BaseTime;
 import com.example.A201.common.BooleanToYNConverter;
@@ -23,6 +24,9 @@ public class Alarm extends BaseTime {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Title title;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Receiver receiver;
     @Column(nullable = false)
     private String content;
     @ManyToOne(fetch = FetchType.LAZY)
