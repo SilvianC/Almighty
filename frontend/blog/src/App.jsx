@@ -38,6 +38,7 @@ const App = () => {
 const S = {
   MainContent: styled.div`
     padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    padding-top : 80px;
   `,
 };
 export default App;
