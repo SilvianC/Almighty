@@ -5,11 +5,31 @@ import { BiCaretRight } from "react-icons/bi";
 import styled from "styled-components";
 import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import { Modal,Col, Row } from "react-bootstrap";
+import { Modal, Col, Row } from "react-bootstrap";
 import ModelTable from "./ModelTable";
+import ReasonModal from "../reason/ReasonModal";
+import http from "../../api/http";
 const BuyTable = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showReasonModal, setShowReasonModal] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState(null);
+  const [checkedInputs, setCheckedInputs] = useState([]);
+  const [selectedItemCode, setSelectedItemCode] = useState(null);
+
+  const handleSave = () => {
+    console.log(checkedInputs);
+    http.put(`/api/batteries/request`, checkedInputs).then().catch();
+  };
+
+  const openReasonModal = (itemCode) => {
+    setSelectedItemCode(itemCode);
+    setShowReasonModal(true);
+  };
+
+  const closeReasonModal = () => {
+    setSelectedItemCode(null);
+    setShowReasonModal(false);
+  };
 
   const handleIconClick = (modelId, code) => {
     setSelectedModelId(modelId);
@@ -20,7 +40,6 @@ const BuyTable = ({ data }) => {
     setShowModal(false);
     setSelectedModelId(null);
   };
-  console.log(data);
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -32,7 +51,7 @@ const BuyTable = ({ data }) => {
         <Table bordered>
           <thead className={"table-secondary"}>
             <tr>
-              <th className="w-auto"></th>
+              <th className="w-auto text-center">진행 상태</th>
               <th className="w-auto text-center">제품명</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
@@ -44,27 +63,38 @@ const BuyTable = ({ data }) => {
               return (
                 <tr key={idx}>
                   <td className="text-center">
-                    <Form.Check value={item.code}></Form.Check>
+                    {item.status === "Request" ? (
+                      <Button variant="secondary" disabled>
+                        진행 중
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="primary"
+                        onClick={() => openReasonModal(item.code)}
+                      >
+                        모달 열기
+                      </Button>
+                    )}
                   </td>
                   <td className="text-center">{item.code}</td>
                   <td className="text-center">{item.madeDate}</td>
                   <td className="text-center">{item.receiveDate}</td>
                   <td className="text-center">
-                    <BsFillFileEarmarkTextFill onClick={() => handleIconClick(item.modelId)} />
+                    <BsFillFileEarmarkTextFill
+                      onClick={() => handleIconClick(item.modelId)}
+                    />
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </Table>
-        <Row>
-          <Col className="d-flex justify-content-end">
-            <Button>반품 요청</Button>
-          </Col>
-        </Row>
       </Form>
       <Modal show={showModal} onHide={handleClose}>
         <ModelTable modelId={selectedModelId} />
+      </Modal>
+      <Modal show={showReasonModal} onHide={closeReasonModal}>
+        <ReasonModal itemCode={selectedItemCode} />
       </Modal>
     </S.Wrap>
   );
@@ -86,5 +116,8 @@ const S = {
     font-weight: bold;
     color: #1428a0;
     padding-bottom: 30px;
+  `,
+  Status: styled.span`
+    font-size: 10px;
   `,
 };

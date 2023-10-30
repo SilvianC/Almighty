@@ -14,7 +14,7 @@ spring:
     password: "almighty201"
 
   redis:
-    host: 52.79.213.201
+    host: www.batteryalmighty.co.kr
     port: 6379
 
 #  hikari:

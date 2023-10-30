@@ -1,25 +1,52 @@
-import React from "react";
-import { Routes, Route, Router } from "react-router-dom";
-import * as pages from "./pages";
-import * as utils from "./utils";
-
-// import Header from "/components/layout/Header.jsx";
-// import Footer from "@/components/layout/Footer.jsx";
-import styled from "styled-components";
-import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "./components/layout/Header";
-import { Col, Container, Row } from "react-bootstrap";
-import Sidebar from "./components/layout/SideBar";
+import React, { useState, useEffect } from 'react';
+import { Routes, Route, Router } from 'react-router-dom';
+import * as pages from './pages';
+import * as utils from './utils';
+import styled from 'styled-components';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Header from './components/layout/Header';
+import { Col, Container, Row } from 'react-bootstrap';
+import Sidebar from './components/layout/SideBar';
 
 const App = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+    };
+  }, []);
+
+  if (isMobile) {
+    return (
+      <>
+        <Header></Header>
+        <Routes>
+          <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
+          <Route path={utils.URL.MOBILEALARM.MAIN} element={<pages.MobileAlarm/>}/>
+        </Routes>
+      </>
+    );
+  }
+
   return (
     <>
-      <Sidebar></Sidebar>
       <Header></Header>
       <S.MainContent>
         <Routes>
           <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
-          <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SingUp />} />
+          <Route path={utils.URL.SIGNUP.MAIN} element={<pages.SignUp />} />
           <Route path={utils.URL.MAIN.MAIN} element={<pages.Main />} />
           <Route path={utils.URL.RETURN.MAIN} element={<pages.Return />} />
           <Route
@@ -35,9 +62,12 @@ const App = () => {
     </>
   );
 };
+
 const S = {
   MainContent: styled.div`
-    padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    padding-left: 50px; 
+    padding-top : 80px;
   `,
 };
+
 export default App;

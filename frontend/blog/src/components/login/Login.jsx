@@ -8,6 +8,10 @@ import { CompanyState, EmailState, LoginIdState, RoleState, TelState, AccessToke
 
 const Login = () => {
 	const navigate = useNavigate();
+  
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
 
 	const [inputs, setinputs] = useState({
 		loginId: "",
@@ -48,7 +52,11 @@ const Login = () => {
         setTel(data.data.tel);
         setAccessToken(data.headers.authorization);
         setRefreshToken(data.headers.refresh_token);
-				navigate("/main");
+				if (isMobile()) {
+          navigate("/mobilealarm"); // 예시로 /mobilePage 경로를 사용하였습니다. 원하는 경로로 변경하세요.
+        } else {
+          navigate("/main");
+        }
 			},
 			(error) => {
 				console.log(error);
@@ -127,6 +135,7 @@ const S = {
     padding: 2%;
     display: flex;
     flex-direction: column;
+    background-color:#ffffff;
   `,
 	Title: styled.div`
     width: 100%;
@@ -172,7 +181,7 @@ const S = {
     padding: 2%;
     border: none;
     border-radius: 10px;
-    font-size: 0.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #888888;
     text-align: left;
@@ -200,7 +209,7 @@ const S = {
       align-items: center;
     }
     > .option div label {
-      font-size: 0.3rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #888888;
     }
@@ -208,7 +217,7 @@ const S = {
       background-color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 0.3rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #1428A0;
       text-align: center;

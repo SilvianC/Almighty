@@ -22,7 +22,6 @@ const TestGraph = forwardRef(({ data, threshold, type, num }, ref) => {
   const addData = (x, y) => {
     if (!chartRef) return;
     const series = chartRef.current.chart.series[0];
-    console.log(chartRef.current.chart.series[0]);
     series.addPoint([x, y], true, true);
   };
 
