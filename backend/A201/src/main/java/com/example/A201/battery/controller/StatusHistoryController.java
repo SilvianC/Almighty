@@ -1,10 +1,6 @@
 package com.example.A201.battery.controller;
 
-import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.StatusHistory;
 import com.example.A201.battery.dto.StatusHistoryDTO;
-import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.service.StatusHistoryService;
 import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;

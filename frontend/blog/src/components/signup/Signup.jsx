@@ -6,9 +6,8 @@ import JoinInIcon from "../../assets/images/icon-joinIn.png"
 import FirebaseComponent from "../../config/firebase-messaging-sw";
 
 const SignUp = () => {
-  FirebaseComponent();
   const navigate = useNavigate();
-
+  FirebaseComponent();
   const postMember = () => {
     if (!checkDupDone) {
       alert("아이디 중복 확인을 해주세요");

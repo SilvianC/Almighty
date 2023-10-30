@@ -1,8 +1,8 @@
 package com.example.A201.board.service;
 
 import com.example.A201.battery.domain.Battery;
-import com.example.A201.board.domain.Metadata;
 import com.example.A201.battery.repository.BatteryRepository;
+import com.example.A201.board.domain.Metadata;
 import com.example.A201.board.repository.MetadataRepository;
 import com.example.A201.board.vo.MetadataResponse;
 import com.example.A201.exception.CustomException;
