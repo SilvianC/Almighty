@@ -1,5 +1,9 @@
 package com.example.A201.battery.controller;
 
+import com.example.A201.alarm.domain.constant.Receiver;
+import com.example.A201.alarm.domain.constant.Title;
+import com.example.A201.alarm.dto.AlarmDto;
+import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.dto.ProgressDTO;
@@ -9,6 +13,8 @@ import com.example.A201.battery.vo.BatteryCodeResponse;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
+import com.example.A201.firebase.FCMNotificationRequestDto;
+import com.example.A201.firebase.FCMNotificationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +26,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BatteryController {
     private final BatteryService batteryService;
+    private final AlarmService alarmService;
+    private final FCMNotificationService fcmNotificationService;
 
     @GetMapping("/battery/{code}")
     public ResponseEntity<?> getBattery(@PathVariable("code") String code) {
@@ -54,7 +62,19 @@ public class BatteryController {
 
     @PutMapping("/request")
     public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
+
         batteryService.updateBatteriesStatus(progress.getCode(), progress.getReason());
+        alarmService.insertAlarm(AlarmDto.builder()
+                .title(progress.getTitle())
+                .content(progress.getReason())
+                .member(progress.getId())
+                .build());
+        fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
+                .title(progress.getTitle())
+                .body(progress.getReason())
+                .targetUserId(progress.getId())
+                .receiver(Receiver.fromReceiver(Title.fromTitle(progress.getTitle()).getTo()))
+                .build());
         return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
 }

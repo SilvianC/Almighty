@@ -8,6 +8,8 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class ProgressDTO {
+    String title;
     String code;
     String reason;
+    Long id;
 }

@@ -14,9 +14,9 @@ function ReasonModal({ itemCode }) {
 
   const handleSendData = () => {
     http
-      .put(`/api/batteries/request`, { code: itemCode, reason: reason })
-      .then(() => {
-        pushalarm({ targetUserId: "", title: "반송 신청", body: reason });
+      .put(`/api/batteries/request`, { code: itemCode, reason: reason,id:3 ,title:"반송 신청"})
+      .then((data) => {
+        console.log(data);
         setIsSent(true);
       })
       .catch();
