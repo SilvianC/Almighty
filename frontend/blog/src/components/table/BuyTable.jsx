@@ -26,23 +26,11 @@ const BuyTable = ({ data }) => {
     setShowReasonModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setSelectedItemCode(null);
-  };
-
   const closeReasonModal = () => {
     setSelectedItemCode(null);
     setShowReasonModal(false);
   };
 
-  const handleCheck = (e) => {
-    if (e.target.checked) {
-      setCheckedInputs((prev) => [...prev, e.target.value]);
-    } else {
-      setCheckedInputs(checkedInputs.filter((item) => item !== e.target.value));
-    }
-  };
   const handleIconClick = (modelId, code) => {
     setSelectedModelId(modelId);
     setShowModal(true);
@@ -76,16 +64,16 @@ const BuyTable = ({ data }) => {
                 <tr key={idx}>
                   <td className="text-center">
                     {item.status === "Request" ? (
-                      <>진행 중</>
+                      <Button variant="secondary" disabled>
+                        진행 중
+                      </Button>
                     ) : (
-                      <div>
-                        <Button
-                          variant="primary"
-                          onClick={() => openReasonModal(item.code)}
-                        >
-                          모달 열기
-                        </Button>
-                      </div>
+                      <Button
+                        variant="primary"
+                        onClick={() => openReasonModal(item.code)}
+                      >
+                        모달 열기
+                      </Button>
                     )}
                   </td>
                   <td className="text-center">{item.code}</td>
