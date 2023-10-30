@@ -7,14 +7,33 @@ import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { Modal, Col, Row } from "react-bootstrap";
 import ModelTable from "./ModelTable";
+import ReasonModal from "../reason/ReasonModal";
 import http from "../../api/http";
 const BuyTable = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showReasonModal, setShowReasonModal] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState(null);
   const [checkedInputs, setCheckedInputs] = useState([]);
+  const [selectedItemCode, setSelectedItemCode] = useState(null);
+
   const handleSave = () => {
     console.log(checkedInputs);
     http.put(`/api/batteries/request`, checkedInputs).then().catch();
+  };
+
+  const openReasonModal = (itemCode) => {
+    setSelectedItemCode(itemCode);
+    setShowReasonModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setSelectedItemCode(null);
+  };
+
+  const closeReasonModal = () => {
+    setSelectedItemCode(null);
+    setShowReasonModal(false);
   };
 
   const handleCheck = (e) => {
@@ -44,7 +63,7 @@ const BuyTable = ({ data }) => {
         <Table bordered>
           <thead className={"table-secondary"}>
             <tr>
-              <th className="w-auto"></th>
+              <th className="w-auto text-center">진행 상태</th>
               <th className="w-auto text-center">제품명</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
@@ -59,13 +78,14 @@ const BuyTable = ({ data }) => {
                     {item.status === "Request" ? (
                       <>진행 중</>
                     ) : (
-                      <Form.Check
-                        value={item.code}
-                        onChange={(e) => {
-                          handleCheck(e);
-                        }}
-                        checked={checkedInputs.includes(item.code)}
-                      ></Form.Check>
+                      <div>
+                        <Button
+                          variant="primary"
+                          onClick={() => openReasonModal(item.code)}
+                        >
+                          모달 열기
+                        </Button>
+                      </div>
                     )}
                   </td>
                   <td className="text-center">{item.code}</td>
@@ -89,6 +109,9 @@ const BuyTable = ({ data }) => {
       </Form>
       <Modal show={showModal} onHide={handleClose}>
         <ModelTable modelId={selectedModelId} />
+      </Modal>
+      <Modal show={showReasonModal} onHide={closeReasonModal}>
+        <ReasonModal itemCode={selectedItemCode} />
       </Modal>
     </S.Wrap>
   );
