@@ -135,6 +135,7 @@ const S = {
     padding: 2%;
     display: flex;
     flex-direction: column;
+    background-color:#ffffff;
   `,
 	Title: styled.div`
     width: 100%;
@@ -180,7 +181,7 @@ const S = {
     padding: 2%;
     border: none;
     border-radius: 10px;
-    font-size: 0.5rem;
+    font-size: 1rem;
     font-weight: bold;
     color: #888888;
     text-align: left;
@@ -208,7 +209,7 @@ const S = {
       align-items: center;
     }
     > .option div label {
-      font-size: 0.3rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #888888;
     }
@@ -216,7 +217,7 @@ const S = {
       background-color: #ffffff;
       border: none;
       border-radius: 10px;
-      font-size: 0.3rem;
+      font-size: 0.8rem;
       font-weight: bold;
       color: #1428A0;
       text-align: center;
