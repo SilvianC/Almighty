@@ -35,7 +35,7 @@ function FirebaseComponent() {
         });
         if (token) console.log("token: ", token);
         else console.log("Can not get Token");
-
+        
         
         console.log("전송 완료", response);
       } catch (error) {
