@@ -1,16 +1,17 @@
 package com.example.A201.battery.controller;
 
+import com.example.A201.battery.constant.Status;
+import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.service.ModelService;
+import com.example.A201.battery.vo.BatteryCodeResponse;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BatteryController {
     private final BatteryService batteryService;
+
     @GetMapping("/battery/{code}")
     public ResponseEntity<?> getBattery(@PathVariable("code") String code) {
         BatterydataResponse response = batteryService.getBattery(code);
@@ -32,9 +34,27 @@ public class BatteryController {
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }
 
+    @PutMapping("/{batteryId}")
+    public ResponseEntity<?> updateBatteryStatus(@PathVariable("batteryId") Long batteryId, @RequestParam("toStatus") Status status) {
+        Battery updateBattery = batteryService.updateBatteryStatue(batteryId, status);
+        return SuccessResponseEntity.toResponseEntity("상태 변경 완료", null);
+    }
+
     @GetMapping("/member/{memberid}")
     public ResponseEntity<?> getMemberBattery(@PathVariable("memberid") Long memberId) {
         List<BatteryResponse> responses = batteryService.getBatteries(memberId);
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
+    }
+
+    @GetMapping("/request")
+    public ResponseEntity<?> getRequestBattery() {
+        List<BatteryResponse> responses = batteryService.getRequestBatteries();
+        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
+    }
+
+    @PutMapping("/request")
+    public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
+        batteryService.updateBatteriesStatus(progress.getCode(), progress.getReason());
+        return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
 }

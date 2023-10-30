@@ -17,4 +17,7 @@ export const URL = {
   RETURNCONFIRM: {
     MAIN: "/returnconfirm",
   },
+  MOBILEALARM:{
+    MAIN: "/mobilealarm"
+  },
 };

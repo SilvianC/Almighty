@@ -1,5 +1,6 @@
 package com.example.A201.battery.repository;
 
+import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,4 +14,10 @@ public interface BatteryRepository extends JpaRepository<Battery,Long> {
 
     @Query("select b from Battery b where b.member.memberId=:memberId order by b.receiveDate desc")
     List<Battery> findByMember(@Param("memberId") Long memberId);
+
+    Optional<Battery> findById(Long batteryId);
+    Battery save(Battery battery);
+
+    @Query("select b from Battery b where b.batteryStatus = 'Request'")
+    List<Battery> findByBatteryStatus();
 }
