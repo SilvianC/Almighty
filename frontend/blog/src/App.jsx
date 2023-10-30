@@ -42,7 +42,6 @@ const App = () => {
 
   return (
     <>
-      <Sidebar></Sidebar>
       <Header></Header>
       <S.MainContent>
         <Routes>

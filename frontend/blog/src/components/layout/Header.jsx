@@ -1,21 +1,78 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import Logo from "../../assets/images/logo-battery.gif";
-import Logos from "../../assets/images/basic_psa.jpg";
+import Logo from "../../assets/images/sdilogo.png";
+import { Nav, NavItem, NavLink } from 'react-bootstrap';
+import { useRecoilValue,useSetRecoilState } from "recoil";
+import { MemberIdState, LoginIdState, CompanyState, RoleState, EmailState, TelState, AccessTokenState, RefreshTokenState } from "../../states/states";
+import http from '../../api/http';
 function Header() {
   const navigate = useNavigate();
+  const memberId = useRecoilValue(MemberIdState);
+  console.log(memberId);
+  const requestAccessToken = useRecoilValue(AccessTokenState);
+  console.log(requestAccessToken);
+  const setMemberId = useSetRecoilState(MemberIdState);
+    const setLoginId = useSetRecoilState(LoginIdState);
+    const setCompany = useSetRecoilState(CompanyState);
+    const setRole = useSetRecoilState(RoleState);
+    const setEmail = useSetRecoilState(EmailState);
+    const setTel = useSetRecoilState(TelState);
+    const setAccessToken = useSetRecoilState(AccessTokenState);
+    const setRefreshToken = useSetRecoilState(RefreshTokenState);
+  async function handleLogout() {
+    try {
+        await http.post('/api/auth/logout',{},{
+          headers:{
+            Authorization: `${requestAccessToken}`
+          }
+        }).then(
+          setMemberId(null),
+          setLoginId(null),
+          setCompany(null),
+          setRole(null),
+          setEmail(null),
+          setTel(null),
+          setAccessToken(null),
+          setRefreshToken(null),
+          navigate("/"),
+        );
+        // 로그아웃 후 처리할 로직이 있다면 이곳에 추가
+    } catch (error) {
+        console.error("로그아웃 중 에러 발생:", error);
+    }
+  } 
 
   return (
-    <>
-      <S.TopNavBar>
+    <S.TopNavBar>
+      <S.CustomNav tabs>
         <S.Logo onClick={() => navigate("/main")} src={Logo}></S.Logo>
-        <S.MobileAlarmTab onClick={() => navigate("/mobilealarm")} src={Logos}></S.MobileAlarmTab>
-        <S.UserIcon onClick={() => navigate("/service-history")} src={Logos}></S.UserIcon>
-        <S.UserIcon onClick={() => navigate("/returnconfirm")} src={Logos}></S.UserIcon>
-        <S.UserIcon onClick={() => navigate("/return")} src={Logos}></S.UserIcon>
-      </S.TopNavBar>
-    </>
+        
+        {/* 모바일에서만 보이는 탭 */}
+        {memberId &&<S.MobileTab>
+          <S.CustomNavLink href="#" onClick={() => navigate("/mobilealarm")}>MobileAlarm</S.CustomNavLink>
+        </S.MobileTab>}
+
+        {/* PC에서만 보이는 탭들 */}
+        {memberId &&<S.PCTabs>
+          <NavItem>
+            <S.CustomNavLink href="#" onClick={() => navigate("/service-history")}>Service History</S.CustomNavLink>
+          </NavItem>
+          <NavItem>
+            <S.CustomNavLink href="#" onClick={() => navigate("/returnconfirm")}>Return Confirm</S.CustomNavLink>
+          </NavItem>
+          <NavItem>
+            <S.CustomNavLink href="#" onClick={() => navigate("/return")}>Return</S.CustomNavLink>
+          </NavItem>
+        </S.PCTabs>}
+        
+        {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
+        {memberId &&<S.LogoutTab>
+          <S.CustomNavLink href="#" onClick={handleLogout}>Logout</S.CustomNavLink>
+        </S.LogoutTab>}
+
+      </S.CustomNav>
+    </S.TopNavBar>
   );
 }
 
@@ -25,41 +82,57 @@ const S = {
     top: 0;
     left: 0;
     width: 100%;
-    height: 60px; // 상단 navbar의 높이를 설정합니다. 원하는 높이로 조정 가능합니다.
-    background-color: #1428a0; // 파란색 배경
-    align-items: center;
-    padding-left: 20px; // 로고와 navbar 사이의 간격을 설정합니다.
-    z-index: 1000; // z-index 속성 추가
+    height: 60px;
+    background-color: #D5DFE9;
+    align-items: flex-start;
+    padding-left: 20px;
+    z-index: 1000;
+    display: flex;
+    justify-content: flex-start; // 여기를 변경합니다.
   `,
   Logo: styled.img`
     width: 160px;
-    height: 50px;
+    height: 30px;
+    margin-top:12px;
     cursor: pointer;
   `,
-  MobileAlarmTab: styled.img`
-    display: none; // 기본적으로 탭을 숨깁니다.
+  MobileTab: styled.div`
+    display: none; 
 
     @media (max-width: 768px) {
-      
-      margin-left: 180px; // 오른쪽 패딩 추가
-      width: 24px; // 아이콘 크기
-      height: 24px; // 아이콘 크기
-      margin-top : -30px;
-      cursor: pointer;
-      display: block; // 모바일 환경에서만 탭을 표시합니다.
+      display: block;
     }
   `,
-  UserIcon: styled.img` // img로 수정
-    margin-left: auto; // 오른쪽 정렬
-    margin-right: 20px; // 오른쪽 패딩 추가
-    width: 24px; // 아이콘 크기
-    height: 24px; // 아이콘 크기
-    cursor: pointer;
+  PCTabs: styled.div`
+    display: flex;
     @media (max-width: 768px) {
-      display: none; // 모바일 환경에서는 이 탭을 숨깁니다.
+      display: none;
+    }
+  `,
+  LogoutTab: styled.div`
+    margin-left: auto;  // 로그아웃 탭만 오른쪽으로 보냅니다.
+    margin-right: 20px;
+  `,
+  CustomNav: styled(Nav)`
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  `,
+
+  CustomNavLink: styled(NavLink)`
+    margin-right: 5px;
+    margin-left: 30px;
+    padding: 17px 15px;
+    color: #034F9E;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.5s;
+    
+    &:hover {
+      background-color: #ffffff;
+      border-color: #adadad;
     }
   `
-
 };
 
 export default Header;
