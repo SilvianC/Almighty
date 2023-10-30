@@ -89,11 +89,6 @@ const BuyTable = ({ data }) => {
             })}
           </tbody>
         </Table>
-        <Row>
-          <Col className="d-flex justify-content-end">
-            <Button onClick={() => handleSave()}>반품 요청</Button>
-          </Col>
-        </Row>
       </Form>
       <Modal show={showModal} onHide={handleClose}>
         <ModelTable modelId={selectedModelId} />
