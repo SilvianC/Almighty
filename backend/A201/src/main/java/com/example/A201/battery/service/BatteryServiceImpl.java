@@ -2,7 +2,9 @@ package com.example.A201.battery.service;
 
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.repository.BatteryRepository;
+import com.example.A201.battery.repository.ProgressRepository;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +22,8 @@ import java.util.stream.Collectors;
 public class BatteryServiceImpl implements BatteryService{
 
     private final BatteryRepository batteryRepository;
+    private final ProgressRepository progressRepository;
+
     @Override
     public List<BatteryResponse> getBatteriesAll() {
         List<Battery> batteries = batteryRepository.findAll();
@@ -53,12 +57,11 @@ public class BatteryServiceImpl implements BatteryService{
 
     @Override
     @Transactional
-    public void updateBatteriesStatus(List<String> list){
-        list.stream().forEach(code -> {
-            Battery battery = batteryRepository.findByCode(code).orElseThrow(
-                    () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
-            );
-            battery.setBatteryStatus(Status.Request);
-        });
+    public void updateBatteriesStatus(String code, String reason){
+        Battery battery = batteryRepository.findByCode(code).orElseThrow(
+                () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
+        );
+        battery.setBatteryStatus(Status.Request);
+        progressRepository.save(Progress.builder().batteryId(battery).reason(reason).build());
     }
 }

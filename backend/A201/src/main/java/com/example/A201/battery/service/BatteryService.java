@@ -18,5 +18,5 @@ public interface BatteryService {
 
     List<BatteryResponse> getRequestBatteries();
 
-    void updateBatteriesStatus(List<String> list);
+    void updateBatteriesStatus(String code, String reason);
 }

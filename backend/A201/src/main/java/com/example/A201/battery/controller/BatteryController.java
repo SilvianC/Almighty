@@ -2,6 +2,7 @@ package com.example.A201.battery.controller;
 
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.service.ModelService;
 import com.example.A201.battery.vo.BatteryCodeResponse;
@@ -52,8 +53,8 @@ public class BatteryController {
     }
 
     @PutMapping("/request")
-    public ResponseEntity<?> updateBatteriesStatus(@RequestBody List<String> list) {
-        batteryService.updateBatteriesStatus(list);
+    public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
+        batteryService.updateBatteriesStatus(progress.getCode(), progress.getReason());
         return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
 }
