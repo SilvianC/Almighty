@@ -30,7 +30,7 @@ public class StatusHistoryResponse {
                 .fromStatus(statusHistory.getFromStatus())
                 .toStatus(statusHistory.getToStatus())
                 .date(statusHistory.getDate())
-                .reason(statusHistory.getReason())
+                .reason(statusHistory.getResponseReason())
                 .build();
     }
 }
