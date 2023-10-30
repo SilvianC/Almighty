@@ -18,7 +18,7 @@ public class AlarmResponse {
 
     private Long id;
 
-    private Title title;
+    private String title;
 
     private String content;
 
@@ -28,9 +28,8 @@ public class AlarmResponse {
 
     public static AlarmResponse alarmResponse(Alarm alarm){
         return AlarmResponse.builder()
-                .id(alarm.getId())
+                .title(alarm.getTitle().getTitle())
                 .content(alarm.getContent())
-                .member(alarm.getMember().getMemberId())
                 .time(alarm.getCreatedDate()).build();
     }
 

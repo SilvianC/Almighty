@@ -10,5 +10,5 @@ import lombok.*;
 public class AlarmDto {
     private String title;
     private String content;
-    private Long member;
+    private Long member; // 유저 아이디
 }

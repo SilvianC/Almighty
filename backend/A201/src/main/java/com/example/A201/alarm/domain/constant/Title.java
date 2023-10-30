@@ -6,15 +6,14 @@ import java.util.Arrays;
 
 @Getter
 public enum Title {
-    RETURN("반송 신청","유저"),RETURNRECEIVE("반송 신청","관리자")
-    ,RETURNACCEPT("반송 수락", "관리자"), RETURNREJECTION("반송 거절","관리자");
+    RETURN("반송 신청","관리자"),RETURNACCEPT("반송 수락", "유저"), RETURNREJECTION("반송 거절","유저");
 
     private final String title;
-    private final String role;
+    private final String to;
 
-    Title(String title,String role){
+    Title(String title,String to){
         this.title = title;
-        this.role = role;
+        this.to = to;
     }
 
     public static Title fromTitle(String title){
