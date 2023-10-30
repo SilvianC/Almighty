@@ -4,7 +4,6 @@ import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.vo.AlarmResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.stereotype.Service;
 
 public interface AlarmService {
     void insertAlarm(AlarmDto alarmDto);

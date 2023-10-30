@@ -8,8 +8,6 @@ import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.service.BatteryService;
-import com.example.A201.battery.service.ModelService;
-import com.example.A201.battery.vo.BatteryCodeResponse;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.exception.SuccessResponseEntity;

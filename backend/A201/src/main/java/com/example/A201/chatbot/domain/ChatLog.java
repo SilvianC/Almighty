@@ -1,9 +1,10 @@
 package com.example.A201.chatbot.domain;
 
+import com.example.A201.member.domain.Member;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import com.example.A201.member.domain.Member;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
