@@ -8,6 +8,10 @@ import { CompanyState, EmailState, LoginIdState, RoleState, TelState, AccessToke
 
 const Login = () => {
 	const navigate = useNavigate();
+  
+  const isMobile = () => {
+    return window.innerWidth <= 768;
+  };
 
 	const [inputs, setinputs] = useState({
 		loginId: "",
@@ -48,7 +52,11 @@ const Login = () => {
         setTel(data.data.tel);
         setAccessToken(data.headers.authorization);
         setRefreshToken(data.headers.refresh_token);
-				navigate("/main");
+				if (isMobile()) {
+          navigate("/mobilealarm"); // 예시로 /mobilePage 경로를 사용하였습니다. 원하는 경로로 변경하세요.
+        } else {
+          navigate("/main");
+        }
 			},
 			(error) => {
 				console.log(error);
