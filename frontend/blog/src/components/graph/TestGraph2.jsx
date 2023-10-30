@@ -14,14 +14,13 @@ const transName = {
   temperatureMeasured: "온도(°C)",
 };
 
-var x_ = 6900;
 const TestGraph = forwardRef(({ data, threshold, type, num }, ref) => {
   const datas = [];
   const chartRef = useRef(null); // 차트 참조를 저장할 ref
 
-  const addData = (x, y) => {
+  const addData = (x, y, i) => {
     if (!chartRef) return;
-    const series = chartRef.current.chart.series[0];
+    const series = chartRef.current.chart.series[i];
     series.addPoint([x, y], true, true);
   };
 
@@ -159,12 +158,6 @@ const TestGraph = forwardRef(({ data, threshold, type, num }, ref) => {
     },
   };
 
-  // useEffect(() => {
-  //   // Highcharts 차트를 생성하고 참조를 저장
-  //   chartRef.current = Highcharts.stockChart("container", option);
-
-  //   return () => {};
-  // }, []);
   return (
     <S.Wrap>
       <HighchartsReact
