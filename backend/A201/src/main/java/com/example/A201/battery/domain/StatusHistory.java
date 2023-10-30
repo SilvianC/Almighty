@@ -34,6 +34,8 @@ public class StatusHistory {
 
     private String reason;
 
+    private String progressReason;
+
     public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO,Battery battery){
         StatusHistory history = new StatusHistory();
         history.batteryId = battery;
