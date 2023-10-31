@@ -7,20 +7,15 @@ import { BsFillCartFill } from "react-icons/bs";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
-
-const ServiceHistory = ({}) => {
-  const [data, setData] = useState([]);
-  useEffect(() => {
-    http
-      .get(`/api/batteries/history/all`)
-      .then(({ data }) => {
-        setData(() => {
-          return data["data"];
-        });
-      })
-      .catch();
-  }, []);
-  console.log(data);
+const status = {
+  Normal: "정상",
+  Request: "반품 요청",
+  Upload: "데이터 업로드",
+  Analysis: "분석 중",
+  CustomerFault: "고객 귀책",
+  SdiFault: "제품 결함",
+};
+const ServiceHistory = ({ data }) => {
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -33,7 +28,7 @@ const ServiceHistory = ({}) => {
           <thead className={"table-secondary"}>
             <tr>
               <th className="w-25 text-center">History ID</th>
-              <th className="w-auto text-center">Battery ID</th>
+              <th className="w-auto text-center">Battery</th>
               <th className="w-auto text-center">fromStatus</th>
               <th className="w-25 text-center">toStatus</th>
             </tr>
@@ -43,9 +38,9 @@ const ServiceHistory = ({}) => {
               return (
                 <tr key={idx}>
                   <td>{item.historyId}</td>
-                  <td>{item.batteryId}</td>
-                  <td>{item.fromStatus}</td>
-                  <td>{item.toStatus}</td>
+                  <td>{item.code}</td>
+                  <td>{status[item.fromStatus]}</td>
+                  <td>{status[item.toStatus]}</td>
                 </tr>
               );
             })}

@@ -13,6 +13,8 @@ public interface StatusHistoryService {
 
     List<StatusHistoryResponse> getHistories(Long batteryId);
 
+    List<StatusHistoryResponse> getAllHistoriesByMember(Long memberId);
+
     StatusHistory createHistory(StatusHistoryDTO statusHistoryDTO);
 
     StatusHistoryDTO requestToDTO(StatusHistoryRequest request);
