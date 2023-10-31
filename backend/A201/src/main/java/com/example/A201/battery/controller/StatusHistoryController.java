@@ -26,19 +26,19 @@ public class StatusHistoryController {
         return SuccessResponseEntity.toResponseEntity("히스토리 등록 완료", null);
     }
 
-    @GetMapping("history/{batteryId}")
+    @GetMapping("/history/{batteryId}")
     public ResponseEntity<?> getHistories(@PathVariable("batteryId") Long id){
         List<StatusHistoryResponse> responses = statusHistoryService.getHistories(id);
         return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
     }
 
-    @GetMapping("history/all")
+    @GetMapping("/history/all")
     public ResponseEntity<?> getAllHistories(){
         List<StatusHistoryResponse> responses = statusHistoryService.getAllHistories();
         return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);
     }
 
-    @GetMapping("history/members/{memberId}")
+    @GetMapping("/history/members/{memberId}")
     public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id){
         List<StatusHistoryResponse> responses = statusHistoryService.getAllHistoriesByMember(id);
         return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);

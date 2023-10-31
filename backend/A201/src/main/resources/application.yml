@@ -17,7 +17,6 @@ spring:
     host: www.batteryalmighty.co.kr
     password: almighty201
     port: 6379
-    password: almighty201
 
 #  hikari:
 #      maximum-pool-size: 10
