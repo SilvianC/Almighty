@@ -3,7 +3,7 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useEffect, useState } from "react";
 import { getAnalytics } from "firebase/analytics";
 
-import { pushtoken } from "../api/fire";
+import { pushalarm, pushtoken } from "../api/fire";
 function FirebaseComponent() {
   const firebaseConfig = {
     apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
