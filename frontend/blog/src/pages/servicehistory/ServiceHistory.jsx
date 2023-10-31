@@ -82,7 +82,6 @@ export default ServiceHistory;
 
 const S = {
   Container: styled.div`
-    height: 100vh; // 전체 높이를 뷰포트 높이로 설정
     display: flex;
     flex-direction: column; // 수직 방향으로 컴포넌트 배치
   `,
