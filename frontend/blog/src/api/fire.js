@@ -9,7 +9,7 @@ async function pushalarm(message, success, fail) {
 
 async function pushtoken(token,id, success, fail) {
   await http
-    .post(`/api/v1/notification/firebase/${id}`, JSON.stringify(token))
+    .post(`/api/v1/notification/firebasetoken/${id}`, JSON.stringify(token))
     .then(success)
     .catch(fail);
 }

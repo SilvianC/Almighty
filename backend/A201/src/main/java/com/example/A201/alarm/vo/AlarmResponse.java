@@ -1,19 +1,19 @@
 package com.example.A201.alarm.vo;
 
 import com.example.A201.alarm.domain.Alarm;
-import com.example.A201.alarm.domain.constant.Title;
-import com.example.A201.alarm.service.AlarmService;
-import com.example.A201.common.BooleanToYNConverter;
-import com.example.A201.member.domain.Member;
-import lombok.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AlarmResponse {
 
     private Long id;

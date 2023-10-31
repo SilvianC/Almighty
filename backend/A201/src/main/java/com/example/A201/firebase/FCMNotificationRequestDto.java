@@ -1,21 +1,18 @@
 package com.example.A201.firebase;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.example.A201.alarm.domain.constant.Receiver;
+import lombok.*;
 
 @Getter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class FCMNotificationRequestDto {
     private Long targetUserId;
     private String title;
     private String body;
+    private Receiver receiver;
 
-    @Builder
-    public FCMNotificationRequestDto(Long targetUserId, String title, String body) {
-        this.targetUserId = targetUserId;
-        this.title = title;
-        this.body = body;
 
-    }
 }

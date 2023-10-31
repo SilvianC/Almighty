@@ -8,7 +8,12 @@ import com.example.A201.battery.vo.response.StatusHistoryResponse;
 import java.util.List;
 
 public interface StatusHistoryService {
+
+    List<StatusHistoryResponse> getAllHistories();
+
     List<StatusHistoryResponse> getHistories(Long batteryId);
+
+    List<StatusHistoryResponse> getAllHistoriesByMember(Long memberId);
 
     StatusHistory createHistory(StatusHistoryDTO statusHistoryDTO);
 

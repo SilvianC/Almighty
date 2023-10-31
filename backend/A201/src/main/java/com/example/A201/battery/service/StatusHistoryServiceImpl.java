@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +22,18 @@ import java.util.stream.Collectors;
 public class StatusHistoryServiceImpl implements StatusHistoryService{
     private final StatusHistoryRepository statusHistoryRepository;
     private final BatteryRepository batteryRepository;
+
+    @Override
+    public List<StatusHistoryResponse> getAllHistories() {
+        List<StatusHistory> histories = statusHistoryRepository.findAll();
+        return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<StatusHistoryResponse> getAllHistoriesByMember(Long memberId) {
+        List<StatusHistory> histories = statusHistoryRepository.findAllByMember(memberId);
+        return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
+    }
 
     @Override
     public List<StatusHistoryResponse> getHistories(Long batteryId) {

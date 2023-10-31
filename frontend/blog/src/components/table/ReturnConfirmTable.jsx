@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
@@ -6,7 +6,6 @@ import { BiCaretRight } from "react-icons/bi";
 import { BsFillCartFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { Col, Row } from "react-bootstrap";
-import http from "../../api/http";
 
 const ReturnConfirmTable = ({ data }) => {
   const [accept, setAccept] = useState([]);

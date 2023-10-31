@@ -7,6 +7,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Header from './components/layout/Header';
 import { Col, Container, Row } from 'react-bootstrap';
 import Sidebar from './components/layout/SideBar';
+import Footer from './components/layout/Footer';
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -59,6 +60,7 @@ const App = () => {
           />
         </Routes>
       </S.MainContent>
+      <Footer></Footer>
     </>
   );
 };

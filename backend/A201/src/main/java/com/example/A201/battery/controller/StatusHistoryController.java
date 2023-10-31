@@ -1,10 +1,6 @@
 package com.example.A201.battery.controller;
 
-import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.StatusHistory;
 import com.example.A201.battery.dto.StatusHistoryDTO;
-import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.service.StatusHistoryService;
 import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;
@@ -34,5 +30,17 @@ public class StatusHistoryController {
     public ResponseEntity<?> getHistories(@PathVariable("batteryId") Long id){
         List<StatusHistoryResponse> responses = statusHistoryService.getHistories(id);
         return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
+    }
+
+    @GetMapping("history/all")
+    public ResponseEntity<?> getAllHistories(){
+        List<StatusHistoryResponse> responses = statusHistoryService.getAllHistories();
+        return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);
+    }
+
+    @GetMapping("history/members/{memberId}")
+    public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id){
+        List<StatusHistoryResponse> responses = statusHistoryService.getAllHistoriesByMember(id);
+        return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);
     }
 }

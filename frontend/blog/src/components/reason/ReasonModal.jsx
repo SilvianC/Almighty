@@ -3,6 +3,7 @@ import Button from "react-bootstrap/Button";
 import http from "../../api/http";
 import styled from "styled-components";
 import { Form } from "react-bootstrap";
+import { pushalarm, pushtoken } from "../../api/fire";
 function ReasonModal({ itemCode }) {
   const [reason, setReason] = useState("");
   const [isSent, setIsSent] = useState(false);
@@ -13,8 +14,14 @@ function ReasonModal({ itemCode }) {
 
   const handleSendData = () => {
     http
-      .put(`/api/batteries/request`, { code: itemCode, reason: reason })
-      .then(() => {
+      .put(`/api/batteries/request`, {
+        code: itemCode,
+        reason: reason,
+        id: 3,
+        title: "반송 신청",
+      })
+      .then((data) => {
+        console.log(data);
         setIsSent(true);
       })
       .catch();

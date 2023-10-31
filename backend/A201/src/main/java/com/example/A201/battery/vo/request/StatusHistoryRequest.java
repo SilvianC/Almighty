@@ -1,6 +1,5 @@
 package com.example.A201.battery.vo.request;
 
-import com.example.A201.battery.domain.Battery;
 import lombok.Getter;
 
 @Getter
