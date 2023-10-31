@@ -23,11 +23,11 @@ public class AlarmController {
      * @param pageIdx 페이지 번호
      * @return
      */
-    @GetMapping(value = {"/{fromMember}/{status}","/{status}","/{fromMember}"})
+    @GetMapping(value = {"/{fromMember}/{status}","/{status}"})
     public ResponseEntity<PageResponse> getAlarm(@PathVariable(value = "fromMember",required = false) Long id,
-                                                 @PathVariable("status") String status,
+                                                 @PathVariable(value = "status",required = false) String status,
                                                  @RequestParam(defaultValue = "0", required = false) int pageIdx) {
-        PageRequest pageRequest = PageRequest.of(pageIdx, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+        PageRequest pageRequest = PageRequest.of(pageIdx, 10);
 
         return ResponseEntity.ok(PageResponse.PageResponse("알람 로그 입니다.",alarmService.getAlarm(id, status, pageRequest)));
     }
@@ -35,7 +35,7 @@ public class AlarmController {
     @GetMapping("/user/{fromMember}")
     public ResponseEntity<PageResponse> getUserAlarm(@PathVariable(value = "fromMember",required = false) Long id,
                                                  @RequestParam(defaultValue = "0", required = false) int pageIdx) {
-        PageRequest pageRequest = PageRequest.of(pageIdx, 20, Sort.by(Sort.Direction.DESC, "createdDate"));
+        PageRequest pageRequest = PageRequest.of(pageIdx, 20);
 
         return ResponseEntity.ok(PageResponse.PageResponse("유저 알람 로그 입니다.",alarmService.getAlarm(id, null, pageRequest)));
     }

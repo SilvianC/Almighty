@@ -103,8 +103,9 @@ const BatteryBoard = () => {
 
   useEffect(() => {
     index = 0;
+    let timer;
     if (testRef.current) {
-      const timer = setInterval(() => {
+      timer = setInterval(() => {
         if (!test.length) {
           clearInterval(timer);
           return;
@@ -123,6 +124,9 @@ const BatteryBoard = () => {
         }
       }, 1000);
     }
+    return () => {
+      clearInterval(timer);
+    };
   }, [test]);
   return (
     <S.Wrap>

@@ -14,7 +14,12 @@ function ReasonModal({ itemCode }) {
 
   const handleSendData = () => {
     http
-      .put(`/api/batteries/request`, { code: itemCode, reason: reason,id:3 ,title:"반송 신청"})
+      .put(`/api/batteries/request`, {
+        code: itemCode,
+        reason: reason,
+        id: 3,
+        title: "반송 신청",
+      })
       .then((data) => {
         console.log(data);
         setIsSent(true);

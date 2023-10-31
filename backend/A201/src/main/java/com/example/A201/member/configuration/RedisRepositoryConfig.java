@@ -35,6 +35,7 @@ public class RedisRepositoryConfig {
         return lettuceConnectionFactory;
     }
 
+
     // redis-cli 사용을 위한 설정
     @Bean
     public RedisTemplate<String, Object> redisTemplate() {

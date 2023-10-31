@@ -24,14 +24,20 @@ public class AlarmRepositoryCustomImpl implements AlarmRepositoryCustom {
         List<Alarm> fetch = jpaQueryFactory.selectFrom(alarm)
                 .where(alarm.receiver.eq(Receiver.fromReceiver(status))
                         , qtnUserEq(memberId))
+                .orderBy(alarm.createdDate.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
+        int count = jpaQueryFactory.selectFrom(alarm)
+                .where(alarm.receiver.eq(Receiver.fromReceiver(status))
+                        , qtnUserEq(memberId))
+                .fetch().size();
+
         List<AlarmResponse> collect = fetch.stream()
                 .map(f -> AlarmResponse.alarmResponse(f))
                 .collect(Collectors.toList());
 
-        return new PageImpl<>(collect,pageable, collect.size());
+        return new PageImpl<>(collect,pageable, count);
     }
     private BooleanExpression qtnUserEq(Long memberId) {
         return memberId == null ? null : alarm.member.memberId.eq(memberId);

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import * as components from "../../components";
 import { BsPencilSquare } from "react-icons/bs";
 import styled from "styled-components";
 import AlarmTable from "../../components/alarm/AlarmTable";
+import http from "../../api/http";
 // import "./ServiceHistory.css";
 
 // const data = [
@@ -49,17 +50,30 @@ import AlarmTable from "../../components/alarm/AlarmTable";
 // ];
 
 const ServiceHistory = () => {
+  const [history, setHistory] = useState([]);
+  useEffect(() => {
+    http
+      .get(`/api/batteries/history/all`)
+      .then(({ data }) => {
+        setHistory(() => {
+          return data["data"];
+        });
+      })
+      .catch();
+  }, []);
   return (
     <S.Container>
-      <S.Title><BsPencilSquare /> 서비스 이용내역</S.Title>
-        <S.Content>
-          <S.AlarmWrapper>
-            <AlarmTable />
-          </S.AlarmWrapper>
-          <S.ServiceHistoryWrapper>
-            <components.ServiceHistory />
-          </S.ServiceHistoryWrapper>
-        </S.Content>
+      <S.Title>
+        <BsPencilSquare /> 서비스 이용내역
+      </S.Title>
+      <S.Content>
+        <S.AlarmWrapper>
+          <AlarmTable />
+        </S.AlarmWrapper>
+        <S.ServiceHistoryWrapper>
+          <components.ServiceHistory data={history} />
+        </S.ServiceHistoryWrapper>
+      </S.Content>
     </S.Container>
   );
 };
@@ -68,23 +82,23 @@ export default ServiceHistory;
 
 const S = {
   Container: styled.div`
-    height: 100vh; // 전체 높이를 뷰포트 높이로 설정
     display: flex;
-    flex-direction: column; // 수직 방향으로 컴포넌트 배치`,
+    flex-direction: column; // 수직 방향으로 컴포넌트 배치
+  `,
   Title: styled.div`
     font-size: 30px;
     font-weight: bold;
     color: #1428a0;
   `,
   Content: styled.div`
-        display: flex;  // Flexbox를 활성화
-        justify-content: space-between; // 컴포넌트들 사이에 간격을 줍니다.
-    `,
-    AlarmWrapper: styled.div`
-        flex: 1; // 비율을 1로 설정 (즉, 전체 너비의 50% 차지)
-        margin-right: 10px; // 오른쪽에 약간의 간격을 줍니다.
-    `,
-    ServiceHistoryWrapper: styled.div`
-        flex: 2; // 비율을 2로 설정 (즉, 전체 너비의 50% 차지)
-    `,
+    display: flex; // Flexbox를 활성화
+    justify-content: space-between; // 컴포넌트들 사이에 간격을 줍니다.
+  `,
+  AlarmWrapper: styled.div`
+    flex: 1; // 비율을 1로 설정 (즉, 전체 너비의 50% 차지)
+    margin-right: 10px; // 오른쪽에 약간의 간격을 줍니다.
+  `,
+  ServiceHistoryWrapper: styled.div`
+    flex: 2; // 비율을 2로 설정 (즉, 전체 너비의 50% 차지)
+  `,
 };
