@@ -42,7 +42,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <AppWrapper>
       <Header></Header>
       <S.MainContent>
         <Routes>
@@ -61,7 +61,7 @@ const App = () => {
         </Routes>
       </S.MainContent>
       <Footer></Footer>
-    </>
+      </AppWrapper>
   );
 };
 
@@ -69,7 +69,13 @@ const S = {
   MainContent: styled.div`
     padding-left: 50px; 
     padding-top : 80px;
+    flex: 1;  // MainContent의 높이를 남은 공간 전체로 확장
   `,
 };
+const AppWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+`;
 
 export default App;

@@ -61,6 +61,14 @@ public class SecurityConfig {
 
                 .and()
                 .authorizeRequests() // '인증'이 필요하다
+                .antMatchers("/api/model/**").permitAll()
+                .antMatchers("/api/batteries/**").permitAll()
+                .antMatchers("/api/dashboard/**").permitAll()
+                .antMatchers("/api/v1/notification/**").permitAll()
+                .antMatchers("/api/chat/**").permitAll()
+                .antMatchers("/api/alarm/**").permitAll()
+                .antMatchers("/api/auth/**").permitAll()
+                .antMatchers("/api/member/**").permitAll()
                 .antMatchers("/api/**").permitAll()
                 //.requestMatchers("/api/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
