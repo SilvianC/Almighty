@@ -9,6 +9,9 @@ import com.example.A201.battery.repository.StatusHistoryRepository;
 import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,15 +27,15 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
     private final BatteryRepository batteryRepository;
 
     @Override
-    public List<StatusHistoryResponse> getAllHistories() {
-        List<StatusHistory> histories = statusHistoryRepository.findAll();
-        return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
+    public Page<StatusHistoryResponse> getAllHistories(Pageable pageable) {
+        Page<StatusHistory> histories = statusHistoryRepository.findAll(pageable);
+        return new PageImpl<>(histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList()), pageable, histories.getTotalElements());
     }
 
     @Override
-    public List<StatusHistoryResponse> getAllHistoriesByMember(Long memberId) {
-        List<StatusHistory> histories = statusHistoryRepository.findAllByMember(memberId);
-        return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
+    public Page<StatusHistoryResponse> getAllHistoriesByMember(Long memberId, Pageable pageable) {
+        Page<StatusHistory> histories = statusHistoryRepository.findAllByMember(memberId, pageable);
+        return new PageImpl<>(histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList()), pageable, histories.getTotalElements());
     }
 
     @Override

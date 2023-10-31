@@ -6,6 +6,9 @@ import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -33,14 +36,14 @@ public class StatusHistoryController {
     }
 
     @GetMapping("history/all")
-    public ResponseEntity<?> getAllHistories(){
-        List<StatusHistoryResponse> responses = statusHistoryService.getAllHistories();
+    public ResponseEntity<?> getAllHistories(@PageableDefault(size = 20) Pageable pageable){
+        Page<StatusHistoryResponse> responses = statusHistoryService.getAllHistories(pageable);
         return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);
     }
 
     @GetMapping("history/members/{memberId}")
-    public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id){
-        List<StatusHistoryResponse> responses = statusHistoryService.getAllHistoriesByMember(id);
+    public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id, @PageableDefault(size = 20) Pageable pageable){
+        Page<StatusHistoryResponse> responses = statusHistoryService.getAllHistoriesByMember(id, pageable);
         return SuccessResponseEntity.toResponseEntity("모든 히스토리 조회 완료", responses);
     }
 }
