@@ -2,7 +2,8 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/images/sdilogo.png";
-import { Nav, NavItem, NavLink } from 'react-bootstrap';
+import { GiHamburgerMenu } from "react-icons/gi";
+import { Nav, NavItem, NavLink, Dropdown, DropdownButton } from 'react-bootstrap';
 import { useRecoilValue,useSetRecoilState } from "recoil";
 import { MemberIdState, LoginIdState, CompanyState, RoleState, EmailState, TelState, AccessTokenState, RefreshTokenState } from "../../states/states";
 import http from '../../api/http';
@@ -42,16 +43,29 @@ function Header() {
         console.error("로그아웃 중 에러 발생:", error);
     }
   } 
-
+  const [isOpen, setIsOpen] = React.useState(false); // 햄버거 메뉴 상태
   return (
     <S.TopNavBar>
-      <S.CustomNav tabs>
+      <S.CustomNav tabs="true">
         <S.Logo onClick={() => navigate("/main")} src={Logo}></S.Logo>
-        
-        {/* 모바일에서만 보이는 탭 */}
+
+        {/* 모바일에서만 보이는 햄버거 메뉴 아이콘 */}
+        {memberId && (
+            <Dropdown>
+                <Dropdown.Toggle as={S.MobileTab} id="dropdown-basic">
+                    <GiHamburgerMenu/>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu as={S.HamburgerMenu}>
+                    <Dropdown.Item href="#" onClick={() => navigate("/mobilealarm")}>MobileAlarm</Dropdown.Item>
+                    <Dropdown.Item href="#" onClick={handleLogout}>Logout</Dropdown.Item>
+                </Dropdown.Menu>
+            </Dropdown>
+        )}
+        {/* 모바일에서만 보이는 탭
         {memberId &&<S.MobileTab>
           <S.CustomNavLink href="#" onClick={() => navigate("/mobilealarm")}>MobileAlarm</S.CustomNavLink>
-        </S.MobileTab>}
+        </S.MobileTab>} */}
 
         {/* PC에서만 보이는 탭들 */}
         {memberId &&<S.PCTabs>
@@ -64,12 +78,16 @@ function Header() {
           <NavItem>
             <S.CustomNavLink href="#" onClick={() => navigate("/return")}>Return</S.CustomNavLink>
           </NavItem>
-        </S.PCTabs>}
-        
-        {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
+          {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
         {memberId &&<S.LogoutTab>
           <S.CustomNavLink href="#" onClick={handleLogout}>Logout</S.CustomNavLink>
         </S.LogoutTab>}
+        </S.PCTabs>}
+        
+        {/* 오른쪽 구석에 위치한 로그아웃 탭
+        {memberId &&<S.LogoutTab>
+          <S.CustomNavLink href="#" onClick={handleLogout}>Logout</S.CustomNavLink>
+        </S.LogoutTab>} */}
 
       </S.CustomNav>
     </S.TopNavBar>
@@ -98,7 +116,21 @@ const S = {
   `,
   MobileTab: styled.div`
     display: none; 
-
+    margin-right: 5px;
+    margin-left: 30px;
+    padding: 17px 15px;
+    color: #034F9E;
+    border-radius: 4px;
+    font-weight: bold;
+    transition: background-color 0.5s;
+    svg { // 햄버거 아이콘 크기 조절
+      width: 24px;
+      height: 24px;
+    }
+    &:hover {
+      background-color: #ffffff;
+      border-color: #adadad;
+    }
     @media (max-width: 768px) {
       display: block;
     }
@@ -132,7 +164,24 @@ const S = {
       background-color: #ffffff;
       border-color: #adadad;
     }
-  `
+  `,
+  HamburgerMenu: styled.div`
+  background-color: #D5DFE9;
+    border: 0px solid #034F9E;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2); // 약간의 그림자 효과 추가
+    z-index: 1001;
+    width: 150px; // 메뉴의 폭을 설정. 필요에 따라 조절 가능
+    .dropdown-item { // Bootstrap의 Dropdown.Item에 스타일 적용
+        color: #034F9E;
+        font-weight: bold;
+        transition: background-color 0.3s;
+
+        &:hover {
+            background-color: #ffffff;
+            border-color: #adadad;
+        }
+    }
+`
 };
 
 export default Header;
