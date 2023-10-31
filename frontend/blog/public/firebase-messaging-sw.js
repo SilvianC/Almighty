@@ -12,7 +12,7 @@ self.addEventListener("push", function (e) {
   const resultData = e.data.json().notification;
   const notificationTitle = resultData.title;
   const notificationOptions = {
-    // title: resultData.title,
+    title: resultData.title,
     body: resultData.body,
     image: resultData.image,
     icon: "logo192.png",
