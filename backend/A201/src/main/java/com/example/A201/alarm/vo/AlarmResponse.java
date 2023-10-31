@@ -1,6 +1,7 @@
 package com.example.A201.alarm.vo;
 
 import com.example.A201.alarm.domain.Alarm;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AlarmResponse {
 
     private Long id;

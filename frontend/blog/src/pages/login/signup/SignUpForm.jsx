@@ -2,6 +2,7 @@ import styled from "styled-components";
 import * as components from "../../../components"
 
 const SignUpForm = () => {
+
   return (
     <S.Wrap>
       <components.Signup></components.Signup>
