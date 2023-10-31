@@ -3,6 +3,8 @@ package com.example.A201.battery.domain;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.dto.StatusHistoryDTO;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class StatusHistory {
 
     @Id
@@ -30,6 +33,7 @@ public class StatusHistory {
     @Enumerated(EnumType.STRING)
     private Status toStatus;
 
+    @CreatedDate
     private LocalDate date;
 
     private String responseReason;
