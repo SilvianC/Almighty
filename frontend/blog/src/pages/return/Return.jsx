@@ -6,6 +6,7 @@ import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 
 const Return = () => {
   const [data, setData] = useState([]);
+  const [history, setHistory] = useState([]);
   // const memberId = useRecoilValue(MemberIdState);
   const memberId = 1;
   useEffect(() => {
@@ -13,6 +14,14 @@ const Return = () => {
       .get(`/api/batteries/member/${memberId}`)
       .then(({ data }) => {
         setData(() => {
+          return data["data"];
+        });
+      })
+      .catch();
+    http
+      .get(`/api/batteries/history/members/${memberId}`)
+      .then(({ data }) => {
+        setHistory(() => {
           return data["data"];
         });
       })
@@ -26,7 +35,7 @@ const Return = () => {
       </S.BuyTableContainer>
 
       <S.ReturnResultTableContainer>
-        <ServiceHistory></ServiceHistory>
+        <ServiceHistory data={history}></ServiceHistory>
       </S.ReturnResultTableContainer>
     </S.Container>
   );

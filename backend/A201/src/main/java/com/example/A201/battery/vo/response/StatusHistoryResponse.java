@@ -18,6 +18,7 @@ import java.time.LocalDate;
 public class StatusHistoryResponse {
     private Long historyId;
     private Long batteryId;
+    private String code;
     private Status fromStatus;
     private Status toStatus;
     private LocalDate date;
@@ -27,6 +28,7 @@ public class StatusHistoryResponse {
         return StatusHistoryResponse.builder()
                 .historyId(statusHistory.getHistoryId())
                 .batteryId(statusHistory.getBatteryId().getId())
+                .code(statusHistory.getBatteryId().getCode())
                 .fromStatus(statusHistory.getFromStatus())
                 .toStatus(statusHistory.getToStatus())
                 .date(statusHistory.getDate())
