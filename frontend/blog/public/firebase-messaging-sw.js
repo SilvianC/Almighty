@@ -12,7 +12,7 @@ self.addEventListener("push", function (e) {
   const resultData = e.data.json().notification;
   const notificationTitle = resultData.title;
   const notificationOptions = {
-    // title: resultData.title,
+    title: resultData.title,
     body: resultData.body,
     image: resultData.image,
     icon: "logo192.png",
@@ -24,7 +24,7 @@ self.addEventListener("push", function (e) {
 
 self.addEventListener("notificationclick", function (event) {
   console.log("notification click");
-  const url = "/";
+  const url = "/main";
   event.notification.close();
   event.waitUntil(clients.openWindow(url));
 });

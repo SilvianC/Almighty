@@ -11,7 +11,12 @@ import styled from "styled-components";
 import { BiSolidChart } from "react-icons/bi";
 
 var index = 0; //테스트용
-
+var time = 7000;
+const match = {
+  0: "voltageMeasured",
+  1: "currentMeasured",
+  2: "temperatureMeasured",
+};
 const BatteryBoard = () => {
   const [test, setTestData] = useState([]);
   const [data, setData] = useState([]);
@@ -97,20 +102,31 @@ const BatteryBoard = () => {
   }, [data]);
 
   useEffect(() => {
-    // index = 0;
-    // if (testRef.current) {
-    //   const timer = setInterval(() => {
-    //     if (!test.length) {
-    //       clearInterval(timer);
-    //       return;
-    //     }
-    //     testRef.current.addData(
-    //       test[index]["time"] + 7000,
-    //       Math.round(Math.random() * 4)
-    //     );
-    //     index++;
-    //   }, 1000);
-    // }
+    index = 0;
+    let timer;
+    if (testRef.current) {
+      timer = setInterval(() => {
+        if (!test.length) {
+          clearInterval(timer);
+          return;
+        }
+        for (let i = 0; i < 3; i++) {
+          testRef.current.addData(
+            test[index]["time"] + time,
+            test[index][match[i]],
+            i
+          );
+        }
+        index++;
+        if (index > 300) {
+          index = 0;
+          time = test[index]["time"] + time + 1;
+        }
+      }, 1000);
+    }
+    return () => {
+      clearInterval(timer);
+    };
   }, [test]);
   return (
     <S.Wrap>

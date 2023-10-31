@@ -14,4 +14,11 @@ async function pushtoken(token, id, success, fail) {
     .catch(fail);
 }
 
-export { pushalarm, pushtoken };
+async function getalarmlog(id, page, success, fail) {
+  await http
+    .get(`/api/alarm/${id}?pageIdx=${page - 1}`)
+    .then(success)
+    .catch(fail);
+}
+
+export { pushalarm, pushtoken, getalarmlog };
