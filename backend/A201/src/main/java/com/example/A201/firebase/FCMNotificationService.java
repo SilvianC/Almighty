@@ -10,6 +10,7 @@ import com.google.firebase.messaging.FirebaseMessagingException;
 import com.google.firebase.messaging.Message;
 import com.google.firebase.messaging.Notification;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 public class FCMNotificationService {
 
     private final FirebaseMessaging firebaseMessaging;
@@ -30,8 +32,9 @@ public class FCMNotificationService {
     private ValueOperations<String, String> valueOperations;
 
     public String sendNotificationByToken(FCMNotificationRequestDto requestDto) {
-
+        log.info("누구에게 보내는 메시지{}",requestDto.toString());
         if(requestDto.getReceiver().getRole()=="유저"){
+            log.info("유저에게 보내는 메시지{}",requestDto.toString());
             String token = valueOperations.get(String.valueOf(requestDto.getTargetUserId()));
             if (token == null) {
                 throw new CustomException(ErrorCode.USER_NOT_FOUND);
@@ -64,7 +67,7 @@ public class FCMNotificationService {
                                 .setTitle(requestDto.getTitle())
                                 .setBody(requestDto.getBody())
                                 .build();
-
+                        log.info("토큰값 {}",valueOperations.get(String.valueOf(member.getMemberId())));
                         Message message = Message.builder()
                                 .setToken(valueOperations.get(String.valueOf(member.getMemberId())))
                                 .setNotification(notification)
