@@ -1,14 +1,37 @@
 import styled from "styled-components";
 
-function Pagination({ total, limit, page, setPage }) {
-  const numPages = Math.ceil(total / limit);
+function Pagination({ total, page, setPage }) {
+  const numPages = total;
+  const pageList = [];
+  const totalPagesToShow = 5;
+  // const generatePageNumbers = () => {
+  //   const pages = [];
+
+  //   if (numPages <= total) {
+  //     // 전체 페이지 수가 표시할 총 페이지 수보다 작을 경우, 모든 페이지를 표시
+  //     for (let i = 1; i <= numPages; i++) {
+  //       pages.push(i);
+  //     }
+  //   } else {
+  //     // 전체 페이지 수가 표시할 총 페이지 수보다 클 경우, 중간에 "..." 표시
+  //     const firstPages = [1, 2, 3];
+  //     const lastPages = [numPages - 2, numPages - 1, numPages];
+  //     const middlePages = [1, "...", numPages];
+
+  //     pages.push(...firstPages);
+  //     pages.push(...middlePages);
+  //     pages.push(...lastPages);
+  //   }
+
+  //   return pages;
+  // };
 
   return (
     <Nav>
       <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
         &lt;
       </Button>
-      {Array(numPages)
+      {Array(total)
         .fill()
         .map((_, i) => (
           <Button

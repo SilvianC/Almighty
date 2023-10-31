@@ -21,7 +21,7 @@ const AlarmTable = () => {
           return data.data;
         });
         setPage(() => {
-          return data.totalPages;
+          return data.number + 1;
         });
         setTotal(() => {
           return data.totalPages;
@@ -31,7 +31,7 @@ const AlarmTable = () => {
         console.log(error);
       }
     );
-  }, page);
+  }, [page]);
 
   return (
     <S.Wrap>
@@ -63,7 +63,7 @@ const AlarmTable = () => {
       </Form>
 
       <footer>
-        <Pagination total={total} limit={limit} page={page} setPage={setPage} />
+        <Pagination total={total} page={page} setPage={setPage} />
       </footer>
     </S.Wrap>
   );
