@@ -1,9 +1,6 @@
 package com.example.A201.battery.dto;
 
 import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.repository.BatteryRepository;
-import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

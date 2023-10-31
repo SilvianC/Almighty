@@ -1,0 +1,34 @@
+package com.example.A201.alarm.vo;
+
+import com.example.A201.alarm.domain.Alarm;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
+
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class AlarmResponse {
+
+    private Long id;
+
+    private String title;
+
+    private String content;
+
+    private Long member;
+
+    private LocalDateTime time;
+
+    public static AlarmResponse alarmResponse(Alarm alarm){
+        return AlarmResponse.builder()
+                .title(alarm.getTitle().getTitle())
+                .content(alarm.getContent())
+                .time(alarm.getCreatedDate()).build();
+    }
+
+}

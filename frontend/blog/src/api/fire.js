@@ -7,4 +7,11 @@ async function pushalarm(message, success, fail) {
     .catch(fail);
 }
 
-export { pushalarm };
+async function pushtoken(token,id, success, fail) {
+  await http
+    .post(`/api/v1/notification/firebasetoken/${id}`, JSON.stringify(token))
+    .then(success)
+    .catch(fail);
+}
+
+export { pushalarm, pushtoken };

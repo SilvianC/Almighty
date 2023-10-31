@@ -128,9 +128,11 @@ public class AuthApiController {
 
     // 로그아웃
     @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader("Authorization") String requestAccessToken) {
+    public ResponseEntity<?> logout(@RequestHeader(value="Authorization", required=false) String requestAccessToken) {
+        log.debug("asdasdasdas");
+        log.debug(requestAccessToken);
         authService.logout(requestAccessToken);
-        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh-token", "")
+        ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", "")
                 .maxAge(0)
                 .path("/")
                 .build();

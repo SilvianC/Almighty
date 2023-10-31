@@ -2,7 +2,8 @@ import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { useEffect, useState } from "react";
 import { getAnalytics } from "firebase/analytics";
-import axios from "axios";
+
+import { pushtoken } from "../api/fire";
 function FirebaseComponent() {
   const firebaseConfig = {
     apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
@@ -19,6 +20,10 @@ function FirebaseComponent() {
   const messaging = getMessaging(app);
 
   useEffect(() => {
+    async function registerSW() {
+      await navigator.serviceWorker.register("/firebase-messaging-sw.js");
+      console.log("알림 권한이 허용됨");
+    }
     async function requestPermission() {
       console.log("권한 요청 중...");
       const permission = await Notification.requestPermission();
@@ -26,32 +31,26 @@ function FirebaseComponent() {
         console.log("알림 권한 허용 안됨");
         return;
       }
-      console.log("알림 권한이 허용됨");
+      await registerSW();
 
       try {
         const token = await getToken(messaging, {
           vapidKey:
             "BIW70JkV0rCqXX0NUYzz9RNfKG1GxoWb6TTAIb22ZnG3-yqJL0L1ieBlJoZ_S_ALdyoJe_Zq4-AEKLql1BvYYRo",
         });
-        if (token) console.log("token: ", token);
-        else console.log("Can not get Token");
-        const postData2 = {
-          targetUserId: 1,
-          title: "되라 ㅜㅜ",
-          body: "누군가가 당신에게 투표했습니다.",
-          token: token,
-        };
-
-        const response = await axios.post(
-          "https://www.batteryalmighty.co.kr/api/v1/notification",
-          postData2,
-          {
-            headers: {
-              "Content-Type": "application/json",
+        if (token) {
+          console.log("token: ", token);
+          pushtoken(
+            { firebaseToken: token },
+            3,
+            ({ data }) => {
+              console.log(data);
             },
-          }
-        );
-        console.log("전송 완료", response);
+            ({ error }) => {
+              console.log(error);
+            }
+          );
+        } else console.log("Can not get Token");
       } catch (error) {
         console.log("알림 설정 필요", error);
       }

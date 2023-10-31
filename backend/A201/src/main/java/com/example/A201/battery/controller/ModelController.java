@@ -4,7 +4,6 @@ import com.example.A201.battery.domain.Model;
 import com.example.A201.battery.service.ModelService;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
-import org.checkerframework.checker.units.qual.N;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

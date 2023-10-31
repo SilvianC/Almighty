@@ -32,7 +32,9 @@ public class StatusHistory {
 
     private LocalDate date;
 
-    private String reason;
+    private String responseReason;
+
+    private String requestReason;
 
     public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO,Battery battery){
         StatusHistory history = new StatusHistory();
@@ -40,7 +42,7 @@ public class StatusHistory {
         history.fromStatus = statusHistoryDTO.getFromStatus();
         history.toStatus = statusHistoryDTO.getToStatus();
         history.date = LocalDate.now();
-        history.reason = statusHistoryDTO.getReason();
+        history.responseReason = statusHistoryDTO.getReason();
         return history;
     }
 

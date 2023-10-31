@@ -7,23 +7,30 @@ import { BsFillCartFill, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import { Modal, Col, Row } from "react-bootstrap";
 import ModelTable from "./ModelTable";
+import ReasonModal from "../reason/ReasonModal";
 import http from "../../api/http";
 const BuyTable = ({ data }) => {
   const [showModal, setShowModal] = useState(false);
+  const [showReasonModal, setShowReasonModal] = useState(false);
   const [selectedModelId, setSelectedModelId] = useState(null);
   const [checkedInputs, setCheckedInputs] = useState([]);
+  const [selectedItemCode, setSelectedItemCode] = useState(null);
+
   const handleSave = () => {
     console.log(checkedInputs);
     http.put(`/api/batteries/request`, checkedInputs).then().catch();
   };
 
-  const handleCheck = (e) => {
-    if (e.target.checked) {
-      setCheckedInputs((prev) => [...prev, e.target.value]);
-    } else {
-      setCheckedInputs(checkedInputs.filter((item) => item !== e.target.value));
-    }
+  const openReasonModal = (itemCode) => {
+    setSelectedItemCode(itemCode);
+    setShowReasonModal(true);
   };
+
+  const closeReasonModal = () => {
+    setSelectedItemCode(null);
+    setShowReasonModal(false);
+  };
+
   const handleIconClick = (modelId, code) => {
     setSelectedModelId(modelId);
     setShowModal(true);
@@ -44,7 +51,7 @@ const BuyTable = ({ data }) => {
         <Table bordered>
           <thead className={"table-secondary"}>
             <tr>
-              <th className="w-auto"></th>
+              <th className="w-auto text-center">진행 상태</th>
               <th className="w-auto text-center">제품명</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
@@ -57,15 +64,16 @@ const BuyTable = ({ data }) => {
                 <tr key={idx}>
                   <td className="text-center">
                     {item.status === "Request" ? (
-                      <>진행 중</>
+                      <Button variant="secondary" disabled>
+                        진행 중
+                      </Button>
                     ) : (
-                      <Form.Check
-                        value={item.code}
-                        onChange={(e) => {
-                          handleCheck(e);
-                        }}
-                        checked={checkedInputs.includes(item.code)}
-                      ></Form.Check>
+                      <Button
+                        variant="primary"
+                        onClick={() => openReasonModal(item.code)}
+                      >
+                        모달 열기
+                      </Button>
                     )}
                   </td>
                   <td className="text-center">{item.code}</td>
@@ -81,14 +89,12 @@ const BuyTable = ({ data }) => {
             })}
           </tbody>
         </Table>
-        <Row>
-          <Col className="d-flex justify-content-end">
-            <Button onClick={() => handleSave()}>반품 요청</Button>
-          </Col>
-        </Row>
       </Form>
       <Modal show={showModal} onHide={handleClose}>
         <ModelTable modelId={selectedModelId} />
+      </Modal>
+      <Modal show={showReasonModal} onHide={closeReasonModal}>
+        <ReasonModal itemCode={selectedItemCode} />
       </Modal>
     </S.Wrap>
   );
