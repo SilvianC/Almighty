@@ -23,6 +23,11 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
     private final StatusHistoryRepository statusHistoryRepository;
     private final BatteryRepository batteryRepository;
 
+    public List<StatusHistoryResponse> getAllHistories() {
+        List<StatusHistory> histories = statusHistoryRepository.findAll();
+        return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
+    }
+
     @Override
     public List<StatusHistoryResponse> getHistories(Long batteryId) {
         List<StatusHistory> histories = statusHistoryRepository.findByBatteryId(batteryId);
