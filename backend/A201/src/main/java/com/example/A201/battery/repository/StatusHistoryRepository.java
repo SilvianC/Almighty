@@ -15,10 +15,12 @@ public interface StatusHistoryRepository extends JpaRepository<StatusHistory,Lon
     @Query("select s from StatusHistory s join fetch s.batteryId b where s.batteryId.id=:batteryId order by s.date desc")
     List<StatusHistory> findByBatteryId(Long batteryId);
 
-    @Query("select s from StatusHistory s join s.batteryId b join b.member m where m.memberId=:memberId order by s.date desc")
+    @Query(value = "select s from StatusHistory s join fetch s.batteryId b join b.member m where m.memberId=:memberId order by s.date desc"
+            , countQuery = "select count(s) from StatusHistory s join s.batteryId b join b.member m where m.memberId=:memberId")
     Page<StatusHistory> findAllByMember(@Param("memberId") Long memberId, Pageable pageable);
 
-    @Query("select s from StatusHistory s order by s.date desc")
+    @Query(value =  "select s from StatusHistory s join fetch s.batteryId b order by s.date desc"
+            , countQuery = "select count(s) from StatusHistory s")
     Page<StatusHistory> findAll(Pageable pageable);
 
     StatusHistory save(StatusHistory statusHistory);
