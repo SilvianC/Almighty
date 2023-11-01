@@ -29,7 +29,7 @@ public class StatusHistoryController {
         return SuccessResponseEntity.toResponseEntity("히스토리 등록 완료", null);
     }
 
-    @GetMapping("history/{batteryId}")
+    @GetMapping("/history/{batteryId}")
     public ResponseEntity<?> getHistories(@PathVariable("batteryId") Long id){
         List<StatusHistoryResponse> responses = statusHistoryService.getHistories(id);
         return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
