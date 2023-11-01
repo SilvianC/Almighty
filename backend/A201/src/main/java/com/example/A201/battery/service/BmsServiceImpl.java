@@ -1,2 +1,4 @@
-package com.example.A201.battery.service;public class BmsServiceImpl {
+package com.example.A201.battery.service;
+
+public class BmsServiceImpl implements BmsService{
 }
