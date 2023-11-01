@@ -56,7 +56,7 @@ const ServiceHistory = () => {
       .get(`/api/batteries/history/all`)
       .then(({ data }) => {
         setHistory(() => {
-          return data["data"];
+          return data["data"]["content"];
         });
       })
       .catch();
