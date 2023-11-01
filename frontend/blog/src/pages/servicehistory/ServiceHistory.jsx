@@ -51,6 +51,8 @@ import http from "../../api/http";
 
 const ServiceHistory = () => {
   const [history, setHistory] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     http
       .get(`/api/batteries/history/all`)
@@ -58,6 +60,8 @@ const ServiceHistory = () => {
         setHistory(() => {
           return data["data"]["content"];
         });
+        setPage(() => 0);
+        setTotalPage(() => data["data"]["totalPages"]);
       })
       .catch();
   }, []);
@@ -71,7 +75,12 @@ const ServiceHistory = () => {
           <AlarmTable />
         </S.AlarmWrapper>
         <S.ServiceHistoryWrapper>
-          <components.ServiceHistory data={history} />
+          <components.ServiceHistory
+            data={history}
+            page={page}
+            totalPage={totalPage}
+            setPage={setPage}
+          />
         </S.ServiceHistoryWrapper>
       </S.Content>
     </S.Container>
