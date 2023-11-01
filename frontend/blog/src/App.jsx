@@ -4,6 +4,7 @@ import * as pages from "./pages";
 import * as utils from "./utils";
 import styled from "styled-components";
 import "bootstrap/dist/css/bootstrap.min.css";
+import Intro from "./components/layout/Intro";
 import Header from "./components/layout/Header";
 
 import Footer from "./components/layout/Footer";
@@ -46,6 +47,7 @@ const App = () => {
   return (
     <>
       <Header></Header>
+      <Intro></Intro>
       <S.MainContent>
         <Routes>
           <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
