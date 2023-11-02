@@ -86,18 +86,17 @@ const Login = () => {
     <S.Wrap>
       <S.Container>
         <S.Title>
-          <S.Icon>
-            <img src={LoginIcon} alt="icon" />
-          </S.Icon>
           <p>로그인</p>
         </S.Title>
         <S.Login>
+          
           <input
             type="text"
             id="loginId"
             value={loginId}
             placeholder="아이디"
             onChange={onChange}
+            autoComplete="off"
           />
           <input
             type="password"
@@ -105,6 +104,7 @@ const Login = () => {
             value={password}
             placeholder="비밀번호"
             onChange={onChange}
+            autoComplete="off"
           />
           <div className="option">
             <div>
@@ -130,28 +130,34 @@ const S = {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 100px;
+    @media (max-width: 768px) {
+      width:100%;
+
+    }
   `,
   Container: styled.div`
     width: 46.875%;
     height: 55.556%;
     border-radius: 10px;
-    border: 3px solid #f2f2f2;
     padding: 2%;
     display: flex;
     flex-direction: column;
-    background-color: #ffffff;
+    background-color: #E7ECF2;
   `,
   Title: styled.div`
     width: 100%;
-    height: 40px;
+    height: 5px;
+    margin-top:-50px;
+    margin-bottom:60px;
     flex-direction: row;
     display: flex;
     align-items: center;
     > p {
-      color: #1428a0;
-      font-size: 1rem;
+      color: #000000;
+      font-size: 1.5rem;
       font-weight: bold;
-      margin-left: 3%;
+      margin-left: 44%;
     }
   `,
   Icon: styled.div`
@@ -187,7 +193,7 @@ const S = {
       border-radius: 10px;
       font-size: 1rem;
       font-weight: bold;
-      color: #888888;
+      color: #034F9E;
       text-align: left;
       cursor: pointer;
       &:hover {
@@ -233,7 +239,7 @@ const S = {
     }
 
     > button {
-      background-color: #1428a0;
+      background-color: #034F9E;
       width: 55.55%;
       padding: 2%;
       border: none;
