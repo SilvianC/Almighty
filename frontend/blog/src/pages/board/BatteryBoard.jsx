@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import MetaGraph from "./../../components/graph/MetaGraph";
-import TestGraph2 from "./../../components/graph/TestGraph2";
-import MetaGraph2 from "../../components/graph/MetaGraph2";
+import TestGraph from "./../../components/graph/TestGraph";
 import http from "../../api/http";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -10,8 +9,6 @@ import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
 import { BiSolidChart } from "react-icons/bi";
 
-var index = 0; //테스트용
-var time = 7000;
 const match = {
   0: "voltageMeasured",
   1: "currentMeasured",
@@ -100,34 +97,6 @@ const BatteryBoard = () => {
       else setTestId(() => 0);
     }
   }, [data]);
-
-  useEffect(() => {
-    index = 0;
-    let timer;
-    if (testRef.current) {
-      timer = setInterval(() => {
-        if (!test.length) {
-          clearInterval(timer);
-          return;
-        }
-        for (let i = 0; i < 3; i++) {
-          testRef.current.addData(
-            test[index]["time"] + time,
-            test[index][match[i]],
-            i
-          );
-        }
-        index++;
-        if (index > 300) {
-          index = 0;
-          time = test[index]["time"] + time + 1;
-        }
-      }, 1000);
-    }
-    return () => {
-      clearInterval(timer);
-    };
-  }, [test]);
   return (
     <S.Wrap>
       <Row>
@@ -166,21 +135,20 @@ const BatteryBoard = () => {
       </Row>
       <Row>
         <Col md={5}>
-          <MetaGraph2
+          <MetaGraph
             data={data}
             type="capacity"
             clickPoint={clickPoint}
-          ></MetaGraph2>
+          ></MetaGraph>
           <MetaGraphImpedance data={data}></MetaGraphImpedance>
         </Col>
         <Col md={7}>
-          <TestGraph2
+          <TestGraph
             data={test}
             threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
-            ref={testRef}
-          ></TestGraph2>
+          ></TestGraph>
         </Col>
       </Row>
     </S.Wrap>
