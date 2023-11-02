@@ -8,6 +8,7 @@ import Intro from "./components/layout/Intro";
 import Header from "./components/layout/Header";
 
 import Footer from "./components/layout/Footer";
+import SideBar from "./components/sidebar/Sidebar";
 
 const App = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -47,7 +48,7 @@ const App = () => {
   return (
     <AppWrapper>
       <Header></Header>
-      <Intro></Intro>
+      <SideBar></SideBar>
       <S.MainContent>
         <Routes>
           <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
