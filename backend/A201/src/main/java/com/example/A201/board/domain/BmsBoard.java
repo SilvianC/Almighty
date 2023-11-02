@@ -1,6 +1,6 @@
-package com.example.A201.battery.domain;
+package com.example.A201.board.domain;
 
-import com.example.A201.member.domain.Member;
+import com.example.A201.battery.domain.Battery;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Bms {
+public class BmsBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
