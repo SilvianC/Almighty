@@ -31,7 +31,7 @@ repositories {
 
 dependencies {
     // fcm
-    implementation 'com.google.firebase:firebase-admin:9.1.1'
+    implementation 'com.google.firebase:firebase-admin:8.1.0'
     // 쿼리 dsl
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
     implementation "com.querydsl:querydsl-apt:${queryDslVersion}"

@@ -1,6 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BsFillBellFill } from "react-icons/bs";
 import { getalarmlog } from "../../api/alarm";
@@ -9,14 +7,15 @@ const AlarmTable = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(1);
-  const [limit, setLimit] = useState(1);
-
+  const [toggle, setToggle] = useState(false);
+  function handle(toggle) {
+    setToggle(!toggle);
+  }
   useEffect(() => {
     getalarmlog(
       "관리자",
       page,
       ({ data }) => {
-        console.log(data);
         setData(() => {
           return data.data;
         });
@@ -39,28 +38,43 @@ const AlarmTable = () => {
         <BsFillBellFill />
         알림 내역
       </S.Title>
-      <Form>
-        <main>
-          {data.map(({ title, time, content }) => {
-            const formattedTime = new Date(time).toLocaleString("en-US", {
-              year: "numeric",
-              month: "2-digit",
-              day: "2-digit",
-              hour: "2-digit",
-              minute: "2-digit",
-            });
 
+      <table>
+        <tbody>
+          {data.map(({ title, time, content, isRead, company }) => {
+            const formattedTime = new Date() - new Date(time);
+            const daysDifference = formattedTime / (1000 * 60 * 60 * 24); // 하루
+            const days = Math.floor(daysDifference); // 하루
+            const hours = Math.floor((daysDifference - days) * 24); //시간
             return (
-              <article>
-                <h3>{title}</h3>
-                <p>
-                  {content} {formattedTime}
-                </p>
-              </article>
+              <>
+                <tr>
+                  <td>{"이미지"}</td>
+                  <td>
+                    <button onClick={() => handle(toggle)}>
+      
+                      {`[${title}]`}
+                    </button>
+                  </td>
+                  <td>{`${company}으로 반송신청 들어옴`}</td>
+                  <td> {` ${days} 일 ${hours} 시간 전.`}</td>
+                  <td> {!isRead ? "미확인" : "확인 완료"}</td>
+                </tr>
+                {toggle && (
+                  <>
+                    <tr>
+                      <S.TR>{content}</S.TR>
+                    </tr>
+                    <tr>
+                      <td colSpan={5}>{"확인"}</td>
+                    </tr>
+                  </>
+                )}
+              </>
             );
           })}
-        </main>
-      </Form>
+        </tbody>
+      </table>
 
       <footer>
         <Pagination total={total} page={page} setPage={setPage} />
@@ -88,5 +102,10 @@ const S = {
     font-weight: bold;
     color: #1428a0;
     padding-bottom: 30px;
+  `,
+  TR: styled.tr`
+   height :50
+   colSpan :5
+
   `,
 };
