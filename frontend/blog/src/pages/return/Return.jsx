@@ -45,12 +45,13 @@ export default Return;
 const S = {
   Container: styled.div`
     display: flex;
+    width:100%;
   `,
   BuyTableContainer: styled.div`
     flex: 1;
   `,
   ReturnResultTableContainer: styled.div`
-    flex: 1;
+    flex: 0.65;
   `,
   Title: styled.div`
     font-size: 30px;
