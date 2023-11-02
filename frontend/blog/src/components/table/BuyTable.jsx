@@ -44,38 +44,23 @@ const BuyTable = ({ data }) => {
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
         <BsFillCartFill />
-        구매 리스트
+        반품 요청
       </S.Title>
 
       <Form>
         <Table bordered>
           <thead className={"table-secondary"}>
             <tr>
-              <th className="w-auto text-center">진행 상태</th>
               <th className="w-auto text-center">제품명</th>
               <th className="w-25 text-center">제조일</th>
               <th className="w-25 text-center">수령일</th>
-              <th className="w-auto text-center">상세 정보</th>
+              <th className="w-auto text-center">반품 신청</th>
             </tr>
           </thead>
           <tbody>
             {data.map((item, idx) => {
               return (
                 <tr key={idx}>
-                  <td className="text-center">
-                    {item.status === "Request" ? (
-                      <Button variant="secondary" disabled>
-                        진행 중
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="primary"
-                        onClick={() => openReasonModal(item.code)}
-                      >
-                        모달 열기
-                      </Button>
-                    )}
-                  </td>
                   <td className="text-center">{item.code}</td>
                   <td className="text-center">{item.madeDate}</td>
                   <td className="text-center">{item.receiveDate}</td>
@@ -110,6 +95,7 @@ const S = {
     padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
     padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
     border-radius: 40px;
+    background-color:#ffffff;
   `,
   Title: styled.span`
     font-size: 20px;
