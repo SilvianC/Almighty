@@ -2,14 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/images/sdilogo.png";
-
+import ssafyLogo from "../../assets/images/ssafylogo.png";
 function Footer() {
   const navigate = useNavigate();
 
   return (
     <S.FooterContainer>
       <S.LinksContainer>
-        <S.LinkItem onClick={() => navigate("/some-link")}>링크 이름</S.LinkItem>
+        <S.Logo2 onClick={() => window.open("https://www.ssafy.com/", "_blank")} src={ssafyLogo}/>
         {/* 다른 링크들을 추가하세요 */}
       </S.LinksContainer>
       <S.Address>경기도 용인시 기흥구 공세로 150-20[17084]</S.Address>
@@ -22,15 +22,16 @@ function Footer() {
 const S = {
   FooterContainer: styled.div`
     display: flex;
-    justify-content: space-between;
+    justify-content: center;  // 중앙 정렬로 변경
     align-items: center;
     padding: 20px;
     background-color: #D5DFE9;
     height: 150px;
+    gap: 30px;
   `,
   LinksContainer: styled.div`
     display: flex;
-    gap: 10px;
+    gap: 1px;
   `,
   LinkItem: styled.a`
     cursor: pointer;
@@ -42,6 +43,10 @@ const S = {
   `,
   Logo: styled.img`
     width: 160px;
+    cursor: pointer;
+  `,
+  Logo2: styled.img`
+    width: 100px;
     cursor: pointer;
   `,
   Address: styled.div`

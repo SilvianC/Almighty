@@ -1,12 +1,29 @@
 import styled from 'styled-components';
 import * as components from '../../components';
-
+import { useRecoilValue } from "recoil";
+import { MemberIdState } from "../../states/states";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 const LoginPage = () => {
-  return (
-    <S.Wrap>
-      <components.Login></components.Login>
-    </S.Wrap>
-  );
+  const location = useLocation();
+  const navigate = useNavigate(); 
+  const memberId = useRecoilValue(MemberIdState);
+  useEffect(() => {
+    if (memberId && location.pathname !== "/main") {
+      navigate("/main");
+    }
+  }, [memberId, location, navigate]);
+
+
+  if(memberId==null){
+    return (
+      <S.Wrap>
+        <components.Login></components.Login>
+      </S.Wrap>
+    );
+  }
+
+  return null; // memberId가 null이 아닐 때 null 반환
 };
 
 const S = {

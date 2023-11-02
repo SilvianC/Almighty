@@ -22,7 +22,7 @@ const Return = () => {
       .get(`/api/batteries/history/members/${memberId}`)
       .then(({ data }) => {
         setHistory(() => {
-          return data["data"];
+          return data["data"]["content"];
         });
       })
       .catch();

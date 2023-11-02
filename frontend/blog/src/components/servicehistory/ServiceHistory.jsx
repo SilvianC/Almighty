@@ -14,7 +14,7 @@ const status = {
   CustomerFault: "고객 귀책",
   SdiFault: "제품 결함",
 };
-const ServiceHistory = ({ data }) => {
+const ServiceHistory = ({ data, page, setPage, totalPage }) => {
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -46,6 +46,9 @@ const ServiceHistory = ({ data }) => {
           </tbody>
         </Table>
       </Form>
+      <S.PageArea>
+        <S.PageBox>1</S.PageBox>
+      </S.PageArea>
     </S.Wrap>
   );
 };
@@ -69,4 +72,8 @@ const S = {
     color: #1428a0;
     padding-bottom: 30px;
   `,
+  PageArea: styled.div`
+    text-align: center;
+  `,
+  PageBox: styled.span``,
 };

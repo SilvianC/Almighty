@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "전지전능 RMA",
+  "name": "삼성SDI와 연계하여 개발한 RMA 시스템",
   "icons": [
     {
       "src": "favicon.ico",
