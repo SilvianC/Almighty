@@ -47,7 +47,6 @@ const App = () => {
 
   return (
     <AppWrapper>
-      <Header></Header>
       <SideBar></SideBar>
       <S.MainContent>
         <Routes>
@@ -65,7 +64,6 @@ const App = () => {
           />
         </Routes>
       </S.MainContent>
-      <Footer></Footer>
     </AppWrapper>
   );
 };
@@ -79,8 +77,8 @@ const S = {
 };
 const AppWrapper = styled.div`
   display: flex;
-  flex-direction: column;
   min-height: 100vh;
+  height: 100%;
 `;
 
 export default App;
