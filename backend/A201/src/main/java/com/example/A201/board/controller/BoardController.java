@@ -1,5 +1,7 @@
 package com.example.A201.board.controller;
 
+import com.example.A201.battery.service.BatteryService;
+import com.example.A201.board.service.BoardService;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -8,10 +10,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/dashboard")
 @RequiredArgsConstructor
 public class BoardController {
+    private final BoardService boardService;
+    private final BatteryService batteryService;
+    @GetMapping("/{progress_id}")
+    public ResponseEntity<?> getMetadataType(@PathVariable("progress_id") Long progressId) {
+        return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공", boardService.getBoard(progressId));
+    }
 }
