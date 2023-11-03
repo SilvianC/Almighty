@@ -39,6 +39,10 @@ const BmsGraph = ({ data, threshold, type, num }) => {
 
     xAxis: { type: "category" },
 
+    legend: {
+      enabled: false, // 범례 비활성화
+    },
+
     plotOptions: {
       label: {
         connectorAllowed: false,
