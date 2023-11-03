@@ -1,6 +1,7 @@
 package com.example.A201.board.domain;
 
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
 import lombok.*;
 
 import javax.persistence.*;
@@ -18,9 +19,9 @@ public class BmsBoard {
     @Column(name = "bms_id")
     Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "battery_id")
-    private Battery battery;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "progress_id")
+    private Progress progress;
 
     int overVoltageCount;
 

@@ -14,7 +14,7 @@ const transName = {
   temperatureMeasured: "온도(°C)",
 };
 
-const TestGraph = forwardRef(({ data, threshold, type, num }) => {
+const TestGraph = ({ data, threshold, type, num }) => {
   const datas = [];
 
   for (const t of type) {
@@ -30,13 +30,13 @@ const TestGraph = forwardRef(({ data, threshold, type, num }) => {
       },
       { start: [], end: [] }
     );
-    console.log(result);
     const newData = {
       name: transName[t],
       yAxis: 0,
+      turboThreshold: 10000,
       data: data.map((item, idx) => {
         return {
-          x: item["time"],
+          x: item["time"] * 3600,
           y: item[t],
           marker: {
             enabled: result.start.includes(idx) || result.end.includes(idx),
@@ -73,57 +73,22 @@ const TestGraph = forwardRef(({ data, threshold, type, num }) => {
           },
         },
       },
-      events: {
-        afterAnimate: function () {
-          console.log(this);
-          // 특정 zone에서만 심볼 활성화
-          if (this.data[2].y >= 10.5) {
-            console.log(this);
-            this.update({ marker: { enabled: true } }, false);
-          }
-        },
-      },
     };
     datas.push(newData);
   }
 
   const option = {
-    chart: {
-      height: "100%",
-      events: {
-        load: function () {
-          // set up the updating of the chart each second
-          // var series = this.series[0];
-          // var interval = setInterval(function () {
-          //   if (!Object.keys(series).includes("data")) {
-          //     clearInterval(interval);
-          //   } else {
-          //     var x = x_++, // current time
-          //       y = Math.round(Math.random() * 4);
-          //     series.addPoint([x, y], true, true);
-          //   }
-          // }, 1000);
-        },
-      },
-    },
+    chart: {},
     accessibility: {
       enabled: false,
     },
 
-    time: {
-      useUTC: false,
-    },
-    rangeSelector: {
-      buttons: [],
-      inputEnabled: false,
-      selected: 0,
-    },
     exporting: {
       enabled: false,
     },
     title: {
-      text: `Test ${num} data`,
-      align: "center",
+      text: `VIT`,
+      align: "left",
       style: {
         color: "#4F84C9", // 원하는 색상으로 설정
       },
@@ -152,14 +117,12 @@ const TestGraph = forwardRef(({ data, threshold, type, num }) => {
       title: {
         text: "Time",
       },
-      accessibility: {
-        rangeDescription: "Range: 2010 to 2020",
-      },
+
       // categories: x,
     },
 
     legend: {
-      floating: true, // 레전드를 그래프 위에 표시
+      floating: false, // 레전드를 그래프 위에 표시
       layout: "horizontal",
       align: "right",
       verticalAlign: "top",
@@ -190,7 +153,6 @@ const TestGraph = forwardRef(({ data, threshold, type, num }) => {
         ],
       },
     ],
-
     responsive: {
       rules: [
         {
@@ -214,7 +176,7 @@ const TestGraph = forwardRef(({ data, threshold, type, num }) => {
       <HighchartsReact highcharts={Highcharts} options={option} />
     </S.Wrap>
   );
-});
+};
 
 const S = {
   Wrap: styled.div``,

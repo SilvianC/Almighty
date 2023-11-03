@@ -8,6 +8,7 @@ import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
 import { BiSolidChart } from "react-icons/bi";
+import BmsGraph from "../../components/graph/BmsGraph";
 
 const match = {
   0: "voltageMeasured",
@@ -15,13 +16,13 @@ const match = {
   2: "temperatureMeasured",
 };
 const BatteryBoard = () => {
-  const [test, setTestData] = useState([]);
+  const [vitData, setVitData] = useState([]);
+  const [bmsData, setBmsData] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
   const [battery, setBattery] = useState([]);
   const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
-  const testRef = useRef();
 
   const clickPoint = (id) => {
     setTestId(() => id);
@@ -41,20 +42,18 @@ const BatteryBoard = () => {
         });
       })
       .catch();
+    http
+      .get(`/api/dashboard/6`)
+      .then(({ data }) => {
+        setVitData(() => {
+          return data["data"]["vitData"];
+        });
+        setBmsData(() => {
+          return data["data"]["bmsData"];
+        });
+      })
+      .catch();
   }, []);
-
-  useEffect(() => {
-    if (code) {
-      http
-        .get(`/api/dashboard/${code}/tests/${testId}/testdatas`)
-        .then(({ data }) => {
-          setTestData(() => {
-            return data["data"];
-          });
-        })
-        .catch();
-    }
-  }, [testId]);
 
   useEffect(() => {
     if (!code && batteries.length) {
@@ -64,14 +63,6 @@ const BatteryBoard = () => {
 
   useEffect(() => {
     if (code) {
-      http
-        .get(`/api/dashboard/metadata/${code}`)
-        .then(({ data }) => {
-          setData(() => {
-            return data["data"];
-          });
-        })
-        .catch();
       http
         .get(`/api/batteries/battery/${code}`)
         .then(({ data }) => {
@@ -83,20 +74,6 @@ const BatteryBoard = () => {
     }
   }, [code]);
 
-  useEffect(() => {
-    if (code) {
-      if (testId === 0)
-        http
-          .get(`/api/dashboard/${code}/tests/0/testdatas`)
-          .then(({ data }) => {
-            setTestData(() => {
-              return data["data"];
-            });
-          })
-          .catch();
-      else setTestId(() => 0);
-    }
-  }, [data]);
   return (
     <S.Wrap>
       <Row>
@@ -134,21 +111,16 @@ const BatteryBoard = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={5}>
-          <MetaGraph
-            data={data}
-            type="capacity"
-            clickPoint={clickPoint}
-          ></MetaGraph>
-          <MetaGraphImpedance data={data}></MetaGraphImpedance>
-        </Col>
-        <Col md={7}>
+        <Col md={8}>
           <TestGraph
-            data={test}
+            data={vitData}
             threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
           ></TestGraph>
+        </Col>
+        <Col md={8}>
+          <BmsGraph></BmsGraph>
         </Col>
       </Row>
     </S.Wrap>
