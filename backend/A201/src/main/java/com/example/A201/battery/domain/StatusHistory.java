@@ -46,7 +46,7 @@ public class StatusHistory {
         history.fromStatus = statusHistoryDTO.getFromStatus();
         history.toStatus = statusHistoryDTO.getToStatus();
         history.date = LocalDate.now();
-        history.responseReason = statusHistoryDTO.getReason();
+        history.requestReason = statusHistoryDTO.getReason();
         return history;
     }
 

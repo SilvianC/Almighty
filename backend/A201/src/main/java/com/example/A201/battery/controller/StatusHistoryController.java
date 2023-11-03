@@ -21,7 +21,7 @@ import java.util.List;
 public class StatusHistoryController {
     private final StatusHistoryService statusHistoryService;
 
-    @PostMapping("")
+    @PostMapping("/history")
     @Transactional(readOnly = false)
     public ResponseEntity<?> postHistory(@RequestBody StatusHistoryRequest statusHistoryRequest) {
         StatusHistoryDTO statusHistoryDTO = statusHistoryService.requestToDTO(statusHistoryRequest);
