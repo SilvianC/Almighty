@@ -14,9 +14,13 @@ import {
   RefreshTokenState,
   MemberIdState,
 } from "../../states/states";
-import FirebaseComponent from "../../config/firebase-messaging-sw";
+import AlarmModal from "../alarm/AlarmModal";
 
 const Login = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(!isModalOpen);
+  const closeModal = () => setIsModalOpen(false);
   const navigate = useNavigate();
 
   const isMobile = () => {
@@ -62,7 +66,7 @@ const Login = () => {
         setTel(data.data.tel);
         setAccessToken(data.headers.authorization);
         setRefreshToken(data.headers.refresh_token);
-       
+
         if (isMobile()) {
           navigate("/mobilealarm"); // 예시로 /mobilePage 경로를 사용하였습니다. 원하는 경로로 변경하세요.
         } else {
@@ -118,6 +122,10 @@ const Login = () => {
           <button type="submit" onClick={requestLogin}>
             로그인
           </button>
+          <div>
+            <button onClick={openModal}>Open Modal</button>
+            <AlarmModal isOpen={isModalOpen} closeModal={closeModal} />
+          </div>
         </S.Login>
       </S.Container>
     </S.Wrap>
