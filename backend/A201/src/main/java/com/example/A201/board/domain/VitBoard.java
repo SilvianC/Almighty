@@ -1,6 +1,7 @@
 package com.example.A201.board.domain;
 
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,7 +31,7 @@ public class VitBoard {
     private Double soc;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "battery_id")
-    private Battery battery;
+    @JoinColumn(name = "progress_id")
+    private Progress progress;
 
 }

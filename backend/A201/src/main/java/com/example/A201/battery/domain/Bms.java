@@ -1,7 +1,6 @@
-package com.example.A201.board.domain;
+package com.example.A201.battery.domain;
 
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.Progress;
+import com.example.A201.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
@@ -12,16 +11,16 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BmsBoard {
+public class Bms {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bms_id")
     Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "progress_id")
-    private Progress progress;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "battery_id")
+    private Battery battery;
 
     int overVoltageCount;
 
