@@ -4,16 +4,18 @@ import com.example.A201.battery.domain.StatusHistory;
 import com.example.A201.battery.dto.StatusHistoryDTO;
 import com.example.A201.battery.vo.request.StatusHistoryRequest;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
 public interface StatusHistoryService {
 
-    List<StatusHistoryResponse> getAllHistories();
+    Page<StatusHistoryResponse> getAllHistories(Pageable pageable);
 
     List<StatusHistoryResponse> getHistories(Long batteryId);
 
-    List<StatusHistoryResponse> getAllHistoriesByMember(Long memberId);
+    Page<StatusHistoryResponse> getAllHistoriesByMember(Long memberId, Pageable pageable);
 
     StatusHistory createHistory(StatusHistoryDTO statusHistoryDTO);
 

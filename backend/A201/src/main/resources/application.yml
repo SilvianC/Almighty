@@ -19,8 +19,8 @@ spring:
   redis:
 
     host: www.batteryalmighty.co.kr
-    port: 6379
     password: almighty201
+    port: 6379
 
 #  hikari:
 #      maximum-pool-size: 10
