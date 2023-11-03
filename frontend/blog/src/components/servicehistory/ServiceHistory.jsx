@@ -4,8 +4,7 @@ import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
 import { BsFillCartFill } from "react-icons/bs";
-import { useRecoilValue } from "recoil";
-import { MemberIdState } from "../../states/states";
+
 import http from "../../api/http";
 const status = {
   Normal: "정상",
