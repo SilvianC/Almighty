@@ -1,6 +1,5 @@
 package com.example.A201.board.domain;
 
-import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.Progress;
 import lombok.*;
 
@@ -16,7 +15,7 @@ public class BmsBoard {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bms_id")
+    @Column(name = "bms_board_id")
     Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
