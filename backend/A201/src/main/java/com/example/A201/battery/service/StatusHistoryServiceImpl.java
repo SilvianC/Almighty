@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -60,9 +61,10 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 배터리를 찾을 수 없습니다"));
         StatusHistoryDTO dto = new StatusHistoryDTO();
         dto.setBatteryId(battery.getId());
+        dto.setDate(LocalDate.now());
         dto.setFromStatus(Status.valueOf(request.getFromStatus()));
         dto.setToStatus(Status.valueOf(request.getToStatus()));
-        dto.setReason(request.getReason());
+        dto.setReason(request.getRequestReason());
         return dto;
     }
 }
