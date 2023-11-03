@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-<<<<<<< HEAD
-
-import TestGraph2 from "./../../components/graph/TestGraph2";
-import MetaGraph2 from "../../components/graph/MetaGraph2";
-=======
 import MetaGraph from "./../../components/graph/MetaGraph";
 import TestGraph from "./../../components/graph/TestGraph";
->>>>>>> 11458f7ae8b7d6b59796c51dc122ce88c9b34bf5
 import http from "../../api/http";
 
 import Row from "react-bootstrap/Row";
