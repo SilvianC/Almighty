@@ -19,26 +19,24 @@ const ServiceHistory = ({ data, page, setPage, totalPage }) => {
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
         <BsFillCartFill />
-        반송 신청 히스토리
+        요청 결과
       </S.Title>
 
       <Form>
         <Table bordered>
           <thead className={"table-secondary"}>
             <tr>
-              <th className="w-25 text-center">History ID</th>
-              <th className="w-auto text-center">Battery</th>
-              <th className="w-auto text-center">fromStatus</th>
-              <th className="w-25 text-center">toStatus</th>
+              <th className="w-auto text-center">제품명</th>
+              <th className="w-auto text-center">신청일</th>
+              <th className="w-25 text-center">결과</th>
             </tr>
           </thead>
           <tbody>
             {data.map((item, idx) => {
               return (
                 <tr key={idx}>
-                  <td>{item.historyId}</td>
                   <td>{item.code}</td>
-                  <td>{status[item.fromStatus]}</td>
+                  <td>{status[item.date]}</td>
                   <td>{status[item.toStatus]}</td>
                 </tr>
               );
@@ -62,6 +60,7 @@ const S = {
     padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
     padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
     border-radius: 40px;
+    background-color:#ffffff;
     min-height: calc(
       100vh - 120px
     ); // 화면의 높이에서 마진 20px * 2를 뺀 높이로 설정
