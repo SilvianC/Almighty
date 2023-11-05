@@ -17,10 +17,8 @@ import {
 import AlarmModal from "../alarm/AlarmModal";
 
 const Login = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  
 
-  const openModal = () => setIsModalOpen(!isModalOpen);
-  const closeModal = () => setIsModalOpen(false);
   const navigate = useNavigate();
 
   const isMobile = () => {
@@ -122,10 +120,7 @@ const Login = () => {
           <button type="submit" onClick={requestLogin}>
             로그인
           </button>
-          <div>
-            <button onClick={openModal}>Open Modal</button>
-            <AlarmModal isOpen={isModalOpen} closeModal={closeModal} />
-          </div>
+          
         </S.Login>
       </S.Container>
     </S.Wrap>

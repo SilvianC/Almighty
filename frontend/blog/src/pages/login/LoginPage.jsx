@@ -9,13 +9,14 @@ const LoginPage = () => {
   const navigate = useNavigate(); 
   const memberId = useRecoilValue(MemberIdState);
   useEffect(() => {
+    
     if (memberId && location.pathname !== "/main") {
       navigate("/main");
     }
   }, [memberId, location, navigate]);
 
 
-  if(memberId==null){
+  
     return (
       <>
       <S.Wrap>
@@ -32,7 +33,7 @@ const LoginPage = () => {
       </S.Wrap>
     </>
     );
-  }
+  
 
   return null; // memberId가 null이 아닐 때 null 반환
 };

@@ -1,9 +1,11 @@
 package com.example.A201.alarm.service;
 
 import com.example.A201.alarm.domain.Alarm;
+import com.example.A201.alarm.domain.constant.Receiver;
 import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.repository.AlarmRepository;
 import com.example.A201.alarm.vo.AlarmResponse;
+import com.example.A201.battery.constant.Status;
 import com.example.A201.exception.CustomException;
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.repository.MemberRepository;
@@ -12,6 +14,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 import static com.example.A201.exception.ErrorCode.USER_NOT_FOUND;
 
@@ -34,5 +38,30 @@ public class AlarmServiceImpl implements AlarmService{
     public Page<AlarmResponse> getAlarm(Long id, String status, PageRequest pageRequest) {
         Page<AlarmResponse> alarm = alarmRepository.getAlarm(id, status, pageRequest);
         return alarm;
+    }
+
+    @Override
+    public Long countAlarm(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() ->
+                new CustomException(USER_NOT_FOUND));
+
+        return  alarmRepository.countByReceiverAndMemberAndIsRead(Receiver.fromReceiver(member.getRole().getTitle()),member,false);
+    }
+
+    @Override
+    @Transactional
+    public void deleteAlarm(Long alarmId) {
+        Optional<Alarm> alarm = alarmRepository.findById(alarmId);
+        if(!alarm.isEmpty()){
+            alarmRepository.deleteById(alarmId);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateAlarm(Long id) {
+        Member member = memberRepository.findById(id).orElseThrow(() ->
+                new CustomException(USER_NOT_FOUND));
+        alarmRepository.updateAlarm(member,Receiver.fromReceiver(member.getRole().getTitle()));
     }
 }

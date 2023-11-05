@@ -22,8 +22,6 @@ public class AlarmResponse {
 
     private String content;
 
-    private Long member;
-
     private LocalDateTime time;
 
     private Boolean isRead;
@@ -32,6 +30,7 @@ public class AlarmResponse {
 
     public static AlarmResponse alarmResponse(Alarm alarm){
         return AlarmResponse.builder()
+                .id(alarm.getId())
                 .title(alarm.getTitle().getTitle())
                 .content(alarm.getContent())
                 .time(alarm.getCreatedDate())
