@@ -24,7 +24,7 @@ public class AlarmController {
      * @param id 유저 아이디
      * @param status 접근 권한자
      * @param pageIdx 페이지 번호
-     * @return
+     * @return PageResponse
      */
     @GetMapping(value = {"/{fromMember}/{status}","/{status}"})
     public ResponseEntity<PageResponse> getAlarm(@PathVariable(value = "fromMember",required = false) Long id,
