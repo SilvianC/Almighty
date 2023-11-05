@@ -16,16 +16,19 @@ import java.util.List;
 public class FCMConfig {
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
-        ClassPathResource resource = new ClassPathResource("firebase/a201-822f6-firebase-adminsdk-i5zs8-ffa7e2fcd6.json");
+        ClassPathResource resource = new ClassPathResource("firebase/a201-822f6-firebase-adminsdk-i5zs8-8c6dc24d96.json");
 
         InputStream refreshToken = resource.getInputStream();
 
         FirebaseApp firebaseApp = null;
         List<FirebaseApp> firebaseAppList = FirebaseApp.getApps();
-
+        for(FirebaseApp a : firebaseAppList){
+            System.out.println(a.toString());
+        }
         if (firebaseAppList != null && !firebaseAppList.isEmpty()) {
             for (FirebaseApp app : firebaseAppList) {
                 if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
+                    System.out.println("앱");
                     firebaseApp = app;
                 }
             }
@@ -33,7 +36,7 @@ public class FCMConfig {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();
-
+            System.out.println("앱222222222222222222222");
             firebaseApp = FirebaseApp.initializeApp(options);
         }
 

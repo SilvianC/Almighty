@@ -12,8 +12,12 @@ spring:
     url: jdbc:mysql://k9a201.p.ssafy.io/almighty?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
     username: root
     password: "almighty201"
-
+  data:
+    redis:
+      repositories:
+        enabled: false
   redis:
+
     host: www.batteryalmighty.co.kr
     password: almighty201
     port: 6379
