@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Title {
-    RETURN("반송 신청","관리자"),RETURNACCEPT("반송 수락", "유저"), RETURNREJECTION("반송 거절","유저");
+    RETURN("반송 신청","관리자"),RETURNACCEPT("반송 수락", "일반 사용자"), RETURNREJECTION("반송 거절","일반 사용자");
 
     private final String title;
     private final String to;

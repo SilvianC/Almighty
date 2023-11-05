@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BsFillBellFill } from "react-icons/bs";
-import { getalarmlog } from "../../api/alarm";
+import { getalarmlog, getuseralarmlog } from "../../api/alarm";
 import Pagination from "../pagenation/Pagination";
+import { useRecoilValue } from "recoil";
+import { MemberIdState, RoleState } from "../../states/states";
 const AlarmTable = () => {
+  const memberId = useRecoilValue(MemberIdState);
+  const role = useRecoilValue(RoleState);
   const [isHovering, setIsHovering] = useState(false);
 
   const handleMouseOver = () => {
@@ -17,29 +21,58 @@ const AlarmTable = () => {
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(1);
   const [toggle, setToggle] = useState(false);
+  const [totalElements, setTotalElements] = useState(0);
   function handle(toggle) {
     setToggle(!toggle);
   }
   useEffect(() => {
-    getalarmlog(
-      "관리자",
-      page,
-      ({ data }) => {
-        console.log(data);
-        setData(() => {
-          return data.data;
-        });
-        setPage(() => {
-          return data.number + 1;
-        });
-        setTotal(() => {
-          return data.totalPages;
-        });
-      },
-      ({ error }) => {
-        console.log(error);
-      }
-    );
+    if (role == "USER") {
+      getuseralarmlog(
+        memberId,
+        page,
+        ({ data }) => {
+          console.log(data);
+          setData(() => {
+            return data.data;
+          });
+          setPage(() => {
+            return data.number + 1;
+          });
+          setTotal(() => {
+            return data.totalPages;
+          });
+          setTotalElements(() => {
+            return data.totalElements;
+          })
+        },
+        ({ error }) => {
+          console.log(error);
+        }
+      );
+    } else if (role == "ADMIN") {
+      getalarmlog(
+        "관리자",
+        page,
+        ({ data }) => {
+          console.log(data);
+          setData(() => {
+            return data.data;
+          });
+          setPage(() => {
+            return data.number + 1;
+          });
+          setTotal(() => {
+            return data.totalPages;
+          });
+          setTotalElements(() => {
+            return data.totalElements;
+          })
+        },
+        ({ error }) => {
+          console.log(error);
+        }
+      );
+    }
   }, [page]);
 
   return (
@@ -50,6 +83,11 @@ const AlarmTable = () => {
       </S.Title>
 
       <S.BODY>
+        {
+          totalElements == 0 &&
+          <h2>"알림 내역이 없습니다."</h2>
+        }
+
         {data.map(({ title, time, content, isRead, company }) => {
           const formattedTime = new Date() - new Date(time);
           const MonthDifference = formattedTime / (1000 * 60 * 60 * 24 * 31); // 달
@@ -58,7 +96,9 @@ const AlarmTable = () => {
           const days = Math.floor(daysDifference); // 하루
           const hours = Math.floor((daysDifference - days) * 24); //시간
           return (
-            <section className="hovering">
+            <>
+              { totalElements != 0 &&
+              <section className="hovering">
               <tr>
                 <td style={{ width: "20px" }}></td>
                 <td className="image">{"이미지"}</td>
@@ -80,17 +120,11 @@ const AlarmTable = () => {
                   <button>삭제</button>
                 </td>
               </tr>
-              {/* {toggle && (
-                <>
-                  <tr>
-                    <S.TD>{content}</S.TD>
-                  </tr>
-                  <tr>
-                    <td colSpan={5}></td>
-                  </tr>
-                </>
-              )} */}
             </section>
+              }
+
+            </>
+            
           );
         })}
       </S.BODY>

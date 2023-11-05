@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { checkDuplication, joinMember } from "../../api/member";
 import { useNavigate } from "react-router-dom";
 import JoinInIcon from "../../assets/images/icon-joinIn.png"
-import FirebaseComponent from "../../config/firebase-messaging-sw";
+
 
 const SignUp = () => {
   const navigate = useNavigate();
-  FirebaseComponent();
+  
   const postMember = () => {
     if (!checkDupDone) {
       alert("아이디 중복 확인을 해주세요");

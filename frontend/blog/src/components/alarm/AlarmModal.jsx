@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import AlarmTable from "./AlarmTable";
 
-const AlarmModal = ({ isOpen, closeModal }) => {
+const AlarmModal = ({ isOpen }) => {
   return (
     <div style={{ display: isOpen ? "block" : "none" }}>
       <S.livechat>

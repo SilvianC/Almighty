@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 @Getter
 public enum Receiver {
-    USER("유저"),ADMIN("관리자");
+    USER("일반 사용자"),ADMIN("관리자");
     private final String role;
 
     Receiver(String role){
