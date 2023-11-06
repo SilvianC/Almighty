@@ -76,7 +76,12 @@ public class BatteryServiceImpl implements BatteryService{
     }
 
     @Override
-    public List<Progress> getProgressAll(){
-        return progressRepository.findAll();
+    public List<Progress> getRequestProgress(){
+        return progressRepository.getRequestProgress();
+    }
+
+    @Override
+    public List<Progress> getFinishedProgress(){
+        return progressRepository.getFinishedProgress();
     }
 }

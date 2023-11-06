@@ -1,5 +1,6 @@
 package com.example.A201.battery.domain;
 
+import com.example.A201.battery.constant.Status;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -26,6 +27,8 @@ public class Progress {
 
     @CreatedDate
     private LocalDate createDate;
+
+    private Status currentStatus;
 
     private String reason;
 
