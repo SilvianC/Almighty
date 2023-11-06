@@ -14,7 +14,5 @@ public class BatteryDTO {
     private Long memberId;
     private Long modelId;
     private String code;
-    private LocalDate madeDate;
-    private LocalDate receiveDate;
     private String batteryStatus;
 }
