@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
@@ -9,13 +9,22 @@ import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
 const status = {
   Normal: "정상",
-  Request: "반품 요청",
+  Request: "반품 신청",
   Upload: "데이터 업로드",
   Analysis: "분석 중",
   CustomerFault: "고객 귀책",
   SdiFault: "제품 결함",
 };
-const ServiceHistory = ({ data, page, setPage, totalPage }) => {
+const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
+  // http.get(`/api/batteries/history/response/${}`)
+  //         .then((response) => {
+  //           console.log("크아앙"); // 응답 데이터를 출력합니다.
+  //         })
+  //         .catch((error) => {
+  //           console.error('There was an error sending the request', error);
+  //         });
+
+
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -38,7 +47,11 @@ const ServiceHistory = ({ data, page, setPage, totalPage }) => {
                 <tr key={idx}>
                   <td>{item.code}</td>
                   <td>{item.date}</td>
-                  <td>{status[item.toStatus]}</td>
+                  <td>
+                    <StatusButton onClick={() => onStatusClick(item)}>
+                      {status[item.toStatus]}
+                    </StatusButton>
+                  </td>
                 </tr>
               );
             })}
@@ -53,6 +66,20 @@ const ServiceHistory = ({ data, page, setPage, totalPage }) => {
 };
 
 export default ServiceHistory;
+const StatusButton = styled(Button)`
+  /* 여기에 버튼 스타일 추가 */
+  width:90px;
+  font-size: 17px !important;
+  border-radius: 5px;
+  font-weight: bold;
+  height:30px;
+  padding:2px;
+  background-color: #B6C0C9 !important;
+  color: #000 !important;
+  &:hover {
+    background-color: #ffffff !important;  /* 호버 스타일링 */
+  }
+`;
 const S = {
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
@@ -65,6 +92,7 @@ const S = {
     background-color: #F2F2F2;
     height:600px;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
+    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
     
   `,
   Title: styled.span`

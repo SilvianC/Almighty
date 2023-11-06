@@ -7,6 +7,8 @@ import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import { CSSTransition } from 'react-transition-group';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Return = () => {
   const [data, setData] = useState([]);
@@ -15,6 +17,44 @@ const Return = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   //const memberId = 1;
   const [showReturnRequest, setShowReturnRequest] = useState(false);
+  const handleSuccess = () => {
+    toast.success("반품 요청이 성공적으로 처리되었습니다.");
+    fetchServiceHistory();
+    fetchBatteryItems();
+  };
+
+  // 에러 시 호출될 함수
+  const handleError = () => {
+    toast.error("반품 요청 처리 중 오류가 발생했습니다.");
+  };
+
+  const fetchBatteryItems = () => {
+    http.get(`/api/batteries/member/${memberId}`)
+      .then(({ data }) => {
+        setData(() => {
+          return data["data"];
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching batteries data", error);
+      });
+  };
+
+  // 서비스 히스토리 데이터를 불러오는 함수
+  const fetchServiceHistory = () => {
+    http
+      .get(`/api/batteries/history/members/${memberId}`)
+      .then(({ data }) => {
+        setHistory(() => {
+          return data["data"]["content"];
+        });
+        console.log("dmdkkkkkkkkkkkkkkkkk",data);
+      })
+      .catch(error => {
+        console.error("Error fetching service history", error);
+      });
+  };
+
   useEffect(() => {
     http
       .get(`/api/batteries/member/${memberId}`)
@@ -24,20 +64,25 @@ const Return = () => {
           return data["data"];
         });
       })
-      .catch();
-    http
-      .get(`/api/batteries/history/members/${memberId}`)
-      .then(({ data }) => {
-        setHistory(() => {
-          return data["data"]["content"];
-        });
-      })
-      .catch();
-  }, []);
+      .catch(error => {
+        console.error("Error fetching batteries data", error);
+      });
+    // http
+    //   .get(`/api/batteries/history/members/${memberId}`)
+    //   .then(({ data }) => {
+    //     setHistory(() => {
+    //       return data["data"]["content"];
+    //     });
+    //   })
+    //   .catch();
+    fetchServiceHistory();
+  }, [memberId]);
 
   return (
     <>
     <GlobalStyles />
+    <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+
     <S.Container>
       <S.BuyTableContainer>
         <BuyTable data={data} 
@@ -66,7 +111,7 @@ const Return = () => {
           unmountOnExit
         >
           <S.ReturnRequestWrapper>
-            <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} />
+            <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} onSuccess={handleSuccess} onError={handleError}  />
           </S.ReturnRequestWrapper>
         </CSSTransition>
         </S.ReturnResultTableContainer>
@@ -83,6 +128,7 @@ const S = {
   `,
   BuyTableContainer: styled.div`
     flex: 1;
+    
   `,
   ReturnResultTableContainer: styled.div`
     flex: 0.75;
@@ -143,3 +189,4 @@ const GlobalStyles = createGlobalStyle`
   transition: transform 300ms;
 }
 `;
+

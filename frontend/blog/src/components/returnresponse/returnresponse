@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import http from "../../api/http";
 import { BiMailSend } from "react-icons/bi";
-const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
+const ReturnResponse = ({ onClose, item, onSuccess, onError}) => {
     const [requestReason, setRequestReason] = useState('');
     const handleClose = (event) => {
         event.preventDefault();
@@ -10,33 +10,23 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
     };
     const handleSubmission = (event) => {
         event.preventDefault();
-        
-        const data = {
-          batteryId: item.id,
-          fromStatus: 'Normal',
-          toStatus: 'Request',
-          requestReason: requestReason,
-        };
+
     
-        http.post('/api/batteries/history', data)
-          .then((response) => {
-            console.log(response.data); // 응답 데이터를 출력합니다.
-            if (onSuccess) {
-              onSuccess(); // 상위 컴포넌트에 성공을 알림
-            }
-            onClose(); // 요청이 성공적으로 완료되면 모달을 닫습니다.
-          })
-          .catch((error) => {
-            console.error('There was an error sending the request', error);
-            if (onError) {
-              onError(); // 상위 컴포넌트에 에러를 알림
-            }
-          });
+        // http.get(`/api/batteries/history/response/${memberId}`, data)
+        //   .then((response) => {
+        //     console.log(response.data); // 응답 데이터를 출력합니다.
+        //     if (onSuccess) {
+        //       onSuccess(); // 상위 컴포넌트에 성공을 알림
+        //     }
+        //   })
+        //   .catch((error) => {
+        //     console.error('There was an error sending the request', error);
+        //   });
     };
   return (
     <>
         <S.Wrap>
-          <S.Title><BiMailSend/>{'\u00A0'}반품 신청</S.Title>
+          <S.Title><BiMailSend/>{'\u00A0'}신청 결과</S.Title>
           <S.Form>
             <S.FieldSet>
               <S.Label>제품명</S.Label>
@@ -48,16 +38,12 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
             </S.FieldSet>
             <S.FieldSet>
               <S.Label>수령일</S.Label>
-              <S.Input readOnly value={item ? item.id : ''} />
+              <S.Input readOnly value={item ? item.receiveDate : ''} />
             </S.FieldSet>
             <S.TextArea placeholder="반품 신청 사유를 입력하세요." 
             value={requestReason}
             onChange={(e) => setRequestReason(e.target.value)}
             />
-            <S.ButtonsWrap>
-              <S.CancelButton onClick={handleClose}>취소</S.CancelButton>
-              <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton>
-            </S.ButtonsWrap>
           </S.Form>
         </S.Wrap>
     </>
@@ -112,39 +98,7 @@ const S = {
     height: 150px;
     resize: vertical;
   `,
-  ButtonsWrap: styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  `,
-  CancelButton: styled.button`
-    background-color: #e0e0e0;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    width:80px;
-  cursor: pointer;
-  height:40px;
-  `,
-  SubmitButton: styled.button`
-  background-color: #024C98; // 부트스트랩의 기본 파란색
-  border-color: #007bff;
-  width:80px;
-  cursor: pointer;
-  color:white;
-  height:40px;
-  border-radius: 5px;
-  padding:2px;
-  &:hover {
-    background-color: #A5C7F8; // 호버 상태일 때 더 어두운 파란색
-    border-color: #0056b3;
-  }
-  &:focus, &:active {
-    background-color: #0056b3; // 클릭 상태일 때 색상
-    border-color: #0056b3;
-  }
-  `,
+
 };
 
-export default ReturnRequest;
+export default ReturnResponse;

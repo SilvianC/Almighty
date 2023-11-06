@@ -34,7 +34,11 @@ public class StatusHistoryController {
         List<StatusHistoryResponse> responses = statusHistoryService.getHistories(id);
         return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
     }
-
+    @GetMapping("/history/response/{historyId}")
+    public ResponseEntity<?> getHistory(@PathVariable("historyId") Long id){
+        StatusHistoryResponse responses = statusHistoryService.getHistory(id);
+        return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
+    }
     @GetMapping("history/all")
     public ResponseEntity<?> getAllHistories(@PageableDefault(size = 20) Pageable pageable){
         Page<StatusHistoryResponse> responses = statusHistoryService.getAllHistories(pageable);

@@ -52,8 +52,8 @@ const BuyTable = ({ data , onApplyClick}) => {
           <thead className={"table-secondary"}>
             <tr>
               <th className="w-auto text-center">제품명</th>
-              <th className="w-25 text-center">제조일</th>
-              <th className="w-25 text-center">수령일</th>
+              <th className="w-25 text-center">여기다</th>
+              <th className="w-25 text-center">뭐하지</th>
               <th className="w-auto text-center">반송 신청</th>
             </tr>
           </thead>
@@ -62,12 +62,18 @@ const BuyTable = ({ data , onApplyClick}) => {
               return (
                 <tr key={idx} style={{hover: '#333333'}}>
                   <td className="text-center">{item.code}</td>
-                  <td className="text-center">{item.madeDate}</td>
-                  <td className="text-center">{item.receiveDate}</td>
+                  <td className="text-center">뭐하냐</td>
+                  <td className="text-center">크아악</td>
                   <td className="text-center">
-                  <ApplyButton onClick={() => onApplyClick(item)}>
-                    신청
-                  </ApplyButton>
+                  {item.status === "Normal" ? (
+                    <ApplyButton onClick={() => onApplyClick(item)}>
+                      신청
+                    </ApplyButton>
+                  ) : item.status === "Request" ? (
+                    <CompletedButton disabled>
+                      진행 중
+                    </CompletedButton>
+                  ) : null}
                   </td>
                 </tr>
               );
@@ -81,11 +87,27 @@ const BuyTable = ({ data , onApplyClick}) => {
 };
 
 export default BuyTable;
+
+const CompletedButton = styled(Button)`
+  // 비활성화된 버튼 스타일
+  background-color: #B6C0C9 !important;
+  color: #000 !important;
+  width:80px;
+  font-weight: bold;
+  height:30px;
+  padding:2px;
+  cursor: not-allowed;
+  &:hover {
+    background-color: #B6C0C9;
+  }
+`;
+
 const ApplyButton = styled(Button)`
   background-color: #024C98; // 부트스트랩의 기본 파란색
   border-color: #007bff;
   width:80px;
   height:30px;
+  font-weight: bold;
   padding:2px;
   &:hover {
     background-color: #A5C7F8; // 호버 상태일 때 더 어두운 파란색
@@ -109,6 +131,7 @@ const S = {
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     border-radius: 10px;
     background-color: #F2F2F2;
+    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
   `,
   Title: styled.span`
     font-size: 30px;
@@ -120,12 +143,13 @@ const S = {
     font-size: 10px;
   `,
   Form: styled.span`
+    
   `,
   Table: styled(Table)`
     border-collapse: collapse; // 테이블의 선을 없애기 위해 collapse 설정
     background-color: #F2F2F2;
     padding:1px;
-
+    
     thead tr, tbody tr {
       border: none !important;
       font-weight: bold;
