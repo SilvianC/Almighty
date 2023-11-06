@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Logo from "../../assets/images/sdilogo.png";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Nav, NavItem, NavLink, Dropdown } from "react-bootstrap";
-import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import {
   MemberIdState,
   LoginIdState,
@@ -14,6 +14,7 @@ import {
   TelState,
   AccessTokenState,
   RefreshTokenState,
+  IsLoginState,
 } from "../../states/states";
 import http from "../../api/http";
 import AlarmModal from "../alarm/AlarmModal";
@@ -50,6 +51,7 @@ function Header() {
   const setTel = useSetRecoilState(TelState);
   const setAccessToken = useSetRecoilState(AccessTokenState);
   const setRefreshToken = useSetRecoilState(RefreshTokenState);
+  const setLoginstate = useResetRecoilState(IsLoginState);
   async function handleLogout() {
     try {
       await http
@@ -71,6 +73,7 @@ function Header() {
           setTel(null),
           setAccessToken(null),
           setRefreshToken(null),
+          setLoginstate(""),
           navigate("/")
         );
       // 로그아웃 후 처리할 로직이 있다면 이곳에 추가
@@ -139,7 +142,13 @@ function Header() {
               {count > 0 && (
                 <S.AlarmCount>
                   {count > 99 ? (
-                    <p style={{ "font-size": "11px", "padding-top": "3px", "padding-left": "1px" }}>
+                    <p
+                      style={{
+                        "font-size": "11px",
+                        "padding-top": "3px",
+                        "padding-left": "1px",
+                      }}
+                    >
                       99+
                     </p>
                   ) : (
@@ -147,7 +156,7 @@ function Header() {
                   )}
                 </S.AlarmCount>
               )}
-              <AlarmModal isOpen={isModalOpen} setCount={setCount} count={count} />
+              <AlarmModal isOpen={isModalOpen} setCount={setCount} />
             </NavItem>
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (

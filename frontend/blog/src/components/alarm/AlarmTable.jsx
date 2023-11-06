@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { BsFillBellFill } from "react-icons/bs";
-import { getalarmlog, getuseralarmlog } from "../../api/alarm";
+import { deleteAlarm, getalarmlog, getuseralarmlog } from "../../api/alarm";
 import Pagination from "../pagenation/Pagination";
 import { useRecoilValue } from "recoil";
 import { MemberIdState, RoleState } from "../../states/states";
@@ -9,14 +9,20 @@ const AlarmTable = () => {
   const memberId = useRecoilValue(MemberIdState);
   const role = useRecoilValue(RoleState);
   const [isHovering, setIsHovering] = useState(false);
-
+  const deleteAlarmHandle = (id) => {
+    deleteAlarm(
+      id,
+      ({ data }) => {
+        console.log(id);
+        console.log(data);
+      },
+      ({ error }) => {}
+    );
+  };
   const handleMouseOver = () => {
     setIsHovering(true);
   };
 
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(1);
@@ -85,7 +91,7 @@ const AlarmTable = () => {
       <S.BODY>
         {totalElements == 0 && <h2>"알림 내역이 없습니다."</h2>}
 
-        {data.map(({ title, time, content, isRead, company }) => {
+        {data.map(({ title, time, id, company }) => {
           const formattedTime = new Date() - new Date(time);
           const MonthDifference = formattedTime / (1000 * 60 * 60 * 24 * 31); // 달
           const daysDifference = formattedTime / (1000 * 60 * 60 * 24); // 하루
@@ -114,7 +120,9 @@ const AlarmTable = () => {
                       })()}
                     </td>
                     <td>
-                      <button>삭제</button>
+                      <button onClick={() => deleteAlarmHandle(id)}>
+                        삭제
+                      </button>
                     </td>
                   </tr>
                 </section>

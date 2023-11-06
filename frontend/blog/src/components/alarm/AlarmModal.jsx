@@ -5,16 +5,18 @@ import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import { updateAlarm } from "../../api/alarm";
 
-const AlarmModal = ({ isOpen, setCount, count }) => {
+const AlarmModal = ({ isOpen, setCount }) => {
   const memberId = useRecoilValue(MemberIdState);
-  if (count > 0) {
+  if (isOpen) {
     updateAlarm(
       memberId,
       ({ data }) => {
         console.log(data);
         setCount(0);
       },
-      ({ error }) => {}
+      ({ error }) => {
+        console.log(error);
+      }
     );
   }
   return (
