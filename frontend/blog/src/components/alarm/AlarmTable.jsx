@@ -43,7 +43,7 @@ const AlarmTable = () => {
           });
           setTotalElements(() => {
             return data.totalElements;
-          })
+          });
         },
         ({ error }) => {
           console.log(error);
@@ -66,7 +66,7 @@ const AlarmTable = () => {
           });
           setTotalElements(() => {
             return data.totalElements;
-          })
+          });
         },
         ({ error }) => {
           console.log(error);
@@ -83,10 +83,7 @@ const AlarmTable = () => {
       </S.Title>
 
       <S.BODY>
-        {
-          totalElements == 0 &&
-          <h2>"알림 내역이 없습니다."</h2>
-        }
+        {totalElements == 0 && <h2>"알림 내역이 없습니다."</h2>}
 
         {data.map(({ title, time, content, isRead, company }) => {
           const formattedTime = new Date() - new Date(time);
@@ -97,34 +94,32 @@ const AlarmTable = () => {
           const hours = Math.floor((daysDifference - days) * 24); //시간
           return (
             <>
-              { totalElements != 0 &&
-              <section className="hovering">
-              <tr>
-                <td style={{ width: "20px" }}></td>
-                <td className="image">{"이미지"}</td>
-                <td className="content">{`[${title}] ${company}으로 반송신청 들어옴`}</td>
-                <td className="time">
-                  {(() => {
-                    if (month > 0) {
-                      return `${month}달 전`;
-                    } else if (days > 0) {
-                      return `${days}일 전`;
-                    } else if (hours > 0) {
-                      return `${hours}시간 전`;
-                    } else {
-                      return "방금 전";
-                    }
-                  })()}
-                </td>
-                <td>
-                  <button>삭제</button>
-                </td>
-              </tr>
-            </section>
-              }
-
+              {totalElements != 0 && (
+                <section className="hovering">
+                  <tr>
+                    <td style={{ width: "20px" }}></td>
+                    <td className="image">{"이미지"}</td>
+                    <td className="content">{`[${title}] ${company}으로 반송신청 들어옴`}</td>
+                    <td className="time">
+                      {(() => {
+                        if (month > 0) {
+                          return `${month}달 전`;
+                        } else if (days > 0) {
+                          return `${days}일 전`;
+                        } else if (hours > 0) {
+                          return `${hours}시간 전`;
+                        } else {
+                          return "방금 전";
+                        }
+                      })()}
+                    </td>
+                    <td>
+                      <button>삭제</button>
+                    </td>
+                  </tr>
+                </section>
+              )}
             </>
-            
           );
         })}
       </S.BODY>

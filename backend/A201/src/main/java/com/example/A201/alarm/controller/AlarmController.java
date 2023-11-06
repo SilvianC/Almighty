@@ -56,9 +56,6 @@ public class AlarmController {
         return ResponseEntity.ok("굳");
     }
 
-
-
-
     @PostMapping
     public ResponseEntity insertAlarm(@RequestBody AlarmDto alarmDto) {
         alarmService.insertAlarm(alarmDto);
@@ -70,7 +67,4 @@ public class AlarmController {
         alarmService.deleteAlarm(alarmId);
         return SuccessResponseEntity.toResponseEntity("알람이 삭제 되었습니다.",null);
     }
-
-
-
 }

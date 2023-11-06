@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/images/sdilogo.png";
@@ -16,7 +16,27 @@ import {
   RefreshTokenState,
 } from "../../states/states";
 import http from "../../api/http";
+import AlarmModal from "../alarm/AlarmModal";
+import { useState } from "react";
+import { countAlarm } from "../../api/alarm";
 function Header() {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    countAlarm(
+      memberId,
+      ({ data }) => {
+        console.log(data);
+        setCount(data.count);
+      },
+      ({ error }) => {
+        console.log(error);
+      }
+    );
+  }, []);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(!isModalOpen);
   const navigate = useNavigate();
   const memberId = useRecoilValue(MemberIdState);
   console.log(memberId);
@@ -110,6 +130,25 @@ function Header() {
                 Return
               </S.CustomNavLink>
             </NavItem>
+            <NavItem className="alarm">
+              <S.Alarm
+                className="alarmImage"
+                src={isModalOpen ? "bluebell.png" : "whitebell.png"}
+                onClick={openModal}
+              ></S.Alarm>
+              {count > 0 && (
+                <S.AlarmCount>
+                  {count > 99 ? (
+                    <p style={{ "font-size": "11px", "padding-top": "3px", "padding-left": "1px" }}>
+                      99+
+                    </p>
+                  ) : (
+                    <p>{count}</p>
+                  )}
+                </S.AlarmCount>
+              )}
+              <AlarmModal isOpen={isModalOpen} />
+            </NavItem>
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (
               <S.LogoutTab>
@@ -144,6 +183,13 @@ const S = {
     display: flex;
     justify-content: flex-start; // 여기를 변경합니다.
   `,
+
+  Alarm: styled.img`
+    width: 40px;
+    height: 30px;
+    margin-top: 10px;
+    cursor: pointer;
+  `,
   Logo: styled.img`
     width: 160px;
     height: 30px;
@@ -176,6 +222,16 @@ const S = {
     display: flex;
     @media (max-width: 768px) {
       display: none;
+    }
+    .alarm {
+      margin-top: 4px;
+      width: 60px;
+      height: 50px;
+      &:hover {
+        background: #9b9b9b;
+        border-radius: 50%;
+      }
+      text-align: center;
     }
   `,
   LogoutTab: styled.div`
@@ -219,6 +275,23 @@ const S = {
         border-color: #adadad;
       }
     }
+  `,
+  AlarmCount: styled.div`
+    color: #fff;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background-color: #d1180b;
+    opacity: 0.9;
+    text-align: center;
+    font-size: 15px;
+    margin: 0px;
+    padding-top: 0px;
+    padding-right: 0px;
+    padding-left: 1px;
+    position: relative;
+    left: 28.5px;
+    top: -37.5px;
   `,
 };
 

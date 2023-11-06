@@ -1,8 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import AlarmTable from "./AlarmTable";
+import { useRecoilValue } from "recoil";
+import { MemberIdState } from "../../states/states";
+import { updateAlarm } from "../../api/alarm";
 
 const AlarmModal = ({ isOpen }) => {
+  const memberId = useRecoilValue(MemberIdState);
+  updateAlarm(
+    memberId,
+    ({ data }) => {
+      console.log(data);
+    },
+    ({ error }) => {}
+  );
   return (
     <div style={{ display: isOpen ? "block" : "none" }}>
       <S.livechat>
