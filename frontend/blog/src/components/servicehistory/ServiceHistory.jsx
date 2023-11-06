@@ -1,23 +1,58 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useEffect,useRef, useState } from "react";
+import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
+import ReturnResponse from "../returnresponse/ReturnResponse";
+import { CSSTransition } from 'react-transition-group';
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
 const status = {
   Normal: "정상",
-  Request: "반품 요청",
+  Request: "반품 신청",
   Upload: "데이터 업로드",
   Analysis: "분석 중",
   CustomerFault: "고객 귀책",
   SdiFault: "제품 결함",
 };
-const ServiceHistory = ({ data, page, setPage, totalPage }) => {
+const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
+  const [showReturnResponse, setShowReturnResponse] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const wrapperRef = useRef(null);
+
+  // 클릭 이벤트 리스너를 설정합니다.
+  useEffect(() => {
+    // 클릭 이벤트를 처리하는 함수입니다.
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        // 컴포넌트의 외부 클릭이 감지되면 ReturnResponse를 닫습니다.
+        setShowReturnResponse(false);
+      }
+    }
+    // 클릭 리스너를 추가합니다.
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // 컴포넌트가 언마운트될 때 리스너를 제거합니다.
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]); // 빈 배열을 넣으면 컴포넌트가 마운트될 때 한 번만 실행됩니다.
+  const handleStatusButtonClick = (item) => {
+    http.get(`/api/batteries/history/response/${item.historyId}`)
+    .then((response) => {
+      // 응답 데이터로 상태를 설정합니다.
+      setSelectedItem({ ...item, responseData: response.data });
+      setShowReturnResponse(true); // ReturnResponse 컴포넌트를 표시합니다.
+    })
+    .catch((error) => {
+      console.error('There was an error fetching the response', error);
+      // 필요하다면 여기서 오류 처리를 하세요.
+    });
+  };
+
   return (
-    <S.Wrap>
+    <S.Wrap ref={wrapperRef}>
       <S.Title className="d-flex align-items-center">
         <BsFillClipboard2CheckFill />{'\u00A0'}
         반송 신청 결과
@@ -38,13 +73,27 @@ const ServiceHistory = ({ data, page, setPage, totalPage }) => {
                 <tr key={idx}>
                   <td>{item.code}</td>
                   <td>{item.date}</td>
-                  <td>{status[item.toStatus]}</td>
+                  <td>
+                    <StatusButton onClick={() => handleStatusButtonClick(item)}>
+                      {status[item.toStatus]}
+                    </StatusButton>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </S.Table>
       </Form>
+      <CSSTransition
+        in={showReturnResponse}
+        timeout={300}
+        classNames="slide-down"
+        unmountOnExit
+      >
+        <S.ReturnResponseWrapper>
+          <ReturnResponse onClose={() => setShowReturnResponse(false)} item={selectedItem} onSuccess={onStatusClick} />
+        </S.ReturnResponseWrapper>
+      </CSSTransition>
       <S.PageArea>
         <S.PageBox>1</S.PageBox>
       </S.PageArea>
@@ -53,6 +102,20 @@ const ServiceHistory = ({ data, page, setPage, totalPage }) => {
 };
 
 export default ServiceHistory;
+const StatusButton = styled(Button)`
+  /* 여기에 버튼 스타일 추가 */
+  width:90px;
+  font-size: 17px !important;
+  border-radius: 5px;
+  font-weight: bold;
+  height:30px;
+  padding:2px;
+  background-color: #B6C0C9 !important;
+  color: #000 !important;
+  &:hover {
+    background-color: #ffffff !important;  /* 호버 스타일링 */
+  }
+`;
 const S = {
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
@@ -65,7 +128,15 @@ const S = {
     background-color: #F2F2F2;
     height:600px;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
+    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
     
+  `,
+  ReturnResponseWrapper: styled.div`
+    position: absolute;
+    top: 0; // 상단에서 시작
+    width: 100%; 
+    right:1px;
+    z-index: 2; // 필요에 따라 적절한 z-index 설정
   `,
   Title: styled.span`
   font-size: 30px;
