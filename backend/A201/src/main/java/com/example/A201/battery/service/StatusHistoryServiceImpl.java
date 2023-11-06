@@ -20,6 +20,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.example.A201.battery.constant.Status.Request;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -44,7 +46,12 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
         List<StatusHistory> histories = statusHistoryRepository.findByBatteryId(batteryId);
         return histories.stream().map(history -> StatusHistoryResponse.statusHistoryResponse(history)).collect(Collectors.toList());
     }
-
+    @Override
+    public StatusHistoryResponse getHistory(Long HistoryId){
+        StatusHistory hhistory = statusHistoryRepository.getById(HistoryId);
+        StatusHistoryResponse shr = StatusHistoryResponse.statusHistoryResponse(hhistory);
+        return shr;
+    }
     @Override
     public StatusHistory createHistory(StatusHistoryDTO statusHistoryDTO) {
         Battery battery = batteryRepository.findById(statusHistoryDTO.getBatteryId())
@@ -59,6 +66,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
     public StatusHistoryDTO requestToDTO(StatusHistoryRequest request) {
         Battery battery = batteryRepository.findById(request.getBatteryId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 배터리를 찾을 수 없습니다"));
+        battery.setBatteryStatus(Status.Request);
         StatusHistoryDTO dto = new StatusHistoryDTO();
         dto.setBatteryId(battery.getId());
         dto.setDate(LocalDate.now());
