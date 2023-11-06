@@ -28,12 +28,6 @@ public class Battery {
 
     private String code;
 
-    @Column(name = "request_date")
-    private LocalDate madeDate;
-
-    @Column(name = "response_date")
-    private LocalDate receiveDate;
-
     @Column(name = "battery_status")
     @Enumerated(EnumType.STRING)
     private Status batteryStatus;
