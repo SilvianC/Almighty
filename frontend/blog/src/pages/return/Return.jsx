@@ -127,11 +127,11 @@ const S = {
     width:100%;
   `,
   BuyTableContainer: styled.div`
-    flex: 1;
+    flex: 0.8;
     
   `,
   ReturnResultTableContainer: styled.div`
-    flex: 0.75;
+    flex: 1;
     position: relative; // 이 부분이 추가되어야 합니다.
   `,
   Title: styled.div`

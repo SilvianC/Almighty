@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import styled from "styled-components";
+import ReturnResponse from "../returnresponse/ReturnResponse";
+import { CSSTransition } from 'react-transition-group';
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
@@ -16,17 +18,41 @@ const status = {
   SdiFault: "제품 결함",
 };
 const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
-  // http.get(`/api/batteries/history/response/${}`)
-  //         .then((response) => {
-  //           console.log("크아앙"); // 응답 데이터를 출력합니다.
-  //         })
-  //         .catch((error) => {
-  //           console.error('There was an error sending the request', error);
-  //         });
+  const [showReturnResponse, setShowReturnResponse] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const wrapperRef = useRef(null);
 
+  // 클릭 이벤트 리스너를 설정합니다.
+  useEffect(() => {
+    // 클릭 이벤트를 처리하는 함수입니다.
+    function handleClickOutside(event) {
+      if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
+        // 컴포넌트의 외부 클릭이 감지되면 ReturnResponse를 닫습니다.
+        setShowReturnResponse(false);
+      }
+    }
+    // 클릭 리스너를 추가합니다.
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // 컴포넌트가 언마운트될 때 리스너를 제거합니다.
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [wrapperRef]); // 빈 배열을 넣으면 컴포넌트가 마운트될 때 한 번만 실행됩니다.
+  const handleStatusButtonClick = (item) => {
+    http.get(`/api/batteries/history/response/${item.historyId}`)
+    .then((response) => {
+      // 응답 데이터로 상태를 설정합니다.
+      setSelectedItem({ ...item, responseData: response.data });
+      setShowReturnResponse(true); // ReturnResponse 컴포넌트를 표시합니다.
+    })
+    .catch((error) => {
+      console.error('There was an error fetching the response', error);
+      // 필요하다면 여기서 오류 처리를 하세요.
+    });
+  };
 
   return (
-    <S.Wrap>
+    <S.Wrap ref={wrapperRef}>
       <S.Title className="d-flex align-items-center">
         <BsFillClipboard2CheckFill />{'\u00A0'}
         반송 신청 결과
@@ -48,7 +74,7 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
                   <td>{item.code}</td>
                   <td>{item.date}</td>
                   <td>
-                    <StatusButton onClick={() => onStatusClick(item)}>
+                    <StatusButton onClick={() => handleStatusButtonClick(item)}>
                       {status[item.toStatus]}
                     </StatusButton>
                   </td>
@@ -58,6 +84,16 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
           </tbody>
         </S.Table>
       </Form>
+      <CSSTransition
+        in={showReturnResponse}
+        timeout={300}
+        classNames="slide-down"
+        unmountOnExit
+      >
+        <S.ReturnResponseWrapper>
+          <ReturnResponse onClose={() => setShowReturnResponse(false)} item={selectedItem} onSuccess={onStatusClick} />
+        </S.ReturnResponseWrapper>
+      </CSSTransition>
       <S.PageArea>
         <S.PageBox>1</S.PageBox>
       </S.PageArea>
@@ -94,6 +130,13 @@ const S = {
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
     
+  `,
+  ReturnResponseWrapper: styled.div`
+    position: absolute;
+    top: 0; // 상단에서 시작
+    width: 100%; 
+    right:1px;
+    z-index: 2; // 필요에 따라 적절한 z-index 설정
   `,
   Title: styled.span`
   font-size: 30px;

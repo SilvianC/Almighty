@@ -52,8 +52,8 @@ const BuyTable = ({ data , onApplyClick}) => {
           <thead className={"table-secondary"}>
             <tr>
               <th className="w-auto text-center">제품명</th>
-              <th className="w-25 text-center">여기다</th>
-              <th className="w-25 text-center">뭐하지</th>
+              {/* <th className="w-25 text-center">여기다</th>
+              <th className="w-25 text-center">뭐하지</th> */}
               <th className="w-auto text-center">반송 신청</th>
             </tr>
           </thead>
@@ -62,8 +62,8 @@ const BuyTable = ({ data , onApplyClick}) => {
               return (
                 <tr key={idx} style={{hover: '#333333'}}>
                   <td className="text-center">{item.code}</td>
-                  <td className="text-center">뭐하냐</td>
-                  <td className="text-center">크아악</td>
+                  {/* <td className="text-center">뭐하냐</td>
+                  <td className="text-center">크아악</td> */}
                   <td className="text-center">
                   {item.status === "Normal" ? (
                     <ApplyButton onClick={() => onApplyClick(item)}>
