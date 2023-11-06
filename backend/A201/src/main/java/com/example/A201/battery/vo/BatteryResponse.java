@@ -18,9 +18,6 @@ import java.time.LocalDate;
 public class BatteryResponse {
     private String code;
 
-    private LocalDate madeDate;
-
-    private LocalDate receiveDate;
 
     private Long modelId;
 
@@ -32,8 +29,6 @@ public class BatteryResponse {
     public static BatteryResponse batteryResponse(Battery battery){
         return BatteryResponse.builder()
                 .code(battery.getCode())
-                .madeDate(battery.getMadeDate())
-                .receiveDate(battery.getReceiveDate())
                 .modelId(battery.getModel().getId())
                 .memberId(battery.getMember().getMemberId())
                 .Id(battery.getId())
