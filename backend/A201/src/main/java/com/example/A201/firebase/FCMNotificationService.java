@@ -33,6 +33,7 @@ public class FCMNotificationService {
 
     public String sendNotificationByToken(FCMNotificationRequestDto requestDto) {
         log.info("누구에게 보내는 메시지{}",requestDto.toString());
+        System.out.println(firebaseMessaging.toString());
         if(requestDto.getReceiver().getRole()=="유저"){
             log.info("유저에게 보내는 메시지{}",requestDto.toString());
             String token = valueOperations.get(String.valueOf(requestDto.getTargetUserId()));

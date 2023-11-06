@@ -4,6 +4,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import styled from "styled-components";
 import AlarmTable from "../../components/alarm/AlarmTable";
 import http from "../../api/http";
+import AlarmModal from "../../components/alarm/AlarmModal";
 // import "./ServiceHistory.css";
 
 // const data = [
@@ -50,14 +51,21 @@ import http from "../../api/http";
 // ];
 
 const ServiceHistory = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(!isModalOpen);
   const [history, setHistory] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     http
       .get(`/api/batteries/history/all`)
       .then(({ data }) => {
         setHistory(() => {
-          return data["data"];
+          return data["data"]["content"];
         });
+        setPage(() => 0);
+        setTotalPage(() => data["data"]["totalPages"]);
       })
       .catch();
   }, []);
@@ -68,10 +76,20 @@ const ServiceHistory = () => {
       </S.Title>
       <S.Content>
         <S.AlarmWrapper>
-          <AlarmTable />
+          <div>
+            <button onClick={openModal}>
+              <img className="phoneImage" alt="iPhone_01" src="bluebell.png" />
+            </button>
+            <AlarmModal isOpen={isModalOpen} />
+          </div>
         </S.AlarmWrapper>
         <S.ServiceHistoryWrapper>
-          <components.ServiceHistory data={history} />
+          <components.ServiceHistory
+            data={history}
+            page={page}
+            totalPage={totalPage}
+            setPage={setPage}
+          />
         </S.ServiceHistoryWrapper>
       </S.Content>
     </S.Container>

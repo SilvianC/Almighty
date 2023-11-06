@@ -3,8 +3,14 @@ import styled from "styled-components";
 import BatteryBoard from "./BatteryBoard";
 import ChatComponent from "../../components/chatbot/ChatComponent";
 import { BiLineChart } from "react-icons/bi";
+import { useRecoilValue } from "recoil";
+import { IsLoginState } from "../../states/states";
+import FirebaseComponent from "../../config/firebase-messaging-sw";
 
 const Board = () => {
+
+  FirebaseComponent();
+  
   return (
     <S.Container>
       <S.Title>

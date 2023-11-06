@@ -1,9 +1,4 @@
-import React, {
-  useImperativeHandle,
-  forwardRef,
-  useRef,
-  useEffect,
-} from "react";
+import React, { useImperativeHandle, forwardRef, useRef } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";

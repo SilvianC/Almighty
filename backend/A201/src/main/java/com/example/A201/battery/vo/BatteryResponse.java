@@ -24,6 +24,10 @@ public class BatteryResponse {
 
     private Long modelId;
 
+    private Long memberId;
+
+    private Long Id;
+
     private String status;
     public static BatteryResponse batteryResponse(Battery battery){
         return BatteryResponse.builder()
@@ -31,6 +35,8 @@ public class BatteryResponse {
                 .madeDate(battery.getMadeDate())
                 .receiveDate(battery.getReceiveDate())
                 .modelId(battery.getModel().getId())
+                .memberId(battery.getMember().getMemberId())
+                .Id(battery.getId())
                 .status(battery.getBatteryStatus() == null ? Status.Normal.name() : battery.getBatteryStatus().name())
                 .build();
     }

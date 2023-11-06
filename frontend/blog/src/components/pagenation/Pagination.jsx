@@ -1,25 +1,39 @@
 import styled from "styled-components";
 
-function Pagination({ total, limit, page, setPage }) {
-  const numPages = Math.ceil(total / limit);
+function Pagination({ total, page, setPage }) {
+  const generatePageNumbers = () => {
+    const pages = [];
+    const p = 5 * Math.floor((page - 1) / 5);
+
+    if (page + 5 <= total) {
+      // 전체 페이지 수가 표시할 총 페이지 수보다 작을 경우, 모든 페이지를 표시
+      for (let i = p; i < p + 5; i++) {
+        pages.push(i);
+      }
+    } else {
+      for (let i = p; i < total; i++) {
+        pages.push(i);
+      }
+    }
+
+    return pages;
+  };
 
   return (
     <Nav>
       <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
         &lt;
       </Button>
-      {Array(numPages)
-        .fill()
-        .map((_, i) => (
-          <Button
-            key={i + 1}
-            onClick={() => setPage(i + 1)}
-            aria-current={page === i + 1 ? "page" : undefined}
-          >
-            {i + 1}
-          </Button>
-        ))}
-      <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
+      {generatePageNumbers().map((i) => (
+        <Button
+          key={i + 1}
+          onClick={() => setPage(i + 1)}
+          aria-current={page === i + 1 ? "page" : undefined}
+        >
+          {i + 1}
+        </Button>
+      ))}
+      <Button onClick={() => setPage(page + 1)} disabled={page === total}>
         &gt;
       </Button>
     </Nav>
