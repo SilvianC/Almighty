@@ -2,6 +2,8 @@ package com.example.A201.battery.service;
 
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
+import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
 
@@ -19,4 +21,6 @@ public interface BatteryService {
     List<BatteryResponse> getRequestBatteries();
 
     void updateBatteriesStatus(String code, String reason);
+
+    List<Progress> getProgressAll();
 }
