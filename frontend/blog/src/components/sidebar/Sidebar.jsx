@@ -16,7 +16,7 @@ const SideBar = () => {
   const [selectedMenu, setSelectedMenu] = useState(-1);
   useEffect(() => {
     http
-      .get(`/api/batteries/request`)
+      .get(`/api/batteries/progress/request`)
       .then(({ data }) => {
         setData(() => {
           return data["data"];
@@ -31,7 +31,7 @@ const SideBar = () => {
       active={selectedMenu === index}
       onClick={() => setSelectedMenu(index)}
     >
-      {item.modelId} {item.madeDate}
+      {item.batteryId} {item.createDate}
     </MenuItem>
   ));
 
