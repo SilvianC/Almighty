@@ -22,15 +22,20 @@ public class AlarmResponse {
 
     private String content;
 
-    private Long member;
-
     private LocalDateTime time;
+
+    private Boolean isRead;
+
+    private String company;
 
     public static AlarmResponse alarmResponse(Alarm alarm){
         return AlarmResponse.builder()
+                .id(alarm.getId())
                 .title(alarm.getTitle().getTitle())
                 .content(alarm.getContent())
-                .time(alarm.getCreatedDate()).build();
+                .time(alarm.getCreatedDate())
+                .isRead(alarm.getIsRead())
+                .company(alarm.getMember().getCompany()).build();
     }
 
 }

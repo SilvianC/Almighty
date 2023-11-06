@@ -1,10 +1,16 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken } from "firebase/messaging";
 import { useEffect, useState } from "react";
-import { getAnalytics } from "firebase/analytics";
 
-import { pushalarm, pushtoken } from "../api/fire";
+import { pushtoken } from "../api/fire";
+import { useRecoilValue, useRecoilState } from "recoil";
+import { MemberIdState,IsLoginState } from "../states/states";
+
+
 function FirebaseComponent() {
+  const islogin = useRecoilValue(IsLoginState);
+  const memberId = useRecoilValue(MemberIdState);
+  const [isLogin, setIsLogin] = useRecoilState(IsLoginState);
   const firebaseConfig = {
     apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
     authDomain: "a201-822f6.firebaseapp.com",
@@ -16,13 +22,14 @@ function FirebaseComponent() {
   };
 
   const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
   const messaging = getMessaging(app);
 
   useEffect(() => {
+    if (isLogin == '') {
+      requestPermission();
+    }
     async function registerSW() {
-      await navigator.serviceWorker.register('/firebase-messaging-sw.js');
-      console.log("알림 권한이 허용됨");
+      await navigator.serviceWorker.register("/firebase-messaging-sw.js");
     }
     async function requestPermission() {
       console.log("권한 요청 중...");
@@ -31,8 +38,12 @@ function FirebaseComponent() {
         console.log("알림 권한 허용 안됨");
         return;
       }
-      await registerSW();
-    
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        /* ... */
+        await registerSW();
+        console.log("알림 권한이 허용됨");
+      }
+
       try {
         const token = await getToken(messaging, {
           vapidKey:
@@ -40,24 +51,24 @@ function FirebaseComponent() {
         });
         if (token) {
           console.log("token: ", token);
-          pushtoken({ "firebaseToken":token }, 3,
-            ({ data }) => {
-              console.log(data);
+          pushtoken(
+            { firebaseToken: token },
+            memberId,
+            ({success}) => {
+              setIsLogin(true);
+              console.log("성공한거야")
             },
             ({ error }) => {
               console.log(error);
             }
           );
-          
-        } 
-        else console.log("Can not get Token");
-
-      
+        } else console.log("Can not get Token");
       } catch (error) {
         console.log("알림 설정 필요", error);
       }
     }
-    requestPermission();
-  }, []);
+    
+  }, [messaging]);
+
 }
 export default FirebaseComponent;

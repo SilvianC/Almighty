@@ -9,4 +9,10 @@ public interface AlarmService {
     void insertAlarm(AlarmDto alarmDto);
 
     Page<AlarmResponse> getAlarm(Long id, String status, PageRequest pageRequest);
+
+    Long countAlarm(Long id);
+
+    void deleteAlarm(Long alarmId);
+
+    void updateAlarm(Long id);
 }
