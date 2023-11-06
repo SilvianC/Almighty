@@ -77,9 +77,14 @@ public class BatteryController {
         return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
 
-    @GetMapping("/progress")
-    public ResponseEntity<?> getProgressList(){
-        List<Progress> progressList = batteryService.getProgressAll();
-        return SuccessResponseEntity.toResponseEntity("분석 완료 배터리 불러오기 성공", progressList);
+    @GetMapping("progress/request")
+    public ResponseEntity<?> getRequestProgress(){
+        return SuccessResponseEntity.toResponseEntity("진행충인 요청 불러오기 완료", batteryService.getRequestProgress());
     }
+
+    @GetMapping("progress/finished")
+    public ResponseEntity<?> getFinishedProgress(){
+        return SuccessResponseEntity.toResponseEntity("완료 요청 불러오기 완료", batteryService.getFinishedProgress());
+    }
+
 }

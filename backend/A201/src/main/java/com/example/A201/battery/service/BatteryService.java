@@ -22,5 +22,11 @@ public interface BatteryService {
 
     void updateBatteriesStatus(String code, String reason);
 
+<<<<<<< HEAD
+    List<Progress> getRequestProgress();
+
+    List<Progress> getFinishedProgress();
+=======
     List<Progress> getProgressAll();
+>>>>>>> 23b8bf2d46afcdf9a88229f1ae695e2761dba409
 }
