@@ -6,6 +6,7 @@ import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.vo.BatteryResponse;
@@ -74,5 +75,11 @@ public class BatteryController {
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progress.getTitle()).getTo()))
                 .build());
         return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
+    }
+
+    @GetMapping("/progress")
+    public ResponseEntity<?> getProgressList(){
+        List<Progress> progressList = batteryService.getProgressAll();
+        return SuccessResponseEntity.toResponseEntity("분석 완료 배터리 불러오기 성공", progressList);
     }
 }
