@@ -147,7 +147,7 @@ function Header() {
                   )}
                 </S.AlarmCount>
               )}
-              <AlarmModal isOpen={isModalOpen} />
+              <AlarmModal isOpen={isModalOpen} setCount={setCount} count={count} />
             </NavItem>
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (

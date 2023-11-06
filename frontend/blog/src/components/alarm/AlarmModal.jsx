@@ -5,20 +5,23 @@ import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import { updateAlarm } from "../../api/alarm";
 
-const AlarmModal = ({ isOpen }) => {
+const AlarmModal = ({ isOpen, setCount, count }) => {
   const memberId = useRecoilValue(MemberIdState);
-  updateAlarm(
-    memberId,
-    ({ data }) => {
-      console.log(data);
-    },
-    ({ error }) => {}
-  );
+  if (count > 0) {
+    updateAlarm(
+      memberId,
+      ({ data }) => {
+        console.log(data);
+        setCount(0);
+      },
+      ({ error }) => {}
+    );
+  }
   return (
     <div style={{ display: isOpen ? "block" : "none" }}>
-      <S.livechat>
+      <S.live>
         <AlarmTable></AlarmTable>
-      </S.livechat>
+      </S.live>
     </div>
   );
 };
@@ -46,7 +49,7 @@ const S = {
   Table: styled.table`
     tablelayout: "fixed";
   `,
-  livechat: styled.div`
+  live: styled.div`
     position: fixed;
     top: 50px;
     right: 50px;
