@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { changeStatus, postHistory } from "../../api/battery"
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const RegistResult = () => {
+	const navigate = useNavigate();
+
 	const [selectedOption, setSelectedOption] = useState("사유 선택");
 	const [resonDetail, setReasonDetail] = useState("");
 	const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -9,6 +14,37 @@ const RegistResult = () => {
 	const toggleDropdown = () => {
 		setIsDropdownOpen(!isDropdownOpen);
 	};
+
+	/*
+	const regist = () => {
+		changeStatus(
+			{ batteryId },
+			{ status },
+			(data) => {
+				if (data.message === "상태 변경 완료") {
+					// alert("결과 등록이 완료 되었습니다.");
+				}
+			},
+			(error) => {
+				console.log(error);
+				// alert("다시 시도해주세요");
+			}
+		);
+		postHistory(
+			{ batteryId, fromStatus, toStatus, requestReason },
+			(data) => {
+				if (data.message === "히스토리 등록 완료") {
+					// alert("결과 등록이 완료 되었습니다.");
+				}
+			},
+			(error) => {
+				console.log(error);
+			}
+		);
+		alert("결과 등록이 완료 되었습니다.");
+		navigate("/main");
+	}
+	*/
 
 	return (
 		<S.Wrap>
@@ -50,15 +86,9 @@ const RegistResult = () => {
 					)}
 				</S.Dropdown>
 				{selectedOption == "기타" && (
-						<input type="text" placeholder="상세 사유 입력" />
+					<input type="text" placeholder="상세 사유 입력" />
 				)}
 			</S.Reason>
-			{/* {selectedOption == "기타" && (
-				<S.Reason>
-					<p></p>
-					<input type="text" placeholder="상세 사유 입력" />
-				</S.Reason>
-			)} */}
 			<S.Regist>
 				<button>등록</button>
 			</S.Regist>
@@ -111,7 +141,7 @@ const S = {
   		white-space: nowrap;
 		}
 		> div> label > input[type="radio"]:checked + span {
-  		background-color: #034F9E;\
+  		background-color: #034F9E;
   		z-index: 1;
   		color: #F2F2F2;
 		}
@@ -127,7 +157,7 @@ const S = {
   		color: #B6C0C9;
  		 	text-align: center;
 			font-weight: bold;
-			font-size: 20px;
+			font-size: 18px;
   		transition: background-color .5s ease;
 		}
 		> div > label:first-child > span {
@@ -144,15 +174,15 @@ const S = {
 		width: 85.6%;
 
 		> p {
-			font-size: 20px;
+			font-size: 18px;
 			font-weight: bold;
 			color: #1D1F25;
-			width: 25%;
+			width: 30%;
 			text-align: center;
 			margin-bottom: 0rem;
 		}
 		> input {
-			width: 75%;
+			width: 70%;
 			background-color: #F2F2F2;
 			font-size: 18px;
 			font-weight: bold;
@@ -166,7 +196,7 @@ const S = {
 	Dropdown: styled.div`
 		position: relative;
 		display: inline-block;
-		width: 75%;
+		width: 70%;
 
 		&.open .content {
       display: block;
@@ -191,7 +221,8 @@ const S = {
   		position: absolute;
   		background-color: #f1f1f1;
   		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  		z-index: 1;
+			width: 100%;
+			z-index: 1;
 		}
 		> .content > span {
 			color: #1D1F25;

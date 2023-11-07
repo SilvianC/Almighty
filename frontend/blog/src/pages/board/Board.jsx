@@ -14,28 +14,42 @@ import FirebaseComponent from "../../config/firebase-messaging-sw";
 const Board = () => {
 
   FirebaseComponent();
-  
+
   return (
-    <S.Container>
-      <S.Title>
-        <BiLineChart></BiLineChart>측정 데이터
-      </S.Title>
-      <BatteryBoard></BatteryBoard>
+    <S.Wrap>
       <RegisterReason></RegisterReason>
-      <BMSData></BMSData>
-      <AnalysisResult></AnalysisResult>
-      <RegistResult></RegistResult>
-      <ChatComponent />
-    </S.Container>
+      <S.Data>
+        <S.Graph>
+          {/* <BiLineChart></BiLineChart> */}
+          <BatteryBoard></BatteryBoard>
+        </S.Graph>
+        <S.Container>
+          <BMSData></BMSData>
+          <AnalysisResult></AnalysisResult>
+          <RegistResult></RegistResult>
+          <ChatComponent />
+        </S.Container>
+      </S.Data>
+    </S.Wrap>
   );
 };
 
 const S = {
-  Container: styled.div``,
-  Title: styled.div`
-    font-size: 30px;
-    font-weight: bold;
-    color: #1428a0;
+  Wrap: styled.div`
+  `,
+  Data: styled.div`
+  display: flex;
+  flex-direction: row;
+  `,
+  Container: styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+  `,
+  Graph: styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 60%;
   `,
 };
 

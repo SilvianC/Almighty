@@ -10,8 +10,8 @@ const BMSdata = () => {
 					<p>충전</p>
 				</S.Title>
 				<S.Data>
-					<span>총 시간: 2시간19분</span>
-					<span>총 용량: 5000mAh</span>
+					<p>총 시간: 2시간19분</p>
+					<p>총 용량: 5000mAh</p>
 				</S.Data>
 				<S.Data>
 					<div className="info">| 전압 |</div>
@@ -29,8 +29,8 @@ const BMSdata = () => {
 					<p>방전</p>
 				</S.Title>
 				<S.Data>
-					<span>총 시간: 2시간19분</span>
-					<span>총 용량: 5000mAh</span>
+					<p>총 시간: 2시간19분</p>
+					<p>총 용량: 5000mAh</p>
 				</S.Data>
 				<S.Data>
 					<div className="info">| 전압 |</div>
@@ -79,16 +79,22 @@ const S = {
 		width: 85.6%;
     display: flex;
 		flex-direction: row;
-		> span {
+		> p {
 			margin: 0.5%;
 			width: 50%;
-			font-size: 20px;
+			font-size: 17px;
+			color: #1D1F25;
+		}
+		> span {
+			margin: 0.5%;
+			width: 40%;
+			font-size: 17px;
 			color: #1D1F25;
 		}
 		> div {
-			width: 15%;
+			width: 20%;
 			margin: 0.5%;
-			font-size: 20px;
+			font-size: 18px;
 			font-weight: bold;
 			color: #1D1F25;
 		}
