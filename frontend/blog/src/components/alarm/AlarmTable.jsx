@@ -5,17 +5,28 @@ import { deleteAlarm, getalarmlog, getuseralarmlog } from "../../api/alarm";
 import Pagination from "../pagenation/Pagination";
 import { useRecoilValue } from "recoil";
 import { MemberIdState, RoleState } from "../../states/states";
+
 const AlarmTable = () => {
+  console.log(window.innerHeight);
+  window.addEventListener("scroll", handleScroll, { capture: true });
+  function handleScroll() {
+    const scrollTop = document.querySelector(".Scroll").scrollTop;
+    console.log(scrollTop); // 스크롤 이벤트가 시작되면 요값이 변경된다
+  }
+
   const memberId = useRecoilValue(MemberIdState);
   const role = useRecoilValue(RoleState);
+  console.log(role);
   const [isHovering, setIsHovering] = useState(false);
-  const deleteAlarmHandle = (id) => {
+  const deleteAlarmHandle = (id, idx) => {
+    setData(() => {
+      const temp = [...data];
+      temp.splice(idx, 1);
+      return temp;
+    });
     deleteAlarm(
       id,
-      ({ data }) => {
-        console.log(id);
-        console.log(data);
-      },
+      ({}) => {},
       ({ error }) => {}
     );
   };
@@ -82,16 +93,16 @@ const AlarmTable = () => {
   }, [page]);
 
   return (
-    <S.Wrap>
+    <S.Wrap className="AlarmTable">
       <S.Title className="d-flex align-items-center">
         <BsFillBellFill />
         알림 내역
       </S.Title>
 
-      <S.BODY>
+      <S.BODY className="Scroll">
         {totalElements == 0 && <h2>"알림 내역이 없습니다."</h2>}
 
-        {data.map(({ title, time, id, company }) => {
+        {data.map(({ title, time, id, company }, idx) => {
           const formattedTime = new Date() - new Date(time);
           const MonthDifference = formattedTime / (1000 * 60 * 60 * 24 * 31); // 달
           const daysDifference = formattedTime / (1000 * 60 * 60 * 24); // 하루
@@ -120,7 +131,11 @@ const AlarmTable = () => {
                       })()}
                     </td>
                     <td>
-                      <button onClick={() => deleteAlarmHandle(id)}>
+                      <button
+                        onClick={() => {
+                          deleteAlarmHandle(id, idx);
+                        }}
+                      >
                         삭제
                       </button>
                     </td>

@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import AlarmTable from "./AlarmTable";
-import { useRecoilValue } from "recoil";
+import { constSelector, useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import { updateAlarm } from "../../api/alarm";
 
-const AlarmModal = ({ isOpen, setCount }) => {
+const AlarmModal = ({
+  isOpen,
+  setCount,
+  count,
+  setModalOpen,
+  modalRef,
+  modalOutSideClick,
+}) => {
   const memberId = useRecoilValue(MemberIdState);
-  if (isOpen) {
+  if (isOpen && count != 0) {
     updateAlarm(
       memberId,
       ({ data }) => {
@@ -19,12 +26,20 @@ const AlarmModal = ({ isOpen, setCount }) => {
       }
     );
   }
+  // if (isOpen) {
+  //   document.addEventListener("mouseup", (event) => {
+  //     var table = document.querySelector(".AlarmTable");
+  //     console.log(event);
+  //     if (!table.contains(event.target)) {
+  //       setModalOpen(!isOpen);
+  //     }
+  //   });
+  // }
+
   return (
-    <div style={{ display: isOpen ? "block" : "none" }}>
-      <S.live>
-        <AlarmTable></AlarmTable>
-      </S.live>
-    </div>
+    <S.live style={{ display: isOpen ? "block" : "none" }}>
+      <AlarmTable></AlarmTable>
+    </S.live>
   );
 };
 
@@ -54,6 +69,6 @@ const S = {
   live: styled.div`
     position: fixed;
     top: 50px;
-    right: 50px;
+    right: 130px;
   `,
 };

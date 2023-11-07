@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import Logo from "../../assets/images/sdilogo.png";
@@ -21,6 +21,16 @@ import AlarmModal from "../alarm/AlarmModal";
 import { useState } from "react";
 import { countAlarm } from "../../api/alarm";
 function Header() {
+  const modalRef = useRef < HTMLDivElement > null;
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => setIsModalOpen(!isModalOpen);
+  const modalOutSideClick = (e) => {
+    console.log(e.target);
+    if (modalRef.current === e.target) {
+      setIsModalOpen(false);
+    }
+  };
   const [count, setCount] = useState(0);
   useEffect(() => {
     countAlarm(
@@ -35,9 +45,6 @@ function Header() {
     );
   }, []);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(!isModalOpen);
   const navigate = useNavigate();
   const memberId = useRecoilValue(MemberIdState);
   console.log(memberId);
@@ -156,7 +163,15 @@ function Header() {
                   )}
                 </S.AlarmCount>
               )}
-              <AlarmModal isOpen={isModalOpen} setCount={setCount} />
+
+              <AlarmModal
+                modalRef={modalRef}
+                modalOutSideClick={modalOutSideClick}
+                isOpen={isModalOpen}
+                setCount={setCount}
+                count={count}
+                setModalOpen={setIsModalOpen}
+              />
             </NavItem>
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (
