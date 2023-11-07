@@ -51,9 +51,6 @@ import AlarmModal from "../../components/alarm/AlarmModal";
 // ];
 
 const ServiceHistory = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const openModal = () => setIsModalOpen(!isModalOpen);
   const [history, setHistory] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPage, setTotalPage] = useState(0);
@@ -75,14 +72,7 @@ const ServiceHistory = () => {
         <BsPencilSquare /> 서비스 이용내역
       </S.Title>
       <S.Content>
-        <S.AlarmWrapper>
-          <div>
-            <button onClick={openModal}>
-              <img className="phoneImage" alt="iPhone_01" src="bluebell.png" />
-            </button>
-            <AlarmModal isOpen={isModalOpen} />
-          </div>
-        </S.AlarmWrapper>
+        <S.AlarmWrapper></S.AlarmWrapper>
         <S.ServiceHistoryWrapper>
           <components.ServiceHistory
             data={history}

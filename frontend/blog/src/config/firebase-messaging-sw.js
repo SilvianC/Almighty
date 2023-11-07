@@ -4,8 +4,7 @@ import { useEffect, useState } from "react";
 
 import { pushtoken } from "../api/fire";
 import { useRecoilValue, useRecoilState } from "recoil";
-import { MemberIdState,IsLoginState } from "../states/states";
-
+import { MemberIdState, IsLoginState } from "../states/states";
 
 function FirebaseComponent() {
   const islogin = useRecoilValue(IsLoginState);
@@ -25,7 +24,8 @@ function FirebaseComponent() {
   const messaging = getMessaging(app);
 
   useEffect(() => {
-    if (isLogin == '') {
+    console.log(isLogin);
+    if (isLogin == "") {
       requestPermission();
     }
     async function registerSW() {
@@ -54,9 +54,9 @@ function FirebaseComponent() {
           pushtoken(
             { firebaseToken: token },
             memberId,
-            ({success}) => {
+            ({ success }) => {
               setIsLogin(true);
-              console.log("성공한거야")
+              console.log("성공한거야");
             },
             ({ error }) => {
               console.log(error);
@@ -67,8 +67,6 @@ function FirebaseComponent() {
         console.log("알림 설정 필요", error);
       }
     }
-    
   }, [messaging]);
-
 }
 export default FirebaseComponent;

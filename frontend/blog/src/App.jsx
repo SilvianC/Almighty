@@ -50,6 +50,7 @@ const App = () => {
 
   return (
     <AppWrapper>
+      <Header></Header>
       <SideBar></SideBar>
       <S.MainContent>
         <Routes>

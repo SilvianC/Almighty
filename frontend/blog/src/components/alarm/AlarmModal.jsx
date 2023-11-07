@@ -1,14 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { styled } from "styled-components";
 import AlarmTable from "./AlarmTable";
+import { constSelector, useRecoilValue } from "recoil";
+import { MemberIdState } from "../../states/states";
+import { updateAlarm } from "../../api/alarm";
 
-const AlarmModal = ({ isOpen }) => {
+const AlarmModal = ({
+  isOpen,
+  setCount,
+  count,
+  setModalOpen,
+  modalRef,
+  modalOutSideClick,
+}) => {
+  const memberId = useRecoilValue(MemberIdState);
+  if (isOpen && count != 0) {
+    updateAlarm(
+      memberId,
+      ({ data }) => {
+        console.log(data);
+        setCount(0);
+      },
+      ({ error }) => {
+        console.log(error);
+      }
+    );
+  }
+  // if (isOpen) {
+  //   document.addEventListener("mouseup", (event) => {
+  //     var table = document.querySelector(".AlarmTable");
+  //     console.log(event);
+  //     if (!table.contains(event.target)) {
+  //       setModalOpen(!isOpen);
+  //     }
+  //   });
+  // }
+
   return (
-    <div style={{ display: isOpen ? "block" : "none" }}>
-      <S.livechat>
-        <AlarmTable></AlarmTable>
-      </S.livechat>
-    </div>
+    <S.live style={{ display: isOpen ? "block" : "none" }}>
+      <AlarmTable></AlarmTable>
+    </S.live>
   );
 };
 
@@ -35,9 +66,9 @@ const S = {
   Table: styled.table`
     tablelayout: "fixed";
   `,
-  livechat: styled.div`
+  live: styled.div`
     position: fixed;
     top: 50px;
-    right: 50px;
+    right: 130px;
   `,
 };

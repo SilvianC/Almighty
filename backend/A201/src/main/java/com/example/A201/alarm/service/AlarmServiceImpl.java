@@ -43,8 +43,12 @@ public class AlarmServiceImpl implements AlarmService {
     public Long countAlarm(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() ->
                 new CustomException(USER_NOT_FOUND));
-
-        return alarmRepository.countByReceiverAndMemberAndIsRead(Receiver.fromReceiver(member.getRole().getTitle()), member, false);
+        if(member.getRole().getTitle().equals("관리자")) {
+            return alarmRepository.countByReceiverAndIsRead(Receiver.fromReceiver(member.getRole().getTitle()), false);
+        }else if(member.getRole().getTitle().equals("일반 사용자")){
+         return alarmRepository.countByReceiverAndMemberAndIsRead(Receiver.fromReceiver(member.getRole().getTitle()), member, false);
+        }
+        return Long.valueOf(0);
     }
 
     @Override
@@ -61,6 +65,13 @@ public class AlarmServiceImpl implements AlarmService {
     public void updateAlarm(Long id) {
         Member member = memberRepository.findById(id).orElseThrow(() ->
                 new CustomException(USER_NOT_FOUND));
-        alarmRepository.updateAlarm(member, Receiver.fromReceiver(member.getRole().getTitle()));
+        Receiver receiver = Receiver.fromReceiver(member.getRole().getTitle());
+
+        if(member.getRole().getTitle().equals("관리자")) {
+            alarmRepository.updateAdminAlarm(receiver );
+        }else if(member.getRole().getTitle().equals("일반 사용자")){
+            alarmRepository.updateUserAlarm(member,receiver);
+        }
+
     }
 }
