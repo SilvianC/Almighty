@@ -92,7 +92,13 @@ function elapsedTime(date) {
     numeric: "auto",
   });
 
-  const times = [{ name: "day", milliSeconds: 60 * 60 * 24 }];
+  const times = [
+    { name: "year", milliSeconds: 60 * 60 * 24 * 365 },
+    { name: "month", milliSeconds: 60 * 60 * 24 * 30 },
+    { name: "day", milliSeconds: 60 * 60 * 24 },
+    { name: "hour", milliSeconds: 60 * 60 },
+    { name: "minute", milliSeconds: 60 },
+  ];
 
   for (const value of times) {
     const betweenTime = Math.floor(diff / value.milliSeconds);
