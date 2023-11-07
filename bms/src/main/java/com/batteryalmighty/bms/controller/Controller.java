@@ -1,5 +1,6 @@
 package com.batteryalmighty.bms.controller;
 
+import com.batteryalmighty.bms.processing.BmsProcessing;
 import com.batteryalmighty.bms.processing.Ekf;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,13 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class Controller {
     private final Ekf ekf;
+    private final BmsProcessing bmsProcessing;
     @GetMapping("/ekf")
     public ResponseEntity<?> getMetadataType() {
-        ekf.predictx_(4);
-        ekf.predictP();
-        ekf.kalmanGain(1, 4);
-        ekf.predictx(4);
-        ekf.nextP();
+        bmsProcessing.predict();
         return ResponseEntity.ok().build();
     }
 }

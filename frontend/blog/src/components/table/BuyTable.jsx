@@ -132,12 +132,18 @@ const S = {
     border-radius: 10px;
     background-color: #F2F2F2;
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+    @media(max-width: 768px){
+     height:300px;
+    }
   `,
   Title: styled.span`
     font-size: 30px;
     font-weight: bold;
     color: #1D1F25;
     padding-bottom: 10px;
+    @media(max-width: 768px){
+      font-size: 20px;
+    }
   `,
   Status: styled.span`
     font-size: 10px;

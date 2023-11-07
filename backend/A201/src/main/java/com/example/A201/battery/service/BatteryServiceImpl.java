@@ -4,7 +4,7 @@ import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.domain.StatusHistory;
-import com.example.A201.battery.dto.ProgressDTO;
+import com.example.A201.battery.dto.ProgressListDTO;
 import com.example.A201.battery.repository.BatteryRepository;
 import com.example.A201.battery.repository.ProgressRepository;
 import com.example.A201.battery.repository.StatusHistoryRepository;
@@ -76,12 +76,12 @@ public class BatteryServiceImpl implements BatteryService{
     }
 
     @Override
-    public List<Progress> getRequestProgress(){
+    public List<ProgressListDTO> getRequestProgress(){
         return progressRepository.getRequestProgress();
     }
 
     @Override
-    public List<Progress> getFinishedProgress(){
+    public List<ProgressListDTO> getFinishedProgress(){
         return progressRepository.getFinishedProgress();
     }
 }

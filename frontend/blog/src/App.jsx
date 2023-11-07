@@ -33,6 +33,7 @@ const App = () => {
   if (isMobile) {
     return (
       <>
+      <MobileWrapper>
         <Header></Header>
         <Routes>
           <Route path={utils.URL.LOGIN.MAIN} element={<pages.Login />} />
@@ -40,7 +41,9 @@ const App = () => {
             path={utils.URL.MOBILEALARM.MAIN}
             element={<pages.MobileAlarm />}
           />
+          <Route path={utils.URL.RETURN.MAIN} element={<pages.Return />} />
         </Routes>
+      </MobileWrapper>
       </>
     );
   }
@@ -81,5 +84,8 @@ const AppWrapper = styled.div`
   min-height: 100vh;
   height: 100%;
 `;
-
+const MobileWrapper = styled.div`
+  min-height: 100vh;  
+  height: 100%;
+`
 export default App;

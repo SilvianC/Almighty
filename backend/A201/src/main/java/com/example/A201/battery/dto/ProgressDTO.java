@@ -13,5 +13,5 @@ public class ProgressDTO {
     private String title;
     private String code;
     private String reason;
-    private Long id;
+    private Long id;//멤버 아이디
 }
