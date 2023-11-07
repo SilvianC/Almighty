@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface VitBoardRepository extends JpaRepository<VitBoard, Long> {
-    List<VitBoard> findTop1000VitBoardByProgressIdOrderById(Long id);
+    List<VitBoard> findVitBoardByProgressIdOrderById(Long id);
 }
