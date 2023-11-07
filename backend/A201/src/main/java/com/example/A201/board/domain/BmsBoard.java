@@ -16,19 +16,19 @@ public class BmsBoard {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "bms_board_id")
-    Long id;
+    private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "progress_id")
     private Progress progress;
 
-    int overVoltageCount;
+    private int overVoltageCount;
 
-    int underVoltageCount;
+    private int underVoltageCount;
 
-    int overCurrentCount;
+    private int overCurrentCount;
 
-    int abnormalTemperatureCount;
+    private int abnormalTemperatureCount;
 
     @Column(name = "made_date")
     private LocalDate madeDate;

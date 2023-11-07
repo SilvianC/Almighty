@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,7 +70,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
         battery.setBatteryStatus(Status.Request);
         StatusHistoryDTO dto = new StatusHistoryDTO();
         dto.setBatteryId(battery.getId());
-        dto.setDate(LocalDate.now());
+        dto.setDate(LocalDateTime.now());
         dto.setFromStatus(Status.valueOf(request.getFromStatus()));
         dto.setToStatus(Status.valueOf(request.getToStatus()));
         dto.setReason(request.getRequestReason());

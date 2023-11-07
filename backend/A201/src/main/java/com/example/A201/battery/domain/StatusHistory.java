@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -34,7 +35,7 @@ public class StatusHistory {
     private Status toStatus;
 
     @CreatedDate
-    private LocalDate date;
+    private LocalDateTime date;
 
     private String responseReason;
 
@@ -45,7 +46,7 @@ public class StatusHistory {
         history.batteryId = battery;
         history.fromStatus = statusHistoryDTO.getFromStatus();
         history.toStatus = statusHistoryDTO.getToStatus();
-        history.date = LocalDate.now();
+        history.date = LocalDateTime.now();
         history.requestReason = statusHistoryDTO.getReason();
         return history;
     }
