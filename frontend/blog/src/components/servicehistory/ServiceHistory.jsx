@@ -6,7 +6,6 @@ import styled, { keyframes } from "styled-components";
 import ReturnResponse from "../returnresponse/ReturnResponse";
 import { CSSTransition } from 'react-transition-group';
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
-import "./ServiceHistory.css";
 import { format, isWithinInterval, subSeconds } from 'date-fns';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
