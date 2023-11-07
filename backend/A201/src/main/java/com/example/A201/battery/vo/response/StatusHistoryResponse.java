@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -21,7 +22,7 @@ public class StatusHistoryResponse {
     private String code;
     private Status fromStatus;
     private Status toStatus;
-    private LocalDate date;
+    private LocalDateTime date;
     private String reason;
 
     public static StatusHistoryResponse statusHistoryResponse(StatusHistory statusHistory){

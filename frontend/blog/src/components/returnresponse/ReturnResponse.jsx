@@ -81,12 +81,13 @@ const S = {
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #d3d3d3;
-    color: #1D1F25;
+    color: #034F9E;
   `,
   TextArea: styled.textarea`
     width: 100%;
     padding: 10px;
     border-radius: 5px;
+    color: #034F9E;
     border: 1px solid #d3d3d3;
     margin-top: 15px;
     height: 150px;
