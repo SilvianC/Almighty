@@ -6,16 +6,12 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.persistence.Id;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "vit_sequences")
-public class VitSeqeunce {
+@Setter
+@Document(collection = "increment_sequence")
+public class AutoIncrementSequence {
 
     @Id
     private String id;
-
     private Long seq;
-
 
 }

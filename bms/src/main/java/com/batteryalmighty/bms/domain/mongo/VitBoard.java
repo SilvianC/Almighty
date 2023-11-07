@@ -14,9 +14,12 @@ import javax.persistence.*;
 @Document(collection = "vitboard")
 public class VitBoard {
 
+    @Transient
+    public static final String SEQUENCE_NAME = "vit_sequence";
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+    private Long idx;
 
     @Field(name = "Voltage_measured")
     private Double voltage;
@@ -30,4 +33,16 @@ public class VitBoard {
     @Field(name = "Time")
     private Double time;
 
+    @Field(name = "Soc")
+    private Double soc;
+
+    @Field(name = "Ekf")
+    private Double ekf;
+
+    @Field(name = "progress_id")
+    private Long progressId;
+
+    public void predictEkf(Double ekf){
+        this.ekf = ekf;
+    }
 }
