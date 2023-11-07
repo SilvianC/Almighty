@@ -46,9 +46,8 @@ public class BmsService {
 //        }
 //    }
 
-    public BmsBoard getBms(){
-        return bmsBoardRepository.findById(1L)
-                .orElseThrow(() -> new RuntimeException("왜오왜왜왜뢔ㅔㄴ"));
+    public List<BmsBoard> getBms(){
+        return bmsBoardRepository.findAll();
     }
 
 
