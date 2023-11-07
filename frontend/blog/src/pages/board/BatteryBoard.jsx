@@ -78,9 +78,9 @@ const BatteryBoard = () => {
     <S.Wrap>
       <Row>
         <Col>
-          <S.Title className="d-flex align-items-center">
+          {/* <S.Title className="d-flex align-items-center">
             <BiSolidChart></BiSolidChart>배터리 데이터
-          </S.Title>
+          </S.Title> */}
           <select
             onChange={(e) => {
               handleCode(e);
@@ -111,7 +111,7 @@ const BatteryBoard = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={8}>
+        <Col md={12}>
           <TestGraph
             data={vitData}
             threshold={battery}
@@ -119,7 +119,7 @@ const BatteryBoard = () => {
             num={testId}
           ></TestGraph>
         </Col>
-        <Col md={8}>
+        <Col md={12}>
           <BmsGraph></BmsGraph>
         </Col>
       </Row>
@@ -130,11 +130,12 @@ const BatteryBoard = () => {
 const S = {
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    border-radius: 40px;
+    // margin: 20px;
+    // padding: 60px;
+    // padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+    // padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    border-radius: 10px;
+    // width: 300px;
   `,
   Title: styled.span`
     font-size: 20px;

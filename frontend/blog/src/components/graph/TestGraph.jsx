@@ -157,7 +157,7 @@ const TestGraph = ({ data, threshold, type, num }) => {
       rules: [
         {
           condition: {
-            maxWidth: 500,
+            // maxWidth: 500,
           },
           chartOptions: {
             // legend: {
