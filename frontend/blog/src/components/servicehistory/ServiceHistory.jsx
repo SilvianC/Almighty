@@ -11,7 +11,7 @@ import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
 const status = {
   Normal: "정상",
-  Request: "반품 신청",
+  Request: "진행 중",
   Upload: "데이터 업로드",
   Analysis: "분석 중",
   CustomerFault: "고객 귀책",
@@ -89,8 +89,9 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
         timeout={300}
         classNames="slide-down"
         unmountOnExit
+        nodeRef={wrapperRef} // CSSTransition에 nodeRef를 추가합니다.
       >
-        <S.ReturnResponseWrapper>
+        <S.ReturnResponseWrapper ref={wrapperRef}>
           <ReturnResponse onClose={() => setShowReturnResponse(false)} item={selectedItem} onSuccess={onStatusClick} />
         </S.ReturnResponseWrapper>
       </CSSTransition>
@@ -129,7 +130,9 @@ const S = {
     height:600px;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
-    
+    @media(max-width: 768px){
+      height:300px; 
+     }
   `,
   ReturnResponseWrapper: styled.div`
     position: absolute;
@@ -143,6 +146,9 @@ const S = {
   font-weight: bold;
   color: #1D1F25;
   padding-bottom: 10px;
+  @media(max-width: 768px){
+    font-size: 20px;
+  }
   `,
   PageArea: styled.div`
     text-align: center;
