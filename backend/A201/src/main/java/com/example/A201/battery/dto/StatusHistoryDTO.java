@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -17,6 +18,6 @@ public class StatusHistoryDTO {
     private Long batteryId;
     private Status fromStatus;
     private Status toStatus;
-    private LocalDate date;
+    private LocalDateTime date;
     private String reason;
 }
