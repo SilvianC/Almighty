@@ -17,10 +17,6 @@ public class BmsBoard {
     @Column(name = "bms_board_id")
     Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "progress_id")
-    private Progress progress;
-
     int overVoltageCount;
 
     int underVoltageCount;

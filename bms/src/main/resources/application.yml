@@ -3,12 +3,14 @@ spring:
     name: monitoring
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://k9a201.p.ssafy.io/almighty?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
+    url: jdbc:mysql://localhost:3306/bms?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
     username: root
-    password: "almighty201"
+    password: ssafy
   data:
     mongodb:
-      uri:localhost:27017/test
+      host: localhost
+      port: 27017
+      database: bms
 
   #  hikari:
   #      maximum-pool-size: 10

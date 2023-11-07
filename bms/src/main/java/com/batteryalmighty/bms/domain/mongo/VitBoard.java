@@ -1,13 +1,21 @@
 package com.batteryalmighty.bms.domain.mongo;
 
 import com.batteryalmighty.bms.domain.mysql.Progress;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import javax.persistence.*;
 
+@Getter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "vitboard")
 public class VitBoard {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @Field(name = "Voltage_measured")
@@ -21,12 +29,5 @@ public class VitBoard {
 
     @Field(name = "Time")
     private Double time;
-
-    @Field(name = "SOC")
-    private Double soc;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "progress_id")
-    private Progress progress;
 
 }
