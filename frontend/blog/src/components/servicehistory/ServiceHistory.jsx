@@ -2,10 +2,11 @@ import React, { useEffect,useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import ReturnResponse from "../returnresponse/ReturnResponse";
 import { CSSTransition } from 'react-transition-group';
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
+import { format, isWithinInterval, subSeconds } from 'date-fns';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
@@ -21,7 +22,7 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
   const [showReturnResponse, setShowReturnResponse] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const wrapperRef = useRef(null);
-
+  const now = new Date();
   // 클릭 이벤트 리스너를 설정합니다.
   useEffect(() => {
     // 클릭 이벤트를 처리하는 함수입니다.
@@ -68,19 +69,31 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((item, idx) => {
-              return (
-                <tr key={idx}>
-                  <td>{item.code}</td>
-                  <td>{item.date}</td>
-                  <td>
-                    <StatusButton onClick={() => handleStatusButtonClick(item)}>
-                      {status[item.toStatus]}
-                    </StatusButton>
-                  </td>
-                </tr>
-              );
-            })}
+          {data.map((item, idx) => {
+            // item.date 문자열을 Date 객체로 변환합니다.
+            const itemDate = new Date(item.date);
+
+            // item.date를 "YYYY-MM-DD" 형식으로 포맷합니다.
+            const formattedDate = itemDate.toISOString().split('T')[0];
+
+            // 현재 시간과 item.date의 차이를 계산합니다.
+            const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
+
+            // 차이가 5초 이내인지 확인합니다.
+            const isRecent = timeDifferenceInSeconds <= 5;
+            console.log(isRecent);
+    return (
+      <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
+        <td className={isRecent ? "flash-highlight" : ""}>{item.code}</td>
+        <td className={isRecent ? "flash-highlight" : ""}>{formattedDate}</td>
+        <td className={isRecent ? "flash-highlight" : ""}>
+          <StatusButton onClick={() => handleStatusButtonClick(item)}>
+            {status[item.toStatus]}
+          </StatusButton>
+        </td>
+      </tr>
+    );
+  })}
           </tbody>
         </S.Table>
       </Form>
@@ -103,6 +116,7 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
 };
 
 export default ServiceHistory;
+
 const StatusButton = styled(Button)`
   /* 여기에 버튼 스타일 추가 */
   width:90px;
@@ -164,12 +178,24 @@ const S = {
       font-weight: bold;
       font-size: 18px;
     }
-    tr:hover td {background:#E7ECF2}
+    tr:hover td {background:#E7ECF2 !important}
+    .flash-highlight{
+      @keyframes fadeInOut {
+        from, to {
+          background-color: #F2F2F2;
+        }
+        50% {
+          background-color: #5998DA;
+        }
+      }
+      animation: fadeInOut 0.8s!important;
+    }
     th, td {
       border: none !important; // 모든 th, td 태그에 적용된 기본 선을 제거
       font-weight: bold;
       font-size: 18px;
       background-color: #F2F2F2;
+      
     }
 
     th{
@@ -180,4 +206,5 @@ const S = {
       
     }
   `,
+  
 };
