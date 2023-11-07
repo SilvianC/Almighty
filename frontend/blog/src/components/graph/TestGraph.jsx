@@ -1,124 +1,184 @@
-import * as React from "react";
-import { ResponsiveLine } from "@nivo/line";
+import React, {
+  useImperativeHandle,
+  forwardRef,
+  useRef,
+  useEffect,
+} from "react";
+import Highcharts from "highcharts/highstock";
+import HighchartsReact from "highcharts-react-official";
+import styled from "styled-components";
 
-const TestGraph = ({ data, type, num }) => {
+const transName = {
+  voltageMeasured: "전압(Volts)",
+  currentMeasured: "전류(Amps)",
+  temperatureMeasured: "온도(°C)",
+};
+
+const TestGraph = ({ data, threshold, type, num }) => {
   const datas = [];
+
   for (const t of type) {
+    const arr = data.map((item) => item[t]);
+    const result = arr.reduce(
+      (acc, current, index, array) => {
+        if (current >= 10.5 && (index === 0 || array[index - 1] < 10.5)) {
+          acc.start.push(index);
+        } else if (current <= 10.5 && index > 0 && array[index - 1] > 10.5) {
+          acc.end.push(index - 1);
+        }
+        return acc;
+      },
+      { start: [], end: [] }
+    );
     const newData = {
-      id: t,
-      data: [],
+      name: transName[t],
+      yAxis: 0,
+      turboThreshold: 10000,
+      data: data.map((item, idx) => {
+        return {
+          x: item["time"] * 3600,
+          y: item[t],
+          marker: {
+            enabled: result.start.includes(idx) || result.end.includes(idx),
+          },
+        };
+      }),
+      zones:
+        t === "temperatureMeasured"
+          ? [
+              {
+                value: 10.5,
+                color: "green",
+              },
+              {
+                color: "red",
+              },
+            ]
+          : t === "voltageMeasured"
+          ? [
+              {
+                color: "blue",
+              },
+              {
+                value: threshold.underVoltage,
+                color: "red",
+              },
+            ]
+          : null,
+      marker: {
+        enabled: false, // 초기에 모든 심볼 비활성화
+        states: {
+          hover: {
+            enabled: true, // 마우스 호버시 심볼 활성화
+          },
+        },
+      },
     };
-    newData["data"] = data.map((item) => {
-      return {
-        x: item["time"],
-        y: item[t],
-      };
-    });
     datas.push(newData);
   }
+
+  const option = {
+    chart: {},
+    accessibility: {
+      enabled: false,
+    },
+
+    exporting: {
+      enabled: false,
+    },
+    title: {
+      text: `VIT`,
+      align: "left",
+      style: {
+        color: "#4F84C9", // 원하는 색상으로 설정
+      },
+    },
+
+    subtitle: {
+      text: "",
+      align: "left",
+    },
+
+    yAxis: [
+      {
+        title: {
+          // text: "Capacity",
+        },
+      },
+      {
+        title: {
+          text: "잔량(%)",
+        },
+        opposite: true,
+      },
+    ],
+
+    xAxis: {
+      title: {
+        text: "Time",
+      },
+
+      // categories: x,
+    },
+
+    legend: {
+      floating: false, // 레전드를 그래프 위에 표시
+      layout: "horizontal",
+      align: "right",
+      verticalAlign: "top",
+      y: 15,
+    },
+
+    plotOptions: {
+      label: {
+        connectorAllowed: false,
+      },
+      line: {
+        // 선 그래프에 대한 설정
+        lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
+      },
+    },
+
+    series: [
+      ...datas,
+      {
+        name: "잔량(%)",
+        yAxis: 1,
+        data: [
+          [1000, 5],
+          [2000, 10],
+          [3000, 20],
+          [5000, 40],
+          [6000, 60],
+        ],
+      },
+    ],
+    responsive: {
+      rules: [
+        {
+          condition: {
+            // maxWidth: 500,
+          },
+          chartOptions: {
+            // legend: {
+            //   layout: "horizontal",
+            //   align: "center",
+            //   verticalAlign: "bottom",
+            // },
+          },
+        },
+      ],
+    },
+  };
+
   return (
-    <div
-      style={{
-        width: "800px",
-        height: "500px",
-        margin: "0 auto",
-        border: "2px solid",
-        borderRadius: "50px",
-        borderColor: "#eee6c4",
-        padding: "10px",
-        marginBottom: "100px",
-      }}
-    >
-      <h3>Test {num} Data Chart</h3>
-      <ResponsiveLine
-        data={datas}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        xFormat=" >-.2f"
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-          stacked: true,
-          reverse: false,
-        }}
-        yFormat=" >-.2f"
-        curve="monotoneX"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Time",
-          legendOffset: 36,
-          legendPosition: "middle",
-          renderTick: (tick) => {
-            return (
-              <g transform={`translate(${tick.x},${tick.y})`}>
-                <text
-                  x={0}
-                  y={0}
-                  dy={16}
-                  textAnchor="middle"
-                  // fill="#000"
-                  fontSize={10} // x축 레이블의 글꼴 크기
-                >
-                  {tick.tickIndex === 0 ||
-                  tick.tickIndex === data.length - 1 ? (
-                    tick.value
-                  ) : (
-                    <></>
-                  )}
-                </text>
-              </g>
-            );
-          },
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: type,
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        enablePoints={false}
-        enableGridX={false}
-        pointSize={10}
-        pointColor={{ theme: "background" }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: "serieColor" }}
-        pointLabelYOffset={-12}
-        useMesh={true}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 50,
-            translateY: 50,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
+    <S.Wrap>
+      <HighchartsReact highcharts={Highcharts} options={option} />
+    </S.Wrap>
   );
+};
+
+const S = {
+  Wrap: styled.div``,
 };
 export default TestGraph;

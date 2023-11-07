@@ -12,11 +12,14 @@ spring:
     url: jdbc:mysql://{db_url}/{db_name}?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
     username: "{db_id}"
     password: "{db_pw}"
-
+  data:
+    redis:
+      repositories:
+        enabled: false
   redis:
     host: www.batteryalmighty.co.kr
-    port: 6379
     password: almighty201
+    port: 6379
 
   #  hikari:
   #      maximum-pool-size: 10

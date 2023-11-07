@@ -1,30 +1,28 @@
 import React, { useEffect, useRef, useState } from "react";
 import MetaGraph from "./../../components/graph/MetaGraph";
-import TestGraph2 from "./../../components/graph/TestGraph2";
-import MetaGraph2 from "../../components/graph/MetaGraph2";
+import TestGraph from "./../../components/graph/TestGraph";
 import http from "../../api/http";
-import Container from "react-bootstrap/Container";
+
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import MetaGraphImpedance from "../../components/graph/MetaGraphImpedance";
 import styled from "styled-components";
 import { BiSolidChart } from "react-icons/bi";
+import BmsGraph from "../../components/graph/BmsGraph";
 
-var index = 0; //테스트용
-var time = 7000;
 const match = {
   0: "voltageMeasured",
   1: "currentMeasured",
   2: "temperatureMeasured",
 };
 const BatteryBoard = () => {
-  const [test, setTestData] = useState([]);
+  const [vitData, setVitData] = useState([]);
+  const [bmsData, setBmsData] = useState([]);
   const [data, setData] = useState([]);
   const [code, setCode] = useState("");
   const [battery, setBattery] = useState([]);
   const [batteries, setBatteries] = useState([]);
   const [testId, setTestId] = useState(0);
-  const testRef = useRef();
 
   const clickPoint = (id) => {
     setTestId(() => id);
@@ -44,20 +42,18 @@ const BatteryBoard = () => {
         });
       })
       .catch();
+    http
+      .get(`/api/dashboard/6`)
+      .then(({ data }) => {
+        setVitData(() => {
+          return data["data"]["vitData"];
+        });
+        setBmsData(() => {
+          return data["data"]["bmsData"];
+        });
+      })
+      .catch();
   }, []);
-
-  useEffect(() => {
-    if (code) {
-      http
-        .get(`/api/dashboard/${code}/tests/${testId}/testdatas`)
-        .then(({ data }) => {
-          setTestData(() => {
-            return data["data"];
-          });
-        })
-        .catch();
-    }
-  }, [testId]);
 
   useEffect(() => {
     if (!code && batteries.length) {
@@ -67,14 +63,6 @@ const BatteryBoard = () => {
 
   useEffect(() => {
     if (code) {
-      http
-        .get(`/api/dashboard/metadata/${code}`)
-        .then(({ data }) => {
-          setData(() => {
-            return data["data"];
-          });
-        })
-        .catch();
       http
         .get(`/api/batteries/battery/${code}`)
         .then(({ data }) => {
@@ -86,55 +74,13 @@ const BatteryBoard = () => {
     }
   }, [code]);
 
-  useEffect(() => {
-    if (code) {
-      if (testId === 0)
-        http
-          .get(`/api/dashboard/${code}/tests/0/testdatas`)
-          .then(({ data }) => {
-            setTestData(() => {
-              return data["data"];
-            });
-          })
-          .catch();
-      else setTestId(() => 0);
-    }
-  }, [data]);
-
-  useEffect(() => {
-    index = 0;
-    let timer;
-    if (testRef.current) {
-      timer = setInterval(() => {
-        if (!test.length) {
-          clearInterval(timer);
-          return;
-        }
-        for (let i = 0; i < 3; i++) {
-          testRef.current.addData(
-            test[index]["time"] + time,
-            test[index][match[i]],
-            i
-          );
-        }
-        index++;
-        if (index > 300) {
-          index = 0;
-          time = test[index]["time"] + time + 1;
-        }
-      }, 1000);
-    }
-    return () => {
-      clearInterval(timer);
-    };
-  }, [test]);
   return (
     <S.Wrap>
       <Row>
         <Col>
-          <S.Title className="d-flex align-items-center">
+          {/* <S.Title className="d-flex align-items-center">
             <BiSolidChart></BiSolidChart>배터리 데이터
-          </S.Title>
+          </S.Title> */}
           <select
             onChange={(e) => {
               handleCode(e);
@@ -165,22 +111,16 @@ const BatteryBoard = () => {
         </Col>
       </Row>
       <Row>
-        <Col md={5}>
-          <MetaGraph2
-            data={data}
-            type="capacity"
-            clickPoint={clickPoint}
-          ></MetaGraph2>
-          <MetaGraphImpedance data={data}></MetaGraphImpedance>
-        </Col>
-        <Col md={7}>
-          <TestGraph2
-            data={test}
+        <Col md={12}>
+          <TestGraph
+            data={vitData}
             threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
             num={testId}
-            ref={testRef}
-          ></TestGraph2>
+          ></TestGraph>
+        </Col>
+        <Col md={12}>
+          <BmsGraph></BmsGraph>
         </Col>
       </Row>
     </S.Wrap>
@@ -190,11 +130,12 @@ const BatteryBoard = () => {
 const S = {
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    border-radius: 40px;
+    // margin: 20px;
+    // padding: 60px;
+    // padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+    // padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    border-radius: 10px;
+    // width: 300px;
   `,
   Title: styled.span`
     font-size: 20px;

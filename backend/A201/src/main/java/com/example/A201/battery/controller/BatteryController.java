@@ -6,6 +6,7 @@ import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.vo.BatteryResponse;
@@ -14,6 +15,7 @@ import com.example.A201.exception.SuccessResponseEntity;
 import com.example.A201.firebase.FCMNotificationRequestDto;
 import com.example.A201.firebase.FCMNotificationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/batteries")
 @RequiredArgsConstructor
+@Slf4j
 public class BatteryController {
     private final BatteryService batteryService;
     private final AlarmService alarmService;
@@ -62,11 +65,15 @@ public class BatteryController {
     public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
 
         batteryService.updateBatteriesStatus(progress.getCode(), progress.getReason());
+        log.debug("여기까지 완료");
+        log.debug("PROGRESS뜯어보기: "+progress.getId()+" "+progress.getCode()+" "+progress.getTitle()+" "+progress.getReason());
+        log.debug("ID 뭐야!:"+ progress.getId());
         alarmService.insertAlarm(AlarmDto.builder()
                 .title(progress.getTitle())
                 .content(progress.getReason())
                 .member(progress.getId())
                 .build());
+        log.debug("여기까지 완료22");
         fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
                 .title(progress.getTitle())
                 .body(progress.getReason())
@@ -75,4 +82,15 @@ public class BatteryController {
                 .build());
         return SuccessResponseEntity.toResponseEntity("반품 요청 완료", null);
     }
+
+    @GetMapping("progress/request")
+    public ResponseEntity<?> getRequestProgress(){
+        return SuccessResponseEntity.toResponseEntity("진행충인 요청 불러오기 완료", batteryService.getRequestProgress());
+    }
+
+    @GetMapping("progress/finished")
+    public ResponseEntity<?> getFinishedProgress(){
+        return SuccessResponseEntity.toResponseEntity("완료 요청 불러오기 완료", batteryService.getFinishedProgress());
+    }
+
 }

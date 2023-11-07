@@ -18,19 +18,20 @@ import java.time.LocalDate;
 public class BatteryResponse {
     private String code;
 
-    private LocalDate madeDate;
-
-    private LocalDate receiveDate;
 
     private Long modelId;
+
+    private Long memberId;
+
+    private Long Id;
 
     private String status;
     public static BatteryResponse batteryResponse(Battery battery){
         return BatteryResponse.builder()
                 .code(battery.getCode())
-                .madeDate(battery.getMadeDate())
-                .receiveDate(battery.getReceiveDate())
                 .modelId(battery.getModel().getId())
+                .memberId(battery.getMember().getMemberId())
+                .Id(battery.getId())
                 .status(battery.getBatteryStatus() == null ? Status.Normal.name() : battery.getBatteryStatus().name())
                 .build();
     }

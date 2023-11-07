@@ -4,6 +4,7 @@ import { BsPencilSquare } from "react-icons/bs";
 import styled from "styled-components";
 import AlarmTable from "../../components/alarm/AlarmTable";
 import http from "../../api/http";
+import AlarmModal from "../../components/alarm/AlarmModal";
 // import "./ServiceHistory.css";
 
 // const data = [
@@ -51,13 +52,17 @@ import http from "../../api/http";
 
 const ServiceHistory = () => {
   const [history, setHistory] = useState([]);
+  const [page, setPage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   useEffect(() => {
     http
       .get(`/api/batteries/history/all`)
       .then(({ data }) => {
         setHistory(() => {
-          return data["data"];
+          return data["data"]["content"];
         });
+        setPage(() => 0);
+        setTotalPage(() => data["data"]["totalPages"]);
       })
       .catch();
   }, []);
@@ -67,11 +72,14 @@ const ServiceHistory = () => {
         <BsPencilSquare /> 서비스 이용내역
       </S.Title>
       <S.Content>
-        <S.AlarmWrapper>
-          <AlarmTable />
-        </S.AlarmWrapper>
+        <S.AlarmWrapper></S.AlarmWrapper>
         <S.ServiceHistoryWrapper>
-          <components.ServiceHistory data={history} />
+          <components.ServiceHistory
+            data={history}
+            page={page}
+            totalPage={totalPage}
+            setPage={setPage}
+          />
         </S.ServiceHistoryWrapper>
       </S.Content>
     </S.Container>

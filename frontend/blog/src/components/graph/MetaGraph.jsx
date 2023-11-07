@@ -1,144 +1,117 @@
-import * as React from "react";
-import { ResponsiveLine } from "@nivo/line";
+import React, { useEffect, useState } from "react";
+import Highcharts from "highcharts";
+import HighchartsReact from "highcharts-react-official";
 
-const MetaGraph = ({ data, type }) => {
-  const newData =
-    type === "capacity"
-      ? [
-          {
-            id: "Capacity",
-            color: "hsl(68, 70%, 50%)",
-            data: [],
+const MetaGraph = ({ data, type, clickPoint }) => {
+  const filter = data.filter(
+    (item) => Object.keys(item).includes("capacity") && item["capacity"]
+  );
+  const d = filter.map((item) => {
+    return [item["testId"], item["capacity"]];
+  });
+
+  const option = {
+    title: {
+      text: "Discharge Battery Metadata",
+      align: "center",
+      style: {
+        color: "#4F84C9", // 원하는 색상으로 설정
+      },
+    },
+
+    subtitle: {
+      text: "",
+      align: "left",
+    },
+
+    yAxis: {
+      title: {
+        text: "Capacity",
+      },
+    },
+
+    xAxis: {
+      title: {
+        text: "Test",
+      },
+      // categories: x,
+    },
+
+    legend: {
+      floating: true, // 레전드를 그래프 위에 표시
+      layout: "horizontal",
+      align: "right",
+      verticalAlign: "top",
+      y: 15, // y 좌표를 조절
+    },
+
+    plotOptions: {
+      label: {
+        connectorAllowed: false,
+      },
+    },
+
+    series: [
+      {
+        name: "Capacity",
+        data: d,
+        // marker: {
+        //   symbol: "square", // 점을 사각형으로 설정
+        //   enabled: true, // 점을 표시할지 여부를 설정합니다.
+        //   radius: 4, // 점의 반지름 설정
+        // },
+        point: {
+          events: {
+            click: function () {
+              clickPoint(this.x);
+            },
           },
-        ]
-      : [
-          {
-            id: "Re",
-            data: [],
+        },
+        marker: {
+          enabled: false,
+        },
+      },
+
+      {
+        type: "line",
+        name: "Regression Line",
+        data: [d[0], d[d.length - 1]],
+        marker: {
+          enabled: false,
+        },
+        states: {
+          hover: {
+            lineWidth: 3,
           },
-          {
-            id: "Rct",
-            data: [],
+        },
+        enableMouseTracking: false,
+      },
+    ],
+
+    responsive: {
+      //반응형 처리에 필요
+      rules: [
+        {
+          //반응 조건
+          condition: {
+            maxWidth: 500,
           },
-        ];
-  if (type === "capacity") {
-    const filter = data.filter(
-      (item) => Object.keys(item).includes("capacity") && item["capacity"]
-    );
-    newData[0]["data"] = filter.map((item) => {
-      return {
-        x: item["testId"],
-        y: item["capacity"],
-      };
-    });
-  } else {
-    const filter = data.filter(
-      (item) => Object.keys(item).includes("re") && item["re"]
-    );
-    newData[0]["data"] = filter.map((item) => {
-      return {
-        x: item["testId"],
-        y: item["re"],
-      };
-    });
-    newData[1]["data"] = filter.map((item) => {
-      return {
-        x: item["testId"],
-        y: item["rct"],
-      };
-    });
-  }
+          //반응 동작
+          chartOptions: {
+            // legend: {
+            //   layout: "vertical",
+            //   align: "right",
+            //   verticalAlign: "top",
+            // },
+          },
+        },
+      ],
+    },
+  };
   return (
-    <div style={{ width: "800px", height: "500px", margin: "0 auto" }}>
-      <h3>NIVO CHART</h3>
-      <ResponsiveLine
-        data={newData}
-        margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
-        xScale={{ type: "point" }}
-        xFormat=" >-d"
-        yScale={{
-          type: "linear",
-          min: "auto",
-          max: "auto",
-          stacked: true,
-          reverse: false,
-        }}
-        yFormat=" >-.2f"
-        curve="linear"
-        axisTop={null}
-        axisRight={null}
-        axisBottom={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legend: "Test",
-          legendOffset: 36,
-          legendPosition: "middle",
-          renderTick: (tick) => {
-            return (
-              <g transform={`translate(${tick.x},${tick.y})`}>
-                <text
-                  x={0}
-                  y={0}
-                  dy={16}
-                  textAnchor="middle"
-                  // fill="#000"
-                  fontSize={10} // x축 레이블의 글꼴 크기
-                >
-                  {tick.tickIndex === 0 ||
-                  tick.tickIndex === newData[0]["data"].length - 1 ? (
-                    tick.value
-                  ) : (
-                    <></>
-                  )}
-                </text>
-              </g>
-            );
-          },
-        }}
-        axisLeft={{
-          tickSize: 5,
-          tickPadding: 5,
-          tickRotation: 0,
-          legendOffset: -40,
-          legendPosition: "middle",
-        }}
-        enablePoints={false}
-        enableGridX={false}
-        pointSize={10}
-        pointColor={{ theme: "background" }}
-        pointBorderWidth={2}
-        pointBorderColor={{ from: "serieColor" }}
-        pointLabelYOffset={-12}
-        useMesh={true}
-        legends={[
-          {
-            anchor: "bottom-right",
-            direction: "column",
-            justify: false,
-            translateX: 50,
-            translateY: 50,
-            itemsSpacing: 0,
-            itemDirection: "left-to-right",
-            itemWidth: 80,
-            itemHeight: 20,
-            itemOpacity: 0.75,
-            symbolSize: 12,
-            symbolShape: "circle",
-            symbolBorderColor: "rgba(0, 0, 0, .5)",
-            effects: [
-              {
-                on: "hover",
-                style: {
-                  itemBackground: "rgba(0, 0, 0, .03)",
-                  itemOpacity: 1,
-                },
-              },
-            ],
-          },
-        ]}
-      />
-    </div>
+    <>
+      <HighchartsReact highcharts={Highcharts} options={option} />
+    </>
   );
 };
 export default MetaGraph;
