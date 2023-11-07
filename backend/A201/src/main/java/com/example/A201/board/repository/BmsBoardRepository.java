@@ -8,6 +8,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface BmsBoardRepository extends JpaRepository<BmsBoard,Long> {
-    @Query("select bms from BmsBoard bms join fetch bms.progress p where p.progressId=:progressId")
+    @Query("select distinct bms from BmsBoard bms join fetch bms.progress p where p.progressId=:progressId")
     Optional<BmsBoard> findByProgress(@Param("progressId") Long progressId);
 }

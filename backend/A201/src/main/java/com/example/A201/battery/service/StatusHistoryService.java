@@ -15,9 +15,13 @@ public interface StatusHistoryService {
 
     List<StatusHistoryResponse> getHistories(Long batteryId);
 
+    StatusHistoryResponse getHistory(Long HistoryId);
+
     Page<StatusHistoryResponse> getAllHistoriesByMember(Long memberId, Pageable pageable);
 
     StatusHistory createHistory(StatusHistoryDTO statusHistoryDTO);
 
     StatusHistoryDTO requestToDTO(StatusHistoryRequest request);
+
+
 }
