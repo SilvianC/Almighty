@@ -28,7 +28,6 @@ public class FCMConfig {
         if (firebaseAppList != null && !firebaseAppList.isEmpty()) {
             for (FirebaseApp app : firebaseAppList) {
                 if (app.getName().equals(FirebaseApp.DEFAULT_APP_NAME)) {
-                    System.out.println("앱");
                     firebaseApp = app;
                 }
             }
@@ -36,7 +35,6 @@ public class FCMConfig {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(refreshToken))
                     .build();
-            System.out.println("앱222222222222222222222");
             firebaseApp = FirebaseApp.initializeApp(options);
         }
 

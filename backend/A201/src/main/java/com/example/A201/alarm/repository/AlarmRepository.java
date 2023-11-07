@@ -12,7 +12,12 @@ import org.springframework.data.repository.query.Param;
 public interface AlarmRepository extends JpaRepository<Alarm,Long>, AlarmRepositoryCustom {
 
     Long countByReceiverAndMemberAndIsRead(Receiver receiver, Member member, boolean b);
+
+    Long countByReceiverAndIsRead(Receiver receiver,  boolean b);
     @Modifying
     @Query(value = "update Alarm a set a.isRead=true where a.member=:member and a.receiver=:receiver and a.isRead=false")
-    int updateAlarm(@Param("member") Member member,@Param("receiver") Receiver receiver);
+    int updateUserAlarm(@Param("member") Member member,@Param("receiver") Receiver receiver);
+    @Modifying
+    @Query(value = "update Alarm a set a.isRead=true where a.receiver=:receiver and a.isRead=false")
+    int updateAdminAlarm(@Param("receiver") Receiver receiver);
 }
