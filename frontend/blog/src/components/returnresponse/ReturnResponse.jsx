@@ -17,17 +17,17 @@ const ReturnResponse = ({ onClose, item, onSuccess, onError}) => {
               <S.Label>제품명</S.Label>
               <S.Input readOnly value={item ? item.code : ''} />
             </S.FieldSet>
-            <S.FieldSet>
+            {/* <S.FieldSet>
               <S.Label>제품 ID</S.Label>
               <S.Input readOnly value={item ? item.id : ''} />
-            </S.FieldSet>
+            </S.FieldSet> */}
             <S.FieldSet>
               <S.Label>신청일</S.Label>
               <S.Input readOnly value={item ? item.date : ''} />
             </S.FieldSet>
             <S.FieldSet>
               <S.Label>사유</S.Label>
-              <S.Input readOnly value={item ? item.historyId : ''} />
+              <S.TextArea readOnly value={item && item.toStatus === "Request" ? "반송 신청 진행 중 입니다." : item ? item.reason : ''} />
             </S.FieldSet>
             <S.ButtonsWrap>
               <S.SubmitButton onClick={handleClose}>확인</S.SubmitButton>
@@ -51,12 +51,18 @@ const S = {
   height:600px;
   overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+  @media(max-width: 768px){
+    height:300px; 
+   }
   `,
   Title: styled.span`
     font-size: 30px;
     font-weight: bold;
     color: #1D1F25;
     padding-bottom: 10px;
+    @media(max-width: 768px){
+      font-size: 20px;
+    }
   `,
   Form: styled.form`
     /* 필요한 스타일을 여기에 추가하실 수 있습니다. */
@@ -84,7 +90,8 @@ const S = {
     border: 1px solid #d3d3d3;
     margin-top: 15px;
     height: 150px;
-    resize: vertical;
+    resize: none;
+    overflow-y: auto; // 세로 스크롤바 설정;
   `,
   ButtonsWrap: styled.div`
     display: flex;
