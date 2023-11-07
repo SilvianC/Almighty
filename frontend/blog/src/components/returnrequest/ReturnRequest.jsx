@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import http from "../../api/http";
+import { useRecoilValue } from "recoil";
+import { MemberIdState } from "../../states/states";
 import { BiMailSend } from "react-icons/bi";
-import { ToastContainer,toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-const ReturnRequest = ({ onClose, item }) => {
+const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
     const [requestReason, setRequestReason] = useState('');
+    const memberId = useRecoilValue(MemberIdState);
     const handleClose = (event) => {
         event.preventDefault();
         onClose();
@@ -14,20 +15,25 @@ const ReturnRequest = ({ onClose, item }) => {
         event.preventDefault();
         
         const data = {
-          batteryId: item.id,
-          fromStatus: 'Request',
-          toStatus: 'Request',
-          requestReason: requestReason,
+          id: memberId,
+          title : '반송 신청',
+          code: item.code,
+          reason: requestReason,
         };
     
-        http.post('/api/batteries/history', data)
+        http.put('/api/batteries/request', data)
           .then((response) => {
             console.log(response.data); // 응답 데이터를 출력합니다.
-            toast.success('성공적으로 요청되었습니다!');
+            if (onSuccess) {
+              onSuccess(); // 상위 컴포넌트에 성공을 알림
+            }
             onClose(); // 요청이 성공적으로 완료되면 모달을 닫습니다.
           })
           .catch((error) => {
             console.error('There was an error sending the request', error);
+            if (onError) {
+              onError(); // 상위 컴포넌트에 에러를 알림
+            }
           });
     };
   return (
@@ -45,7 +51,7 @@ const ReturnRequest = ({ onClose, item }) => {
             </S.FieldSet>
             <S.FieldSet>
               <S.Label>수령일</S.Label>
-              <S.Input readOnly value={item ? item.receiveDate : ''} />
+              <S.Input readOnly value={item ? item.id : ''} />
             </S.FieldSet>
             <S.TextArea placeholder="반품 신청 사유를 입력하세요." 
             value={requestReason}
@@ -57,7 +63,6 @@ const ReturnRequest = ({ onClose, item }) => {
             </S.ButtonsWrap>
           </S.Form>
         </S.Wrap>
-        <ToastContainer />
     </>
   );
 };
@@ -74,6 +79,10 @@ const S = {
     background-color: #F2F2F2;
     height:600px;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
+    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+    @media(max-width: 768px){
+      height:300px; 
+     }
   `,
   Title: styled.span`
     font-size: 30px;
@@ -120,14 +129,27 @@ const S = {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width:80px;
+  cursor: pointer;
+  height:40px;
   `,
   SubmitButton: styled.button`
-    background-color: #007BFF;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+  background-color: #024C98; // 부트스트랩의 기본 파란색
+  border-color: #007bff;
+  width:80px;
+  cursor: pointer;
+  color:white;
+  height:40px;
+  border-radius: 5px;
+  padding:2px;
+  &:hover {
+    background-color: #A5C7F8; // 호버 상태일 때 더 어두운 파란색
+    border-color: #0056b3;
+  }
+  &:focus, &:active {
+    background-color: #0056b3; // 클릭 상태일 때 색상
+    border-color: #0056b3;
+  }
   `,
 };
 

@@ -14,4 +14,8 @@ public class SocIr {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "soc_ir_id")
     private Long id;
+
+    private Double soc;
+
+    private Double ir;
 }

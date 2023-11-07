@@ -1,20 +1,62 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import BuyTable from "../../components/table/BuyTable";
-import styled, { createGlobalStyle }  from "styled-components";
+import styled, {css, createGlobalStyle }  from "styled-components";
 import http from "../../api/http";
 import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import { CSSTransition } from 'react-transition-group';
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Return = () => {
+  const returnRequestRef = useRef(null); // ReturnRequest 컴포넌트를 위한 ref 생성
+  const serviceHistoryRef = useRef(null); // ServiceHistory 컴포넌트를 위한 ref 생성
   const [data, setData] = useState([]);
   const [history, setHistory] = useState([]);
   const memberId = useRecoilValue(MemberIdState);
   const [selectedItem, setSelectedItem] = useState(null);
   //const memberId = 1;
   const [showReturnRequest, setShowReturnRequest] = useState(false);
+  const handleSuccess = () => {
+    toast.success("반품 요청이 성공적으로 처리되었습니다.");
+    fetchServiceHistory();
+    fetchBatteryItems();
+  };
+
+  // 에러 시 호출될 함수
+  const handleError = () => {
+    toast.error("반품 요청 처리 중 오류가 발생했습니다.");
+  };
+
+  const fetchBatteryItems = () => {
+    http.get(`/api/batteries/member/${memberId}`)
+      .then(({ data }) => {
+        setData(() => {
+          return data["data"];
+        });
+      })
+      .catch(error => {
+        console.error("Error fetching batteries data", error);
+      });
+  };
+
+  // 서비스 히스토리 데이터를 불러오는 함수
+  const fetchServiceHistory = () => {
+    http
+      .get(`/api/batteries/history/members/${memberId}`)
+      .then(({ data }) => {
+        setHistory(() => {
+          return data["data"]["content"];
+        });
+        console.log("dmdkkkkkkkkkkkkkkkkk",data);
+      })
+      .catch(error => {
+        console.error("Error fetching service history", error);
+      });
+  };
+
   useEffect(() => {
     http
       .get(`/api/batteries/member/${memberId}`)
@@ -24,20 +66,25 @@ const Return = () => {
           return data["data"];
         });
       })
-      .catch();
-    http
-      .get(`/api/batteries/history/members/${memberId}`)
-      .then(({ data }) => {
-        setHistory(() => {
-          return data["data"]["content"];
-        });
-      })
-      .catch();
-  }, []);
+      .catch(error => {
+        console.error("Error fetching batteries data", error);
+      });
+    // http
+    //   .get(`/api/batteries/history/members/${memberId}`)
+    //   .then(({ data }) => {
+    //     setHistory(() => {
+    //       return data["data"]["content"];
+    //     });
+    //   })
+    //   .catch();
+    fetchServiceHistory();
+  }, [memberId]);
 
   return (
     <>
     <GlobalStyles />
+    <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+
     <S.Container>
       <S.BuyTableContainer>
         <BuyTable data={data} 
@@ -53,8 +100,9 @@ const Return = () => {
             timeout={300}
             classNames="fade"
             unmountOnExit
+            nodeRef={serviceHistoryRef} // CSSTransition에 ref를 지정
           >
-            <div>
+            <div ref={serviceHistoryRef}>
               <ServiceHistory data={history} />
             </div>
           </CSSTransition>
@@ -64,9 +112,10 @@ const Return = () => {
           timeout={300}
           classNames="slide-down"
           unmountOnExit
+          nodeRef={returnRequestRef} // CSSTransition에 ref를 지정
         >
-          <S.ReturnRequestWrapper>
-            <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} />
+          <S.ReturnRequestWrapper ref={returnRequestRef}>
+            <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} onSuccess={handleSuccess} onError={handleError}  />
           </S.ReturnRequestWrapper>
         </CSSTransition>
         </S.ReturnResultTableContainer>
@@ -76,16 +125,24 @@ const Return = () => {
 };
 
 export default Return;
+
 const S = {
   Container: styled.div`
     display: flex;
     width:100%;
+    // 태블릿 크기 이하에서는 컴포넌트를 세로로 배치합니다.
+    @media(max-width: 768px){
+      flex-direction: column;
+    }
   `,
   BuyTableContainer: styled.div`
-    flex: 1;
+    flex: 0.8;
+    @media(max-width: 768px){
+      padding-top:60px;
+    }
   `,
   ReturnResultTableContainer: styled.div`
-    flex: 0.75;
+    flex: 1;
     position: relative; // 이 부분이 추가되어야 합니다.
   `,
   Title: styled.div`
@@ -143,3 +200,4 @@ const GlobalStyles = createGlobalStyle`
   transition: transform 300ms;
 }
 `;
+

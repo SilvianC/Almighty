@@ -8,12 +8,12 @@ const LoginPage = () => {
   const location = useLocation();
   const navigate = useNavigate(); 
   const memberId = useRecoilValue(MemberIdState);
-  useEffect(() => {
+  // useEffect(() => {
     
-    if (memberId && location.pathname !== "/main") {
-      navigate("/main");
-    }
-  }, [memberId, location, navigate]);
+  //   if (memberId && location.pathname !== "/main") {
+  //     navigate("/main");
+  //   }
+  // }, [memberId, location, navigate]);
 
 
   

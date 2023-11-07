@@ -13,4 +13,8 @@ public class SocOcv {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "soc_ocv_id")
     private Long id;
+
+    private Double soc;
+
+    private Double ocv;
 }
