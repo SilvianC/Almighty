@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import BuyTable from "../../components/table/BuyTable";
-import styled, { createGlobalStyle }  from "styled-components";
+import styled, {css, createGlobalStyle }  from "styled-components";
 import http from "../../api/http";
 import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
@@ -11,6 +11,8 @@ import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Return = () => {
+  const returnRequestRef = useRef(null); // ReturnRequest 컴포넌트를 위한 ref 생성
+  const serviceHistoryRef = useRef(null); // ServiceHistory 컴포넌트를 위한 ref 생성
   const [data, setData] = useState([]);
   const [history, setHistory] = useState([]);
   const memberId = useRecoilValue(MemberIdState);
@@ -98,8 +100,9 @@ const Return = () => {
             timeout={300}
             classNames="fade"
             unmountOnExit
+            nodeRef={serviceHistoryRef} // CSSTransition에 ref를 지정
           >
-            <div>
+            <div ref={serviceHistoryRef}>
               <ServiceHistory data={history} />
             </div>
           </CSSTransition>
@@ -109,8 +112,9 @@ const Return = () => {
           timeout={300}
           classNames="slide-down"
           unmountOnExit
+          nodeRef={returnRequestRef} // CSSTransition에 ref를 지정
         >
-          <S.ReturnRequestWrapper>
+          <S.ReturnRequestWrapper ref={returnRequestRef}>
             <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} onSuccess={handleSuccess} onError={handleError}  />
           </S.ReturnRequestWrapper>
         </CSSTransition>
@@ -121,14 +125,21 @@ const Return = () => {
 };
 
 export default Return;
+
 const S = {
   Container: styled.div`
     display: flex;
     width:100%;
+    // 태블릿 크기 이하에서는 컴포넌트를 세로로 배치합니다.
+    @media(max-width: 768px){
+      flex-direction: column;
+    }
   `,
   BuyTableContainer: styled.div`
     flex: 0.8;
-    
+    @media(max-width: 768px){
+      padding-top:60px;
+    }
   `,
   ReturnResultTableContainer: styled.div`
     flex: 1;

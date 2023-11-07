@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import http from "../../api/http";
+import { useRecoilValue } from "recoil";
+import { MemberIdState } from "../../states/states";
 import { BiMailSend } from "react-icons/bi";
 const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
     const [requestReason, setRequestReason] = useState('');
+    const memberId = useRecoilValue(MemberIdState);
     const handleClose = (event) => {
         event.preventDefault();
         onClose();
@@ -12,13 +15,13 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
         event.preventDefault();
         
         const data = {
-          batteryId: item.id,
-          fromStatus: 'Normal',
-          toStatus: 'Request',
-          requestReason: requestReason,
+          id: memberId,
+          title : '반송 신청',
+          code: item.code,
+          reason: requestReason,
         };
     
-        http.post('/api/batteries/history', data)
+        http.put('/api/batteries/request', data)
           .then((response) => {
             console.log(response.data); // 응답 데이터를 출력합니다.
             if (onSuccess) {
@@ -77,6 +80,9 @@ const S = {
     height:600px;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+    @media(max-width: 768px){
+      height:300px; 
+     }
   `,
   Title: styled.span`
     font-size: 30px;

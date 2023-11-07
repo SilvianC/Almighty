@@ -5,6 +5,7 @@ import com.batteryalmighty.bms.domain.SocOcv;
 import com.batteryalmighty.bms.repository.SocIrRepository;
 import com.batteryalmighty.bms.repository.SocOcvRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,13 +24,21 @@ public class Ekf {
     private double ocv;
 
     private double x_;
-    private double x;
+    private double x = 100;
     private double K;
 
     private double H;
 
     private final SocIrRepository socIrRepository;
+
     private final SocOcvRepository socOcvRepository;
+
+    public void init(){
+        Q = 2E-06;
+        R = 2500;
+        P = 0.006;
+        x = 100;
+    }
 
     public void predictx_(double volt){
         PageRequest pageable = PageRequest.of(0, 2);
@@ -64,5 +73,9 @@ public class Ekf {
 
     public void nextP(){
         P = -1 * K * H * P_;
+    }
+
+    public double get(){
+        return x;
     }
 }

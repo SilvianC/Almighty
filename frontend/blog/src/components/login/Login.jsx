@@ -88,7 +88,7 @@ const Login = () => {
     <S.Wrap>
       <S.Container>
         <S.Title>
-          <p>로그인</p>
+          <p>SSO</p>
         </S.Title>
         <S.Login>
           
@@ -113,9 +113,9 @@ const Login = () => {
               <input type="checkbox" id="keep" value="off" />
               <label for="keep">아이디 저장</label>
             </div>
-            <button type="button" onClick={gotoSignUpForm}>
+            {/* <button type="button" onClick={gotoSignUpForm}>
               회원 가입
-            </button>
+            </button> */}
           </div>
           <button type="submit" onClick={requestLogin}>
             로그인
@@ -138,6 +138,7 @@ const S = {
       width:100%;
 
     }
+    
   `,
   Container: styled.div`
     width: 46.875%;
@@ -147,6 +148,7 @@ const S = {
     display: flex;
     flex-direction: column;
     background-color: #E7ECF2;
+    
   `,
   Title: styled.div`
     width: 100%;
@@ -185,7 +187,7 @@ const S = {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
+    
     > input {
       background-color: #f2f2f2;
       width: 55.55%;
@@ -198,6 +200,7 @@ const S = {
       font-weight: bold;
       color: #034F9E;
       text-align: left;
+      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
       cursor: pointer;
       &:hover {
         outline: none;
@@ -233,6 +236,7 @@ const S = {
       font-size: 0.8rem;
       font-weight: bold;
       color: #1428a0;
+      
       text-align: center;
       text-decoration: none;
       cursor: pointer;
@@ -248,6 +252,7 @@ const S = {
       border: none;
       border-radius: 10px;
       color: #ffffff;
+      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
       font-size: 0.5rme;
       font-weight: bold;
       cursor: pointer;
