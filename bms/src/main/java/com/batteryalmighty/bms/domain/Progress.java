@@ -15,5 +15,5 @@ public class Progress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "progress_id")
-    private Long progressId;
+    private Long id;
 }

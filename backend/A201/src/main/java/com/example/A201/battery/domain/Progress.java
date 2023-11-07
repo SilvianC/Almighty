@@ -28,6 +28,7 @@ public class Progress {
     @CreatedDate
     private LocalDate createDate;
 
+    @Enumerated(EnumType.STRING)
     private Status currentStatus;
 
     private String reason;

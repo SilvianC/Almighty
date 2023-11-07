@@ -9,6 +9,6 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface VitBoardRepository extends JpaRepository<VitBoard, Long> {
-    @Query("select vit from VitBoard vit join fetch vit.progress p where p.progressId=:progressId")
+    @Query("select distinct vit from VitBoard vit join vit.progress p where p.progressId=:progressId")
     List<VitBoard> findByProgress(@Param("progressId") Long progressId, Pageable pageable);
 }
