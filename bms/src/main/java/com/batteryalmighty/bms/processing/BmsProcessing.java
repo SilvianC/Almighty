@@ -36,7 +36,7 @@ public class BmsProcessing {
         double prevTemperature = 10;
         int i = 0;
         for (VitBoard vitBoard : vitBoards) {
-            System.out.println("step " + i);
+            System.out.println("step " + i++);
             ekf.predictx_(vitBoard.getVoltage());
             ekf.predictP();
             ekf.kalmanGain(vitBoard.getCurrent(), vitBoard.getVoltage());
