@@ -5,6 +5,7 @@ import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.domain.StatusHistory;
 import com.example.A201.battery.dto.ProgressListDTO;
+import com.example.A201.battery.dto.ProgressResultDTO;
 import com.example.A201.battery.repository.BatteryRepository;
 import com.example.A201.battery.repository.ProgressRepository;
 import com.example.A201.battery.repository.StatusHistoryRepository;
@@ -61,7 +62,7 @@ public class BatteryServiceImpl implements BatteryService{
 
     @Override
     @Transactional
-    public void updateBatteriesStatus(String code, String reason){
+    public void registProgress(String code, String reason){
         Battery battery = batteryRepository.findByCode(code).orElseThrow(
                 () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
         );
@@ -83,5 +84,20 @@ public class BatteryServiceImpl implements BatteryService{
     @Override
     public List<ProgressListDTO> getFinishedProgress(){
         return progressRepository.getFinishedProgress();
+    }
+
+    @Override
+    @Transactional
+    public void progressResult(ProgressResultDTO progress){
+        Progress p = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new EntityNotFoundException("해당 요청을 찾을 수 없습니다"));
+        Battery battery = p.getBatteryId();
+        statusHistoryRepository.save(StatusHistory.builder()
+                .toStatus(progress.getToStatus())
+                .fromStatus(battery.getBatteryStatus())
+                .batteryId(battery)
+                .requestReason(p.getReason())
+                .responseReason(progress.getResponseReason())
+                .build());
+        battery.setBatteryStatus(progress.getToStatus());
     }
 }

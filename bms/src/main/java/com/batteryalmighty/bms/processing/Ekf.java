@@ -50,7 +50,7 @@ public class Ekf {
         P_ = P + Q;
     }
 
-    public double kalmanGain(double current, double volt){
+    public void kalmanGain(double current, double volt){
         PageRequest pageable = PageRequest.of(0, 2);
         List<SocOcv> socOcvs = socOcvRepository.findByValue(volt, pageable);
         SocOcv socOcvPredict1 = socOcvs.get(0);
@@ -58,16 +58,19 @@ public class Ekf {
         PageRequest pageable2 = PageRequest.of(0, 1);
         SocIr ir1 = socIrRepository.findBySoc(socOcvPredict1.getSoc(), pageable2).get(0);
         SocIr ir2 = socIrRepository.findBySoc(socOcvPredict2.getSoc(), pageable2).get(0);
-        H = ((socOcvPredict1.getOcv() - socOcvPredict2.getOcv()) / (socOcvPredict1.getSoc() - socOcvPredict2.getSoc())) + ((current)*((ir1.getIr() - ir2.getIr()) / (ir1.getSoc() - ir2.getSoc())));
-        return K = P_ * H * (H * P_ * H + R);
+        ir = ir1.getIr() - (ir1.getSoc() - x_) * (ir1.getIr() - ir2.getIr()) / (ir1.getSoc() - ir2.getSoc());
+        double a = (socOcvPredict1.getOcv() - volt) / (socOcvPredict1.getSoc() - x_);
+        double b = (ir1.getIr() - ir) / (socOcvPredict1.getSoc() - x_);
+        H = ((socOcvPredict1.getOcv() - volt) / (socOcvPredict1.getSoc() - x_)) + ((current)*((ir1.getIr() - ir) / (socOcvPredict1.getSoc() - x_)));
+        K = P_ * H * (H * P_ * H + R);
     }
 
     public void predictx(double volt){
         PageRequest pageable = PageRequest.of(0, 2);
         List<SocOcv> socOcvs = socOcvRepository.findBySoc(x_, pageable);
         List<SocIr> socIrs = socIrRepository.findBySoc(x_, pageable);
-        ocv = socOcvs.get(0).getOcv() - (socOcvs.get(0).getSoc() - x) * (socOcvs.get(0).getOcv() - socOcvs.get(1).getOcv()) / (socOcvs.get(0).getSoc() - socOcvs.get(1).getSoc());
-        ir = socIrs.get(0).getIr() - (socIrs.get(0).getSoc() - x) * (socIrs.get(0).getIr() - socIrs.get(1).getIr()) / (socIrs.get(0).getSoc() - socIrs.get(1).getSoc());
+        ocv = socOcvs.get(0).getOcv() - (socOcvs.get(0).getSoc() - x_) * (socOcvs.get(0).getOcv() - socOcvs.get(1).getOcv()) / (socOcvs.get(0).getSoc() - socOcvs.get(1).getSoc());
+        ir = socIrs.get(0).getIr() - (socIrs.get(0).getSoc() - x_) * (socIrs.get(0).getIr() - socIrs.get(1).getIr()) / (socIrs.get(0).getSoc() - socIrs.get(1).getSoc());
         x = x_ + K * (volt - (ocv + ir));
     }
 
