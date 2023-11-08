@@ -5,6 +5,7 @@ import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.alarm.vo.PageResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/alarm")
+@Slf4j
 public class AlarmController {
     private final AlarmService alarmService;
 
@@ -30,7 +32,7 @@ public class AlarmController {
                                                  @PathVariable(value = "status",required = false) String status,
                                                  @RequestParam(defaultValue = "0", required = false) int pageIdx) {
         PageRequest pageRequest = PageRequest.of(pageIdx, 20);
-
+        log.info("========================={}",status);
         return ResponseEntity.ok(PageResponse.PageResponse("알람 로그 입니다.",alarmService.getAlarm(id, status, pageRequest)));
     }
 
@@ -52,12 +54,10 @@ public class AlarmController {
 
     @PutMapping("{memberId}")
     public ResponseEntity<?> updateAlarm(@PathVariable(value = "memberId") Long id) {
+        log.info("유저 아이디 = {}",id);
         alarmService.updateAlarm(id);
         return ResponseEntity.ok("굳");
     }
-
-
-
 
     @PostMapping
     public ResponseEntity insertAlarm(@RequestBody AlarmDto alarmDto) {
@@ -70,7 +70,4 @@ public class AlarmController {
         alarmService.deleteAlarm(alarmId);
         return SuccessResponseEntity.toResponseEntity("알람이 삭제 되었습니다.",null);
     }
-
-
-
 }

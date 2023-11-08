@@ -6,8 +6,8 @@ import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.dto.ProgressDTO;
+import com.example.A201.battery.dto.ProgressResultDTO;
 import com.example.A201.battery.service.BatteryService;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
@@ -64,7 +64,7 @@ public class BatteryController {
     @PutMapping("/request")
     public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
 
-        batteryService.updateBatteriesStatus(progress.getCode(), progress.getReason());
+        batteryService.registProgress(progress.getCode(), progress.getReason());
         log.debug("여기까지 완료");
         log.debug("PROGRESS뜯어보기: "+progress.getId()+" "+progress.getCode()+" "+progress.getTitle()+" "+progress.getReason());
         log.debug("ID 뭐야!:"+ progress.getId());
@@ -93,4 +93,9 @@ public class BatteryController {
         return SuccessResponseEntity.toResponseEntity("완료 요청 불러오기 완료", batteryService.getFinishedProgress());
     }
 
+    @PutMapping("/progress/{progress_id}")
+    public ResponseEntity<?> updateProgress(@PathVariable("progress_id") Long progressId, @RequestBody ProgressResultDTO progress){
+        batteryService.progressResult(progress);
+        return SuccessResponseEntity.toResponseEntity("요청 응답 완료", null);
+    }
 }
