@@ -77,40 +77,6 @@ const BatteryBoard = () => {
   return (
     <S.Wrap>
       <Row>
-        <Col>
-          {/* <S.Title className="d-flex align-items-center">
-            <BiSolidChart></BiSolidChart>배터리 데이터
-          </S.Title> */}
-          <select
-            onChange={(e) => {
-              handleCode(e);
-            }}
-          >
-            {batteries.map((battery, idx) => {
-              return (
-                <option value={battery.code} key={idx}>
-                  {battery.code}
-                </option>
-              );
-            })}
-          </select>
-          <select
-            onChange={(e) => {
-              handleTest(e);
-            }}
-            value={testId}
-          >
-            {data.map((item, idx) => {
-              return (
-                <option value={item.testId} key={idx}>
-                  {item.testId} : {item.type}
-                </option>
-              );
-            })}
-          </select>
-        </Col>
-      </Row>
-      <Row>
         <Col md={12}>
           <TestGraph
             data={vitData}
