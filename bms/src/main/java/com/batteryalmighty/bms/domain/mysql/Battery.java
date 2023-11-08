@@ -1,4 +1,4 @@
-package com.example.A201.battery.domain;
+package com.batteryalmighty.bms.domain.mysql;
 
 import lombok.*;
 
@@ -9,12 +9,14 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Model {
+public class Battery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "model_id")
+    @Column(name = "battery_id")
     private Long id;
 
-    private String modelName;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "model_id")
+    private Model model;
 
 }

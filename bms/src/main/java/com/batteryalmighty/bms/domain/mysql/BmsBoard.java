@@ -17,13 +17,29 @@ public class BmsBoard {
     @Column(name = "bms_board_id")
     Long id;
 
-    int overVoltageCount;
+    private int overVoltageCount;
 
-    int underVoltageCount;
+    private int underVoltageCount;
 
-    int overCurrentCount;
+    private int overCurrentCount;
 
-    int abnormalTemperatureCount;
+    private int abnormalTemperatureCount;
+
+    private Double maxVoltageCharge;
+
+    private Double minVoltageCharge;
+
+    private Double maxVoltageDischarge;
+
+    private Double minVoltageDischarge;
+
+    private Double maxTemperatureCharge;
+
+    private Double minTemperatureCharge;
+
+    private Double maxTemperatureDischarge;
+
+    private Double minTemperatureDischarge;
 
     @Column(name = "made_date")
     private LocalDate madeDate;
