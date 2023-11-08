@@ -15,12 +15,18 @@ import lombok.NoArgsConstructor;
 public class BatterydataResponse {
     private Double overVoltage;
     private Double underVoltage;
+    private Double overCurrent;
+    private Double chargingMaxTemperature;
+    private Double chargingMinTemperature;
 
     public static BatterydataResponse batteryResponse(Battery battery){
         if(battery.getModel() == null) return BatterydataResponse.builder().build();
         return BatterydataResponse.builder()
                 .overVoltage(battery.getModel().getOverVoltage())
                 .underVoltage(battery.getModel().getUnderVoltage())
+                .overCurrent(battery.getModel().getChargingOverCurrent())
+                .chargingMaxTemperature(battery.getModel().getChargingMaxTemperature())
+                .chargingMinTemperature(battery.getModel().getChargingMinTemperature())
                 .build();
     }
 }
