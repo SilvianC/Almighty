@@ -9,11 +9,13 @@ import {
   sidebarClasses,
   menuClasses,
 } from "react-pro-sidebar";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const SideBar = () => {
+const SideBar = (currentStatus) => {
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
   useEffect(() => {
     http
       .get(`/api/batteries/progress/request`)
@@ -55,30 +57,49 @@ const SideBar = () => {
     </SubMenu>
   ));
 
+  const [isSidebarVisible, setSidebarVisible] = useState(false);
+
+  const showSidebar = () => {
+    console.log("show");
+    setSidebarVisible(true);
+  };
+
+  const hideSidebar = () => {
+    setSidebarVisible(false);
+  };
+
   return (
-    <StyledSidebar
-      rootStyles={{
-        [`.${sidebarClasses.container}`]: {
-          backgroundColor: "#d5dfe9",
-        },
-      }}
-    >
-      <LogoStyle src={Logo}></LogoStyle>
-      <Menu
-        menuItemStyles={{
-          button: ({ level, active, disabled }) => {
-            // only apply styles on first level elements of the tree
-            if (level === 1)
-              return {
-                color: active ? "#1d1f25" : "#888888",
-                backgroundColor: active ? "#e7ecf2" : "#d5dfe9",
-              };
-          },
-        }}
-      >
-        {menuItems}
-      </Menu>
-    </StyledSidebar>
+    <div>
+      <button onMouseEnter={showSidebar} onMouseLeave={hideSidebar}>
+        "마우스 올리기"
+      </button>
+      <div>
+        <StyledSidebar
+          collapsed={!isSidebarVisible}
+          rootStyles={{
+            [`.${sidebarClasses.container}`]: {
+              backgroundColor: "#d5dfe9",
+            },
+          }}
+        >
+          <LogoStyle src={Logo}></LogoStyle>
+          <Menu
+            menuItemStyles={{
+              button: ({ level, active, disabled }) => {
+                // only apply styles on first level elements of the tree
+                if (level === 1)
+                  return {
+                    color: active ? "#1d1f25" : "#888888",
+                    backgroundColor: active ? "#e7ecf2" : "#d5dfe9",
+                  };
+              },
+            }}
+          >
+            {menuItems}
+          </Menu>
+        </StyledSidebar>
+      </div>
+    </div>
   );
 };
 
@@ -109,6 +130,10 @@ function elapsedTime(date) {
   }
   return "오늘";
 }
+
+const showSidebarStyles = css`
+  display: block;
+`;
 
 const StyledSidebar = styled(Sidebar)`
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
