@@ -92,7 +92,7 @@ public class Ekf {
         min[0] = Double.MAX_VALUE;
         min[1] = Double.MAX_VALUE;
         for (SocOcv socOcv : socOcvs) {
-            double abs = Math.abs(socOcv.getSoc() - volt);
+            double abs = Math.abs(socOcv.getOcv() - volt);
             if(abs < min[1]){
                 min[1] = abs;
                 nearOcv[1] = socOcv;
