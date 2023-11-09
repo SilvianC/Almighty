@@ -14,11 +14,15 @@ const Return = () => {
   const returnRequestRef = useRef(null); // ReturnRequest 컴포넌트를 위한 ref 생성
   const serviceHistoryRef = useRef(null); // ServiceHistory 컴포넌트를 위한 ref 생성
   const [data, setData] = useState([]);
+  const [data2, setData2] = useState([]);
   const [history, setHistory] = useState([]);
   const memberId = useRecoilValue(MemberIdState);
   const [selectedItem, setSelectedItem] = useState(null);
   //const memberId = 1;
   const [showReturnRequest, setShowReturnRequest] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+
   const handleSuccess = () => {
     toast.success("반품 요청이 성공적으로 처리되었습니다.");
     fetchServiceHistory();
@@ -43,19 +47,41 @@ const Return = () => {
   };
 
   // 서비스 히스토리 데이터를 불러오는 함수
-  const fetchServiceHistory = () => {
+  const fetchServiceHistory = (pageNum) => {
     http
-      .get(`/api/batteries/history/members/${memberId}`)
+      .get(`/api/batteries/history/members/${memberId}?page=${pageNum - 1}`)
       .then(({ data }) => {
+        setData2(data.data.content);
+        setTotalPages(data.data.totalPages);
+        // 추가된 상태로 현재 페이지와 총 페이지 수를 설정합니다.
         setHistory(() => {
           return data["data"]["content"];
         });
-        console.log("dmdkkkkkkkkkkkkkkkkk",data);
       })
       .catch(error => {
         console.error("Error fetching service history", error);
       });
   };
+
+  // useEffect(() => {
+  //   const fetchServiceHistory = (pageNum) => {
+  //     http
+  //       .get(`/api/batteries/history/members/${memberId}?page=${pageNum - 1}`)
+  //       .then(({ data }) => {
+  //         setData(data.data.content);
+  //         setTotalPages(data.data.totalPages);
+  //         // 추가된 상태로 현재 페이지와 총 페이지 수를 설정합니다.
+  //         setHistory(() => {
+  //           return data["data"]["content"];
+  //         });
+  //       })
+  //       .catch(error => {
+  //         console.error("Error fetching service history", error);
+  //       });
+  //   };
+  
+  //   fetchServiceHistory(page);
+  // }, [page, memberId]);
 
   useEffect(() => {
     http
@@ -77,9 +103,8 @@ const Return = () => {
     //     });
     //   })
     //   .catch();
-    fetchServiceHistory();
+    fetchServiceHistory(page);
   }, [memberId]);
-
   return (
     <>
     <GlobalStyles />
@@ -103,7 +128,9 @@ const Return = () => {
             nodeRef={serviceHistoryRef} // CSSTransition에 ref를 지정
           >
             <div ref={serviceHistoryRef}>
-              <ServiceHistory data={history} />
+              <ServiceHistory data={history} page={page}
+              setPage={setPage}
+              totalPage={totalPages} />
             </div>
           </CSSTransition>
 
