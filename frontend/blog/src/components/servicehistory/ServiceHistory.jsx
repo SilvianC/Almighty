@@ -18,6 +18,7 @@ const status = {
   CustomerFault: "고객 귀책",
   SdiFault: "제품 결함",
 };
+
 const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
   const [showReturnResponse, setShowReturnResponse] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
@@ -51,7 +52,9 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
       // 필요하다면 여기서 오류 처리를 하세요.
     });
   };
-
+  const handlePageClick = (pageNumber) => {
+    setPage(pageNumber);
+  };
   return (
     <S.Wrap ref={wrapperRef}>
       <S.Title className="d-flex align-items-center">
@@ -108,9 +111,17 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
           <ReturnResponse onClose={() => setShowReturnResponse(false)} item={selectedItem} onSuccess={onStatusClick} />
         </S.ReturnResponseWrapper>
       </CSSTransition>
-      <S.PageArea>
-        <S.PageBox>1</S.PageBox>
-      </S.PageArea>
+      <PageControl>
+        {Array.from({ length: totalPage }, (_, index) => (
+          <PageButton
+            key={index}
+            active={page === index + 1}
+            onClick={() => handlePageClick(index + 1)}
+          >
+            {index + 1}
+          </PageButton>
+        ))}
+      </PageControl>
     </S.Wrap>
   );
 };
@@ -208,3 +219,20 @@ const S = {
   `,
   
 };
+// 페이징 컨트롤 스타일드 컴포넌트
+const PageControl = styled.div`
+  display: flex;
+  justify-content: center;
+  padding-top: 350px;
+  margin-top:-40px;
+`;
+
+const PageButton = styled.button`
+
+  padding: 5px 10px;
+  background-color: ${props => (props.active ? '#007bff' : 'transparent')};
+  color: ${props => (props.active ? 'white' : 'black')};
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  cursor: pointer;
+`;

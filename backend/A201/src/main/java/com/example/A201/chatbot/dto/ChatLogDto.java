@@ -17,7 +17,7 @@ public class ChatLogDto {
     private String botResponse;
     private LocalDateTime timestamp;
     private Long memberId;  // 로그인한 멤버의 ID
-
+    private Long progressId;
     // 기본 생성자, getter, setter, 그리고 필요한 다른 메서드들
 
     public static ChatLogDto fromEntity(ChatLog chatLog) {
