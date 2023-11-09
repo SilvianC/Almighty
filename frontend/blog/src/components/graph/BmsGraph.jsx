@@ -4,8 +4,7 @@ import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";
 
 const BmsGraph = ({ data, threshold, type, num }) => {
-  const datas = [];
-
+  console.log(data);
   const option = {
     chart: {
       type: "column",
@@ -80,15 +79,10 @@ const BmsGraph = ({ data, threshold, type, num }) => {
         colorByPoint: true,
 
         data: [
-          ["A", 100],
-          ["B", 200],
-          ["C", 300],
-          ["D", 300],
-          ["E", 300],
-          ["F", 300],
-          ["G", 300],
-          ["H", 300],
-          ["I", 300],
+          ["과전압", data["overVoltageCount"]],
+          ["저전압", data["underVoltageCount"]],
+          ["과전류", data["overCurrentCount"]],
+          ["온도이상", data["abnormalTemperatureCount"]],
         ],
         dataLabels: {
           enabled: true,
