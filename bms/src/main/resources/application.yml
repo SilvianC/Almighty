@@ -27,8 +27,11 @@ spring:
 logging:
   level:
     org:
+      hibernate:
+        SQL: DEBUG
+        orm.jdbc.bind: TRACE
       springframework:
         data:
           mongodb:
             core:
-              MongoTemplate=DEBUG:
+              MongoTemplate: DEBUG

@@ -4,6 +4,7 @@ import com.batteryalmighty.bms.domain.mysql.Progress;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.persistence.*;
 
@@ -11,15 +12,17 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "vitboard")
+@Document(collection = "sample")
 public class VitBoard {
 
-    @Transient
-    public static final String SEQUENCE_NAME = "vit_sequence";
+//    @Transient
+//    public static final String SEQUENCE_NAME = "vit_sequence";
 
     @Id
+    @Field(value = "_id", targetType = FieldType.OBJECT_ID)
     private String id;
-    private Long idx;
+
+//    private Long idx;
 
     @Field(name = "Voltage_measured")
     private Double voltage;
@@ -39,7 +42,7 @@ public class VitBoard {
     @Field(name = "Ekf")
     private Double ekf;
 
-    @Field(name = "progress_id")
+    @Field(name = "Progress_id")
     private Long progressId;
 
     public void predictEkf(Double ekf){

@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class VitResponse {
+
     private Double voltage;
 
     private Double current;
@@ -21,7 +22,7 @@ public class VitResponse {
 
     private Double time;
 
-//    private Double soc;
+    private Double soc;
 
     public static VitResponse vitResponse(VitBoard vitBoard){
         return VitResponse.builder()
@@ -29,7 +30,7 @@ public class VitResponse {
                 .current(vitBoard.getCurrent())
                 .temperature(vitBoard.getTemperature())
                 .time(vitBoard.getTime())
-//                .soc(vitBoard.getSoc())
+                .soc(vitBoard.getSoc())
                 .build();
     }
 }

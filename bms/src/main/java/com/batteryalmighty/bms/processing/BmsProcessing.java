@@ -26,7 +26,7 @@ public class BmsProcessing {
 
 
     public void predict(){
-        List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressIdOrderById(6L);
+        List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(6L);
         Battery battery = batteryRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("찾는 배터리가 없습니다."));
         Model model = modelRepository.findById(battery.getId())

@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface VitBoardRepository extends MongoRepository<VitBoard, String> {
 //    List<VitBoard> findTop1000VitBoardByProgressIdOrderById(Long id);
+    List<VitBoard> findVitBoardByProgressId(Long progressId);
 }

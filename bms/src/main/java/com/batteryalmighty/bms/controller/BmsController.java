@@ -13,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class BmsController {
     private final BmsService bmsService;
 
-//    @PostMapping("/upload/csv")
-//    public ResponseEntity<?> uploadCSVFile(@RequestParam("file") MultipartFile file) {
-//        return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공",  bmsService.uploadcsv());
-//    }
+    @PostMapping("/upload/csv")
+    public ResponseEntity<?> uploadCSVFile(@RequestParam("file") MultipartFile file) {
+        return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공",  bmsService.uploadCsv(file));
+    }
 
     @GetMapping("/vits")
     public ResponseEntity<?> getAllVitBoard(){
