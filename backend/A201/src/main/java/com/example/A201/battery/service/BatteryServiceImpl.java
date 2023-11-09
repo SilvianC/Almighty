@@ -11,10 +11,16 @@ import com.example.A201.battery.repository.ProgressRepository;
 import com.example.A201.battery.repository.StatusHistoryRepository;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
+import com.example.A201.member.domain.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +34,7 @@ public class BatteryServiceImpl implements BatteryService{
     private final BatteryRepository batteryRepository;
     private final ProgressRepository progressRepository;
     private final StatusHistoryRepository statusHistoryRepository;
+    private final JavaMailSender javaMailSender;
 
     @Override
     public List<BatteryResponse> getBatteriesAll() {
@@ -91,6 +98,7 @@ public class BatteryServiceImpl implements BatteryService{
     public void progressResult(ProgressResultDTO progress){
         Progress p = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new EntityNotFoundException("해당 요청을 찾을 수 없습니다"));
         Battery battery = p.getBatteryId();
+        Member member = battery.getMember();
         statusHistoryRepository.save(StatusHistory.builder()
                 .toStatus(progress.getToStatus())
                 .fromStatus(battery.getBatteryStatus())
@@ -99,5 +107,20 @@ public class BatteryServiceImpl implements BatteryService{
                 .responseReason(progress.getResponseReason())
                 .build());
         battery.setBatteryStatus(progress.getToStatus());
+
+        sendMail(member.getEmail(), battery.getCode(), progress.getToStatus().toString());
+    }
+
+    private void sendMail(String email, String code, String status){
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
+            mimeMessageHelper.setTo(email); // 메일 수신자
+            mimeMessageHelper.setSubject(code + " 배터리 반송 건에 대하여"); // 메일 제목
+            mimeMessageHelper.setText(String.format("%s 배터리의 분석 결과 %s", code, status)); // 메일 본문 내용, HTML 여부
+            javaMailSender.send(mimeMessage);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
