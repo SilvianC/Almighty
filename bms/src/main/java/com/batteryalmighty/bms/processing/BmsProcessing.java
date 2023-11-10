@@ -9,8 +9,13 @@ import com.batteryalmighty.bms.repository.mysql.BmsBoardRepository;
 import com.batteryalmighty.bms.repository.mongo.VitBoardRepository;
 import com.batteryalmighty.bms.repository.mysql.ModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 
@@ -19,6 +24,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BmsProcessing {
     private final VitBoardRepository vitBoardRepository;
+    private final MongoTemplate mongoTemplate;
     private final BmsBoardRepository bmsBoardRepository;
     private final BatteryRepository batteryRepository;
     private final ModelRepository modelRepository;
@@ -57,11 +63,13 @@ public class BmsProcessing {
             ekf.predictx(vitBoard.getVoltage());
             ekf.nextP();
 
+            // ekf 업데이트
+            // vitBoard.predictEkf(ekf.get());
 
-
-            vitBoard.predictEkf(ekf.get());
-
-
+            Query query1 = new Query(Criteria.where("_id").is(vitBoard.getId()));
+            Update updateEkf = new Update();
+            updateEkf.set("Soc", ekf.get());
+            mongoTemplate.updateFirst(query1, updateEkf, VitBoard.class);
 
             if(prevVolt < model.getOverVoltageThreshold() && vitBoard.getVoltage() >= model.getOverVoltageThreshold()) overVoltageCount++;
             if(prevVolt > model.getUnderVoltageThreshold() && vitBoard.getVoltage() <= model.getUnderVoltageThreshold()) underVoltageCount++;
