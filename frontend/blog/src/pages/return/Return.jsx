@@ -1,14 +1,15 @@
 import React, { useEffect, useState, useRef } from "react";
 import BuyTable from "../../components/table/BuyTable";
-import styled, {css, createGlobalStyle }  from "styled-components";
+import styled, { css, createGlobalStyle } from "styled-components";
 import http from "../../api/http";
 import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
-import { CSSTransition } from 'react-transition-group';
+import { CSSTransition } from "react-transition-group";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
-import { toast, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import SideBar from "../../components/sidebar/Sidebar";
 
 const Return = () => {
   const returnRequestRef = useRef(null); // ReturnRequest 컴포넌트를 위한 ref 생성
@@ -35,13 +36,14 @@ const Return = () => {
   };
 
   const fetchBatteryItems = () => {
-    http.get(`/api/batteries/member/${memberId}`)
+    http
+      .get(`/api/batteries/member/${memberId}`)
       .then(({ data }) => {
         setData(() => {
           return data["data"];
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching batteries data", error);
       });
   };
@@ -58,7 +60,7 @@ const Return = () => {
           return data["data"]["content"];
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching service history", error);
       });
   };
@@ -79,7 +81,7 @@ const Return = () => {
   //         console.error("Error fetching service history", error);
   //       });
   //   };
-  
+
   //   fetchServiceHistory(page);
   // }, [page, memberId]);
 
@@ -87,12 +89,12 @@ const Return = () => {
     http
       .get(`/api/batteries/member/${memberId}`)
       .then(({ data }) => {
-        console.log(data)
+        console.log(data);
         setData(() => {
           return data["data"];
         });
       })
-      .catch(error => {
+      .catch((error) => {
         console.error("Error fetching batteries data", error);
       });
     // http
@@ -107,19 +109,21 @@ const Return = () => {
   }, [memberId, page]);
   return (
     <>
-    <GlobalStyles />
-    <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
+      <GlobalStyles />
+      <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 
-    <S.Container>
-      <S.BuyTableContainer>
-        <BuyTable data={data} 
-        onApplyClick={(item) => {
-        setSelectedItem(item);
-        setShowReturnRequest(true);
-    }}></BuyTable>
-      </S.BuyTableContainer>
+      <S.Container>
+        <S.BuyTableContainer>
+          <BuyTable
+            data={data}
+            onApplyClick={(item) => {
+              setSelectedItem(item);
+              setShowReturnRequest(true);
+            }}
+          ></BuyTable>
+        </S.BuyTableContainer>
 
-      <S.ReturnResultTableContainer>
+        <S.ReturnResultTableContainer>
           <CSSTransition
             in={!showReturnRequest}
             timeout={300}
@@ -128,27 +132,34 @@ const Return = () => {
             nodeRef={serviceHistoryRef} // CSSTransition에 ref를 지정
           >
             <div ref={serviceHistoryRef}>
-              <ServiceHistory data={history} page={page}
-              setPage={setPage}
-              totalPage={totalPages}
-              fetchServiceHistory={fetchServiceHistory}
-               />
+              <ServiceHistory
+                data={history}
+                page={page}
+                setPage={setPage}
+                totalPage={totalPages}
+                fetchServiceHistory={fetchServiceHistory}
+              />
             </div>
           </CSSTransition>
 
           <CSSTransition
-          in={showReturnRequest}
-          timeout={300}
-          classNames="slide-down"
-          unmountOnExit
-          nodeRef={returnRequestRef} // CSSTransition에 ref를 지정
-        >
-          <S.ReturnRequestWrapper ref={returnRequestRef}>
-            <ReturnRequest onClose={() => setShowReturnRequest(false)} item={selectedItem} onSuccess={handleSuccess} onError={handleError}  />
-          </S.ReturnRequestWrapper>
-        </CSSTransition>
+            in={showReturnRequest}
+            timeout={300}
+            classNames="slide-down"
+            unmountOnExit
+            nodeRef={returnRequestRef} // CSSTransition에 ref를 지정
+          >
+            <S.ReturnRequestWrapper ref={returnRequestRef}>
+              <ReturnRequest
+                onClose={() => setShowReturnRequest(false)}
+                item={selectedItem}
+                onSuccess={handleSuccess}
+                onError={handleError}
+              />
+            </S.ReturnRequestWrapper>
+          </CSSTransition>
         </S.ReturnResultTableContainer>
-    </S.Container>
+      </S.Container>
     </>
   );
 };
@@ -158,16 +169,16 @@ export default Return;
 const S = {
   Container: styled.div`
     display: flex;
-    width:100%;
+    width: 100%;
     // 태블릿 크기 이하에서는 컴포넌트를 세로로 배치합니다.
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       flex-direction: column;
     }
   `,
   BuyTableContainer: styled.div`
     flex: 0.8;
-    @media(max-width: 768px){
-      padding-top:60px;
+    @media (max-width: 768px) {
+      padding-top: 60px;
     }
   `,
   ReturnResultTableContainer: styled.div`
@@ -182,10 +193,9 @@ const S = {
   ReturnRequestWrapper: styled.div`
     position: absolute;
     top: 1px; // 가장 위에서 시작
-    width: 100%; 
-    z-index: 2; 
+    width: 100%;
+    z-index: 2;
   `,
-  
 };
 const GlobalStyles = createGlobalStyle`
 // Fade 애니메이션 관련 스타일
@@ -229,4 +239,3 @@ const GlobalStyles = createGlobalStyle`
   transition: transform 300ms;
 }
 `;
-
