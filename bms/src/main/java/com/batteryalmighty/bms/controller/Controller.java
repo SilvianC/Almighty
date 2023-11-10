@@ -17,7 +17,7 @@ public class Controller {
     private final BmsProcessing bmsProcessing;
     @GetMapping("/ekf")
     public ResponseEntity<?> getMetadataType() {
-        bmsProcessing.predict();
+        //bmsProcessing.predict();
         return ResponseEntity.ok().build();
     }
 }

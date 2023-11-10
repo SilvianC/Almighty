@@ -86,7 +86,7 @@ const BatteryBoard = () => {
           ></TestGraph>
         </Col>
         <Col md={12}>
-          <BmsGraph></BmsGraph>
+          <BmsGraph data={bmsData}></BmsGraph>
         </Col>
       </Row>
     </S.Wrap>

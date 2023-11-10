@@ -33,4 +33,8 @@ public class Progress {
 
     private String reason;
 
+    public void changeStatus(Status status){
+        this.currentStatus = status;
+    }
+
 }

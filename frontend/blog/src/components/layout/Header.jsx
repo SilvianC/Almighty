@@ -126,27 +126,11 @@ function Header() {
         {memberId && (
           <S.PCTabs>
             <NavItem>
-              <S.CustomNavLink
-                href="#"
-                onClick={() => navigate("/service-history")}
-              >
-                Service History
-              </S.CustomNavLink>
-            </NavItem>
-            <NavItem>
-              <S.CustomNavLink
-                href="#"
-                onClick={() => navigate("/returnconfirm")}
-              >
-                Return Confirm
-              </S.CustomNavLink>
-            </NavItem>
-            <NavItem>
               <S.CustomNavLink href="#" onClick={() => navigate("/return")}>
                 Return
               </S.CustomNavLink>
             </NavItem>
-            <NavItem className="alarm">
+            {/* <NavItem className="alarm">
               <S.Alarm
                 className="alarmImage"
                 src={isModalOpen ? "bluebell.png" : "whitebell.png"}
@@ -178,7 +162,7 @@ function Header() {
                 count={count}
                 setModalOpen={setIsModalOpen}
               />
-            </NavItem>
+            </NavItem> */}
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (
               <S.LogoutTab>
