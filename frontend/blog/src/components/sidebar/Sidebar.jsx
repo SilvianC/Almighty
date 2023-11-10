@@ -9,9 +9,14 @@ import {
 } from "react-pro-sidebar";
 import styled from "styled-components";
 
-const SideBar = (currentStatus) => {
+const SideBar = ({ currentStatus, progress, setProgress }) => {
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
+
+  const handleClick = (index, itemIndex, item) => {
+    setSelectedMenu(`${index}-${itemIndex}`);
+    setProgress(() => item.progressId);
+  };
 
   useEffect(() => {
     http
@@ -44,7 +49,9 @@ const SideBar = (currentStatus) => {
         <MenuItem
           key={`${index}-${itemIndex}`}
           active={selectedMenu === `${index}-${itemIndex}`}
-          onClick={() => setSelectedMenu(`${index}-${itemIndex}`)}
+          onClick={() => {
+            handleClick(index, itemIndex, item);
+          }}
         >
           <div>
             {item.companyName} {item.modelName}
