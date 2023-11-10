@@ -23,7 +23,7 @@ public class BmsResponse {
 
     public static BmsResponse bmsResponse(BmsBoard bmsBoard){
         return BmsResponse.builder()
-                .abnormalTemperatureCount(bmsBoard.getAbnormalTemperatureCount())
+//                .abnormalTemperatureCount(bmsBoard.getAbnormalTemperatureCount())
                 .overCurrentCount(bmsBoard.getOverCurrentCount())
                 .overVoltageCount(bmsBoard.getOverVoltageCount())
                 .underVoltageCount(bmsBoard.getUnderVoltageCount())

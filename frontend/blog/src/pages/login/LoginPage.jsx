@@ -58,7 +58,6 @@ const S = {
     text-shadow: 0px 3px 3px rgba(0, 0, 0, 0.3); // 여기를 추가
     top: 180px;
     left: 180px;
-    z-index: 1;
     @media (max-width: 768px) {
       display: none;
     }

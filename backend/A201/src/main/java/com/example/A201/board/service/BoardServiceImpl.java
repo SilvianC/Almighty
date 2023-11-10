@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,8 +28,17 @@ public class BoardServiceImpl implements BoardService{
     public BoardResponse getBoard(Long progressId){
         BmsBoard bms = bmsBoardRepository.findByProgress(progressId).orElseThrow(() -> new EntityNotFoundException("해당 데이터 찾을 수 없습니다"));
         PageRequest pageable = PageRequest.of(0, 5000);
-        List<VitBoard> vit = vitBoardRepository.findByProgress(progressId, pageable);
+//        List<VitBoard> vit = vitBoardRepository.findByProgress(progressId, pageable);
+        List<VitBoard> vit = vitBoardRepository.findVitBoardByProgressId(progressId);
         return BoardResponse.boardResponse(BmsResponse.bmsResponse(bms), vit.stream().map(v -> VitResponse.vitResponse(v)).collect(Collectors.toList()));
     }
 
+    @Override
+    public List<VitResponse> getVitBoardList(){
+        return vitBoardRepository.findAll()
+                .stream()
+                .filter(Objects::nonNull)
+                .map(VitResponse::vitResponse)
+                .collect(Collectors.toList());
+    }
 }
