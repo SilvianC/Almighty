@@ -82,6 +82,7 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
       </ToggleButton>
       <SidebarContainer showSidebar={isSidebarVisible}>
         <StyledSidebar
+          collapsed={true}
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
               backgroundColor: "#d5dfe9",
@@ -180,7 +181,7 @@ const ToggleButton = styled.div`
   top: 50%;
   // color: #d5dfe9;
   left: ${(props) => (props.showSidebar ? "250px" : "0px")};
-  transition: left 0.5s;
+  transition: left 0.5s, opacity 0.5s linear;
   z-index: 100;
 `;
 const ToggleImage = styled.img``;
