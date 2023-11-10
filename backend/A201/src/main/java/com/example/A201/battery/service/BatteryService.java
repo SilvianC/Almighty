@@ -16,6 +16,8 @@ public interface BatteryService {
 
     Battery updateBatteryStatue(Long batteryId, Status status);
 
+    Long getMemberId(Long batteryId);
+
     List<BatteryResponse> getBatteries(Long memberId);
 
     List<BatteryResponse> getRequestBatteries();

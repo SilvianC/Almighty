@@ -96,6 +96,25 @@ public class BatteryController {
     @PutMapping("/progress/{progress_id}")
     public ResponseEntity<?> updateProgress(@PathVariable("progress_id") Long progressId, @RequestBody ProgressResultDTO progress){
         batteryService.progressResult(progress);
+
+        String reason;
+        if(progress.getResponseReason() == null) reason = progress.getRequestReason();
+        else reason = progress.getResponseReason();
+
+        Long member = batteryService.getMemberId(progress.getBatteryId());
+
+        alarmService.insertAlarm(AlarmDto.builder()
+                .title(String.valueOf(progress.getToStatus()))
+                .content(reason)
+                .member(member)
+                .build());
+        log.debug("여기까지 완료");
+        fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
+                .title(String.valueOf(progress.getToStatus()))
+                .body(reason)
+                .targetUserId(member)
+                .receiver(Receiver.fromReceiver("일반 사용자"))
+                .build());
         return SuccessResponseEntity.toResponseEntity("요청 응답 완료", null);
     }
 }
