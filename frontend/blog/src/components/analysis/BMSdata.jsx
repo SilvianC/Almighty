@@ -1,50 +1,150 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import React, { useState, useEffect } from "react";
+import styled, { keyframes } from "styled-components";
 import BMSIcon from "../../assets/images/icon-BMSdata.png";
+import TimeIcon from "../../assets/images/icon-Time.png";
+import VoltageIcon from "../../assets/images/icon-voltage.png";
+import TemperIcon from "../../assets/images/icon-temperature.png";
 
 const BMSdata = () => {
 	const [isCharge, setIsCharge] = useState("충전");
+
+	const handleChargeClick = () => {
+		setIsCharge("충전");
+	};
+
+	const handleDischargeClick = () => {
+		setIsCharge("방전");
+	};
 
 	return (
 		<S.Wrap>
 			<S.Header>
 				<img src={BMSIcon} alt="icon" />
 				<span>주요 데이터</span>
-				<p>{isCharge}</p>
+				<S.Option>
+					<div>
+						<label>
+							<input
+								type="radio"
+								name="type"
+								checked={isCharge === "충전"}
+								onChange={() => {
+									setIsCharge(() => "충전");
+								}} />
+							<span>충전</span>
+						</label>
+						<label>
+							<input
+								type="radio"
+								name="type"
+								checked={isCharge === "방전"}
+								onChange={() => {
+									setIsCharge(() => "방전");
+								}} />
+							<span>방전</span>
+						</label>
+					</div>
+				</S.Option>
 			</S.Header>
-			<S.Data>
-				<S.Container>
-					<S.ContainerTitle>총 시간 / 총 용량</S.ContainerTitle>
-					<S.ContainerData>
-						<span>2시간 19분</span>
-						<span>1000AH</span>
-					</S.ContainerData>
-				</S.Container>
-				<S.Container>
-					<S.ContainerTitle>최대 전압</S.ContainerTitle>
-					<S.ContainerData>
-						<span>3.9755V</span>
-					</S.ContainerData>
-				</S.Container>
-				<S.Container>
-					<S.ContainerTitle>최소 전압</S.ContainerTitle>
-					<S.ContainerData>
-						<span>2.6125V</span>
-					</S.ContainerData>
-				</S.Container>
-				<S.Container>
-					<S.ContainerTitle>최대 온도</S.ContainerTitle>
-					<S.ContainerData>
-						<span>37.3095℃</span>
-					</S.ContainerData>
-				</S.Container>
-				<S.Container>
-					<S.ContainerTitle>최저 온도</S.ContainerTitle>
-					<S.ContainerData>
-						<span>24.3890℃</span>
-					</S.ContainerData>
-				</S.Container>
-			</S.Data>
+			{isCharge === "충전" ? (
+				<S.Data>
+					<S.Container>
+						<S.ContainerTitle>총 시간 / 총 용량</S.ContainerTitle>
+						<S.ContainerData>
+							<span>2시간 19분</span>
+							<span>1000AH</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TimeIcon} alt="time" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container style={{ backgroundColor: "#FACFCF", border: "3px solid rgba(216, 72, 72, 0.5)" }}>
+						<S.ContainerTitle>최대 전압</S.ContainerTitle>
+						<S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+							<span>3.9755V</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={VoltageIcon} alt="voltage" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>최소 전압</S.ContainerTitle>
+						<S.ContainerData>
+							<span>2.6125V</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={VoltageIcon} alt="voltage" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>최대 온도</S.ContainerTitle>
+						<S.ContainerData>
+							<span>37.3095℃</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TemperIcon} alt="temperature" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container style={{ backgroundColor: "#FACFCF", border: "3px solid rgba(216, 72, 72, 0.5)" }}>
+						<S.ContainerTitle>최저 온도</S.ContainerTitle>
+						<S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+							<span>24.3890℃</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TemperIcon} alt="temperature" />
+						</S.ContainerImg>
+					</S.Container>
+				</S.Data>
+			) : (
+				<S.Data>
+					<S.Container>
+						<S.ContainerTitle>총 시간 / 총 용량</S.ContainerTitle>
+						<S.ContainerData>
+							<span>2시간 19분</span>
+							<span>1000AH</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TimeIcon} alt="time" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>최대 전압</S.ContainerTitle>
+						<S.ContainerData>
+							<span>3.9755V</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={VoltageIcon} alt="voltage" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container style={{ backgroundColor: "#FACFCF", border: "3px solid rgba(216, 72, 72, 0.5)" }}>
+						<S.ContainerTitle>최소 전압</S.ContainerTitle>
+						<S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+							<span>2.6125V</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={VoltageIcon} alt="voltage" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>최대 온도</S.ContainerTitle>
+						<S.ContainerData>
+							<span>37.3095℃</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TemperIcon} alt="temperature" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>최저 온도</S.ContainerTitle>
+						<S.ContainerData>
+							<span>24.3890℃</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={TemperIcon} alt="temperature" />
+						</S.ContainerImg>
+					</S.Container>
+				</S.Data>
+			)}
 		</S.Wrap>
 	);
 };
@@ -57,6 +157,8 @@ const S = {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
+		margin-top: 20px;
+		margin-bottom: 20px;
 
 		> span {
 			color: #1D1F25;
@@ -72,33 +174,96 @@ const S = {
 			font-size: 20px;
 		}
 	`,
+	Option: styled.div`
+		width: 15%;
+		margin-left: auto;
+
+		> div {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			width: 100%;
+		}
+		> div > label {
+			width: 50%;
+		}
+		> div > label > input[type="radio"] {
+			clip: rect(0 0 0 0);
+			clip-path: inset(100%);
+			overflow: hidden;
+			position: absolute;
+			white-space: nowrap;
+		}
+		> div > label > input[type="radio"]:checked + span {
+      background-color: #034f9e;
+      z-index: 1;
+      color: #f2f2f2;
+			transition: all 1s ease;
+    }
+    > div > label > span {
+      display: block;
+      cursor: pointer;
+      background-color: #f2f2f2;
+      padding: 0.375em 0.75em;
+      position: relative;
+      margin-left: 0.0625em;
+      border: 4px solid #e7ecf2;
+      letter-spacing: 0.05em;
+      color: #b6c0c9;
+      text-align: center;
+      font-weight: bold;
+      font-size: 18px;
+      transition: all 1s ease;
+    }
+    > div > label:first-child > span {
+      border-radius: 0.375em 0 0 0.375em;
+    }
+    > div > label:last-child > span {
+      border-radius: 0 0.375em 0.375em 0;
+    }
+	`,
 	Data: styled.div`
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
+		transition: all 1s ease;
+		height: 100
 	`,
 	Container: styled.div`
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		border-radius: 10px;
 		box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 		width: 16%;
 		height: 200px;
+		background-color: #E1ECFC;
+		position: relative;
+		transition: all 0.3s ease;
+	`,
+	ContainerImg: styled.div`
+	position: absolute;
+    bottom: 0;
+    right: 0;
 	`,
 	ContainerTitle: styled.div`
 		color: #82858B;
 		font-size: 15px;
 		margin-left: 20px;
-		margin-top: 15px;
+		height: 10%;
+		z-index: 1;
 	`,
 	ContainerData: styled.div`
 		color: #1D1F25;
-		font-size: 20px;
+		font-size: 30px;
 		margin-left: 20px;
 		margin-top: 25px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
+		height: 30%;
+		position: relative;
+		z-index: 2;
 	`,
 };
 
