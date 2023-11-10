@@ -1,5 +1,6 @@
 package com.example.A201.battery.repository;
 
+import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.StatusHistory;
 import com.example.A201.member.domain.Member;
@@ -22,6 +23,8 @@ public interface StatusHistoryRepository extends JpaRepository<StatusHistory,Lon
     @Query(value =  "select s from StatusHistory s join fetch s.batteryId b order by s.date desc"
             , countQuery = "select count(s) from StatusHistory s")
     Page<StatusHistory> findAll(Pageable pageable);
+
+    StatusHistory findByToStatusAndBatteryId(Status toStatus, Long batteryId);
 
     StatusHistory save(StatusHistory statusHistory);
 }
