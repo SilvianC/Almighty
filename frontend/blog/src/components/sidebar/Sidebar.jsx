@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Logo from "../../assets/images/sdilogo.png";
 import http from "../../api/http";
 import {
   Menu,
@@ -77,6 +76,9 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
   return (
     <div onMouseMove={handleMouseMove}>
       <ModalBackground showSidebar={isSidebarVisible} />
+      <ToggleButton showSidebar={isSidebarVisible}>
+        {isSidebarVisible ? "⬅" : "➡"} {/* 아이콘 또는 다른 힌트 표시 */}
+      </ToggleButton>
       <SidebarContainer showSidebar={isSidebarVisible}>
         <StyledSidebar
           rootStyles={{
@@ -85,7 +87,6 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
             },
           }}
         >
-          <LogoStyle src={Logo}></LogoStyle>
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -146,7 +147,7 @@ const ModalBackground = styled.div`
 
 const SidebarContainer = styled.div`
   height: 100%;
-  background-color: #333;
+  background-color: #d5dfe9;
   color: #fff;
   font-weight: bold;
   position: fixed;
@@ -169,16 +170,17 @@ const SidebarContainer = styled.div`
 `;
 
 const StyledSidebar = styled(Sidebar)`
+  top: 60px;
   width: 250px;
 `;
 
-const LogoStyle = styled.img`
-  width: 160px;
-  height: 30px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 30px;
-  cursor: pointer;
+const ToggleButton = styled.div`
+  position: fixed;
+  top: 50%;
+  // color: #d5dfe9;
+  left: ${(props) => (props.showSidebar ? "250px" : "0px")};
+  transition: left 0.5s;
+  z-index: 100;
 `;
 
 export default SideBar;
