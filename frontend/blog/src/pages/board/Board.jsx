@@ -32,7 +32,10 @@ const Board = () => {
       <S.Container>
         <BMSData></BMSData>
         <AnalysisResult></AnalysisResult>
-        <RegistResult progressId={progress}></RegistResult>
+        <RegistResult
+          progress={progress}
+          setProgress={setProgress}
+        ></RegistResult>
         <ChatComponent />
       </S.Container>
     </S.Wrap>
