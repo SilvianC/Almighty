@@ -109,7 +109,6 @@ const Return = () => {
   }, [memberId]);
   return (
     <>
-      <SideBar></SideBar>
       <GlobalStyles />
       <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
 
