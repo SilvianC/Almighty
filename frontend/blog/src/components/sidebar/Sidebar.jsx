@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import http from "../../api/http";
+import logo from "../../assets/images/icon-BMSdata.png";
 import {
   Menu,
   MenuItem,
@@ -70,7 +71,7 @@ const SideBar = (currentStatus) => {
     <div onMouseMove={handleMouseMove}>
       <ModalBackground showSidebar={isSidebarVisible} />
       <ToggleButton showSidebar={isSidebarVisible}>
-        {isSidebarVisible ? "⬅" : "➡"} {/* 아이콘 또는 다른 힌트 표시 */}
+        <ToggleImage src={logo}></ToggleImage>
       </ToggleButton>
       <SidebarContainer showSidebar={isSidebarVisible}>
         <StyledSidebar
@@ -175,5 +176,5 @@ const ToggleButton = styled.div`
   transition: left 0.5s;
   z-index: 100;
 `;
-
+const ToggleImage = styled.img``;
 export default SideBar;
