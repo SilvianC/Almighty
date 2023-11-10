@@ -4,15 +4,14 @@ import BatteryBoard from "./BatteryBoard";
 import ChatComponent from "../../components/chatbot/ChatComponent";
 import RegisterReason from "../../components/analysis/RegistReason";
 import BMSData from "../../components/analysis/BMSdata";
-import AnalysisResult from "../../components/analysis/AnalysisResult"
-import RegistResult from "../../components/analysis/RegistResult"
+import AnalysisResult from "../../components/analysis/AnalysisResult";
+import RegistResult from "../../components/analysis/RegistResult";
 import { BiLineChart } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { IsLoginState } from "../../states/states";
 import FirebaseComponent from "../../config/firebase-messaging-sw";
 
 const Board = () => {
-
   FirebaseComponent();
 
   return (
@@ -26,7 +25,7 @@ const Board = () => {
         <S.Container>
           <BMSData></BMSData>
           <AnalysisResult></AnalysisResult>
-          <RegistResult></RegistResult>
+          <RegistResult progressId={6}></RegistResult>
           <ChatComponent />
         </S.Container>
       </S.Data>
@@ -35,11 +34,10 @@ const Board = () => {
 };
 
 const S = {
-  Wrap: styled.div`
-  `,
+  Wrap: styled.div``,
   Data: styled.div`
-  display: flex;
-  flex-direction: row;
+    display: flex;
+    flex-direction: row;
   `,
   Container: styled.div`
     display: flex;
