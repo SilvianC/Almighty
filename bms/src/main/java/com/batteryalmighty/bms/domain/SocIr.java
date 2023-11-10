@@ -1,20 +1,21 @@
-package com.batteryalmighty.bms.domain.mysql;
+package com.batteryalmighty.bms.domain;
 
 import lombok.*;
 
 import javax.persistence.*;
+
 @Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SocOcv {
+public class SocIr {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "soc_ocv_id")
+    @Column(name = "soc_ir_id")
     private Long id;
 
     private Double soc;
 
-    private Double ocv;
+    private Double ir;
 }
