@@ -10,12 +10,13 @@ import { BiLineChart } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { IsLoginState } from "../../states/states";
 import FirebaseComponent from "../../config/firebase-messaging-sw";
-
+import SideBar from "../../components/sidebar/Sidebar";
 const Board = () => {
   FirebaseComponent();
 
   return (
     <S.Wrap>
+      <SideBar></SideBar>
       <RegisterReason></RegisterReason>
       <S.Data>
         <S.Graph>

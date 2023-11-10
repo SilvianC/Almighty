@@ -7,14 +7,12 @@ import {
   Sidebar,
   SubMenu,
   sidebarClasses,
-  menuClasses,
 } from "react-pro-sidebar";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
 const SideBar = (currentStatus) => {
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
-  const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {
     http
@@ -59,23 +57,21 @@ const SideBar = (currentStatus) => {
 
   const [isSidebarVisible, setSidebarVisible] = useState(false);
 
-  const showSidebar = () => {
-    console.log("show");
-    setSidebarVisible(true);
-  };
-
-  const hideSidebar = () => {
-    setSidebarVisible(false);
+  const handleMouseMove = (e) => {
+    console.log("detecting");
+    if (e.clientX < 90) {
+      console.log("show");
+      setSidebarVisible(true);
+    } else {
+      setSidebarVisible(false);
+    }
   };
 
   return (
-    <div>
-      <button onMouseEnter={showSidebar} onMouseLeave={hideSidebar}>
-        "마우스 올리기"
-      </button>
-      <div>
+    <div onMouseMove={handleMouseMove}>
+      <ModalBackground showSidebar={isSidebarVisible} />
+      <SidebarContainer showSidebar={isSidebarVisible}>
         <StyledSidebar
-          collapsed={!isSidebarVisible}
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
               backgroundColor: "#d5dfe9",
@@ -98,7 +94,7 @@ const SideBar = (currentStatus) => {
             {menuItems}
           </Menu>
         </StyledSidebar>
-      </div>
+      </SidebarContainer>
     </div>
   );
 };
@@ -131,11 +127,33 @@ function elapsedTime(date) {
   return "오늘";
 }
 
-const showSidebarStyles = css`
-  display: block;
+const ModalBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  ${(props) => (props.showSidebar ? "block" : "none")};
+  z-index: 999;
+`;
+
+const SidebarContainer = styled.div`
+  width: 220px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+  position: fixed;
+  top: 0;
+  left: ${(props) => (props.showSidebar ? "0" : "-250px")};
+  transition: left 0.5s;
+  z-index: 999;
+  overflow-y: auto;
+  overflow-x: hidden;
 `;
 
 const StyledSidebar = styled(Sidebar)`
+  width: 250px;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
