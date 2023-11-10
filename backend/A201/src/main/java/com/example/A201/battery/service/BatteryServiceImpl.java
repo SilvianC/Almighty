@@ -57,7 +57,7 @@ public class BatteryServiceImpl implements BatteryService{
 
     @Override
     public Long getMemberId(Long batteryId){
-        Optional<Battery> battery = batteryRepository.findByBatteryId(batteryId);
+        Optional<Battery> battery = batteryRepository.findById(batteryId);
         return battery.get().getMember().getMemberId();
     }
 
