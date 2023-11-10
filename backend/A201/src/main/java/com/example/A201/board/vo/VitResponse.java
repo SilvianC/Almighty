@@ -31,7 +31,7 @@ public class VitResponse {
                 .currentMeasured(vitBoard.getCurrent())
                 .temperatureMeasured(vitBoard.getTemperature())
                 .time(vitBoard.getTime())
-                .soc(vitBoard.getEkf())
+                .soc(vitBoard.getSoc())
                 .build();
     }
 }
