@@ -26,18 +26,18 @@ const AlarmModal = ({
       }
     );
   }
-  // if (isOpen) {
-  //   document.addEventListener("mouseup", (event) => {
-  //     var table = document.querySelector(".AlarmTable");
-  //     console.log(event);
-  //     if (!table.contains(event.target)) {
-  //       setModalOpen(!isOpen);
-  //     }
-  //   });
-  // }
+  if (isOpen) {
+    document.addEventListener("mouseup", (event) => {
+      var table = document.querySelector(".help");
+      console.log(event);
+      if (!table.contains(event.target)) {
+        setModalOpen(!isOpen);
+      }
+    });
+  }
 
   return (
-    <S.live style={{ display: isOpen ? "block" : "none" }}>
+    <S.live style={{ display: isOpen ? "block" : "none" }} className="help">
       <AlarmTable></AlarmTable>
     </S.live>
   );

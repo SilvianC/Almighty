@@ -56,6 +56,12 @@ public class BatteryServiceImpl implements BatteryService{
     }
 
     @Override
+    public Long getMemberId(Long batteryId){
+        Optional<Battery> battery = batteryRepository.findById(batteryId);
+        return battery.get().getMember().getMemberId();
+    }
+
+    @Override
     public List<BatteryResponse> getBatteries(Long memberId){
         List<Battery> batteries = batteryRepository.findByMember(memberId);
         return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
@@ -73,6 +79,7 @@ public class BatteryServiceImpl implements BatteryService{
         Battery battery = batteryRepository.findByCode(code).orElseThrow(
                 () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
         );
+        //Progress build = Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build();
         progressRepository.save(Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build());
         statusHistoryRepository.save(StatusHistory.builder()
                 .toStatus(Status.Request)
