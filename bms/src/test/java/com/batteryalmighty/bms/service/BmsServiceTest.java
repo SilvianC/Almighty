@@ -1,5 +1,6 @@
 package com.batteryalmighty.bms.service;
 
+import com.batteryalmighty.bms.processing.BmsProcessing;
 import com.batteryalmighty.bms.repository.mongo.VitBoardRepository;
 import com.batteryalmighty.bms.repository.mysql.BmsBoardRepository;
 import com.batteryalmighty.bms.vo.VitResponse;
@@ -32,6 +33,7 @@ class BmsServiceTest {
 
     @Autowired
     BmsService bmsService;
+
 
     @Test
     void getVitBoardList() {
@@ -71,4 +73,5 @@ class BmsServiceTest {
             fail("CSV 파일을 읽는 중 예외가 발생했습니다.");
         }
     }
+
 }

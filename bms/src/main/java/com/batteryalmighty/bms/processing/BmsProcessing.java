@@ -24,13 +24,14 @@ public class BmsProcessing {
     private final ModelRepository modelRepository;
     private final Ekf ekf;
 
-    
     public void predict(){
         List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(6L);
         Battery battery = batteryRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("찾는 배터리가 없습니다."));
         Model model = modelRepository.findById(battery.getId())
                 .orElseThrow(() -> new IllegalStateException("찾는 배터리 모델이 없습니다."));
+        BmsBoard bmsBoard = bmsBoardRepository.findByProgressId(6L)
+                .orElseThrow(() -> new IllegalStateException("찾는 BMS가 없습니다."));
 
 
         ekf.init();
@@ -55,38 +56,45 @@ public class BmsProcessing {
             ekf.kalmanGain(vitBoard.getCurrent(), vitBoard.getVoltage());
             ekf.predictx(vitBoard.getVoltage());
             ekf.nextP();
+
+
+
             vitBoard.predictEkf(ekf.get());
+
+
+
             if(prevVolt < model.getOverVoltageThreshold() && vitBoard.getVoltage() >= model.getOverVoltageThreshold()) overVoltageCount++;
             if(prevVolt > model.getUnderVoltageThreshold() && vitBoard.getVoltage() <= model.getUnderVoltageThreshold()) underVoltageCount++;
 
             // 충전 상태 (양전류)
             if(vitBoard.getCurrent() > 0){
                 if(prevCurrent < model.getOverCurrentChargeThreshold() && vitBoard.getCurrent() >= model.getOverCurrentChargeThreshold()) overCurrentCount++;
-                if(prevTemperature < model.getMinTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
-                if(prevTemperature < model.getMaxTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureChargeThreshold()) overTemperatureCount++;
+//                if(prevTemperature < model.getMinTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
+//                if(prevTemperature < model.getMaxTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureChargeThreshold()) overTemperatureCount++;
             }
 
             // 방전 상태 (음전류)
             if(vitBoard.getCurrent() <= 0){
                 if(prevCurrent < model.getOverCurrentDischargeThreshold() && vitBoard.getCurrent() >= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
-                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
-                if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
+//                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
+//                if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
             }
 
             // 전에 값 갱신
             prevVolt = vitBoard.getVoltage();
             prevCurrent = vitBoard.getCurrent();
-            prevTemperature = vitBoard.getTemperature();
+//            prevTemperature = vitBoard.getTemperature();
         }
 
-        BmsBoard bmsBoard = BmsBoard.builder()
-                .overVoltageCount(overVoltageCount)
-                .underVoltageCount(underVoltageCount)
-                .overCurrentCount(overCurrentCount)
-                .underTemperatureCount(underTemperatureCount)
-                .overTemperatureCount(overTemperatureCount)
-                .build();
+//        BmsBoard bmsBoard = BmsBoard.builder()
+//                .overVoltageCount(overVoltageCount)
+//                .underVoltageCount(underVoltageCount)
+//                .overCurrentCount(overCurrentCount)
+//                .underTemperatureCount(underTemperatureCount)
+//                .overTemperatureCount(overTemperatureCount)
+//                .build();
 
+        bmsBoard.setBmsCount(overVoltageCount, underVoltageCount, overCurrentCount);
         bmsBoardRepository.save(bmsBoard);
     }
 }

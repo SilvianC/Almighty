@@ -5,9 +5,9 @@ spring:
     name: monitoring
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/bms?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
+    url: jdbc:mysql://k9a201.p.ssafy.io/almighty?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
     username: root
-    password: ssafy
+    password: "almighty201"
   data:
     mongodb:
       host: k9a201.p.ssafy.io

@@ -13,6 +13,10 @@ spring:
     username: root
     password: "almighty201"
   data:
+    mongodb:
+      host: k9a201.p.ssafy.io
+      port: 27017
+      database: bms
     redis:
       repositories:
         enabled: false

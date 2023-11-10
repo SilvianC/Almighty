@@ -3,37 +3,42 @@ package com.example.A201.board.domain;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.Progress;
 import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Document(collection = "vitboard")
 public class VitBoard {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "vit_board_id")
-    private Long id;
 
-    @Column(name = "Voltage_measured")
+    @Id
+    @Field(value = "_id", targetType = FieldType.OBJECT_ID)
+    private String id;
+
+    @Field(name = "Voltage_measured")
     private Double voltage;
 
-    @Column(name = "Current_measured")
+    @Field(name = "Current_measured")
     private Double current;
 
-    @Column(name = "Temperature_measured")
+    @Field(name = "Temperature_measured")
     private Double temperature;
 
+    @Field(name = "Time")
     private Double time;
 
+    @Field(name = "Soc")
     private Double soc;
 
+    @Field(name = "Ekf")
     private Double ekf;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "progress_id")
-    private Progress progress;
+    @Field(name = "Progress_id")
+    private Long progressId;
 
 }

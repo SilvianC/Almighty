@@ -50,7 +50,9 @@ public class BmsService {
                         .current(Double.valueOf(values[1]))
                         .temperature(Double.valueOf(values[2]))
                         .time(Double.valueOf(values[3]))
-                        .soc(Double.valueOf(values[4]))
+                        .soc(0.0)
+                        .ekf(0.0)
+                        .progressId(6L)
                         .build();
 
                 vitBoardRepository.save(vitBoard);
@@ -76,8 +78,5 @@ public class BmsService {
                 .map(VitResponse::vitResponse)
                 .collect(Collectors.toList());
     }
-
-
-
 
 }

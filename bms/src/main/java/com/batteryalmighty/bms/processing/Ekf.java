@@ -58,7 +58,7 @@ public class Ekf {
     }
 
     public void predictx_(VitBoard vitBoard){
-        x_ = x + ((vitBoard.getTime() - prevTime) * vitBoard.getCurrent() / maxCap);
+        x_ = x + ((vitBoard.getTime() - prevTime) * vitBoard.getCurrent());
         findNear(x_);
         prevTime = vitBoard.getTime();
     }
