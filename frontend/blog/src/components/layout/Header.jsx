@@ -130,7 +130,7 @@ function Header() {
                 Return
               </S.CustomNavLink>
             </NavItem>
-            <NavItem className="alarm">
+            {/* <NavItem className="alarm">
               <S.Alarm
                 className="alarmImage"
                 src={isModalOpen ? "bluebell.png" : "whitebell.png"}
@@ -162,7 +162,7 @@ function Header() {
                 count={count}
                 setModalOpen={setIsModalOpen}
               />
-            </NavItem>
+            </NavItem> */}
             {/* 오른쪽 구석에 위치한 로그아웃 탭 */}
             {memberId && (
               <S.LogoutTab>
