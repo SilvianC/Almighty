@@ -131,18 +131,17 @@ const ModalBackground = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 10%;
   height: 100%;
   background: transparent;
   ${(props) => (props.showSidebar ? "block" : "none")};
-  z-index: 999;
 `;
 
 const SidebarContainer = styled.div`
-  width: 220px;
   height: 100%;
   background-color: #333;
   color: #fff;
+  font-weight: bold;
   position: fixed;
   top: 0;
   left: ${(props) => (props.showSidebar ? "0" : "-250px")};
@@ -150,12 +149,20 @@ const SidebarContainer = styled.div`
   z-index: 999;
   overflow-y: auto;
   overflow-x: hidden;
+
+  /* 스크롤바 숨김 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox 브라우저에 대한 스크롤바 숨김 */
+  scrollbar-width: none;
+  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+    0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
 
 const StyledSidebar = styled(Sidebar)`
   width: 250px;
-  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-    0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
 
 const LogoStyle = styled.img`
