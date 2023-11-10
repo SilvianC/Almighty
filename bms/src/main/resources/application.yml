@@ -10,7 +10,8 @@ spring:
     password: ssafy
   data:
     mongodb:
-      host: localhost
+      host: k9a201.p.ssafy.io
+#      host: localhost
       port: 27017
       database: bms
 

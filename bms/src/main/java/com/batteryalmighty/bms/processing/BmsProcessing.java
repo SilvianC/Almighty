@@ -24,7 +24,7 @@ public class BmsProcessing {
     private final ModelRepository modelRepository;
     private final Ekf ekf;
 
-
+    
     public void predict(){
         List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(6L);
         Battery battery = batteryRepository.findById(1L)
@@ -44,7 +44,8 @@ public class BmsProcessing {
         int overVoltageCount = 0;
         int underVoltageCount = 0;
         int overCurrentCount = 0;
-        int abnormalTemperatureCount = 0;
+        int underTemperatureCount = 0;
+        int overTemperatureCount = 0;
         double prevCurrent = 0;
         double prevVolt = 0;
         double prevTemperature = 10;
@@ -61,13 +62,15 @@ public class BmsProcessing {
             // 충전 상태 (양전류)
             if(vitBoard.getCurrent() > 0){
                 if(prevCurrent < model.getOverCurrentChargeThreshold() && vitBoard.getCurrent() >= model.getOverCurrentChargeThreshold()) overCurrentCount++;
-                if(prevTemperature < model.getMinTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureChargeThreshold()) abnormalTemperatureCount++;
+                if(prevTemperature < model.getMinTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
+                if(prevTemperature < model.getMaxTemperatureChargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureChargeThreshold()) overTemperatureCount++;
             }
 
             // 방전 상태 (음전류)
             if(vitBoard.getCurrent() <= 0){
                 if(prevCurrent < model.getOverCurrentDischargeThreshold() && vitBoard.getCurrent() >= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
-                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureDischargeThreshold()) abnormalTemperatureCount++;
+                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
+                if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && vitBoard.getTemperature() >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
             }
 
             // 전에 값 갱신
@@ -77,10 +80,11 @@ public class BmsProcessing {
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
-                .abnormalTemperatureCount(abnormalTemperatureCount)
-                .overCurrentCount(overCurrentCount)
                 .overVoltageCount(overVoltageCount)
                 .underVoltageCount(underVoltageCount)
+                .overCurrentCount(overCurrentCount)
+                .underTemperatureCount(underTemperatureCount)
+                .overTemperatureCount(overTemperatureCount)
                 .build();
 
         bmsBoardRepository.save(bmsBoard);

@@ -1,5 +1,6 @@
 package com.batteryalmighty.bms.service;
 
+import com.batteryalmighty.bms.domain.mongo.VitBoard;
 import com.batteryalmighty.bms.domain.mysql.BmsBoard;
 import com.batteryalmighty.bms.repository.mongo.VitBoardRepository;
 import com.batteryalmighty.bms.repository.mysql.BmsBoardRepository;
@@ -28,7 +29,7 @@ public class BmsService {
     private final VitBoardRepository vitBoardRepository;
     private final BmsBoardRepository bmsBoardRepository;
 
-    public List<String[]> uploadCsv(@RequestPart(value = "file", required = true) MultipartFile file) {
+    public void uploadCsv(@RequestPart(value = "file", required = true) MultipartFile file) {
 
         if (file.isEmpty()) {
             throw new IllegalStateException("업로드할 csv 파일이 존재하지 않습니다.");
@@ -39,14 +40,21 @@ public class BmsService {
         try (InputStreamReader csvFile = new InputStreamReader(file.getInputStream(), "UTF-8");
              CSVReader csvReader = new CSVReader(csvFile)) {
 
-            records = new ArrayList<>();
+            csvReader.readNext();
             String[] values;
 
             while ((values = csvReader.readNext()) != null) {
-                records.add(values);
-                for (String value : values) {
-                    log.info(value);
-                }
+
+                VitBoard vitBoard = VitBoard.builder()
+                        .voltage(Double.valueOf(values[0]))
+                        .current(Double.valueOf(values[1]))
+                        .temperature(Double.valueOf(values[2]))
+                        .time(Double.valueOf(values[3]))
+                        .soc(Double.valueOf(values[4]))
+                        .build();
+
+                vitBoardRepository.save(vitBoard);
+
             }
         } catch (IOException e) {
             throw new RuntimeException("파일 읽기 중 에러가 발생했습니다.");
@@ -54,7 +62,6 @@ public class BmsService {
             throw new RuntimeException("CSV 파싱 중 에러가 발생했습니다.");
         }
 
-        return records;
     }
 
     public List<BmsBoard> getBms(){

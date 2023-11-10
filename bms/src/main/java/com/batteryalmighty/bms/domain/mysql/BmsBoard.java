@@ -23,7 +23,9 @@ public class BmsBoard {
 
     private int overCurrentCount;
 
-    private int abnormalTemperatureCount;
+    private int underTemperatureCount;
+
+    private int overTemperatureCount;
 
     private Double maxVoltageCharge;
 
