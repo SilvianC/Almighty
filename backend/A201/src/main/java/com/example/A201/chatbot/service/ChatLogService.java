@@ -85,7 +85,7 @@ public class ChatLogService {
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("messages", messages);
         requestBody.put("max_tokens", 250);  // 응답의 최대 토큰 수, 필요에 따라 조정 가능
-        requestBody.put("model", "gpt-3.5-turbo-16k");
+        requestBody.put("model", "gpt-4-1106-preview");
         log.info("Sending request to OpenAI API with body: {}", requestBody);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
 

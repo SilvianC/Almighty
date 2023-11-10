@@ -126,22 +126,6 @@ function Header() {
         {memberId && (
           <S.PCTabs>
             <NavItem>
-              <S.CustomNavLink
-                href="#"
-                onClick={() => navigate("/service-history")}
-              >
-                Service History
-              </S.CustomNavLink>
-            </NavItem>
-            <NavItem>
-              <S.CustomNavLink
-                href="#"
-                onClick={() => navigate("/returnconfirm")}
-              >
-                Return Confirm
-              </S.CustomNavLink>
-            </NavItem>
-            <NavItem>
               <S.CustomNavLink href="#" onClick={() => navigate("/return")}>
                 Return
               </S.CustomNavLink>
