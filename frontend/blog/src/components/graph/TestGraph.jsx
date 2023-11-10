@@ -226,13 +226,12 @@ const TestGraph = ({ data, threshold, type, num }) => {
       {
         name: "잔량(%)",
         yAxis: 1,
-        data: [
-          [1000, 5],
-          [2000, 10],
-          [3000, 20],
-          [5000, 40],
-          [6000, 60],
-        ],
+        data: data.map((item) => {
+          return [
+            item["time"] * 3600,
+            item["soc"] > 100 ? 100 : item["soc"] < 0 ? 0 : item["soc"],
+          ];
+        }),
       },
     ],
     responsive: {

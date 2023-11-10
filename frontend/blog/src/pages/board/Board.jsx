@@ -23,13 +23,13 @@ const Board = () => {
           {/* <BiLineChart></BiLineChart> */}
           <BatteryBoard></BatteryBoard>
         </S.Graph>
-        <S.Container>
-          <BMSData></BMSData>
-          <AnalysisResult></AnalysisResult>
-          <RegistResult progressId={6}></RegistResult>
-          <ChatComponent />
-        </S.Container>
       </S.Data>
+      <S.Container>
+        <BMSData></BMSData>
+        <AnalysisResult></AnalysisResult>
+        <RegistResult progressId={6}></RegistResult>
+        <ChatComponent />
+      </S.Container>
     </S.Wrap>
   );
 };
@@ -43,7 +43,6 @@ const S = {
   Container: styled.div`
     display: flex;
     flex-direction: column;
-    width: 40%;
   `,
   Graph: styled.div`
     display: flex;

@@ -15,6 +15,7 @@ public interface BatteryRepository extends JpaRepository<Battery,Long> {
     List<Battery> findByMember(@Param("memberId") Long memberId);
 
     Optional<Battery> findById(Long batteryId);
+
     Battery save(Battery battery);
 
     @Query("select b from Battery b where b.batteryStatus = 'Request'")
