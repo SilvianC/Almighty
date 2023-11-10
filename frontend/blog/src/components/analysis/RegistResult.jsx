@@ -24,7 +24,12 @@ const RegistResult = ({ progressId }) => {
         selectedOption +
         (selectedOption === "기타" ? " 상세 사유 : " + resonDetail : ""),
     };
-    http.put(`/api/batteries/progress/${progressId}`, request).then().catch();
+    http
+      .put(`/api/batteries/progress/${progressId}`, request)
+      .then(({ data }) => {
+        window.location.reload();
+      })
+      .catch();
   };
 
   /*
@@ -136,7 +141,9 @@ const RegistResult = ({ progressId }) => {
       </S.Reason>
       <S.Regist>
         {!result || selectedOption === "사유 선택" ? (
-          <button disabled>등록</button>
+          <button style={{ "background-color": "#D5DFE9" }} disabled>
+            등록
+          </button>
         ) : (
           <button
             onClick={() => {

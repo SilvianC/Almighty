@@ -31,6 +31,19 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "a201almighty@gmail.com"
+    password: "ehopnqerxfvxkbmc"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          timeout: 5000
+          starttls:
+            enable: true
 #  sql:
 #    init:
 #      data-locations: classpath*:db/h2/data.sql

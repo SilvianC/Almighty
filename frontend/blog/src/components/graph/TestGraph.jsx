@@ -16,20 +16,20 @@ const transName = {
 
 const TestGraph = ({ data, threshold, type, num }) => {
   const datas = [];
-
+  console.log(threshold);
   for (const t of type) {
     const arr = data.map((item) => item[t]);
-    const result = arr.reduce(
-      (acc, current, index, array) => {
-        if (current >= 10.5 && (index === 0 || array[index - 1] < 10.5)) {
-          acc.start.push(index);
-        } else if (current <= 10.5 && index > 0 && array[index - 1] > 10.5) {
-          acc.end.push(index - 1);
-        }
-        return acc;
-      },
-      { start: [], end: [] }
-    );
+    // const result = arr.reduce(
+    //   (acc, current, index, array) => {
+    //     if (current >= 10.5 && (index === 0 || array[index - 1] < 10.5)) {
+    //       acc.start.push(index);
+    //     } else if (current <= 10.5 && index > 0 && array[index - 1] > 10.5) {
+    //       acc.end.push(index - 1);
+    //     }
+    //     return acc;
+    //   },
+    //   { start: [], end: [] }
+    // );
     const newData = {
       name: transName[t],
       yAxis: 0,
@@ -38,17 +38,27 @@ const TestGraph = ({ data, threshold, type, num }) => {
         return {
           x: item["time"] * 3600,
           y: item[t],
-          marker: {
-            enabled: result.start.includes(idx) || result.end.includes(idx),
-          },
+          // marker: {
+          //   enabled: result.start.includes(idx) || result.end.includes(idx),
+          // },
         };
       }),
+      color:
+        t === "temperatureMeasured"
+          ? "teal"
+          : t === "voltageMeasured"
+          ? "darkorange"
+          : "purple",
       zones:
         t === "temperatureMeasured"
           ? [
               {
-                value: 10.5,
-                color: "green",
+                value: threshold.chargingMinTemperature,
+                color: "blue",
+              },
+              {
+                value: threshold.chargingMaxTemperature,
+                color: "teal",
               },
               {
                 color: "red",
@@ -57,14 +67,26 @@ const TestGraph = ({ data, threshold, type, num }) => {
           : t === "voltageMeasured"
           ? [
               {
+                value: threshold.underVoltage,
                 color: "blue",
               },
               {
-                value: threshold.underVoltage,
+                value: threshold.overVoltage,
+                color: "darkorange",
+              },
+              {
                 color: "red",
               },
             ]
-          : null,
+          : [
+              {
+                value: threshold.overCurrent,
+                color: "purple",
+              },
+              {
+                color: "red",
+              },
+            ],
       marker: {
         enabled: false, // 초기에 모든 심볼 비활성화
         states: {
@@ -78,7 +100,10 @@ const TestGraph = ({ data, threshold, type, num }) => {
   }
 
   const option = {
-    chart: {},
+    chart: {
+      type: "line",
+      panning: true, // 드래그로 이동을 활성화
+    },
     accessibility: {
       enabled: false,
     },
@@ -101,13 +126,70 @@ const TestGraph = ({ data, threshold, type, num }) => {
 
     yAxis: [
       {
+        // visible: false,
         title: {
-          // text: "Capacity",
+          text: null,
         },
+        labels: {
+          enabled: false,
+        },
+        plotLines: [
+          {
+            value: threshold.overVoltage, // 수평선을 그릴 y-값 (원하는 기준값)
+            color: "red", // 수평선의 색상
+            width: 0.3, // 수평선의 두께
+            zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
+            label: {
+              align: "right", // 레이블의 위치 (선택 사항)
+              x: -10, // 레이블의 x-오프셋 (선택 사항)
+            },
+          },
+          {
+            value: threshold.underVoltage, // 수평선을 그릴 y-값 (원하는 기준값)
+            color: "blue", // 수평선의 색상
+            width: 0.3, // 수평선의 두께
+            zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
+            label: {
+              align: "right", // 레이블의 위치 (선택 사항)
+              x: -10, // 레이블의 x-오프셋 (선택 사항)
+            },
+          },
+          {
+            value: threshold.overCurrent, // 수평선을 그릴 y-값 (원하는 기준값)
+            color: "red", // 수평선의 색상
+            width: 0.1, // 수평선의 두께
+            zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
+            label: {
+              align: "right", // 레이블의 위치 (선택 사항)
+              x: -10, // 레이블의 x-오프셋 (선택 사항)
+            },
+          },
+          {
+            value: threshold.chargingMaxTemperature, // 수평선을 그릴 y-값 (원하는 기준값)
+            color: "red", // 수평선의 색상
+            width: 0.1, // 수평선의 두께
+            zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
+            label: {
+              align: "right", // 레이블의 위치 (선택 사항)
+              x: -10, // 레이블의 x-오프셋 (선택 사항)
+            },
+          },
+          {
+            value: threshold.chargingMinTemperature, // 수평선을 그릴 y-값 (원하는 기준값)
+            color: "blue", // 수평선의 색상
+            width: 0.1, // 수평선의 두께
+            zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
+            label: {
+              align: "right", // 레이블의 위치 (선택 사항)
+              x: -10, // 레이블의 x-오프셋 (선택 사항)
+            },
+          },
+        ],
       },
       {
+        visible: false,
         title: {
-          text: "잔량(%)",
+          // text: "잔량(%)",
         },
         opposite: true,
       },
