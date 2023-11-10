@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import Logo from "../../assets/images/sdilogo.png";
 import http from "../../api/http";
 import {
   Menu,
@@ -10,9 +9,14 @@ import {
 } from "react-pro-sidebar";
 import styled from "styled-components";
 
-const SideBar = (currentStatus) => {
+const SideBar = ({ currentStatus, progress, setProgress }) => {
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
+
+  const handleClick = (index, itemIndex, item) => {
+    setSelectedMenu(`${index}-${itemIndex}`);
+    setProgress(() => item.progressId);
+  };
 
   useEffect(() => {
     http
@@ -45,7 +49,9 @@ const SideBar = (currentStatus) => {
         <MenuItem
           key={`${index}-${itemIndex}`}
           active={selectedMenu === `${index}-${itemIndex}`}
-          onClick={() => setSelectedMenu(`${index}-${itemIndex}`)}
+          onClick={() => {
+            handleClick(index, itemIndex, item);
+          }}
         >
           <div>
             {item.companyName} {item.modelName}
@@ -70,6 +76,9 @@ const SideBar = (currentStatus) => {
   return (
     <div onMouseMove={handleMouseMove}>
       <ModalBackground showSidebar={isSidebarVisible} />
+      <ToggleButton showSidebar={isSidebarVisible}>
+        {isSidebarVisible ? "⬅" : "➡"} {/* 아이콘 또는 다른 힌트 표시 */}
+      </ToggleButton>
       <SidebarContainer showSidebar={isSidebarVisible}>
         <StyledSidebar
           rootStyles={{
@@ -78,7 +87,6 @@ const SideBar = (currentStatus) => {
             },
           }}
         >
-          <LogoStyle src={Logo}></LogoStyle>
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -131,18 +139,17 @@ const ModalBackground = styled.div`
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 10%;
   height: 100%;
   background: transparent;
   ${(props) => (props.showSidebar ? "block" : "none")};
-  z-index: 999;
 `;
 
 const SidebarContainer = styled.div`
-  width: 220px;
   height: 100%;
-  background-color: #333;
+  background-color: #d5dfe9;
   color: #fff;
+  font-weight: bold;
   position: fixed;
   top: 0;
   left: ${(props) => (props.showSidebar ? "0" : "-250px")};
@@ -150,21 +157,30 @@ const SidebarContainer = styled.div`
   z-index: 999;
   overflow-y: auto;
   overflow-x: hidden;
-`;
 
-const StyledSidebar = styled(Sidebar)`
-  width: 250px;
+  /* 스크롤바 숨김 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Firefox 브라우저에 대한 스크롤바 숨김 */
+  scrollbar-width: none;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
 
-const LogoStyle = styled.img`
-  width: 160px;
-  height: 30px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: 30px;
-  cursor: pointer;
+const StyledSidebar = styled(Sidebar)`
+  top: 60px;
+  width: 250px;
+`;
+
+const ToggleButton = styled.div`
+  position: fixed;
+  top: 50%;
+  // color: #d5dfe9;
+  left: ${(props) => (props.showSidebar ? "250px" : "0px")};
+  transition: left 0.5s;
+  z-index: 100;
 `;
 
 export default SideBar;

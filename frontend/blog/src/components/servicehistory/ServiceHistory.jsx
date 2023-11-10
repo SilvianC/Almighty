@@ -19,7 +19,7 @@ const status = {
   SdiFault: "제품 결함",
 };
 
-const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
+const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick,fetchServiceHistory }) => {
   const [showReturnResponse, setShowReturnResponse] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const wrapperRef = useRef(null);
@@ -54,6 +54,7 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
   };
   const handlePageClick = (pageNumber) => {
     setPage(pageNumber);
+    fetchServiceHistory(pageNumber);
   };
   return (
     <S.Wrap ref={wrapperRef}>
@@ -73,6 +74,16 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
           </thead>
           <tbody>
           {data.map((item, idx) => {
+            // 상태에 따른 색상 결정
+            const statusColor = {
+              Normal: "#28a745", // 정상 - 녹색
+              Request: "#ffc107", // 진행 중 - 노란색
+              Upload: "#17a2b8", // 데이터 업로드 - 하늘색
+              Analysis: "#007bff", // 분석 중 - 파란색
+              CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
+              SdiFault: "#034F9E", // 제품 결함 - 검정색
+            }[item.toStatus] || "#6c757d"; // 기본 - 회색
+            
             // item.date 문자열을 Date 객체로 변환합니다.
             const itemDate = new Date(item.date);
 
@@ -87,12 +98,15 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
             console.log(isRecent);
     return (
       <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
-        <td className={isRecent ? "flash-highlight" : ""}>{item.code}</td>
+        <FirstTd  className={isRecent ? "flash-highlight" : ""} statusColor={statusColor}>{item.code}</FirstTd >
         <td className={isRecent ? "flash-highlight" : ""}>{formattedDate}</td>
         <td className={isRecent ? "flash-highlight" : ""}>
-          <StatusButton onClick={() => handleStatusButtonClick(item)}>
-            {status[item.toStatus]}
-          </StatusButton>
+        <StatusButton 
+          onClick={() => handleStatusButtonClick(item)}
+          status={item.toStatus} // status prop을 전달합니다
+        >
+          {status[item.toStatus]}
+        </StatusButton>
         </td>
       </tr>
     );
@@ -125,8 +139,30 @@ const ServiceHistory = ({ data, page, setPage, totalPage, onStatusClick }) => {
     </S.Wrap>
   );
 };
-
+const buttonColors = {
+  Normal: "#28a745", // 정상 - 녹색
+  Request: "#ffc107", // 진행 중 - 노란색
+  Upload: "#17a2b8", // 데이터 업로드 - 하늘색
+  Analysis: "#007bff", // 분석 중 - 파란색
+  CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
+  SdiFault: "#034F9E", // 제품 결함 - 검정색
+};
 export default ServiceHistory;
+// TableRow styled component
+// 첫 번째 td에 적용할 styled component
+const FirstTd = styled.td`
+position: relative; // 상대적 위치 지정
+&:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 10px; // 선의 두께
+  background: ${props => props.statusColor}; // prop에서 받은 색상 적용
+}
+// 필요한 추가 스타일
+`;
 
 const StatusButton = styled(Button)`
   /* 여기에 버튼 스타일 추가 */
@@ -136,7 +172,7 @@ const StatusButton = styled(Button)`
   font-weight: bold;
   height:30px;
   padding:2px;
-  background-color: #B6C0C9 !important;
+  background-color: ${props => buttonColors[props.status] || "#B6C0C9"} !important;
   color: #000 !important;
   &:hover {
     background-color: #ffffff !important;  /* 호버 스타일링 */
@@ -153,7 +189,6 @@ const S = {
     border-radius: 10px;
     background-color: #F2F2F2;
     height:600px;
-    overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
     @media(max-width: 768px){
       height:300px; 
@@ -223,8 +258,7 @@ const S = {
 const PageControl = styled.div`
   display: flex;
   justify-content: center;
-  padding-top: 350px;
-  margin-top:-40px;
+  height:40px;
 `;
 
 const PageButton = styled.button`

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "sample")
+@Document(collection = "vitboard")
 public class VitBoard {
 
 //    @Transient
@@ -39,13 +39,10 @@ public class VitBoard {
     @Field(name = "Soc")
     private Double soc;
 
-    @Field(name = "Ekf")
-    private Double ekf;
-
     @Field(name = "Progress_id")
     private Long progressId;
 
     public void predictEkf(Double ekf){
-        this.ekf = ekf;
+        this.soc = ekf;
     }
 }

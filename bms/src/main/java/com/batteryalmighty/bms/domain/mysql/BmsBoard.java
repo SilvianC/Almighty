@@ -17,6 +17,12 @@ public class BmsBoard {
     @Column(name = "bms_board_id")
     Long id;
 
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "progress_id")
+//    private Progress progress;
+
+    private Long progressId;
+
     private int overVoltageCount;
 
     private int underVoltageCount;
@@ -48,5 +54,11 @@ public class BmsBoard {
 
     @Column(name = "receive_date")
     private LocalDate receiveDate;
+
+    public void setBmsCount(int overVoltageCount, int underVoltageCount, int overCurrentCount){
+        this.overVoltageCount = overVoltageCount;
+        this.underVoltageCount = underVoltageCount;
+        this.overCurrentCount = overCurrentCount;
+    }
 
 }
