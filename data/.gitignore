@@ -1,0 +1,7 @@
+# data
+*.csv
+
+# aws
+*.crt
+*.pem
+*.key

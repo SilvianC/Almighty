@@ -53,8 +53,8 @@ class BmsServiceTest {
     @Transactional
     void uploadCsv() {
 
-        String filename = "sample.csv";
-        String filePath = "C:\\자율프로젝트\\cleaned_dataset\\" + filename;
+        String filename = "B0025.csv";
+        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\vits\\" + filename;
 
         // 존재 여부 확인
         assertTrue(Files.exists(Paths.get(filePath)));
