@@ -1,48 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import BMSIcon from "../../assets/images/icon-BMSdata.png";
 
 const BMSdata = () => {
+	const [isCharge, setIsCharge] = useState("충전");
 
 	return (
 		<S.Wrap>
-			<S.Container>
-				<S.Title>
-					<p>충전</p>
-				</S.Title>
-				<S.Data>
-					<p>총 시간: 2시간19분</p>
-					<p>총 용량: 5000mAh</p>
-				</S.Data>
-				<S.Data>
-					<div className="info">| 전압 |</div>
-					<span>최대: 3.9755V</span>
-					<span>최소: 2.6125V</span>
-				</S.Data>
-				<S.Data>
-					<div className="info">| 온도 |</div>
-					<span>최대: 37.3095℃</span>
-					<span>최소: 24.3890℃</span>
-				</S.Data>
-			</S.Container>
-			<S.Container>
-				<S.Title lastTitle={true}>
-					<p>방전</p>
-				</S.Title>
-				<S.Data>
-					<p>총 시간: 2시간19분</p>
-					<p>총 용량: 5000mAh</p>
-				</S.Data>
-				<S.Data>
-					<div className="info">| 전압 |</div>
-					<span>최대: 3.9755V</span>
-					<span>최소: 2.6125V</span>
-				</S.Data>
-				<S.Data>
-					<div className="info">| 온도 |</div>
-					<span>최대: 37.3095℃</span>
-					<span>최소: 24.3890℃</span>
-				</S.Data>
-			</S.Container>
+			<S.Header>
+				<img src={BMSIcon} alt="icon" />
+				<span>주요 데이터</span>
+				<p>{isCharge}</p>
+			</S.Header>
+			<S.Data>
+				<S.Container>
+					<S.ContainerTitle>총 시간 / 총 용량</S.ContainerTitle>
+					<S.ContainerData>
+						<span>2시간 19분</span>
+						<span>1000AH</span>
+					</S.ContainerData>
+				</S.Container>
+				<S.Container>
+					<S.ContainerTitle>최대 전압</S.ContainerTitle>
+					<S.ContainerData>
+						<span>3.9755V</span>
+					</S.ContainerData>
+				</S.Container>
+				<S.Container>
+					<S.ContainerTitle>최소 전압</S.ContainerTitle>
+					<S.ContainerData>
+						<span>2.6125V</span>
+					</S.ContainerData>
+				</S.Container>
+				<S.Container>
+					<S.ContainerTitle>최대 온도</S.ContainerTitle>
+					<S.ContainerData>
+						<span>37.3095℃</span>
+					</S.ContainerData>
+				</S.Container>
+				<S.Container>
+					<S.ContainerTitle>최저 온도</S.ContainerTitle>
+					<S.ContainerData>
+						<span>24.3890℃</span>
+					</S.ContainerData>
+				</S.Container>
+			</S.Data>
 		</S.Wrap>
 	);
 };
@@ -50,55 +52,54 @@ const BMSdata = () => {
 const S = {
 	Wrap: styled.div`
     width: 100%;
-    background-color: #F2F2F2;
-    padding: 6% 7.2% 6%;
-    border-radius: 10px;
-		`,
-	Container: styled.div`
-		width: 100%;
-    display: flex;
-		flex-direction: column;
-    align-items: center;
-    justify-content: center;
 	`,
-	Title: styled.div`
-    width: 85.6%;
-    height: 40px;
-    background-color: #E7ECF2;
-    border-radius: 10px;
-    > p {
-			color: #034F9E;
-			font-weight: bold;
-			font-size: 25px;
-			line-height: 40px;
-			margin-left: 30px;
-		}
-		${(props) => props.lastTitle && "margin-top: 20px;"}
-		`,
-	Data: styled.div`
-		width: 85.6%;
-    display: flex;
+	Header: styled.div`
+		display: flex;
 		flex-direction: row;
-		> p {
-			margin: 0.5%;
-			width: 50%;
-			font-size: 17px;
-			color: #1D1F25;
-		}
+		align-items: center;
+
 		> span {
-			margin: 0.5%;
-			width: 40%;
-			font-size: 17px;
 			color: #1D1F25;
-		}
-		> div {
-			width: 20%;
-			margin: 0.5%;
-			font-size: 18px;
 			font-weight: bold;
-			color: #1D1F25;
+			font-size: 18px;
+			margin-left: 10px;
 		}
-  `,
+		> p {
+			color: #034F9E;
+			margin-bottom: 0px;
+			margin-left: 20px;
+			font-weight: bold;
+			font-size: 20px;
+		}
+	`,
+	Data: styled.div`
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+	`,
+	Container: styled.div`
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+		width: 16%;
+		height: 200px;
+	`,
+	ContainerTitle: styled.div`
+		color: #82858B;
+		font-size: 15px;
+		margin-left: 20px;
+		margin-top: 15px;
+	`,
+	ContainerData: styled.div`
+		color: #1D1F25;
+		font-size: 20px;
+		margin-left: 20px;
+		margin-top: 25px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	`,
 };
 
 export default BMSdata;

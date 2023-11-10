@@ -65,16 +65,16 @@ const BuyTable = ({ data , onApplyClick}) => {
                   {/* <td className="text-center">뭐하냐</td>
                   <td className="text-center">크아악</td> */}
                   <td className="text-center">
-                  {item.status === "Normal" ? (
-                    <ApplyButton onClick={() => onApplyClick(item)}>
-                      신청
-                    </ApplyButton>
-                  ) : item.status === "Request" ? (
+                  {item.status === "Request" ? (
                     <CompletedButton disabled>
                       진행 중
                     </CompletedButton>
-                  ) : null}
-                  </td>
+                  ) : (
+                    <ApplyButton onClick={() => onApplyClick(item)}>
+                      신청
+                    </ApplyButton>
+                  )}
+                </td>
                 </tr>
               );
             })}

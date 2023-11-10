@@ -30,6 +30,8 @@ public class VitBoard {
 
     private Double soc;
 
+    private Double ekf;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "progress_id")
     private Progress progress;

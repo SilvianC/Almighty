@@ -10,25 +10,26 @@ import { BiLineChart } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
 import { IsLoginState } from "../../states/states";
 import FirebaseComponent from "../../config/firebase-messaging-sw";
-
+import SideBar from "../../components/sidebar/Sidebar";
 const Board = () => {
   FirebaseComponent();
 
   return (
     <S.Wrap>
+      <SideBar></SideBar>
       <RegisterReason></RegisterReason>
       <S.Data>
         <S.Graph>
           {/* <BiLineChart></BiLineChart> */}
           <BatteryBoard></BatteryBoard>
         </S.Graph>
-        <S.Container>
-          <BMSData></BMSData>
-          <AnalysisResult></AnalysisResult>
-          <RegistResult progressId={6}></RegistResult>
-          <ChatComponent />
-        </S.Container>
       </S.Data>
+      <S.Container>
+        <BMSData></BMSData>
+        <AnalysisResult></AnalysisResult>
+        <RegistResult progressId={6}></RegistResult>
+        <ChatComponent />
+      </S.Container>
     </S.Wrap>
   );
 };
@@ -42,7 +43,6 @@ const S = {
   Container: styled.div`
     display: flex;
     flex-direction: column;
-    width: 40%;
   `,
   Graph: styled.div`
     display: flex;

@@ -8,10 +8,13 @@ import { MemberIdState, RoleState } from "../../states/states";
 
 const AlarmTable = () => {
   console.log(window.innerHeight);
+  console.log(window);
+  console.log(window.scrollBottom);
   window.addEventListener("scroll", handleScroll, { capture: true });
   function handleScroll() {
-    const scrollTop = document.querySelector(".Scroll").scrollTop;
-    console.log(scrollTop); // 스크롤 이벤트가 시작되면 요값이 변경된다
+    const scroll = document.querySelector(".Scroll");
+    console.log(scroll);
+    console.log(scroll.scrollTop); // 스크롤 이벤트가 시작되면 요값이 변경된다
   }
 
   const memberId = useRecoilValue(MemberIdState);
@@ -93,12 +96,11 @@ const AlarmTable = () => {
   }, [page]);
 
   return (
-    <S.Wrap className="AlarmTable">
+    <S.Wrap>
       <S.Title className="d-flex align-items-center">
         <BsFillBellFill />
         알림 내역
       </S.Title>
-
       <S.BODY className="Scroll">
         {totalElements == 0 && <h2>"알림 내역이 없습니다."</h2>}
 
