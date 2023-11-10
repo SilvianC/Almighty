@@ -126,7 +126,11 @@ const TestGraph = ({ data, threshold, type }) => {
 
     option = {
       ...option,
-
+      tooltip: {
+        // shared: true,
+        pointFormat:
+          '<span style="color:{series.color}">\u25CF</span> {series.name} <b>{point.y:.2f}</b><br>',
+      },
       yAxis: [
         {
           // visible: false,
@@ -223,7 +227,6 @@ const TestGraph = ({ data, threshold, type }) => {
           lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
         },
       },
-
       series: [
         ...datas,
         {
@@ -235,6 +238,10 @@ const TestGraph = ({ data, threshold, type }) => {
               item["soc"] > 100 ? 100 : item["soc"] < 0 ? 0 : item["soc"],
             ];
           }),
+          // tooltip: {
+          //   pointFormat:
+          //     '<span style="color:{series.color}">\u25CF</span> 잔량: <b>{point.y:.2f}%</b>',
+          // },
         },
       ],
       responsive: {

@@ -24,6 +24,7 @@ const BatteryBoard = ({ progressId, setProgress }) => {
       http
         .get(`/api/dashboard/${progressId}`)
         .then(({ data }) => {
+          console.log(data);
           setVitData(() => {
             return data["data"]["vitData"];
           });
