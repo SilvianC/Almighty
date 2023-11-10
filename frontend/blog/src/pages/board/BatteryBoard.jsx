@@ -76,32 +76,35 @@ const BatteryBoard = () => {
 
   return (
     <S.Wrap>
-      <Row>
-        <Col md={12}>
-          <TestGraph
-            data={vitData}
-            threshold={battery}
-            type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
-            num={testId}
-          ></TestGraph>
-        </Col>
-        <Col md={12}>
-          <BmsGraph data={bmsData}></BmsGraph>
-        </Col>
-      </Row>
+      <Info>hihi</Info>
+      <TestGraph
+        data={vitData}
+        threshold={battery}
+        type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
+        num={testId}
+      ></TestGraph>
+      <Info>hihids;fsdfdj</Info>
+      <BmsGraph data={bmsData}></BmsGraph>
     </S.Wrap>
   );
 };
 
+const Info = styled.div`
+  position: absolute;
+  background-color: gray;
+  width: 200px;
+  height: 200px;
+  z-index: 99;
+  padding: 10px;
+  margin: 50px;
+`;
+
 const S = {
   Wrap: styled.div`
-    border: 1px solid #d3d3d3;
-    // margin: 20px;
-    // padding: 60px;
-    // padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    // padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    border-radius: 10px;
-    // width: 300px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
   `,
   Title: styled.span`
     font-size: 20px;

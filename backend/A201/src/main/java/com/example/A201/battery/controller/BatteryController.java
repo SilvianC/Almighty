@@ -64,16 +64,8 @@ public class BatteryController {
     @PutMapping("/request")
     public ResponseEntity<?> updateBatteriesStatus(@RequestBody ProgressDTO progress) {
 
-        batteryService.registProgress(progress.getCode(), progress.getReason());
-        log.debug("여기까지 완료");
-        log.debug("PROGRESS뜯어보기: "+progress.getId()+" "+progress.getCode()+" "+progress.getTitle()+" "+progress.getReason());
-        log.debug("ID 뭐야!:"+ progress.getId());
-        alarmService.insertAlarm(AlarmDto.builder()
-                .title(progress.getTitle())
-                .content(progress.getReason())
-                .member(progress.getId())
-                .build());
-        log.debug("여기까지 완료22");
+        batteryService.registProgress(progress);
+
         fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
                 .title(progress.getTitle())
                 .body(progress.getReason())

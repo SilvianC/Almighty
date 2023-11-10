@@ -1,9 +1,13 @@
 package com.example.A201.battery.service;
 
+import com.example.A201.alarm.domain.Alarm;
+import com.example.A201.alarm.dto.AlarmDto;
+import com.example.A201.alarm.repository.AlarmRepository;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.Progress;
 import com.example.A201.battery.domain.StatusHistory;
+import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.dto.ProgressListDTO;
 import com.example.A201.battery.dto.ProgressResultDTO;
 import com.example.A201.battery.repository.BatteryRepository;
@@ -11,7 +15,9 @@ import com.example.A201.battery.repository.ProgressRepository;
 import com.example.A201.battery.repository.StatusHistoryRepository;
 import com.example.A201.battery.vo.BatteryResponse;
 import com.example.A201.battery.vo.BatterydataResponse;
+import com.example.A201.exception.CustomException;
 import com.example.A201.member.domain.Member;
+import com.example.A201.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -26,6 +32,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.A201.exception.ErrorCode.USER_NOT_FOUND;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
@@ -35,7 +43,8 @@ public class BatteryServiceImpl implements BatteryService{
     private final ProgressRepository progressRepository;
     private final StatusHistoryRepository statusHistoryRepository;
     private final JavaMailSender javaMailSender;
-
+    private final MemberRepository memberRepository;
+    private final AlarmRepository alarmRepository;
     @Override
     public List<BatteryResponse> getBatteriesAll() {
         List<Battery> batteries = batteryRepository.findAll();
@@ -75,19 +84,30 @@ public class BatteryServiceImpl implements BatteryService{
 
     @Override
     @Transactional
-    public void registProgress(String code, String reason){
-        Battery battery = batteryRepository.findByCode(code).orElseThrow(
+    public void registProgress(ProgressDTO progress){
+        Battery battery = batteryRepository.findByCode(progress.getCode()).orElseThrow(
                 () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
         );
-        //Progress build = Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build();
-        progressRepository.save(Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build());
+
+        progressRepository.save(Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(progress.getReason()).build());
         statusHistoryRepository.save(StatusHistory.builder()
                 .toStatus(Status.Request)
                 .fromStatus(battery.getBatteryStatus())
                 .batteryId(battery)
-                .requestReason(reason)
+                .requestReason(progress.getReason())
                 .build());
         battery.setBatteryStatus(Status.Request);
+
+        AlarmDto alarmDto = AlarmDto.builder()
+                .title(progress.getTitle())
+                .content(progress.getReason())
+                .member(progress.getId())
+                .build();
+        Member member = memberRepository.findById(progress.getId()).orElseThrow(() ->
+                new CustomException(USER_NOT_FOUND));
+        Alarm entity = Alarm.toEntity(alarmDto, member);
+        alarmRepository.save(entity);
+
     }
 
     @Override
