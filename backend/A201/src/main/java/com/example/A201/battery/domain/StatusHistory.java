@@ -28,17 +28,21 @@ public class StatusHistory {
     @JoinColumn(name = "battery_id")
     private Battery batteryId;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Status fromStatus;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Status toStatus;
 
     @CreatedDate
     private LocalDateTime date;
 
+    @Setter
     private String responseReason;
 
+    @Setter
     private String requestReason;
 
     public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO,Battery battery){
