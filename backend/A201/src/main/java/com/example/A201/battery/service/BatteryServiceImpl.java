@@ -81,6 +81,7 @@ public class BatteryServiceImpl implements BatteryService{
         );
         //Progress build = Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build();
         progressRepository.save(Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build());
+
         statusHistoryRepository.save(StatusHistory.builder()
                 .toStatus(Status.Request)
                 .fromStatus(battery.getBatteryStatus())
@@ -106,13 +107,18 @@ public class BatteryServiceImpl implements BatteryService{
         Progress p = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new EntityNotFoundException("해당 요청을 찾을 수 없습니다"));
         Battery battery = p.getBatteryId();
         Member member = battery.getMember();
-        statusHistoryRepository.save(StatusHistory.builder()
-                .toStatus(progress.getToStatus())
-                .fromStatus(battery.getBatteryStatus())
-                .batteryId(battery)
-                .requestReason(p.getReason())
-                .responseReason(progress.getResponseReason())
-                .build());
+        StatusHistory statusHistory = statusHistoryRepository.findByToStatusAndBatteryId(Status.Request, battery.getId());
+        statusHistory.setFromStatus(Status.Request);
+        statusHistory.setToStatus(p.getCurrentStatus());
+        statusHistory.setResponseReason(progress.getResponseReason());
+        statusHistoryRepository.save(statusHistory);
+//        statusHistoryRepository.save(StatusHistory.builder()
+//                .toStatus(progress.getToStatus())
+//                .fromStatus(battery.getBatteryStatus())
+//                .batteryId(battery)
+//                .requestReason(p.getReason())
+//                .responseReason(progress.getResponseReason())
+//                .build());
         battery.setBatteryStatus(progress.getToStatus());
         p.changeStatus(progress.getToStatus());
         sendMail(member.getEmail(), battery.getCode(), progress.getToStatus().toString());
