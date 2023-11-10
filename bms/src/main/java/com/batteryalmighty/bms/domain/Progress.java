@@ -1,6 +1,7 @@
-package com.batteryalmighty.bms.domain.mysql;
+package com.batteryalmighty.bms.domain;
 
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
@@ -9,13 +10,10 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class SocIr {
+@EntityListeners(AuditingEntityListener.class)
+public class Progress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "soc_ir_id")
+    @Column(name = "progress_id")
     private Long id;
-
-    private Double soc;
-
-    private Double ir;
 }
