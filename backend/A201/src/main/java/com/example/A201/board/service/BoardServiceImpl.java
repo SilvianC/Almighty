@@ -1,5 +1,7 @@
 package com.example.A201.board.service;
 
+import com.example.A201.battery.vo.BatteryResponse;
+import com.example.A201.battery.vo.BatterydataResponse;
 import com.example.A201.battery.vo.response.StatusHistoryResponse;
 import com.example.A201.board.domain.BmsBoard;
 import com.example.A201.board.domain.VitBoard;
@@ -30,7 +32,7 @@ public class BoardServiceImpl implements BoardService{
         PageRequest pageable = PageRequest.of(0, 5000);
 //        List<VitBoard> vit = vitBoardRepository.findByProgress(progressId, pageable);
         List<VitBoard> vit = vitBoardRepository.findVitBoardByProgressId(progressId);
-        return BoardResponse.boardResponse(BmsResponse.bmsResponse(bms), vit.stream().map(v -> VitResponse.vitResponse(v)).collect(Collectors.toList()));
+        return BoardResponse.boardResponse(BmsResponse.bmsResponse(bms), vit.stream().map(v -> VitResponse.vitResponse(v)).collect(Collectors.toList()), BatterydataResponse.batteryResponse(bms.getProgress().getBatteryId()));
     }
 
     @Override

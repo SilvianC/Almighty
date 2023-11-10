@@ -15,64 +15,39 @@ const match = {
   1: "currentMeasured",
   2: "temperatureMeasured",
 };
-const BatteryBoard = () => {
+const BatteryBoard = ({ progressId, setProgress }) => {
   const [vitData, setVitData] = useState([]);
   const [bmsData, setBmsData] = useState([]);
-  const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
   const [battery, setBattery] = useState([]);
-  const [batteries, setBatteries] = useState([]);
-  const [testId, setTestId] = useState(0);
-
-  const clickPoint = (id) => {
-    setTestId(() => id);
-  };
-  const handleCode = (e) => {
-    setCode(() => e.target.value);
-  };
-  const handleTest = (e) => {
-    setTestId(() => e.target.value);
-  };
   useEffect(() => {
-    http
-      .get(`/api/batteries`)
-      .then(({ data }) => {
-        setBatteries(() => {
-          return data["data"];
-        });
-      })
-      .catch();
-    http
-      .get(`/api/dashboard/6`)
-      .then(({ data }) => {
-        setVitData(() => {
-          return data["data"]["vitData"];
-        });
-        setBmsData(() => {
-          return data["data"]["bmsData"];
-        });
-      })
-      .catch();
-  }, []);
-
-  useEffect(() => {
-    if (!code && batteries.length) {
-      setCode(() => batteries[0].code);
-    }
-  }, [batteries]);
-
-  useEffect(() => {
-    if (code) {
+    if (progressId != null) {
       http
-        .get(`/api/batteries/battery/${code}`)
+        .get(`/api/dashboard/${progressId}`)
         .then(({ data }) => {
+          setVitData(() => {
+            return data["data"]["vitData"];
+          });
+          setBmsData(() => {
+            return data["data"]["bmsData"];
+          });
           setBattery(() => {
-            return data["data"];
+            console.log(data);
+            return data["data"]["battery"];
           });
         })
-        .catch();
+        .catch(() => {
+          setVitData(() => {
+            return [];
+          });
+          setBmsData(() => {
+            return [];
+          });
+          setProgress(() => {
+            return null;
+          });
+        });
     }
-  }, [code]);
+  }, [progressId]);
 
   return (
     <S.Wrap>
@@ -82,7 +57,6 @@ const BatteryBoard = () => {
             data={vitData}
             threshold={battery}
             type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
-            num={testId}
           ></TestGraph>
         </Col>
         <Col md={12}>
