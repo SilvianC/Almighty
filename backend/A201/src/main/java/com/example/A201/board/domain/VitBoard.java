@@ -35,9 +35,6 @@ public class VitBoard {
     @Field(name = "Soc")
     private Double soc;
 
-    @Field(name = "Ekf")
-    private Double ekf;
-
     @Field(name = "Progress_id")
     private Long progressId;
 

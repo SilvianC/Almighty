@@ -15,96 +15,68 @@ const match = {
   1: "currentMeasured",
   2: "temperatureMeasured",
 };
-const BatteryBoard = () => {
+const BatteryBoard = ({ progressId, setProgress }) => {
   const [vitData, setVitData] = useState([]);
   const [bmsData, setBmsData] = useState([]);
-  const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
   const [battery, setBattery] = useState([]);
-  const [batteries, setBatteries] = useState([]);
-  const [testId, setTestId] = useState(0);
-
-  const clickPoint = (id) => {
-    setTestId(() => id);
-  };
-  const handleCode = (e) => {
-    setCode(() => e.target.value);
-  };
-  const handleTest = (e) => {
-    setTestId(() => e.target.value);
-  };
   useEffect(() => {
-    http
-      .get(`/api/batteries`)
-      .then(({ data }) => {
-        setBatteries(() => {
-          return data["data"];
-        });
-      })
-      .catch();
-    http
-      .get(`/api/dashboard/6`)
-      .then(({ data }) => {
-        setVitData(() => {
-          return data["data"]["vitData"];
-        });
-        setBmsData(() => {
-          return data["data"]["bmsData"];
-        });
-      })
-      .catch();
-  }, []);
-
-  useEffect(() => {
-    if (!code && batteries.length) {
-      setCode(() => batteries[0].code);
-    }
-  }, [batteries]);
-
-  useEffect(() => {
-    if (code) {
+    if (progressId != null) {
       http
-        .get(`/api/batteries/battery/${code}`)
+        .get(`/api/dashboard/${progressId}`)
         .then(({ data }) => {
+          console.log(data);
+          setVitData(() => {
+            return data["data"]["vitData"];
+          });
+          setBmsData(() => {
+            return data["data"]["bmsData"];
+          });
           setBattery(() => {
-            return data["data"];
+            console.log(data);
+            return data["data"]["battery"];
           });
         })
-        .catch();
+        .catch(() => {
+          setVitData(() => {
+            return [];
+          });
+          setBmsData(() => {
+            return [];
+          });
+          setProgress(() => {
+            return null;
+          });
+        });
     }
-  }, [code]);
+  }, [progressId]);
 
   return (
     <S.Wrap>
-      <Info>hihi</Info>
-      <TestGraph
-        data={vitData}
-        threshold={battery}
-        type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
-        num={testId}
-      ></TestGraph>
-      <Info>hihids;fsdfdj</Info>
-      <BmsGraph data={bmsData}></BmsGraph>
+      <Row>
+        <Col md={12}>
+          <TestGraph
+            data={vitData}
+            threshold={battery}
+            type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
+          ></TestGraph>
+        </Col>
+        <Col md={12}>
+          <BmsGraph data={bmsData}></BmsGraph>
+        </Col>
+      </Row>
     </S.Wrap>
   );
 };
 
-const Info = styled.div`
-  position: absolute;
-  background-color: gray;
-  width: 200px;
-  height: 200px;
-  z-index: 99;
-  padding: 10px;
-  margin: 50px;
-`;
-
 const S = {
   Wrap: styled.div`
-    justify-content: space-between;
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+    border: 1px solid #d3d3d3;
+    // margin: 20px;
+    // padding: 60px;
+    // padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+    // padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    border-radius: 10px;
+    // width: 300px;
   `,
   Title: styled.span`
     font-size: 20px;

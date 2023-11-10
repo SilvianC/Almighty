@@ -3,7 +3,7 @@ import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";
 
-const BmsGraph = ({ data, threshold, type, num }) => {
+const BmsGraph = ({ data }) => {
   console.log(data);
   const option = {
     chart: {
@@ -26,7 +26,24 @@ const BmsGraph = ({ data, threshold, type, num }) => {
       align: "left",
     },
 
+    plotOptions: {
+      column: {
+        minPointLength: 3, // 최소 높이 설정
+        pointPlacement: "between", // 0 값의 막대도 바닥에 표시
+      },
+      label: {
+        connectorAllowed: false,
+      },
+      line: {
+        // 선 그래프에 대한 설정
+        lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
+      },
+    },
     yAxis: {
+      startOnTick: true, // Y 축의 시작을 눈금에 맞춤
+
+      min: 0, // 막대 그래프의 최소 값 설정
+
       title: {
         text: "Count",
       },
@@ -36,16 +53,6 @@ const BmsGraph = ({ data, threshold, type, num }) => {
 
     legend: {
       enabled: false, // 범례 비활성화
-    },
-
-    plotOptions: {
-      label: {
-        connectorAllowed: false,
-      },
-      line: {
-        // 선 그래프에 대한 설정
-        lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
-      },
     },
 
     series: [
@@ -75,10 +82,13 @@ const BmsGraph = ({ data, threshold, type, num }) => {
         colorByPoint: true,
 
         data: [
-          ["과전압", data["overVoltageCount"]],
-          ["저전압", data["underVoltageCount"]],
-          ["과전류", data["overCurrentCount"]],
-          ["온도이상", data["abnormalTemperatureCount"]],
+          ["과전압", data && data.length !== 0 ? data["overVoltageCount"] : 0],
+          ["저전압", data && data.length !== 0 ? data["underVoltageCount"] : 0],
+          ["과전류", data && data.length !== 0 ? data["overCurrentCount"] : 0],
+          [
+            "온도이상",
+            data && data.length !== 0 ? data["abnormalTemperatureCount"] : 0,
+          ],
         ],
         dataLabels: {
           enabled: true,
@@ -105,7 +115,7 @@ const BmsGraph = ({ data, threshold, type, num }) => {
       ],
     },
   };
-
+  console.log(option);
   return (
     <S.Wrap>
       <img

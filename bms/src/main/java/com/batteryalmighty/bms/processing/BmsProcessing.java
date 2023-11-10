@@ -9,8 +9,12 @@ import com.batteryalmighty.bms.repository.mysql.BmsBoardRepository;
 import com.batteryalmighty.bms.repository.mongo.VitBoardRepository;
 import com.batteryalmighty.bms.repository.mysql.ModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import java.util.List;
 
@@ -19,20 +23,18 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BmsProcessing {
     private final VitBoardRepository vitBoardRepository;
+    private final MongoTemplate mongoTemplate;
     private final BmsBoardRepository bmsBoardRepository;
     private final BatteryRepository batteryRepository;
     private final ModelRepository modelRepository;
     private final Ekf ekf;
 
     public void predict(){
-        List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(6L);
+        List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(7L);
         Battery battery = batteryRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("찾는 배터리가 없습니다."));
         Model model = modelRepository.findById(battery.getId())
                 .orElseThrow(() -> new IllegalStateException("찾는 배터리 모델이 없습니다."));
-        BmsBoard bmsBoard = bmsBoardRepository.findByProgressId(6L)
-                .orElseThrow(() -> new IllegalStateException("찾는 BMS가 없습니다."));
-
 
         ekf.init();
 //        double overVolt = 4.213;
@@ -57,11 +59,13 @@ public class BmsProcessing {
             ekf.predictx(vitBoard.getVoltage());
             ekf.nextP();
 
+            // ekf 업데이트
+            // vitBoard.predictEkf(ekf.get());
 
-
-            vitBoard.predictEkf(ekf.get());
-
-
+            Query findVit = new Query(Criteria.where("_id").is(vitBoard.getId()));
+            Update updateEkf = new Update();
+            updateEkf.set("Soc", ekf.get());
+            mongoTemplate.updateFirst(findVit, updateEkf, VitBoard.class);
 
             if(prevVolt < model.getOverVoltageThreshold() && vitBoard.getVoltage() >= model.getOverVoltageThreshold()) overVoltageCount++;
             if(prevVolt > model.getUnderVoltageThreshold() && vitBoard.getVoltage() <= model.getUnderVoltageThreshold()) underVoltageCount++;
@@ -86,15 +90,19 @@ public class BmsProcessing {
 //            prevTemperature = vitBoard.getTemperature();
         }
 
-//        BmsBoard bmsBoard = BmsBoard.builder()
-//                .overVoltageCount(overVoltageCount)
-//                .underVoltageCount(underVoltageCount)
-//                .overCurrentCount(overCurrentCount)
-//                .underTemperatureCount(underTemperatureCount)
-//                .overTemperatureCount(overTemperatureCount)
-//                .build();
+        BmsBoard bmsBoard = BmsBoard.builder()
+                .progressId(7L)
+                .overVoltageCount(overVoltageCount)
+                .underVoltageCount(underVoltageCount)
+                .overCurrentCount(overCurrentCount)
+                .underTemperatureCount(underTemperatureCount)
+                .overTemperatureCount(overTemperatureCount)
+                .build();
 
-        bmsBoard.setBmsCount(overVoltageCount, underVoltageCount, overCurrentCount);
         bmsBoardRepository.save(bmsBoard);
+
+//        BmsBoard bmsBoard = bmsBoardRepository.findByProgressId(7L)
+//                .orElseThrow(() -> new IllegalStateException("찾는 BMS가 없습니다."));
+//        bmsBoard.setBmsCount(overVoltageCount, underVoltageCount, overCurrentCount);
     }
 }

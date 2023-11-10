@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import http from "../../api/http";
 
-const RegistResult = ({ progressId }) => {
+const RegistResult = ({ progress, setProgress }) => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("사유 선택");
@@ -18,20 +18,26 @@ const RegistResult = ({ progressId }) => {
   };
   const handleRegister = () => {
     const request = {
-      progressId: progressId,
+      progressId: progress,
       toStatus: result,
       responseReason:
         selectedOption +
         (selectedOption === "기타" ? " 상세 사유 : " + resonDetail : ""),
     };
     http
-      .put(`/api/batteries/progress/${progressId}`, request)
+      .put(`/api/batteries/progress/${progress}`, request)
       .then(({ data }) => {
         window.location.reload();
       })
       .catch();
   };
 
+  useEffect(() => {
+    setSelectedOption(() => "사유 선택");
+    setResult(() => null);
+    setReasonDetail(() => "");
+    setIsDropdownOpen(() => false);
+  }, [progress]);
   /*
 	const regist = () => {
 		changeStatus(
@@ -74,6 +80,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "SdiFault"}
               onChange={() => {
                 setResult(() => "SdiFault");
               }}
@@ -84,6 +91,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "CustomerFault"}
               onChange={() => {
                 setResult(() => "CustomerFault");
               }}
@@ -94,6 +102,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "Normal"}
               onChange={() => {
                 setResult(() => "Normal");
               }}
