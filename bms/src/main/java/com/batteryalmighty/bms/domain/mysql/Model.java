@@ -1,4 +1,4 @@
-package com.example.A201.battery.domain;
+package com.batteryalmighty.bms.domain.mysql;
 
 import lombok.*;
 
@@ -14,8 +14,6 @@ public class Model {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "model_id")
     private Long id;
-
-    private String modelName;
 
     private Double overVoltageThreshold;   // 과전압 임계값
 
