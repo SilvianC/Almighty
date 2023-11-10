@@ -20,4 +20,9 @@ public class BoardController {
     public ResponseEntity<?> getMetadataType(@PathVariable("progress_id") Long progressId) {
         return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공", boardService.getBoard(progressId));
     }
+
+    @GetMapping("/vits")
+    public ResponseEntity<?> getAllVitBoard(){
+        return SuccessResponseEntity.toResponseEntity("vit 데이터 불러오기 성공", boardService.getVitBoardList());
+    }
 }
