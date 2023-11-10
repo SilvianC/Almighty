@@ -106,7 +106,7 @@ const Return = () => {
     //   })
     //   .catch();
     fetchServiceHistory(page);
-  }, [memberId]);
+  }, [memberId, page]);
   return (
     <>
       <GlobalStyles />
@@ -137,6 +137,7 @@ const Return = () => {
                 page={page}
                 setPage={setPage}
                 totalPage={totalPages}
+                fetchServiceHistory={fetchServiceHistory}
               />
             </div>
           </CSSTransition>
