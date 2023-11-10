@@ -2,6 +2,7 @@ package com.batteryalmighty.bms.processing;
 
 import com.batteryalmighty.bms.domain.SocIr;
 import com.batteryalmighty.bms.domain.SocOcv;
+import com.batteryalmighty.bms.domain.VitBoard;
 import com.batteryalmighty.bms.repository.SocIrRepository;
 import com.batteryalmighty.bms.repository.SocOcvRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,10 @@ public class Ekf {
 
     private SocIr nearIr[];
 
+    private double prevTime;
+
+    private double maxCap;
+
     private final SocIrRepository socIrRepository;
 
     private final SocOcvRepository socOcvRepository;
@@ -46,15 +51,18 @@ public class Ekf {
         R = 2500;
         P = 0.006;
         x = 100;
+        prevTime = 0;
+        maxCap = 1.8022316896675852;
         socOcvs = socOcvRepository.findAll();
         socIrs = socIrRepository.findAll();
         nearOcv = new SocOcv[2];
         nearIr = new SocIr[2];
     }
 
-    public void predictx_(double volt){
-        findNear(volt);
-        x_ = nearOcv[0].getSoc() - (nearOcv[0].getOcv() - volt) * (nearOcv[0].getSoc() - nearOcv[1].getSoc()) / (nearOcv[0].getOcv() - nearOcv[1].getOcv());
+    public void predictx_(VitBoard vitBoard){
+        x_ = x + ((vitBoard.getTime() - prevTime) * vitBoard.getCurrent() / maxCap);
+        findNear(x_);
+        prevTime = vitBoard.getTime();
     }
 
     public void predictP(){
@@ -67,9 +75,9 @@ public class Ekf {
         SocIr ir1 = nearIr[0];
         SocIr ir2 = nearIr[1];
         ir = ir1.getIr() - (ir1.getSoc() - x_) * (ir1.getIr() - ir2.getIr()) / (ir1.getSoc() - ir2.getSoc());
-        double a = (socOcvPredict1.getOcv() - volt) / (socOcvPredict1.getSoc() - x_);
-        double b = (ir1.getIr() - ir) / (socOcvPredict1.getSoc() - x_);
-        H = ((socOcvPredict1.getOcv() - volt) / (socOcvPredict1.getSoc() - x_)) + ((current)*((ir1.getIr() - ir) / (socOcvPredict1.getSoc() - x_)));
+        double a = (socOcvPredict1.getOcv() - socOcvPredict2.getOcv()) / (socOcvPredict1.getSoc() - socOcvPredict2.getSoc());
+        double b = (ir1.getIr() - ir2.getIr()) / (ir1.getSoc() - ir2.getSoc());
+        H = a + ((current)*b);
         K = P_ * H * (H * P_ * H + R);
     }
 
@@ -87,12 +95,12 @@ public class Ekf {
         return x;
     }
 
-    private void findNear(double volt){
+    private void findNear(double soc){
         double min[] = new double[2];
         min[0] = Double.MAX_VALUE;
         min[1] = Double.MAX_VALUE;
         for (SocOcv socOcv : socOcvs) {
-            double abs = Math.abs(socOcv.getOcv() - volt);
+            double abs = Math.abs(socOcv.getSoc() - soc);
             if(abs < min[1]){
                 min[1] = abs;
                 nearOcv[1] = socOcv;
