@@ -3,29 +3,20 @@ server:
 spring:
   application:
     name: monitoring
-#    h2:
-#      console:
-#        enabled: true
-#        path: /h2
-#  datasource:
-#        url: jdbc:h2:mem:test
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://k9a201.p.ssafy.io/almighty?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
+    url: jdbc:mysql://localhost:3306/bms?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
     username: root
-    password: "almighty201"
+    password: ssafy
   data:
-    redis:
-      repositories:
-        enabled: false
-  redis:
+    mongodb:
+      host: k9a201.p.ssafy.io
+#      host: localhost
+      port: 27017
+      database: bms
 
-    host: www.batteryalmighty.co.kr
-    password: almighty201
-    port: 6379
-
-#  hikari:
-#      maximum-pool-size: 10
+  #  hikari:
+  #      maximum-pool-size: 10
   jpa:
     hibernate:
       ddl-auto: update
@@ -33,16 +24,15 @@ spring:
     properties:
       hibernate:
         format_sql: true
-#  sql:
-#    init:
-#      data-locations: classpath*:db/h2/data.sql
+
 logging:
   level:
-    com.example : DEBUG
-jwt:
-  secret: VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4=VGhpcyBpcyBhIGRlbW8gcHJvamVjdCBmb3IgaW1wbGVtZW50aW5nIGp3dC4= # ??? ???? Base64? ???? ?
-  refresh-token-validity-in-seconds: 1209600 # 14?
-  access-token-validity-in-seconds: 43200 # 12??
-openai:
-  api:
-    key: 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
+    org:
+      hibernate:
+        SQL: DEBUG
+        orm.jdbc.bind: TRACE
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
