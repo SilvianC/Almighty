@@ -18,7 +18,7 @@ const TestGraph = ({ data, threshold, type }) => {
   const datas = [];
   let option = {
     chart: {
-      type: "line",
+      type: "spline",
       panning: true, // 드래그로 이동을 활성화
     },
     accessibility: {
