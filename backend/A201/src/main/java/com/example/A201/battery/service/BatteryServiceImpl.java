@@ -79,7 +79,8 @@ public class BatteryServiceImpl implements BatteryService{
         Battery battery = batteryRepository.findByCode(code).orElseThrow(
                 () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
         );
-        progressRepository.save(Progress.builder().batteryId(battery).reason(reason).build());
+        //Progress build = Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build();
+        progressRepository.save(Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build());
         statusHistoryRepository.save(StatusHistory.builder()
                 .toStatus(Status.Request)
                 .fromStatus(battery.getBatteryStatus())
@@ -113,7 +114,7 @@ public class BatteryServiceImpl implements BatteryService{
                 .responseReason(progress.getResponseReason())
                 .build());
         battery.setBatteryStatus(progress.getToStatus());
-
+        p.changeStatus(progress.getToStatus());
         sendMail(member.getEmail(), battery.getCode(), progress.getToStatus().toString());
     }
 
