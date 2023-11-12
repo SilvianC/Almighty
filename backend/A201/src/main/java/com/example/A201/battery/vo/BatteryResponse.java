@@ -1,14 +1,11 @@
 package com.example.A201.battery.vo;
 
-import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Getter
 @Builder
@@ -17,7 +14,6 @@ import java.time.LocalDate;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BatteryResponse {
     private String code;
-
 
     private Long modelId;
 
@@ -32,7 +28,6 @@ public class BatteryResponse {
                 .modelId(battery.getModel().getId())
                 .memberId(battery.getMember().getMemberId())
                 .Id(battery.getId())
-                .status(battery.getBatteryStatus() == null ? Status.Normal.name() : battery.getBatteryStatus().name())
                 .build();
     }
 }

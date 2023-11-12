@@ -1,9 +1,9 @@
 package com.example.A201.battery.service;
 
 import com.example.A201.battery.domain.StatusHistory;
-import com.example.A201.battery.dto.StatusHistoryDTO;
-import com.example.A201.battery.vo.request.StatusHistoryRequest;
-import com.example.A201.battery.vo.response.StatusHistoryResponse;
+import com.example.A201.history.dto.StatusHistoryDTO;
+import com.example.A201.history.vo.request.StatusHistoryRequest;
+import com.example.A201.history.vo.response.StatusHistoryResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

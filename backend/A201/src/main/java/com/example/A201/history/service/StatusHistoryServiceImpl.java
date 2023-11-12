@@ -3,11 +3,11 @@ package com.example.A201.battery.service;
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.battery.domain.StatusHistory;
-import com.example.A201.battery.dto.StatusHistoryDTO;
+import com.example.A201.history.dto.StatusHistoryDTO;
 import com.example.A201.battery.repository.BatteryRepository;
 import com.example.A201.battery.repository.StatusHistoryRepository;
-import com.example.A201.battery.vo.request.StatusHistoryRequest;
-import com.example.A201.battery.vo.response.StatusHistoryResponse;
+import com.example.A201.history.vo.request.StatusHistoryRequest;
+import com.example.A201.history.vo.response.StatusHistoryResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -16,12 +16,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.A201.battery.constant.Status.Request;
 
 @Service
 @Transactional(readOnly = true)
@@ -59,7 +56,7 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 배터리를 찾을 수 없습니다"));
 
         StatusHistory statusHistory = StatusHistory.registerHistory(statusHistoryDTO,battery);
-        statusHistory.setBatteryId(battery);
+        statusHistory.setBattery(battery);
         return statusHistoryRepository.save(statusHistory);
     }
 

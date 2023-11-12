@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum Status {
-    Normal, Request, Upload, Analysis, CustomerFault, SdiFault;
+    Normal, InProgress, Analysis, Return;
 }

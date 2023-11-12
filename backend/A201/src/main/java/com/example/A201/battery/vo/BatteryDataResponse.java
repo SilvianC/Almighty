@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class BatterydataResponse {
+public class BatteryDataResponse {
     private Double overVoltage;
     private Double underVoltage;
     private Double overCurrent;
@@ -20,9 +20,9 @@ public class BatterydataResponse {
     private Double chargingMinTemperature;
 
     // 방전 추가 안해줌
-    public static BatterydataResponse batteryResponse(Battery battery){
-        if(battery.getModel() == null) return BatterydataResponse.builder().build();
-        return BatterydataResponse.builder()
+    public static BatteryDataResponse batteryResponse(Battery battery){
+        if(battery.getModel() == null) return BatteryDataResponse.builder().build();
+        return BatteryDataResponse.builder()
                 .overVoltage(battery.getModel().getOverVoltageThreshold())
                 .underVoltage(battery.getModel().getUnderVoltageThreshold())
                 .overCurrent(battery.getModel().getOverCurrentChargeThreshold())

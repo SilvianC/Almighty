@@ -1,13 +1,12 @@
 package com.example.A201.battery.domain;
 
 import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.dto.StatusHistoryDTO;
+import com.example.A201.history.dto.StatusHistoryDTO;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -26,7 +25,7 @@ public class StatusHistory {
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_id")
-    private Battery batteryId;
+    private Battery battery;
 
     @Setter
     @Enumerated(EnumType.STRING)
@@ -47,7 +46,7 @@ public class StatusHistory {
 
     public static StatusHistory registerHistory(StatusHistoryDTO statusHistoryDTO,Battery battery){
         StatusHistory history = new StatusHistory();
-        history.batteryId = battery;
+        history.battery = battery;
         history.fromStatus = statusHistoryDTO.getFromStatus();
         history.toStatus = statusHistoryDTO.getToStatus();
         history.date = LocalDateTime.now();

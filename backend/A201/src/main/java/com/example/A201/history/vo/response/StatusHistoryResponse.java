@@ -28,8 +28,8 @@ public class StatusHistoryResponse {
     public static StatusHistoryResponse statusHistoryResponse(StatusHistory statusHistory){
         return StatusHistoryResponse.builder()
                 .historyId(statusHistory.getHistoryId())
-                .batteryId(statusHistory.getBatteryId().getId())
-                .code(statusHistory.getBatteryId().getCode())
+                .batteryId(statusHistory.getBattery().getId())
+                .code(statusHistory.getBattery().getCode())
                 .fromStatus(statusHistory.getFromStatus())
                 .toStatus(statusHistory.getToStatus())
                 .date(statusHistory.getDate())
