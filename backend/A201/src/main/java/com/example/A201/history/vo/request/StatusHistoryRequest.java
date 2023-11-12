@@ -1,13 +1,12 @@
-package com.example.A201.battery.vo.request;
+package com.example.A201.history.vo.request;
 
 import lombok.Getter;
-
-import java.time.LocalDate;
 
 @Getter
 public class StatusHistoryRequest {
     private Long batteryId;
-    private String fromStatus;
-    private String toStatus;
+    private String expertStatus;
+//    private String fromStatus;
+//    private String toStatus;
     private String requestReason;
 }

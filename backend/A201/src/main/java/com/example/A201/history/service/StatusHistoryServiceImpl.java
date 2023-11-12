@@ -1,11 +1,11 @@
-package com.example.A201.battery.service;
+package com.example.A201.history.service;
 
-import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.StatusHistory;
+import com.example.A201.history.constant.ResultStatus;
+import com.example.A201.history.domain.StatusHistory;
 import com.example.A201.history.dto.StatusHistoryDTO;
 import com.example.A201.battery.repository.BatteryRepository;
-import com.example.A201.battery.repository.StatusHistoryRepository;
+import com.example.A201.history.repository.StatusHistoryRepository;
 import com.example.A201.history.vo.request.StatusHistoryRequest;
 import com.example.A201.history.vo.response.StatusHistoryResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +45,8 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
     }
     @Override
     public StatusHistoryResponse getHistory(Long HistoryId){
-        StatusHistory hhistory = statusHistoryRepository.getById(HistoryId);
+        StatusHistory hhistory = statusHistoryRepository.findById(HistoryId)
+                .orElseThrow(() -> new IllegalStateException("해당하는 히스토리가 없습니다."));
         StatusHistoryResponse shr = StatusHistoryResponse.statusHistoryResponse(hhistory);
         return shr;
     }
@@ -64,12 +64,12 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
     public StatusHistoryDTO requestToDTO(StatusHistoryRequest request) {
         Battery battery = batteryRepository.findById(request.getBatteryId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 배터리를 찾을 수 없습니다"));
-        battery.setBatteryStatus(Status.Request);
         StatusHistoryDTO dto = new StatusHistoryDTO();
         dto.setBatteryId(battery.getId());
-        dto.setDate(LocalDateTime.now());
-        dto.setFromStatus(Status.valueOf(request.getFromStatus()));
-        dto.setToStatus(Status.valueOf(request.getToStatus()));
+//        dto.setDate(LocalDateTime.now());
+        dto.setExpertStatus(ResultStatus.valueOf(request.getExpertStatus()));
+//        dto.setFromStatus(Status.valueOf(request.getFromStatus()));
+//        dto.setToStatus(Status.valueOf(request.getToStatus()));
         dto.setReason(request.getRequestReason());
         return dto;
     }

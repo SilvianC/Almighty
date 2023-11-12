@@ -3,6 +3,6 @@ package com.example.A201.history.constant;
 import lombok.Getter;
 
 @Getter
-public enum HistoryStatus {
+public enum ResultStatus {
     CustomerFault, SdiFault, Normal;
 }

@@ -1,17 +1,13 @@
-package com.example.A201.battery.dto;
+package com.example.A201.progress.dto;
 
-import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.domain.Battery;
+import com.example.A201.progress.constant.ProgressStatus;
 import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
-@Builder
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 public class ProgressListDTO {
@@ -21,5 +17,5 @@ public class ProgressListDTO {
     private String modelName;
     private LocalDateTime createdDate;
     @Enumerated(EnumType.STRING)
-    private Status currentStatus;
+    private ProgressStatus currentStatus;
 }

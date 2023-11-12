@@ -1,6 +1,6 @@
-package com.example.A201.battery.service;
+package com.example.A201.history.service;
 
-import com.example.A201.battery.domain.StatusHistory;
+import com.example.A201.history.domain.StatusHistory;
 import com.example.A201.history.dto.StatusHistoryDTO;
 import com.example.A201.history.vo.request.StatusHistoryRequest;
 import com.example.A201.history.vo.response.StatusHistoryResponse;

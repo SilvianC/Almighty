@@ -1,12 +1,11 @@
-package com.example.A201.battery.dto;
+package com.example.A201.history.dto;
 
-import com.example.A201.battery.constant.Status;
+import com.example.A201.history.constant.ResultStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -16,8 +15,8 @@ import java.time.LocalDateTime;
 public class StatusHistoryDTO {
     private Long historyId;
     private Long batteryId;
-    private Status fromStatus;
-    private Status toStatus;
+//    private Status aiStatus;
+    private ResultStatus expertStatus;
     private LocalDateTime date;
     private String reason;
 }

@@ -1,6 +1,7 @@
-package com.example.A201.battery.domain;
+package com.example.A201.progress.domain;
 
-import com.example.A201.battery.constant.Status;
+import com.example.A201.progress.constant.ProgressStatus;
+import com.example.A201.battery.domain.Battery;
 import com.example.A201.common.BaseTime;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -28,12 +29,12 @@ public class Progress extends BaseTime{
 //    private LocalDate createDate;
 
     @Enumerated(EnumType.STRING)
-    private Status currentStatus;
+    private ProgressStatus currentStatus;
 
     private String reason;
 
-    public void changeStatus(Status status){
-        this.currentStatus = status;
+    public void changeStatus(ProgressStatus progressStatus){
+        this.currentStatus = progressStatus;
     }
 
 }

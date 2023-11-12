@@ -3,6 +3,6 @@ package com.example.A201.progress.constant;
 import lombok.Getter;
 
 @Getter
-public enum Status {
+public enum ProgressStatus {
     Request, AiModel, Expert;
 }

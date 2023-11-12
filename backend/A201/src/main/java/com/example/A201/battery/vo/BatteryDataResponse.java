@@ -18,8 +18,9 @@ public class BatteryDataResponse {
     private Double overCurrent;
     private Double chargingMaxTemperature;
     private Double chargingMinTemperature;
+    private Double dischargingMaxTemperature;
+    private Double dischargingMinTemperature;
 
-    // 방전 추가 안해줌
     public static BatteryDataResponse batteryResponse(Battery battery){
         if(battery.getModel() == null) return BatteryDataResponse.builder().build();
         return BatteryDataResponse.builder()
@@ -28,6 +29,8 @@ public class BatteryDataResponse {
                 .overCurrent(battery.getModel().getOverCurrentChargeThreshold())
                 .chargingMaxTemperature(battery.getModel().getMaxTemperatureChargeThreshold())
                 .chargingMinTemperature(battery.getModel().getMinTemperatureChargeThreshold())
+                .dischargingMaxTemperature(battery.getModel().getMaxTemperatureDischargeThreshold())
+                .dischargingMinTemperature(battery.getModel().getMinTemperatureDischargeThreshold())
                 .build();
     }
 }
