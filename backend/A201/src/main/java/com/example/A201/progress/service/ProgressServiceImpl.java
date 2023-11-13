@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -61,6 +62,7 @@ public class ProgressServiceImpl implements ProgressService{
                 .battery(battery)
                 .currentStatus(ProgressStatus.Request)
                 .reason(progress.getReason())
+                .createDate(LocalDateTime.now())
                 .build());
 
 //        statusHistoryRepository.save(StatusHistory.builder()

@@ -5,9 +5,11 @@ import com.example.A201.history.constant.ResultStatus;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.history.dto.StatusHistoryDTO;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -15,7 +17,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class StatusHistory extends BaseTime {
+public class StatusHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +28,9 @@ public class StatusHistory extends BaseTime {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "battery_id")
     private Battery battery;
+
+    @CreatedDate
+    private LocalDateTime date;
 
 //    @Setter
 //    @Enumerated(EnumType.STRING)
@@ -46,7 +51,7 @@ public class StatusHistory extends BaseTime {
         history.battery = battery;
 //        history.aiStatus = statusHistoryDTO.getFromStatus();
         history.expertStatus = statusHistoryDTO.getExpertStatus();
-//        history.date = LocalDateTime.now();
+        history.date = LocalDateTime.now();
         history.requestReason = statusHistoryDTO.getReason();
         return history;
     }
