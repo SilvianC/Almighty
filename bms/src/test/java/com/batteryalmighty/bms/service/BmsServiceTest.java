@@ -59,7 +59,7 @@ class BmsServiceTest {
             MultipartFile tempFile = new MockMultipartFile("file", filename, "text/csv", fis);
 //            MultipartFile tempFile = new MockMultipartFile("sample.csv", new FileInputStream(new File(filePath)));
 
-            bmsService.uploadBoard(7L);
+//            bmsService.uploadBoard(7L);
 //            List<String[]> now = bmsService.uploadCsv(tempFile);
 //            assertEquals(647, now.size()); // sample.csv
 

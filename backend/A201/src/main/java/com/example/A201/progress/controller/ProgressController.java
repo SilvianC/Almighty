@@ -1,6 +1,7 @@
 package com.example.A201.progress.controller;
 
 import com.example.A201.progress.dto.ProgressDTO;
+import com.example.A201.progress.dto.ProgressIdDTO;
 import com.example.A201.progress.dto.ProgressResultDTO;
 import com.example.A201.exception.SuccessResponseEntity;
 import com.example.A201.progress.service.ProgressService;
@@ -20,7 +21,8 @@ public class ProgressController {
 
     @PostMapping("/request")
     public ResponseEntity<?> requestProgress(@RequestBody ProgressDTO progress) {
-        progressService.registerRequestProgress(progress);
+        ProgressIdDTO progressIdDTO = progressService.registerRequestProgress(progress);
+        progressService.requestToBMS(progressIdDTO);
         return SuccessResponseEntity.toResponseEntity("반품 분석 요청 완료", null);
     }
 
