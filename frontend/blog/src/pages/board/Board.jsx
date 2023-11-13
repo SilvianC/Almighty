@@ -29,12 +29,12 @@ const Board = () => {
     setIsRegistModalOpen(false);
   };
 
-  const modalOutSideClick = (e) => {
-    if (modalRef.current && modalRef.current.contains(e.target)) {
-      return;
-    }
-    setIsRegistModalOpen(false);
-  };
+  // const modalOutSideClick = (e) => {
+  //   if (modalRef.current && modalRef.current.contains(e.target)) {
+  //     return;
+  //   }
+  //   setIsRegistModalOpen(false);
+  // };
 
   return (
     <S.Wrap>
@@ -46,32 +46,25 @@ const Board = () => {
         ></RegisterReason>
         <AnalysisResult progressId={progress}></AnalysisResult>
       </S.Summary>
-
-      <S.Data>
-        <S.Graph>
-          {/* <BiLineChart></BiLineChart> */}
-          <BatteryBoard
-            progressId={progress}
-            setProgress={setProgress}
-            progressData={progressData}
-            setProgressData={setProgressData}
-          ></BatteryBoard>
-        </S.Graph>
-      </S.Data>
-      <S.Container>
-        <BMSData></BMSData>
-        <AnalysisResult></AnalysisResult>
-        <RegistResult
-          progress={progress}
+      <BMSData></BMSData>
+      <S.Graph>
+        {/* <BiLineChart></BiLineChart> */}
+        <BatteryBoard
+          progressId={progress}
           setProgress={setProgress}
-          modalRef={modalRef}
-          modalOutSideClick={modalOutSideClick}
-          isOpen={isRegistModalOpen}
-          onClose={closeRegistModal}
-        ></RegistResult>
-        <ChatComponent />
-      </S.Container>
+          progressData={progressData}
+          setProgressData={setProgressData}
+        ></BatteryBoard>
+      </S.Graph>
       <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
+      <RegistResult
+        progress={progress}
+        setProgress={setProgress}
+        // modalRef={modalRef}
+        // modalOutSideClick={modalOutSideClick}
+        isOpen={isRegistModalOpen}
+        onClose={closeRegistModal}
+      ></RegistResult>
     </S.Wrap >
   );
 };

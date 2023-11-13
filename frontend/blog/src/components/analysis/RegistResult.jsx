@@ -6,7 +6,7 @@ import { Navigate } from "react-router-dom";
 import http from "../../api/http";
 import CloseIcon from "../../assets/images/icon-close.png"
 
-const RegistResult = ({ progress, setProgress, modalRef, modalOutSideClick, isOpen, onClose }) => {
+const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("사유 선택");
@@ -76,7 +76,10 @@ const RegistResult = ({ progress, setProgress, modalRef, modalOutSideClick, isOp
   }
 
   return (
-    <S.Wrap ref={modalRef} onClick={(e)=>modalOutSideClick(e)}>
+    <S.Wrap
+      // ref={modalRef}
+      // onClick={(e)=>modalOutSideClick(e)}
+      >
       <img src={CloseIcon} alt="close" onClick={onClose}/>
       <S.Title>
         <p>결과 등록</p>
