@@ -4,7 +4,7 @@ import http from "../../api/http";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
 
-const AnalysisResult = () => {
+const AnalysisResult = ({ progressId }) => {
   const formatResponse = (response) => {
     const responseLines = response.split("\n");
     let color = "#1D1F25"; // 기본 색상
@@ -26,7 +26,7 @@ const AnalysisResult = () => {
 
     return (
       <ResponseWrapper>
-        {isLoading && <div className="loader" style={{ margin: "auto" }}></div>}
+        {progressId && isLoading && <div className="loader" style={{ margin: "auto" }}></div>}
         {!isLoading && (
           <>
           <span style={{ color: color }}>{formattedResponse[0]}</span>
@@ -42,8 +42,6 @@ const AnalysisResult = () => {
   const memberId = useRecoilValue(MemberIdState);
   const getBotResponse = async () => {
     try {
-      // progressId는 상황에 맞게 설정해야 합니다.
-      const progressId = 6;
       const response = await http.post(`/api/chat/interact/${progressId}`, {
         timestamp: new Date(), // 현재 시간을 사용
         memberId: memberId,
@@ -55,13 +53,14 @@ const AnalysisResult = () => {
     }
   };
   useEffect(() => {
-    getBotResponse();
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
+    if(progressId !== null) {
+      getBotResponse();
+      const timer = setTimeout(() => {
+        setIsLoading(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [progressId]);
 
   return (
     <S.Wrap>

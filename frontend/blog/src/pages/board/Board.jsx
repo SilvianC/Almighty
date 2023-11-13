@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import BatteryBoard from "./BatteryBoard";
 import ChatComponent from "../../components/chatbot/ChatComponent";
@@ -16,6 +16,7 @@ import RegistIcon from "../../assets/images/icon-regist.png";
 const Board = () => {
   const [progress, setProgress] = useState(null);
   const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
+  const modalRef = useRef < HTMLDivElement > (null);
 
   FirebaseComponent();
 
@@ -27,29 +28,36 @@ const Board = () => {
     setIsRegistModalOpen(false);
   };
 
+  const modalOutSideClick = (e) => {
+    if (modalRef.current && modalRef.current.contains(e.target)) {
+      return;
+    }
+    setIsRegistModalOpen(false);
+  };
+
   return (
-    <React.Fragment>
-      <S.Wrap>
-        <SideBar progress={progress} setProgress={setProgress}></SideBar>
-        <S.Summary>
-          <RegisterReason></RegisterReason>
-          <AnalysisResult></AnalysisResult>
-        </S.Summary>
-        <BMSData></BMSData>
-        {/* <BiLineChart></BiLineChart> */}
-        <BatteryBoard
-          progressId={progress}
-          setProgress={setProgress}
-        ></BatteryBoard>
-        <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
-        <RegistResult
-          progress={progress}
-          setProgress={setProgress}
-          isOpen={isRegistModalOpen}
-          onClose={closeRegistModal}
-        ></RegistResult>
-      </S.Wrap>
-    </React.Fragment>
+    <S.Wrap>
+      <SideBar progress={progress} setProgress={setProgress}></SideBar>
+      <S.Summary>
+        <RegisterReason></RegisterReason>
+        <AnalysisResult progressId={progress}></AnalysisResult>
+      </S.Summary>
+      <BMSData></BMSData>
+      {/* <BiLineChart></BiLineChart> */}
+      <BatteryBoard
+        progressId={progress}
+        setProgress={setProgress}
+      ></BatteryBoard>
+      <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
+      <RegistResult
+        progress={progress}
+        setProgress={setProgress}
+        modalRef={modalRef}
+        modalOutSideClick={modalOutSideClick}
+        isOpen={isRegistModalOpen}
+        onClose={closeRegistModal}
+      ></RegistResult>
+    </S.Wrap>
   );
 };
 

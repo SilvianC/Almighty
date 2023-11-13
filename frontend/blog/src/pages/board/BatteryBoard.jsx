@@ -106,6 +106,11 @@ const BatteryBoard = ({ progressId, setProgress }) => {
 
 const S = {
   Wrap: styled.div`
+    margin-top: 20px;
+
+    > div {
+      margin-bottom: 70px;
+    }
     .BMS {
       position: relative;
       float: right;
@@ -113,7 +118,7 @@ const S = {
       height: 100%;
 
       .img-bms {
-        z-index: 99;
+        z-index: 1;
         position: absolute;
         left: 105px;
         div {
@@ -135,7 +140,7 @@ const S = {
       width: 50%;
       height: 100%;
       .img-test {
-        z-index: 99;
+        z-index: 1;
         position: absolute;
         left: 95px;
         div {
