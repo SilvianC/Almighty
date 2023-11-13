@@ -2,6 +2,7 @@ package com.batteryalmighty.bms.board.controller;
 
 import com.batteryalmighty.bms.exception.SuccessResponseEntity;
 import com.batteryalmighty.bms.board.service.BmsService;
+import com.batteryalmighty.bms.progress.dto.ProgressIdDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +14,8 @@ public class BmsController {
     private final BmsService bmsService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadBoard(@RequestParam Long progressId) {
-        bmsService.uploadBoard(progressId);
+    public ResponseEntity<?> uploadBoard(@RequestBody ProgressIdDTO progressIdDTO) {
+        bmsService.uploadBoard(progressIdDTO);
         return ResponseEntity.ok().build();
 //        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", bmsService.uploadCsv(file));
     }
