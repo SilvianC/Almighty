@@ -73,7 +73,7 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
   };
 
   return (
-    <div>
+    <Wrapper pushSidebar={isButtonClicked}>
       <ToggleButton
         showSidebar={isButtonClicked || isHovering}
         onClick={() => {
@@ -114,7 +114,7 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
           </Menu>
         </StyledSidebar>
       </SidebarContainer>
-    </div>
+    </Wrapper>
   );
 };
 
@@ -146,6 +146,11 @@ function elapsedTime(date) {
   return "오늘";
 }
 
+const Wrapper = styled.div`
+  margin-right: ${(props) => (props.pushSidebar ? "250px" : "0")};
+  transition: margin-right 0.5s;
+`;
+
 const SidebarContainer = styled.div`
   height: 100%;
   background-color: #d5dfe9;
@@ -154,7 +159,7 @@ const SidebarContainer = styled.div`
   position: fixed;
   top: 0;
   left: ${(props) => (props.showSidebar ? "0" : "-230px")};
-  margin-right: ${(props) => (props.showSidebar ? "250px" : "0")};
+
   transition: left 0.5s, margin-right 0.5s;
   z-index: 99;
   overflow-y: auto;

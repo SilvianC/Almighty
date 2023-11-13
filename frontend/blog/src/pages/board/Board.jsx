@@ -19,31 +19,36 @@ const Board = () => {
   return (
     <S.Wrap>
       <SideBar progress={progress} setProgress={setProgress}></SideBar>
-      <RegisterReason></RegisterReason>
-      <S.Data>
-        <S.Graph>
-          {/* <BiLineChart></BiLineChart> */}
-          <BatteryBoard
-            progressId={progress}
+      <MainComp>
+        <RegisterReason></RegisterReason>
+        <S.Data>
+          <S.Graph>
+            {/* <BiLineChart></BiLineChart> */}
+            <BatteryBoard
+              progressId={progress}
+              setProgress={setProgress}
+            ></BatteryBoard>
+          </S.Graph>
+        </S.Data>
+        <S.Container>
+          <BMSData></BMSData>
+          <AnalysisResult></AnalysisResult>
+          <RegistResult
+            progress={progress}
             setProgress={setProgress}
-          ></BatteryBoard>
-        </S.Graph>
-      </S.Data>
-      <S.Container>
-        <BMSData></BMSData>
-        <AnalysisResult></AnalysisResult>
-        <RegistResult
-          progress={progress}
-          setProgress={setProgress}
-        ></RegistResult>
-        <ChatComponent />
-      </S.Container>
+          ></RegistResult>
+          <ChatComponent />
+        </S.Container>
+      </MainComp>
     </S.Wrap>
   );
 };
 
 const S = {
-  Wrap: styled.div``,
+  Wrap: styled.div`
+    display: flex;
+    flex-direction: row;
+  `,
   Data: styled.div`
     display: flex;
     flex-direction: row;
@@ -58,5 +63,7 @@ const S = {
     width: 60%;
   `,
 };
+
+const MainComp = styled.div``;
 
 export default Board;
