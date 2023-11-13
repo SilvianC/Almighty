@@ -4,6 +4,7 @@ import com.example.A201.chatbot.domain.ChatLog;
 import com.example.A201.member.dto.AuthDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -36,6 +37,7 @@ public class Member {
 
     private String tel;
 
+    @CreatedDate
     private LocalDate createDate;
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -46,7 +48,7 @@ public class Member {
         member.loginId = signupDto.getLoginId();
         member.password = signupDto.getPassword();
         member.company = signupDto.getCompany();
-        member.createDate = LocalDate.now();
+//        member.createDate = LocalDate.now();
         member.tel = signupDto.getTel();
         member.email = signupDto.getEmail();
         member.role = Role.USER;

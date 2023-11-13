@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @Configuration
 @EnableJpaAuditing
-@EnableJpaRepositories(basePackages = "com.batteryalmighty.bms.repository.mysql")
+@EnableJpaRepositories(basePackages = "com.batteryalmighty.bms.**.mysql")
 public class JpaConfig {
 }
 
