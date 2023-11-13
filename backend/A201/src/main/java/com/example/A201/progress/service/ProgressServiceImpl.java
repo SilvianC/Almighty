@@ -91,7 +91,11 @@ public class ProgressServiceImpl implements ProgressService{
                 .targetUserId(progressdto.getId())
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
-        requestToBMS(progress.getId());
+        try {
+            requestToBMS(progress.getId());
+        } catch (Exception e){
+            log.info("bms 서버 오류");
+        }
     }
 
     @Override
