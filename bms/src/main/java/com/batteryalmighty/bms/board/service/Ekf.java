@@ -48,7 +48,8 @@ public class Ekf {
         Q = 2E-06;
         R = 2500;
         P = 0.006;
-        x = 0;
+//        x = 0;
+        x = 100;
         prevTime = 0;
         maxCap = 1.8022316896675852;
         socOcvs = socOcvRepository.findAll();
@@ -57,10 +58,10 @@ public class Ekf {
         nearIr = new SocIr[2];
     }
 
-    public void predictx_(VitBoard vitBoard){
-        x_ = x + ((vitBoard.getTime() - prevTime) * vitBoard.getCurrent() / maxCap * 100);
+    public void predictx_(Double time, Double current){
+        x_ = x + ((time - prevTime) * current / maxCap * 100);
         findNear(x_);
-        prevTime = vitBoard.getTime();
+        prevTime = time;
     }
 
     public void predictP(){

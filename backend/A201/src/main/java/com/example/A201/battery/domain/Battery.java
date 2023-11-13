@@ -3,8 +3,10 @@ package com.example.A201.battery.domain;
 import com.example.A201.battery.constant.BatteryStatus;
 import com.example.A201.member.domain.Member;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,6 +28,8 @@ public class Battery {
     private Model model;
 
     private String code;
+
+    private LocalDateTime createDate;
 
     @Setter
     @Enumerated(EnumType.STRING)

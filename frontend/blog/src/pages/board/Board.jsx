@@ -17,6 +17,7 @@ const Board = () => {
   const [progress, setProgress] = useState(null);
   const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
   const modalRef = useRef < HTMLDivElement > (null);
+  const [progressData, setProgressData] = useState(null);
 
   FirebaseComponent();
 
@@ -39,33 +40,47 @@ const Board = () => {
     <S.Wrap>
       <SideBar progress={progress} setProgress={setProgress}></SideBar>
       <S.Summary>
-        <RegisterReason></RegisterReason>
+        <RegisterReason
+          progressData={progressData}
+          setProgressData={setProgressData}
+        ></RegisterReason>
         <AnalysisResult progressId={progress}></AnalysisResult>
       </S.Summary>
-      <BMSData></BMSData>
-      {/* <BiLineChart></BiLineChart> */}
-      <BatteryBoard
-        progressId={progress}
-        setProgress={setProgress}
-      ></BatteryBoard>
+
+      <S.Data>
+        <S.Graph>
+          {/* <BiLineChart></BiLineChart> */}
+          <BatteryBoard
+            progressId={progress}
+            setProgress={setProgress}
+            progressData={progressData}
+            setProgressData={setProgressData}
+          ></BatteryBoard>
+        </S.Graph>
+      </S.Data>
+      <S.Container>
+        <BMSData></BMSData>
+        <AnalysisResult></AnalysisResult>
+        <RegistResult
+          progress={progress}
+          setProgress={setProgress}
+          modalRef={modalRef}
+          modalOutSideClick={modalOutSideClick}
+          isOpen={isRegistModalOpen}
+          onClose={closeRegistModal}
+        ></RegistResult>
+        <ChatComponent />
+      </S.Container>
       <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
-      <RegistResult
-        progress={progress}
-        setProgress={setProgress}
-        modalRef={modalRef}
-        modalOutSideClick={modalOutSideClick}
-        isOpen={isRegistModalOpen}
-        onClose={closeRegistModal}
-      ></RegistResult>
-    </S.Wrap>
+    </S.Wrap >
   );
 };
 
 const S = {
   Wrap: styled.div`
-    > img {
-      position: fixed;
-      right: 20px;
+  > img {
+    position: fixed;
+    right: 20px;
       bottom: 20px;
       width: 70px;
       height: 70px;

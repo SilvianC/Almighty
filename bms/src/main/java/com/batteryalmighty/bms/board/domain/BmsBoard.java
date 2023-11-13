@@ -1,9 +1,13 @@
 package com.batteryalmighty.bms.board.domain;
 
+import com.batteryalmighty.bms.progress.domain.Progress;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -17,11 +21,11 @@ public class BmsBoard {
     @Column(name = "bms_board_id")
     Long id;
 
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "progress_id")
-//    private Progress progress;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "progress_id")
+    private Progress progress;
 
-    private Long progressId;
+//    private Long progressId;
 
     private int overVoltageCount;
 
@@ -49,12 +53,7 @@ public class BmsBoard {
 
     private Double minTemperatureDischarge;
 
-    @Column(name = "made_date")
-    private LocalDate madeDate;
-
-    @Column(name = "receive_date")
-    private LocalDate receiveDate;
-
+    private LocalDateTime receiveDate;
     public void setBmsCount(int overVoltageCount, int underVoltageCount, int overCurrentCount){
         this.overVoltageCount = overVoltageCount;
         this.underVoltageCount = underVoltageCount;
