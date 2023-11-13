@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.FieldType;
 import javax.persistence.*;
 
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Document(collection = "vitboard")

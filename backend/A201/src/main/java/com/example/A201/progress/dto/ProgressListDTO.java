@@ -14,15 +14,15 @@ public class ProgressListDTO {
     private Long id;
     private String companyName;
     private String modelName;
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
     @Enumerated(EnumType.STRING)
     private ProgressStatus currentStatus;
 
-    public ProgressListDTO(Long id, String companyName, String modelName, LocalDateTime createdDate, ProgressStatus currentStatus) {
+    public ProgressListDTO(Long id, String companyName, String modelName, LocalDateTime createDate, ProgressStatus currentStatus) {
         this.id = id;
         this.companyName = companyName;
         this.modelName = modelName;
-        this.createdDate = createdDate;
+        this.createDate = createDate;
         this.currentStatus = currentStatus;
     }
 }

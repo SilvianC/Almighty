@@ -66,7 +66,6 @@ public class StatusHistoryServiceImpl implements StatusHistoryService{
                 .orElseThrow(() -> new EntityNotFoundException("해당 ID의 배터리를 찾을 수 없습니다"));
         StatusHistoryDTO dto = new StatusHistoryDTO();
         dto.setBatteryId(battery.getId());
-//        dto.setDate(LocalDateTime.now());
         dto.setExpertStatus(ResultStatus.valueOf(request.getExpertStatus()));
 //        dto.setFromStatus(Status.valueOf(request.getFromStatus()));
 //        dto.setToStatus(Status.valueOf(request.getToStatus()));

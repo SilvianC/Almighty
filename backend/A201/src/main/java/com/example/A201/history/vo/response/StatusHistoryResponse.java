@@ -33,7 +33,7 @@ public class StatusHistoryResponse {
                 .expertStatus(statusHistory.getExpertStatus())
 //                .fromStatus(statusHistory.getFromStatus())
 //                .toStatus(statusHistory.getToStatus())
-                .date(statusHistory.getCreatedDate())
+                .date(statusHistory.getDate())
                 .reason(statusHistory.getResponseReason())
                 .build();
     }
