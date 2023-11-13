@@ -18,29 +18,27 @@ const RegistReason = ({ progressData, setProgressData }) => {
 const S = {
   Wrap: styled.div`
     width: 50%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  `,
-  Title: styled.div`
-    > p {
-      color: #1d1f25;
-      font-size: 18px;
-      margin: 0px;
-    }
-  `,
-  Reason: styled.div`
-    background-color: #f2f2f2;
-    width: 80%;
-    height: 100px;
-    border-radius: 10px;
-    margin-left: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	`,
+	Title: styled.div`
+		> p {
+			color: #1D1F25;
+			font-size: 18px;
+			margin: 0px;
+		}
+	`,
+	Reason: styled.div`
+		background-color: #F2F2F2;
+		width: 85%;
+		height: 100px;
+		border-radius: 10px;
+		margin-left: 10px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 
     > span {
       margin-left: 20px;
