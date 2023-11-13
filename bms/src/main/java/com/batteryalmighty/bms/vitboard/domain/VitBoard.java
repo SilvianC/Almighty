@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Document(collection = "sample")
+@Document(collection = "vitboard")
 public class VitBoard {
 
 //    @Transient
