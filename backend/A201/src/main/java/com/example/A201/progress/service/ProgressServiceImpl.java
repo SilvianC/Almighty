@@ -62,7 +62,6 @@ public class ProgressServiceImpl implements ProgressService{
                 .battery(battery)
                 .currentStatus(ProgressStatus.Request)
                 .reason(progress.getReason())
-                .createDate(LocalDateTime.now())
                 .build());
 
 //        statusHistoryRepository.save(StatusHistory.builder()

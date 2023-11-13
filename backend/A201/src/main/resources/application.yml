@@ -14,6 +14,7 @@ spring:
     username: root
 #    password: ssafy
     password: "almighty201"
+
   data:
     mongodb:
       host: k9a201.p.ssafy.io
