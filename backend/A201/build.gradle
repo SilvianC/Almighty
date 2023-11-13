@@ -62,6 +62,8 @@ dependencies {
     implementation 'org.apache.poi:poi-ooxml:5.2.2'
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {

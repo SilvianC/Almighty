@@ -15,14 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
-    private final BatteryService batteryService;
+
     @GetMapping("/{progress_id}")
-    public ResponseEntity<?> getMetadataType(@PathVariable("progress_id") Long progressId) {
+    public ResponseEntity<?> getAllBoard(@PathVariable("progress_id") Long progressId) {
         return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공", boardService.getBoard(progressId));
     }
 
-    @GetMapping("/vits")
-    public ResponseEntity<?> getAllVitBoard(){
-        return SuccessResponseEntity.toResponseEntity("vit 데이터 불러오기 성공", boardService.getVitBoardList());
-    }
 }

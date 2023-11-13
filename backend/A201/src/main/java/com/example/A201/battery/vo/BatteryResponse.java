@@ -28,6 +28,7 @@ public class BatteryResponse {
                 .modelId(battery.getModel().getId())
                 .memberId(battery.getMember().getMemberId())
                 .Id(battery.getId())
+                .status(battery.getBatteryStatus().toString())
                 .build();
     }
 }
