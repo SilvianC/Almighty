@@ -16,7 +16,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @Configuration
 @RequiredArgsConstructor
 @EnableMongoAuditing
-@EnableMongoRepositories(basePackages = "com.batteryalmighty.bms.repository.mongo")
+@EnableMongoRepositories(basePackages = "com.batteryalmighty.bms.**.mongo")
 //_class 컬럼이 자동 생성 방지
 public class MongoDbConfig {
 

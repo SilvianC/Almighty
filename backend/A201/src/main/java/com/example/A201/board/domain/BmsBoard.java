@@ -1,6 +1,6 @@
 package com.example.A201.board.domain;
 
-import com.example.A201.battery.domain.Progress;
+import com.example.A201.progress.domain.Progress;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,33 +28,25 @@ public class BmsBoard {
 
     private int overCurrentCount;
 
-//    private int abnormalTemperatureCount;
+    private int underTemperatureCount;
 
-//    private int overVoltageCount;
-//
-//    private int underVoltageCount;
-//
-//    private int overCurrentCount;
-//
-//    private int underTemperatureCount;
-//
-//    private int overTemperatureCount;
-//
-//    private Double maxVoltageCharge;
-//
-//    private Double minVoltageCharge;
-//
-//    private Double maxVoltageDischarge;
-//
-//    private Double minVoltageDischarge;
-//
-//    private Double maxTemperatureCharge;
-//
-//    private Double minTemperatureCharge;
-//
-//    private Double maxTemperatureDischarge;
-//
-//    private Double minTemperatureDischarge;
+    private int overTemperatureCount;
+
+    private Double maxVoltageCharge;
+
+    private Double minVoltageCharge;
+
+    private Double maxVoltageDischarge;
+
+    private Double minVoltageDischarge;
+
+    private Double maxTemperatureCharge;
+
+    private Double minTemperatureCharge;
+
+    private Double maxTemperatureDischarge;
+
+    private Double minTemperatureDischarge;
 
     @Column(name = "made_date")
     private LocalDate madeDate;
