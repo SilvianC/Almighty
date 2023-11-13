@@ -2,9 +2,12 @@ package com.example.A201.board.domain;
 
 import com.example.A201.progress.domain.Progress;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -48,10 +51,7 @@ public class BmsBoard {
 
     private Double minTemperatureDischarge;
 
-    @Column(name = "made_date")
-    private LocalDate madeDate;
+    private LocalDateTime madeDate;
 
-    @Column(name = "receive_date")
-    private LocalDate receiveDate;
-
+    private LocalDateTime receiveDate;
 }

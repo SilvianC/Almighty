@@ -24,7 +24,4 @@ public class BmsFaultDetails {
     @JoinColumn(name = "bms_board_id")
     private BmsBoard bmsBoard;
 
-
-
-
 }

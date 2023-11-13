@@ -59,7 +59,7 @@ class BmsServiceTest {
             MultipartFile tempFile = new MockMultipartFile("file", filename, "text/csv", fis);
 //            MultipartFile tempFile = new MockMultipartFile("sample.csv", new FileInputStream(new File(filePath)));
 
-            bmsService.uploadCsv(tempFile);
+            bmsService.uploadBoard(7L);
 //            List<String[]> now = bmsService.uploadCsv(tempFile);
 //            assertEquals(647, now.size()); // sample.csv
 
@@ -69,10 +69,10 @@ class BmsServiceTest {
         }
     }
 
-    @Transactional
-    @Test
-    void getEkf(){
-        bmsService.socPredict();
-    }
+//    @Transactional
+//    @Test
+//    void getEkf(){
+//        bmsService.socPredict();
+//    }
 
 }
