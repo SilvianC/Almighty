@@ -13,19 +13,25 @@ import FirebaseComponent from "../../config/firebase-messaging-sw";
 import SideBar from "../../components/sidebar/Sidebar";
 const Board = () => {
   const [progress, setProgress] = useState(null);
+  const [progressData, setProgressData] = useState(null);
 
   FirebaseComponent();
 
   return (
     <S.Wrap>
       <SideBar progress={progress} setProgress={setProgress}></SideBar>
-      <RegisterReason></RegisterReason>
+      <RegisterReason
+        progressData={progressData}
+        setProgressData={setProgressData}
+      ></RegisterReason>
       <S.Data>
         <S.Graph>
           {/* <BiLineChart></BiLineChart> */}
           <BatteryBoard
             progressId={progress}
             setProgress={setProgress}
+            progressData={progressData}
+            setProgressData={setProgressData}
           ></BatteryBoard>
         </S.Graph>
       </S.Data>
