@@ -1,11 +1,12 @@
 package com.example.A201.battery.domain;
 
-import com.example.A201.battery.constant.Status;
+import com.example.A201.battery.constant.BatteryStatus;
 import com.example.A201.member.domain.Member;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,12 +29,10 @@ public class Battery {
 
     private String code;
 
-    @Column(name = "battery_status")
-    @Enumerated(EnumType.STRING)
-    private Status batteryStatus;
+    private LocalDateTime createDate;
 
-    public void setBatteryStatus(Status status){
-        this.batteryStatus = status;
-    }
+    @Setter
+    @Enumerated(EnumType.STRING)
+    private BatteryStatus batteryStatus;
 
 }

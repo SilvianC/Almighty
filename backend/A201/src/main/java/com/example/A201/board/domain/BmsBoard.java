@@ -1,10 +1,13 @@
 package com.example.A201.board.domain;
 
-import com.example.A201.battery.domain.Progress;
+import com.example.A201.progress.domain.Progress;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -28,12 +31,27 @@ public class BmsBoard {
 
     private int overCurrentCount;
 
-    private int abnormalTemperatureCount;
+    private int underTemperatureCount;
 
-    @Column(name = "made_date")
-    private LocalDate madeDate;
+    private int overTemperatureCount;
 
-    @Column(name = "receive_date")
-    private LocalDate receiveDate;
+    private Double maxVoltageCharge;
 
+    private Double minVoltageCharge;
+
+    private Double maxVoltageDischarge;
+
+    private Double minVoltageDischarge;
+
+    private Double maxTemperatureCharge;
+
+    private Double minTemperatureCharge;
+
+    private Double maxTemperatureDischarge;
+
+    private Double minTemperatureDischarge;
+
+    private LocalDateTime madeDate;
+
+    private LocalDateTime receiveDate;
 }

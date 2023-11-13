@@ -4,8 +4,9 @@ import { changeStatus, postHistory } from "../../api/battery";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import http from "../../api/http";
+import CloseIcon from "../../assets/images/icon-close.png"
 
-const RegistResult = ({ progressId }) => {
+const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const navigate = useNavigate();
 
   const [selectedOption, setSelectedOption] = useState("사유 선택");
@@ -13,19 +14,26 @@ const RegistResult = ({ progressId }) => {
   const [resonDetail, setReasonDetail] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  useEffect(() => {
+    setSelectedOption(() => "사유 선택");
+    setResult(() => null);
+    setReasonDetail(() => "");
+    setIsDropdownOpen(() => false);
+  }, [progress]);
+
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   const handleRegister = () => {
     const request = {
-      progressId: progressId,
-      toStatus: result,
+      progressId: progress,
+      resultStatus: result,
       responseReason:
         selectedOption +
         (selectedOption === "기타" ? " 상세 사유 : " + resonDetail : ""),
     };
     http
-      .put(`/api/batteries/progress/${progressId}`, request)
+      .put(`/api/batteries/progress/${progress}`, request)
       .then(({ data }) => {
         window.location.reload();
       })
@@ -33,38 +41,46 @@ const RegistResult = ({ progressId }) => {
   };
 
   /*
-	const regist = () => {
-		changeStatus(
-			{ batteryId },
-			{ status },
-			(data) => {
-				if (data.message === "상태 변경 완료") {
-					// alert("결과 등록이 완료 되었습니다.");
-				}
-			},
-			(error) => {
-				console.log(error);
-				// alert("다시 시도해주세요");
-			}
-		);
-		postHistory(
-			{ batteryId, fromStatus, toStatus, requestReason },
-			(data) => {
-				if (data.message === "히스토리 등록 완료") {
-					// alert("결과 등록이 완료 되었습니다.");
-				}
-			},
-			(error) => {
-				console.log(error);
-			}
-		);
-		alert("결과 등록이 완료 되었습니다.");
-		navigate("/main");
-	}
-	*/
+  const regist = () => {
+    changeStatus(
+      { batteryId },
+      { status },
+      (data) => {
+        if (data.message === "상태 변경 완료") {
+          // alert("결과 등록이 완료 되었습니다.");
+        }
+      },
+      (error) => {
+        console.log(error);
+        // alert("다시 시도해주세요");
+      }
+      );
+      postHistory(
+        { batteryId, fromStatus, toStatus, requestReason },
+        (data) => {
+          if (data.message === "히스토리 등록 완료") {
+            // alert("결과 등록이 완료 되었습니다.");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+        );
+        alert("결과 등록이 완료 되었습니다.");
+        navigate("/main");
+      }
+      */
+
+  if (!isOpen) {
+    return null;
+  }
 
   return (
-    <S.Wrap>
+    <S.Wrap
+      // ref={modalRef}
+      // onClick={(e)=>modalOutSideClick(e)}
+      >
+      <img src={CloseIcon} alt="close" onClick={onClose}/>
       <S.Title>
         <p>결과 등록</p>
       </S.Title>
@@ -74,6 +90,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "SdiFault"}
               onChange={() => {
                 setResult(() => "SdiFault");
               }}
@@ -84,6 +101,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "CustomerFault"}
               onChange={() => {
                 setResult(() => "CustomerFault");
               }}
@@ -94,6 +112,7 @@ const RegistResult = ({ progressId }) => {
             <input
               type="radio"
               name="radio"
+              checked={result === "Normal"}
               onChange={() => {
                 setResult(() => "Normal");
               }}
@@ -140,7 +159,7 @@ const RegistResult = ({ progressId }) => {
         )}
       </S.Reason>
       <S.Regist>
-        {!result || selectedOption === "사유 선택" ? (
+        {!result || selectedOption === "사유 선택" || progress == null ? (
           <button style={{ "background-color": "#D5DFE9" }} disabled>
             등록
           </button>
@@ -160,14 +179,31 @@ const RegistResult = ({ progressId }) => {
 
 const S = {
   Wrap: styled.div`
-    width: 100%;
+    position: fixed;
+    top: 42%;
+    left: 58%;
+    width: 40%;
+    padding-top: 20px;
+    padding-bottom: 30px;
     background-color: #f2f2f2;
-    padding: 6% 7.2% 6%;
-    border-radius: 10px;
+    // background: rgba(0, 0, 0, 0.5);
+    // padding: 6% 7.2% 6%;
+    border: medium solid #A7BCD0;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 3;
+
+    > img {
+      width: 30px;
+      height: 30px;
+      margin-bottom: 10px;
+      margin-left: auto;
+      margin-right: 7.2%;
+      cursor: pointer;
+    }
   `,
   Title: styled.div`
     width: 85.6%;

@@ -1,32 +1,24 @@
 package com.example.A201.battery.service;
 
-import com.example.A201.battery.constant.Status;
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.dto.ProgressListDTO;
-import com.example.A201.battery.dto.ProgressResultDTO;
+import com.example.A201.battery.dto.BatteryDTO;
 import com.example.A201.battery.vo.BatteryResponse;
-import com.example.A201.battery.vo.BatterydataResponse;
+import com.example.A201.battery.vo.BatteryDataResponse;
 
 import java.util.List;
 
 public interface BatteryService {
+    BatteryResponse registerBattery(BatteryDTO batteryDTO);
+
     List<BatteryResponse> getBatteriesAll();
 
-    BatterydataResponse getBattery(String code);
-
-    Battery updateBatteryStatue(Long batteryId, Status status);
+    BatteryDataResponse getBattery(String code);
 
     Long getMemberId(Long batteryId);
 
     List<BatteryResponse> getBatteries(Long memberId);
 
+//    Battery updateBatteryStatue(Long batteryId, BatteryStatus batteryStatus);
+
     List<BatteryResponse> getRequestBatteries();
 
-    void registProgress(String code, String reason);
-
-    List<ProgressListDTO> getRequestProgress();
-
-    List<ProgressListDTO> getFinishedProgress();
-
-    void progressResult(ProgressResultDTO progressResultDTO);
 }

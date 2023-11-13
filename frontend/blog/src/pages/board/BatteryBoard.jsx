@@ -15,98 +15,183 @@ const match = {
   1: "currentMeasured",
   2: "temperatureMeasured",
 };
-const BatteryBoard = () => {
+const BatteryBoard = ({
+  progressId,
+  setProgress,
+  progressData,
+  setProgressData,
+}) => {
   const [vitData, setVitData] = useState([]);
   const [bmsData, setBmsData] = useState([]);
-  const [data, setData] = useState([]);
-  const [code, setCode] = useState("");
   const [battery, setBattery] = useState([]);
-  const [batteries, setBatteries] = useState([]);
-  const [testId, setTestId] = useState(0);
-
-  const clickPoint = (id) => {
-    setTestId(() => id);
-  };
-  const handleCode = (e) => {
-    setCode(() => e.target.value);
-  };
-  const handleTest = (e) => {
-    setTestId(() => e.target.value);
-  };
+  const [isopenbmsinfo, setIsopenbmsinfo] = useState(false);
+  const [isopentestinfo, setIsopentestinfo] = useState(false);
   useEffect(() => {
-    http
-      .get(`/api/batteries`)
-      .then(({ data }) => {
-        setBatteries(() => {
-          return data["data"];
-        });
-      })
-      .catch();
-    http
-      .get(`/api/dashboard/6`)
-      .then(({ data }) => {
-        setVitData(() => {
-          return data["data"]["vitData"];
-        });
-        setBmsData(() => {
-          return data["data"]["bmsData"];
-        });
-      })
-      .catch();
-  }, []);
-
-  useEffect(() => {
-    if (!code && batteries.length) {
-      setCode(() => batteries[0].code);
-    }
-  }, [batteries]);
-
-  useEffect(() => {
-    if (code) {
+    if (progressId != null) {
       http
-        .get(`/api/batteries/battery/${code}`)
+        .get(`/api/dashboard/${progressId}`)
         .then(({ data }) => {
+          setVitData(() => {
+            return data["data"]["vitData"];
+          });
+          setBmsData(() => {
+            return data["data"]["bmsData"];
+          });
           setBattery(() => {
-            return data["data"];
+            return data["data"]["battery"];
+          });
+          setProgressData(() => {
+            return data["data"]["progress"];
           });
         })
-        .catch();
+        .catch(() => {
+          setVitData(() => {
+            return [];
+          });
+          setBmsData(() => {
+            return [];
+          });
+          setBattery(() => {
+            return [];
+          });
+          setProgress(() => {
+            return null;
+          });
+          setProgressData(() => {
+            return null;
+          });
+        });
     }
-  }, [code]);
+  }, [progressId]);
 
   return (
     <S.Wrap>
-      <Row>
-        <Col md={12}>
-          <TestGraph
-            data={vitData}
-            threshold={battery}
-            type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
-            num={testId}
-          ></TestGraph>
-        </Col>
-        <Col md={12}>
-          <BmsGraph data={bmsData}></BmsGraph>
-        </Col>
-      </Row>
+      <div className="BMS">
+        <div className="img-bms">
+          <img
+            src="/Vector.png"
+            onMouseEnter={(e) => {
+              setIsopenbmsinfo(true);
+              e.cancelBubble = true;
+            }}
+            onMouseLeave={(e) => {
+              setIsopenbmsinfo(false);
+              e.cancelBubble = true;
+            }}
+          />
+          {isopenbmsinfo && (
+            <div>
+              <p>잘했다.</p>
+            </div>
+          )}
+        </div>
+        <BmsGraph data={bmsData}></BmsGraph>
+      </div>
+
+      <div className="Test">
+        <div className="img-test">
+          <img
+            src="/Vector.png"
+            onMouseEnter={(e) => {
+              setIsopentestinfo(true);
+            }}
+            onMouseLeave={(e) => {
+              setIsopentestinfo(false);
+            }}
+          />
+          {isopentestinfo && (
+            <div>
+              <p>잘했다.</p>
+            </div>
+          )}
+        </div>
+
+        <TestGraph
+          data={vitData}
+          threshold={battery}
+          type={["voltageMeasured", "currentMeasured", "temperatureMeasured"]}
+        ></TestGraph>
+      </div>
     </S.Wrap>
   );
 };
 
 const S = {
   Wrap: styled.div`
-    border: 1px solid #d3d3d3;
-    // margin: 20px;
-    // padding: 60px;
-    // padding-top: 30px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    // padding-left: 50px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+    margin-top: 20px;
+
+    > div {
+      margin-bottom: 70px;
+    }
+    .BMS {
+      position: relative;
+      float: right;
+      width: 50%;
+      height: 100%;
+
+      .img-bms {
+        z-index: 1;
+        position: absolute;
+        left: 105px;
+        div {
+          opacity: 0.7;
+          width: 300px;
+          height: 150px;
+          left: 30px;
+          top: -10px;
+          text-align: center;
+          position: relative;
+          border-radius: 10px;
+          background-color: #d9d9d9;
+        }
+      }
+    }
+    .Test {
+      position: relative;
+      float: left;
+      width: 50%;
+      height: 100%;
+      .img-test {
+        z-index: 1;
+        position: absolute;
+        left: 95px;
+        div {
+          opacity: 0.7;
+          width: 300px;
+          height: 150px;
+          left: 30px;
+          top: -10px;
+          text-align: center;
+          position: relative;
+          border-radius: 10px;
+          background-color: #d9d9d9;
+        }
+      }
+    }
+
     border-radius: 10px;
-    // width: 300px;
+    width: 100%;
   `,
   Title: styled.span`
     font-size: 20px;
     font-weight: bold;
     color: #1428a0;
+  `,
+  Info: styled.div`
+    z-index: 98;
+    position: relative;
+    left: 55px;
+    top: 15px;
+    width: 100px;
+    height: 100px;
+  `,
+  Info1: styled.div`
+    position: relative;
+    left: 55px;
+    top: 15px;
+    width: 100px;
+    height: 100px;
+    z-index: 99;
   `,
 };
 export default BatteryBoard;

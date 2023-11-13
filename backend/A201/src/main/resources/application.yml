@@ -13,6 +13,10 @@ spring:
     username: "{db_id}"
     password: "{db_pw}"
   data:
+    mongodb:
+      host: k9a201.p.ssafy.io
+      port: 27017
+      database: bms
     redis:
       repositories:
         enabled: false
@@ -46,6 +50,10 @@ spring:
 #  sql:
 #    init:
 #      data-locations: classpath*:db/h2/data.sql
+
+bms:
+  url: http://k9a201.p.ssafy.io:8085
+
 logging:
   level:
     com.example: DEBUG
