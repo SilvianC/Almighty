@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EntityListeners(AuditingEntityListener.class)
-public class Progress extends BaseTime{
+public class Progress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "progress_id")

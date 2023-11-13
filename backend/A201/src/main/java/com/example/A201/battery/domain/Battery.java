@@ -5,6 +5,7 @@ import com.example.A201.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -26,6 +27,8 @@ public class Battery {
     private Model model;
 
     private String code;
+
+    private LocalDateTime createDate;
 
     @Setter
     @Enumerated(EnumType.STRING)

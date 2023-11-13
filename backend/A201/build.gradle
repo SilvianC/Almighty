@@ -59,6 +59,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux'
+
 }
 
 tasks.named('test') {
