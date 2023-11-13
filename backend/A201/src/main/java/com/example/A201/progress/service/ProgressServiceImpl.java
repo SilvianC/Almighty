@@ -53,9 +53,8 @@ public class ProgressServiceImpl implements ProgressService{
     @Transactional
     public void registerRequestProgress(ProgressDTO progressdto){
 
-        Battery battery = batteryRepository.findByCode(progressdto.getCode()).orElseThrow(
-                () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
-        );
+        Battery battery = batteryRepository.findByCode(progressdto.getCode())
+                .orElseThrow(() -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다"));
 
         if(battery.getBatteryStatus() != BatteryStatus.Normal){
             throw new RuntimeException("해당 배터리 요청이 이뤄지고 있습니다.");
@@ -94,7 +93,7 @@ public class ProgressServiceImpl implements ProgressService{
         try {
             requestToBMS(progress.getId());
         } catch (Exception e){
-            log.info("bms 서버 오류");
+            e.printStackTrace();
         }
     }
 
@@ -121,6 +120,8 @@ public class ProgressServiceImpl implements ProgressService{
 
         Battery battery = progress.getBattery();
         Member member = battery.getMember();
+
+
 
 //        StatusHistory statusHistory = statusHistoryRepository.findByExpertStatusAndBatteryId(resultDto.getResultStatus(), battery.getId());
 //        statusHistory.setFromStatus(ProgressStatus.Request);
@@ -182,11 +183,12 @@ public class ProgressServiceImpl implements ProgressService{
         }
     }
 
-    private void requestToBMS(Long progressId){
+    public void requestToBMS(Long progressId){
         WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
         webClient
                 .post()
-                .uri(uriBuilder -> uriBuilder.path("/upload/" + progressId).build())
+                .uri(uriBuilder -> uriBuilder.path("/api/bms/upload").build())
+                .bodyValue(progressId)
                 .retrieve()
                 .bodyToMono(Object.class)
                 .block();

@@ -192,7 +192,7 @@ public class BmsService {
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
-                .progress(progress)
+                .progressId(progressId)
                 .overVoltageCount(overVoltageCount)
                 .underVoltageCount(underVoltageCount)
                 .overCurrentCount(overCurrentCount)

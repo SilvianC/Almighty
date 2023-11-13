@@ -13,7 +13,7 @@ public class BmsController {
     private final BmsService bmsService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadBoard(@RequestParam Long progressId) {
+    public ResponseEntity<?> uploadBoard(@RequestBody Long progressId) {
         bmsService.uploadBoard(progressId);
         return ResponseEntity.ok().build();
 //        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", bmsService.uploadCsv(file));
