@@ -21,7 +21,7 @@ public class BmsController {
     public ResponseEntity<?> uploadCSVFile(@RequestParam("file") MultipartFile file) {
         bmsService.uploadCsv(file);
         return ResponseEntity.ok().build();
-//        return SuccessResponseEntity.toResponseEntity("베터리 데이터 불러오기 성공", bmsService.uploadCsv(file));
+//        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", bmsService.uploadCsv(file));
     }
 
     @GetMapping("/vits")

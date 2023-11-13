@@ -1,7 +1,7 @@
 package com.batteryalmighty.bms.service;
 
 import com.batteryalmighty.bms.domain.mongo.VitBoard;
-import com.batteryalmighty.bms.domain.mysql.BmsBoard;
+import com.batteryalmighty.bms.bmsboard.domain.BmsBoard;
 import com.batteryalmighty.bms.repository.mongo.VitBoardRepository;
 import com.batteryalmighty.bms.repository.mysql.BmsBoardRepository;
 import com.batteryalmighty.bms.vo.VitResponse;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;

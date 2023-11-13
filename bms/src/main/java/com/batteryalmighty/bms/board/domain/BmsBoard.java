@@ -1,4 +1,4 @@
-package com.batteryalmighty.bms.domain.mysql;
+package com.batteryalmighty.bms.bmsboard.domain;
 
 import lombok.*;
 
