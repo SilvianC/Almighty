@@ -21,10 +21,12 @@ import com.example.A201.history.repository.StatusHistoryRepository;
 import com.example.A201.member.domain.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
@@ -44,12 +46,14 @@ public class ProgressServiceImpl implements ProgressService{
     private final ProgressRepository progressRepository;
     private final StatusHistoryRepository statusHistoryRepository;
     private final JavaMailSender javaMailSender;
+    @Value("${bms.url}")
+    private String bmsurl;
 
     @Override
     @Transactional
-    public void registerRequestProgress(ProgressDTO progress){
+    public void registerRequestProgress(ProgressDTO progressdto){
 
-        Battery battery = batteryRepository.findByCode(progress.getCode()).orElseThrow(
+        Battery battery = batteryRepository.findByCode(progressdto.getCode()).orElseThrow(
                 () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
         );
 
@@ -57,12 +61,12 @@ public class ProgressServiceImpl implements ProgressService{
             throw new RuntimeException("해당 배터리 요청이 이뤄지고 있습니다.");
         }
 
-        //Progress build = Progress.builder().batteryId(battery).currentStatus(Status.Request).reason(reason).build();
-        progressRepository.save(Progress.builder()
-                .battery(battery)
-                .currentStatus(ProgressStatus.Request)
-                .reason(progress.getReason())
-                .build());
+        Progress progress = Progress.builder()
+                        .battery(battery)
+                        .currentStatus(ProgressStatus.Request)
+                        .reason(progressdto.getReason())
+                        .build();
+        progressRepository.save(progress);
 
 //        statusHistoryRepository.save(StatusHistory.builder()
 //                .toStatus(Status.Request)
@@ -73,20 +77,21 @@ public class ProgressServiceImpl implements ProgressService{
         battery.setBatteryStatus(BatteryStatus.InProgress);
 
         log.debug("여기까지 완료");
-        log.debug("PROGRESS뜯어보기: "+progress.getId()+" "+progress.getCode()+" "+progress.getTitle()+" "+progress.getReason());
-        log.debug("ID 뭐야!:"+ progress.getId());
+        log.debug("PROGRESS뜯어보기: "+progressdto.getId()+" "+progressdto.getCode()+" "+progressdto.getTitle()+" "+progressdto.getReason());
+        log.debug("ID 뭐야!:"+ progressdto.getId());
         alarmService.insertAlarm(AlarmDto.builder()
-                .title(progress.getTitle())
-                .content(progress.getReason())
-                .member(progress.getId())
+                .title(progressdto.getTitle())
+                .content(progressdto.getReason())
+                .member(progressdto.getId())
                 .build());
         log.debug("여기까지 완료22");
         fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
-                .title(progress.getTitle())
-                .body(progress.getReason())
-                .targetUserId(progress.getId())
-                .receiver(Receiver.fromReceiver(Title.fromTitle(progress.getTitle()).getTo()))
+                .title(progressdto.getTitle())
+                .body(progressdto.getReason())
+                .targetUserId(progressdto.getId())
+                .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
+        requestToBMS(progress.getId());
     }
 
     @Override
@@ -171,5 +176,15 @@ public class ProgressServiceImpl implements ProgressService{
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private void requestToBMS(Long progressId){
+        WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
+        webClient
+                .post()
+                .uri(uriBuilder -> uriBuilder.path("/upload/" + progressId).build())
+                .retrieve()
+                .bodyToMono(Object.class)
+                .block();
     }
 }
