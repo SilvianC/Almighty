@@ -4,9 +4,11 @@ import com.example.A201.progress.constant.ProgressStatus;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.common.BaseTime;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,8 +27,8 @@ public class Progress extends BaseTime{
     @JoinColumn(name = "battery_id")
     private Battery battery;
 
-//    @CreatedDate
-//    private LocalDate createDate;
+    @CreatedDate
+    private LocalDateTime createDate;
 
     @Enumerated(EnumType.STRING)
     private ProgressStatus currentStatus;
