@@ -10,6 +10,7 @@ import com.example.A201.battery.domain.Battery;
 import com.example.A201.progress.domain.Progress;
 import com.example.A201.history.domain.StatusHistory;
 import com.example.A201.progress.dto.ProgressDTO;
+import com.example.A201.progress.dto.ProgressIdDTO;
 import com.example.A201.progress.dto.ProgressListDTO;
 import com.example.A201.progress.dto.ProgressResultDTO;
 import com.example.A201.battery.repository.BatteryRepository;
@@ -53,11 +54,10 @@ public class ProgressServiceImpl implements ProgressService{
 
     @Override
     @Transactional
-    public void registerRequestProgress(ProgressDTO progressdto){
+    public ProgressIdDTO registerRequestProgress(ProgressDTO progressdto){
 
-        Battery battery = batteryRepository.findByCode(progressdto.getCode()).orElseThrow(
-                () -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다")
-        );
+        Battery battery = batteryRepository.findByCode(progressdto.getCode())
+                .orElseThrow(() -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다"));
 
         if(battery.getBatteryStatus() != BatteryStatus.Normal){
             throw new RuntimeException("해당 배터리 요청이 이뤄지고 있습니다.");
@@ -93,11 +93,8 @@ public class ProgressServiceImpl implements ProgressService{
                 .targetUserId(progressdto.getId())
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
-        try {
-            requestToBMS(progress.getId());
-        } catch (Exception e){
-            log.info("bms 서버 오류");
-        }
+
+        return new ProgressIdDTO(progress);
     }
 
     @Override
@@ -119,6 +116,7 @@ public class ProgressServiceImpl implements ProgressService{
 
         Battery battery = progress.getBattery();
         Member member = battery.getMember();
+
 
 //        StatusHistory statusHistory = statusHistoryRepository.findByExpertStatusAndBatteryId(resultDto.getResultStatus(), battery.getId());
 //        statusHistory.setFromStatus(ProgressStatus.Request);
@@ -184,13 +182,19 @@ public class ProgressServiceImpl implements ProgressService{
         }
     }
 
-    private void requestToBMS(Long progressId){
-        WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
-        webClient
-                .post()
-                .uri(uriBuilder -> uriBuilder.path("/upload/" + progressId).build())
-                .retrieve()
-                .bodyToMono(Object.class)
-                .block();
+    public void requestToBMS(ProgressIdDTO progressIdDTO){
+        try {
+            WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
+            webClient
+                    .post()
+                    .uri(uriBuilder -> uriBuilder.path("/api/bms/upload").build())
+                    .bodyValue(progressIdDTO)
+                    .retrieve()
+                    .bodyToMono(Object.class)
+                    .block();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 }
