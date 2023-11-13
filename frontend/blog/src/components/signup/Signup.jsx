@@ -2,20 +2,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { checkDuplication, joinMember } from "../../api/member";
 import { useNavigate } from "react-router-dom";
-import JoinInIcon from "../../assets/images/icon-joinIn.png"
-
+import JoinInIcon from "../../assets/images/icon-joinIn.png";
 
 const SignUp = () => {
   const navigate = useNavigate();
-  
+
   const postMember = () => {
     if (!checkDupDone) {
       alert("아이디 중복 확인을 해주세요");
-    }
-    else if (!equalPw) {
+    } else if (!equalPw) {
       alert("비밀번호를 확인해주세요");
-    }
-    else if (checkDupDone === true && usableId === true) {
+    } else if (checkDupDone === true && usableId === true) {
       joinMember(
         {
           company,
@@ -25,7 +22,6 @@ const SignUp = () => {
           tel,
         },
         ({ data }) => {
-          console.log(data);
           navigate("/");
         },
         ({ error }) => {
@@ -44,25 +40,22 @@ const SignUp = () => {
     checkDuplication(
       loginId,
       ({ data }) => {
-        console.log(data);
         setCheckDupDone(true);
         if (data === "이미 사용 중인 loginId 입니다.") {
           setUsableId(false);
-        }
-        else if (data === "사용 가능한 loginId 입니다.") {
-          setUsableId(true)
+        } else if (data === "사용 가능한 loginId 입니다.") {
+          setUsableId(true);
         }
       },
       ({ error }) => {
         console.log(error);
       }
-    )
-
-  }
+    );
+  };
 
   const idChange = () => {
     setCheckDupDone(false);
-  }
+  };
 
   const [equalPw, setEqualPw] = useState(false);
   const pwChange = (e) => {
@@ -72,7 +65,7 @@ const SignUp = () => {
     } else {
       setEqualPw(false);
     }
-  }
+  };
 
   const [inputs, setinputs] = useState({
     company: "",
@@ -84,7 +77,15 @@ const SignUp = () => {
     selectedValue: "82",
   });
 
-  const { email, tel, loginId, password, password_check, company, selectedValue } = inputs;
+  const {
+    email,
+    tel,
+    loginId,
+    password,
+    password_check,
+    company,
+    selectedValue,
+  } = inputs;
 
   const onChange = (e) => {
     const value = e.target.value;
@@ -119,12 +120,10 @@ const SignUp = () => {
             />
             <button onClick={checkDup}>중복확인</button>
           </S.InputId>
-          {checkDupDone && !usableId
-            ? (<p>이미 사용 중인 아이디 입니다</p>)
-            : null}
-          {checkDupDone && usableId
-            ? (<p>사용 가능한 아이디 입니다</p>)
-            : null}
+          {checkDupDone && !usableId ? (
+            <p>이미 사용 중인 아이디 입니다</p>
+          ) : null}
+          {checkDupDone && usableId ? <p>사용 가능한 아이디 입니다</p> : null}
           <input
             type="text"
             id="company"
@@ -149,12 +148,12 @@ const SignUp = () => {
               pwChange(e);
             }}
           />
-          {password && password_check && !equalPw
-            ? (<p>비밀번호를 확인해주세요</p>)
-            : null}
-          {password && password_check && equalPw
-            ? (<p>비밀번호가 일치합니다</p>)
-            : null}
+          {password && password_check && !equalPw ? (
+            <p>비밀번호를 확인해주세요</p>
+          ) : null}
+          {password && password_check && equalPw ? (
+            <p>비밀번호가 일치합니다</p>
+          ) : null}
           <input
             type="email"
             id="email"
@@ -162,7 +161,7 @@ const SignUp = () => {
             placeholder="이메일"
             onChange={onChange}
           />
-          
+
           <input
             type="tel"
             id="tel"
@@ -173,7 +172,7 @@ const SignUp = () => {
           />
         </S.Inputs>
         <button type="button" onClick={postMember} className="joinIn">
-           계정 생성
+          계정 생성
         </button>
       </S.Container>
     </S.Wrap>
@@ -196,9 +195,9 @@ const S = {
     align-items: center;
 
     > .joinIn {
-      background-color: #1428A0;
+      background-color: #1428a0;
       width: 70%;
-      
+
       padding: 2%;
       margin-top: 5%;
       border: none;
@@ -208,7 +207,7 @@ const S = {
       font-weight: bold;
       cursor: pointer;
       &:hover {
-        background-color: #4F84C9;
+        background-color: #4f84c9;
       }
     }
   `,
@@ -219,10 +218,10 @@ const S = {
     display: flex;
     align-items: center;
     > p {
-      color: #034F9E;
+      color: #034f9e;
       font-size: 1rem;
       font-weight: bold;
-    	margin-left: 3%;
+      margin-left: 3%;
     }
   `,
   Icon: styled.div`
@@ -230,7 +229,7 @@ const S = {
     min-width: 30px;
     height: 3vw;
     min-height: 30px;
-    background: #1428A0;
+    background: #1428a0;
     border-radius: 5px;
     overflow: hidden;
     display: flex;
@@ -250,7 +249,7 @@ const S = {
     justify-content: center;
 
     > input {
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       width: 100%;
       height: 5vh;
       margin: 1%;
@@ -259,7 +258,7 @@ const S = {
       border-radius: 10px;
       font-size: 1rem;
       font-weight: bold;
-      color: #034F9E;
+      color: #034f9e;
       text-align: left;
       letter-spacing: 3px;
       cursor: pointer;
@@ -274,7 +273,7 @@ const S = {
     > p {
       font-size: 15px;
       font-weight: bold;
-      color: #034F9E;
+      color: #034f9e;
       margin: 1px;
       text-align: left;
       width: 100%;
@@ -288,12 +287,12 @@ const S = {
       width: 106%;
     }
     > .selectBox select {
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       width: 104%;
       height: 6.5vh;
       margin: 1%;
       padding: 2%;
-      color: #034F9E;
+      color: #034f9e;
       border-radius: 10px;
       border: none;
       -webkit-appearance: none;
@@ -320,17 +319,17 @@ const S = {
     justify-content: space-between;
 
     > input {
-      background-color: #F2F2F2;
+      background-color: #f2f2f2;
       width: 65%;
       height: 5vh;
-      margin-left:9px;
-      
+      margin-left: 9px;
+
       padding: 2%;
       border: none;
       border-radius: 10px;
       font-size: 1rem;
       font-weight: bold;
-      color: #034F9E;
+      color: #034f9e;
       text-align: left;
       letter-spacing: 3px;
       cursor: pointer;
@@ -342,7 +341,7 @@ const S = {
       }
     }
     > button {
-      background-color: #1428A0;
+      background-color: #1428a0;
       width: 29%;
       height: 6vh;
       margin: 1%;
@@ -354,7 +353,7 @@ const S = {
       font-weight: bold;
       cursor: pointer;
       &:hover {
-        background-color: #034F9E;
+        background-color: #034f9e;
       }
     }
   `,
