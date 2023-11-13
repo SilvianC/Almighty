@@ -19,7 +19,7 @@ import java.util.List;
 public class BatteryController {
     private final BatteryService batteryService;
 
-    @PostMapping("/register")
+    @PostMapping("/request")
     public ResponseEntity<?> registerBattery(@RequestBody BatteryDTO batteryDTO){
 
         return SuccessResponseEntity.toResponseEntity("배터리 등록 완료", batteryService.registerBattery(batteryDTO));

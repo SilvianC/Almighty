@@ -18,11 +18,7 @@ const BmsGraph = ({ data }) => {
     },
 
     title: {
-      text: `BMS`,
-      align: "left",
-      style: {
-        color: "#4F84C9", // 원하는 색상으로 설정
-      },
+      text: ``,
     },
 
     subtitle: {
@@ -122,12 +118,49 @@ const BmsGraph = ({ data }) => {
   console.log(option);
   return (
     <S.Wrap>
-      <HighchartsReact highcharts={Highcharts} options={option} />
+      <img
+        class="BMS-INFO"
+        src="/Vector.png"
+        alt="Grapefruit slice atop a pile of other slices"
+      />
+      <S.Info>잘했다.</S.Info>
+      <p>BMS</p>
+
+      <div>
+        <HighchartsReact highcharts={Highcharts} options={option} />
+      </div>
     </S.Wrap>
   );
 };
 
 const S = {
-  Wrap: styled.div``,
+  Wrap: styled.div`
+    flex: 1;
+    padding: 10px;
+    .BMS-INFO {
+      position: relative;
+      left: 67px;
+      top: 15px;
+    }
+    > div {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    > p {
+      color: #034f9e;
+      margin-bottom: 0px;
+      margin-left: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  `,
+  Info: styled.div`
+    position: relative;
+    left: 55px;
+    top: 15px;
+    width: 100px;
+    height: 100px;
+  `,
 };
 export default BmsGraph;

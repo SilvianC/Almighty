@@ -18,6 +18,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.example.A201.exception.ErrorCode.USER_NOT_FOUND;
+
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor

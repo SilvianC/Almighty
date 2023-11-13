@@ -21,5 +21,4 @@ public interface BatteryService {
 
     List<BatteryResponse> getRequestBatteries();
 
-
 }
