@@ -1,5 +1,6 @@
 package com.batteryalmighty.bms.progress.domain;
 
+import com.batteryalmighty.bms.battery.domain.Battery;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -17,4 +18,8 @@ public class Progress {
     @Column(name = "progress_id")
     private Long id;
 
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "battery_id")
+    private Battery battery;
 }

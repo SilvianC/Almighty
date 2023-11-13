@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import http from "../../api/http";
+import { BiChevronLeftCircle, BiChevronRightCircle } from "react-icons/bi";
 import {
   Menu,
   MenuItem,
@@ -60,26 +61,36 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
       ))}
     </SubMenu>
   ));
+  const [isHovering, setIsHovering] = useState(false);
+  const [isButtonClicked, setButtonClicked] = useState(false);
 
-  const [isSidebarVisible, setSidebarVisible] = useState(false);
+  const handleMouseOver = () => {
+    setIsHovering(true);
+  };
 
-  const handleMouseMove = (e) => {
-    console.log("detecting");
-    if (e.clientX < 90) {
-      console.log("show");
-      setSidebarVisible(true);
-    } else {
-      setSidebarVisible(false);
-    }
+  const handleMouseOut = () => {
+    setIsHovering(false);
   };
 
   return (
-    <div onMouseMove={handleMouseMove}>
-      <ModalBackground showSidebar={isSidebarVisible} />
-      <ToggleButton showSidebar={isSidebarVisible}>
-        {isSidebarVisible ? "⬅" : "➡"} {/* 아이콘 또는 다른 힌트 표시 */}
+    <div>
+      <ToggleButton
+        showSidebar={isButtonClicked || isHovering}
+        onClick={() => {
+          setButtonClicked(!isButtonClicked);
+        }}
+      >
+        {isButtonClicked ? (
+          <BiChevronLeftCircle size={30} color="#034f9e" />
+        ) : (
+          <BiChevronRightCircle size={30} color="#034f9e" />
+        )}
       </ToggleButton>
-      <SidebarContainer showSidebar={isSidebarVisible}>
+      <SidebarContainer
+        showSidebar={isButtonClicked || isHovering}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
+      >
         <StyledSidebar
           rootStyles={{
             [`.${sidebarClasses.container}`]: {
@@ -93,7 +104,7 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
                 // only apply styles on first level elements of the tree
                 if (level === 1)
                   return {
-                    color: active ? "#1d1f25" : "#888888",
+                    color: active ? "#1d1f25" : "#000000",
                     backgroundColor: active ? "#e7ecf2" : "#d5dfe9",
                   };
               },
@@ -135,16 +146,6 @@ function elapsedTime(date) {
   return "오늘";
 }
 
-const ModalBackground = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 10%;
-  height: 100%;
-  background: transparent;
-  ${(props) => (props.showSidebar ? "block" : "none")};
-`;
-
 const SidebarContainer = styled.div`
   height: 100%;
   background-color: #d5dfe9;
@@ -152,9 +153,10 @@ const SidebarContainer = styled.div`
   font-weight: bold;
   position: fixed;
   top: 0;
-  left: ${(props) => (props.showSidebar ? "0" : "-250px")};
-  transition: left 0.5s;
-  z-index: 999;
+  left: ${(props) => (props.showSidebar ? "0" : "-230px")};
+  margin-right: ${(props) => (props.showSidebar ? "250px" : "0")};
+  transition: left 0.5s, margin-right 0.5s;
+  z-index: 99;
   overflow-y: auto;
   overflow-x: hidden;
 
@@ -176,11 +178,15 @@ const StyledSidebar = styled(Sidebar)`
 
 const ToggleButton = styled.div`
   position: fixed;
-  top: 50%;
+  top: 10%;
+  cursor: pointer;
+  border-radius: 100%;
   // color: #d5dfe9;
-  left: ${(props) => (props.showSidebar ? "250px" : "0px")};
-  transition: left 0.5s;
+  left: ${(props) => (props.showSidebar ? "235px" : "5px")};
+  transition: left 0.5s, opacity 0.5s linear;
   z-index: 100;
+  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+    0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
 
 export default SideBar;
