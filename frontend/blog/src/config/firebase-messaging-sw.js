@@ -50,13 +50,11 @@ function FirebaseComponent() {
             "BIW70JkV0rCqXX0NUYzz9RNfKG1GxoWb6TTAIb22ZnG3-yqJL0L1ieBlJoZ_S_ALdyoJe_Zq4-AEKLql1BvYYRo",
         });
         if (token) {
-          console.log("token: ", token);
           pushtoken(
             { firebaseToken: token },
             memberId,
             ({ success }) => {
               setIsLogin(true);
-              console.log("성공한거야");
             },
             ({ error }) => {
               console.log(error);

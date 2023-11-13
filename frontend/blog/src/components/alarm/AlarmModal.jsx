@@ -18,7 +18,6 @@ const AlarmModal = ({
     updateAlarm(
       memberId,
       ({ data }) => {
-        console.log(data);
         setCount(0);
       },
       ({ error }) => {
@@ -29,7 +28,6 @@ const AlarmModal = ({
   if (isOpen) {
     document.addEventListener("mouseup", (event) => {
       var table = document.querySelector(".help");
-      console.log(event);
       if (!table.contains(event.target)) {
         setModalOpen(!isOpen);
       }

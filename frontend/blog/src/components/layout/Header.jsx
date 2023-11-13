@@ -26,7 +26,6 @@ function Header() {
 
   const openModal = () => setIsModalOpen(!isModalOpen);
   const modalOutSideClick = (e) => {
-    console.log(e.target);
     if (modalRef.current === e.target) {
       setIsModalOpen(false);
     }
@@ -36,7 +35,6 @@ function Header() {
     countAlarm(
       memberId,
       ({ data }) => {
-        console.log(data);
         setCount(data.count);
       },
       ({ error }) => {
@@ -48,9 +46,7 @@ function Header() {
   const navigate = useNavigate();
   const memberId = useRecoilValue(MemberIdState);
   const memberrolestate = useRecoilValue(RoleState);
-  console.log(memberId);
   const requestAccessToken = useRecoilValue(AccessTokenState);
-  console.log(requestAccessToken);
   const setMemberId = useSetRecoilState(MemberIdState);
   const setLoginId = useSetRecoilState(LoginIdState);
   const setCompany = useSetRecoilState(CompanyState);

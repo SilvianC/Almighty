@@ -17,7 +17,6 @@ const BuyTable = ({ data, onApplyClick }) => {
   const [selectedItemCode, setSelectedItemCode] = useState(null);
 
   const handleSave = () => {
-    console.log(checkedInputs);
     http.put(`/api/batteries/request`, checkedInputs).then().catch();
   };
 

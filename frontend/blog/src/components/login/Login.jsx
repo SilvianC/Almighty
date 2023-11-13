@@ -17,8 +17,6 @@ import {
 import AlarmModal from "../alarm/AlarmModal";
 
 const Login = () => {
-  
-
   const navigate = useNavigate();
 
   const isMobile = () => {
@@ -55,7 +53,6 @@ const Login = () => {
     login(
       { loginId, password },
       (data) => {
-        console.log(data.data);
         setMemberId(data.data.memberId);
         setId(data.data.loginId);
         setCompany(data.data.company);
@@ -91,7 +88,6 @@ const Login = () => {
           <p>SSO</p>
         </S.Title>
         <S.Login>
-          
           <input
             type="text"
             id="loginId"
@@ -120,7 +116,6 @@ const Login = () => {
           <button type="submit" onClick={requestLogin}>
             로그인
           </button>
-          
         </S.Login>
       </S.Container>
     </S.Wrap>
@@ -135,10 +130,8 @@ const S = {
     justify-content: center;
     margin-bottom: 100px;
     @media (max-width: 768px) {
-      width:100%;
-
+      width: 100%;
     }
-    
   `,
   Container: styled.div`
     width: 46.875%;
@@ -147,14 +140,13 @@ const S = {
     padding: 2%;
     display: flex;
     flex-direction: column;
-    background-color: #E7ECF2;
-    
+    background-color: #e7ecf2;
   `,
   Title: styled.div`
     width: 100%;
     height: 5px;
-    margin-top:-50px;
-    margin-bottom:60px;
+    margin-top: -50px;
+    margin-bottom: 60px;
     flex-direction: row;
     display: flex;
     align-items: center;
@@ -187,7 +179,7 @@ const S = {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+
     > input {
       background-color: #f2f2f2;
       width: 55.55%;
@@ -198,9 +190,11 @@ const S = {
       border-radius: 10px;
       font-size: 1rem;
       font-weight: bold;
-      color: #034F9E;
+      color: #034f9e;
       text-align: left;
-      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+        0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
+        0px 20px 80px rgba(0, 0, 0, 0.07);
       cursor: pointer;
       &:hover {
         outline: none;
@@ -236,7 +230,7 @@ const S = {
       font-size: 0.8rem;
       font-weight: bold;
       color: #1428a0;
-      
+
       text-align: center;
       text-decoration: none;
       cursor: pointer;
@@ -246,13 +240,15 @@ const S = {
     }
 
     > button {
-      background-color: #034F9E;
+      background-color: #034f9e;
       width: 55.55%;
       padding: 2%;
       border: none;
       border-radius: 10px;
       color: #ffffff;
-      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+      box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+        0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
+        0px 20px 80px rgba(0, 0, 0, 0.07);
       font-size: 0.5rme;
       font-weight: bold;
       cursor: pointer;
