@@ -37,6 +37,7 @@ public class BmsService {
 
         List<String[]> records;
 
+        int num = 0;
         try (InputStreamReader csvFile = new InputStreamReader(file.getInputStream(), "UTF-8");
              CSVReader csvReader = new CSVReader(csvFile)) {
 
@@ -45,6 +46,8 @@ public class BmsService {
 
             while ((values = csvReader.readNext()) != null) {
 
+                log.info(String.valueOf(num++));
+
                 VitBoard vitBoard = VitBoard.builder()
                         .voltage(Double.valueOf(values[0]))
                         .current(Double.valueOf(values[1]))
@@ -52,7 +55,7 @@ public class BmsService {
                         .time(Double.valueOf(values[3]))
                         .soc(0.0)
 //                        .ekf(0.0)
-                        .progressId(6L)
+                        .progressId(7L)
                         .build();
 
                 vitBoardRepository.save(vitBoard);

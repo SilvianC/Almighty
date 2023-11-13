@@ -2,6 +2,7 @@ package com.example.A201.battery.service;
 
 import com.example.A201.battery.constant.Status;
 import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.dto.ProgressDTO;
 import com.example.A201.battery.dto.ProgressListDTO;
 import com.example.A201.battery.dto.ProgressResultDTO;
 import com.example.A201.battery.vo.BatteryResponse;
@@ -22,7 +23,7 @@ public interface BatteryService {
 
     List<BatteryResponse> getRequestBatteries();
 
-    void registProgress(String code, String reason);
+    void registProgress(ProgressDTO progressDTO);
 
     List<ProgressListDTO> getRequestProgress();
 

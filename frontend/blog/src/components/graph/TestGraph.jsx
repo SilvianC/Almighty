@@ -29,11 +29,7 @@ const TestGraph = ({ data, threshold, type }) => {
       enabled: false,
     },
     title: {
-      text: `VIT`,
-      align: "left",
-      style: {
-        color: "#4F84C9", // 원하는 색상으로 설정
-      },
+      text: ``,
     },
 
     subtitle: {
@@ -126,7 +122,11 @@ const TestGraph = ({ data, threshold, type }) => {
 
     option = {
       ...option,
-
+      tooltip: {
+        // shared: true,
+        pointFormat:
+          '<span style="color:{series.color}">\u25CF</span> {series.name} <b>{point.y:.2f}</b><br>',
+      },
       yAxis: [
         {
           // visible: false,
@@ -223,7 +223,6 @@ const TestGraph = ({ data, threshold, type }) => {
           lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
         },
       },
-
       series: [
         ...datas,
         {
@@ -235,6 +234,10 @@ const TestGraph = ({ data, threshold, type }) => {
               item["soc"] > 100 ? 100 : item["soc"] < 0 ? 0 : item["soc"],
             ];
           }),
+          // tooltip: {
+          //   pointFormat:
+          //     '<span style="color:{series.color}">\u25CF</span> 잔량: <b>{point.y:.2f}%</b>',
+          // },
         },
       ],
       responsive: {
@@ -258,12 +261,51 @@ const TestGraph = ({ data, threshold, type }) => {
 
   return (
     <S.Wrap>
-      <HighchartsReact highcharts={Highcharts} options={option} />
+      <img
+        class="VIT-INFO"
+        src="/Vector.png"
+        alt="Grapefruit slice atop a pile of other slices"
+      />
+
+      <S.Info>잘했다.</S.Info>
+
+      <p>VIT</p>
+
+      <div>
+        <HighchartsReact highcharts={Highcharts} options={option} />
+      </div>
     </S.Wrap>
   );
 };
 
 const S = {
-  Wrap: styled.div``,
+  Wrap: styled.div`
+    flex: 1;
+    padding: 10px;
+    > div {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+        0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .VIT-INFO {
+      position: relative;
+      left: 55px;
+      top: 15px;
+    }
+
+    > p {
+      color: #034f9e;
+      margin-bottom: 0px;
+      margin-left: 20px;
+      font-weight: bold;
+      font-size: 20px;
+    }
+  `,
+  Info: styled.div`
+    position: relative;
+    left: 55px;
+    top: 15px;
+    width: 100px;
+    height: 100px;
+  `,
 };
 export default TestGraph;
