@@ -1,7 +1,6 @@
 package com.example.A201.board.domain;
 
-import com.example.A201.battery.domain.Battery;
-import com.example.A201.battery.domain.Progress;
+import com.example.A201.progress.domain.Progress;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

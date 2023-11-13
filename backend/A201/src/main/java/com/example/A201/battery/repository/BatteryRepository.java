@@ -18,6 +18,6 @@ public interface BatteryRepository extends JpaRepository<Battery,Long> {
 
     Battery save(Battery battery);
 
-    @Query("select b from Battery b where b.batteryStatus = 'Request'")
+    @Query("select b from Battery b where b.batteryStatus = 'InProgress'")
     List<Battery> findByBatteryStatus();
 }
