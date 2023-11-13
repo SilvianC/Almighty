@@ -1,10 +1,13 @@
 package com.example.A201.chatbot.service;
 import com.example.A201.board.domain.BmsBoard;
+import com.example.A201.board.repository.BmsBoardRepository;
 import com.example.A201.chatbot.domain.ChatLog;
 import com.example.A201.chatbot.dto.ChatLogDto;
 import com.example.A201.chatbot.repository.ChatLogRepository;
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.repository.MemberRepository;
+import com.example.A201.progress.service.ProgressService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,25 +16,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ChatLogService {
 
-    @Autowired
-    private ChatLogRepository chatLogRepository;
+    private final ChatLogRepository chatLogRepository;
 
-    @Autowired
-    private MemberRepository memberRepository; // 추가
+    private final MemberRepository memberRepository;
+
+    private final BmsBoardRepository bmsBoardRepository;
+
 
     @Value("${openai.api.key}")
     private String openaiApiKey;
 
-    public ChatLogDto getAnswerFromChatGPT(Long memberId, BmsBoard bms) {
+    public ChatLogDto getAnswerFromChatGPT(ChatLogDto request) {
+
+        BmsBoard bms = bmsBoardRepository.findByProgress(request.getProgressId())
+                .orElseThrow(() -> new EntityNotFoundException("해당 데이터 찾을 수 없습니다"));
+
+        log.debug("이게 맞노"+bms.getProgress());
+        log.debug("=================================================================");
+
         String hardcodedQuestion = String.format("당신은 배터리 전문가입니다. 다음 데이터를 통해 배터리 상태를 판단하세요: " +
                         "제조 날짜=%s, 과전류 횟수=%d, 과전압 횟수=%d, 수령 날짜=%s, 저전압 횟수=%d. " +
                         "답변은 반드시 '불량' 또는 '정상'으로 하며, 이유는 반드시 80자 이내로 설명하세요. 이유는 한줄로 설명하세요. 정보 부족같은 답은 불가능합니다"+
@@ -40,7 +53,7 @@ public class ChatLogService {
                 bms.getMadeDate(), bms.getOverCurrentCount(), bms.getOverVoltageCount(), bms.getReceiveDate(), bms.getUnderVoltageCount());
         String botResponse = callOpenAIApi(hardcodedQuestion);
 
-        Member member = memberRepository.findById(memberId)
+        Member member = memberRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new IllegalArgumentException("Member not found!"));
 
         chatLogRepository.save(ChatLog.builder()

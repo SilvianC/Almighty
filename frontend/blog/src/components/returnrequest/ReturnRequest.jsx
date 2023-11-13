@@ -21,7 +21,7 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError}) => {
           reason: requestReason,
         };
     
-        http.put('/api/batteries/request', data)
+        http.post('/api/batteries/progress/request', data)
           .then((response) => {
             console.log(response.data); // 응답 데이터를 출력합니다.
             if (onSuccess) {

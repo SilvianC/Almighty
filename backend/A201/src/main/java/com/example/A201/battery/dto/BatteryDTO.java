@@ -10,9 +10,9 @@ import java.time.LocalDate;
 @Builder
 @AllArgsConstructor
 public class BatteryDTO {
-    private Long id;
     private Long memberId;
-    private Long modelId;
+//    private Long modelId;
+    private String modelName;
     private String code;
     private String batteryStatus;
 }

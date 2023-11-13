@@ -1,11 +1,10 @@
 package com.example.A201.battery.domain;
 
-import com.example.A201.battery.constant.Status;
+import com.example.A201.battery.constant.BatteryStatus;
 import com.example.A201.member.domain.Member;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -28,12 +27,8 @@ public class Battery {
 
     private String code;
 
-    @Column(name = "battery_status")
+    @Setter
     @Enumerated(EnumType.STRING)
-    private Status batteryStatus;
-
-    public void setBatteryStatus(Status status){
-        this.batteryStatus = status;
-    }
+    private BatteryStatus batteryStatus;
 
 }
