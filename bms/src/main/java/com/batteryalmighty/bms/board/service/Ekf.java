@@ -48,8 +48,8 @@ public class Ekf {
         Q = 2E-06;
         R = 2500;
         P = 0.006;
-//        x = 0;
-        x = 100;
+        x = 0;
+//        x = 100;
         prevTime = 0;
         maxCap = 1.8022316896675852;
         socOcvs = socOcvRepository.findAll();
