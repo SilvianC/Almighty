@@ -7,19 +7,13 @@ import { useRecoilValue } from "recoil";
 import { MemberIdState, RoleState } from "../../states/states";
 
 const AlarmTable = () => {
-  console.log(window.innerHeight);
-  console.log(window);
-  console.log(window.scrollBottom);
   window.addEventListener("scroll", handleScroll, { capture: true });
   function handleScroll() {
     const scroll = document.querySelector(".Scroll");
-    console.log(scroll);
-    console.log(scroll.scrollTop); // 스크롤 이벤트가 시작되면 요값이 변경된다
   }
 
   const memberId = useRecoilValue(MemberIdState);
   const role = useRecoilValue(RoleState);
-  console.log(role);
   const [isHovering, setIsHovering] = useState(false);
   const deleteAlarmHandle = (id, idx) => {
     setData(() => {
@@ -51,7 +45,6 @@ const AlarmTable = () => {
         memberId,
         page,
         ({ data }) => {
-          console.log(data);
           setData(() => {
             return data.data;
           });
@@ -74,7 +67,6 @@ const AlarmTable = () => {
         "관리자",
         page,
         ({ data }) => {
-          console.log(data);
           setData(() => {
             return data.data;
           });

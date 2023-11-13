@@ -21,7 +21,6 @@ function ReasonModal({ itemCode }) {
         title: "반송 신청",
       })
       .then((data) => {
-        console.log(data);
         setIsSent(true);
       })
       .catch();

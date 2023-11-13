@@ -8,7 +8,6 @@ const AnalysisResult = ({ progressId }) => {
   const formatResponse = (response) => {
     const responseLines = response.split("\n");
     let color = "#1D1F25"; // 기본 색상
-    console.log(responseLines);
     if (responseLines[0].includes("불량")) {
       //   backgroundColor = "pink"; // '불량'일 경우 배경색
       color = "#D84848";
@@ -26,11 +25,13 @@ const AnalysisResult = ({ progressId }) => {
 
     return (
       <ResponseWrapper>
-        {progressId && isLoading && <div className="loader" style={{ margin: "auto" }}></div>}
+        {progressId && isLoading && (
+          <div className="loader" style={{ margin: "auto" }}></div>
+        )}
         {!isLoading && (
           <>
-          <span style={{ color: color }}>{formattedResponse[0]}</span>
-          <div>{formattedResponse[1]}</div>
+            <span style={{ color: color }}>{formattedResponse[0]}</span>
+            <div>{formattedResponse[1]}</div>
           </>
         )}
       </ResponseWrapper>
@@ -53,7 +54,7 @@ const AnalysisResult = ({ progressId }) => {
     }
   };
   useEffect(() => {
-    if(progressId !== null) {
+    if (progressId !== null) {
       getBotResponse();
       const timer = setTimeout(() => {
         setIsLoading(false);
@@ -81,20 +82,19 @@ const S = {
   `,
   Title: styled.div`
     > p {
-      color: #1D1F25;
+      color: #1d1f25;
       font-weight: bold;
       font-size: 18px;
-	  margin: 0px;
+      margin: 0px;
     }
   `,
   Result: styled.div`
     width: 85.6%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    
   `,
 };
 const ResponseWrapper = styled.div`
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   width: 85%;
   height: 100px;
   border-radius: 10px;
@@ -102,7 +102,8 @@ const ResponseWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+    0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 
   > span {
     margin-left: 20px;
