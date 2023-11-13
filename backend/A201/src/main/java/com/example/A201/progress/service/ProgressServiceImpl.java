@@ -180,7 +180,7 @@ public class ProgressServiceImpl implements ProgressService{
             mimeMessageHelper.setText(String.format("%s 배터리의 분석 결과 %s", code, result)); // 메일 본문 내용, HTML 여부
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.info("메일 전송 오류");
         }
     }
 
