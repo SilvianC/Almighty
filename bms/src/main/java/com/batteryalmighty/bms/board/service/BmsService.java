@@ -5,6 +5,7 @@ import com.batteryalmighty.bms.battery.domain.Model;
 import com.batteryalmighty.bms.battery.mysql.BatteryRepository;
 import com.batteryalmighty.bms.battery.mysql.ModelRepository;
 import com.batteryalmighty.bms.progress.domain.Progress;
+import com.batteryalmighty.bms.progress.dto.ProgressIdDTO;
 import com.batteryalmighty.bms.progress.mysql.ProgressRepository;
 import com.batteryalmighty.bms.vitboard.domain.VitBoard;
 import com.batteryalmighty.bms.board.domain.BmsBoard;
@@ -48,14 +49,14 @@ public class BmsService {
         ekf.init();
     }
 
-    public void uploadBoard(Long progressId) {
+    public void uploadBoard(ProgressIdDTO progressIdDTO) {
 
         String filename = "sample.csv";
         String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\vits\\" + filename;
 
         try{
             List<String> vitBoards = Files.readAllLines(Paths.get(filePath));
-            socPredict(progressId, vitBoards);
+            socPredict(progressIdDTO.getProgressId(), vitBoards);
 
         } catch (Exception e) {
             e.printStackTrace();

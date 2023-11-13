@@ -15,7 +15,12 @@ const match = {
   1: "currentMeasured",
   2: "temperatureMeasured",
 };
-const BatteryBoard = ({ progressId, setProgress }) => {
+const BatteryBoard = ({
+  progressId,
+  setProgress,
+  progressData,
+  setProgressData,
+}) => {
   const [vitData, setVitData] = useState([]);
   const [bmsData, setBmsData] = useState([]);
   const [battery, setBattery] = useState([]);
@@ -26,7 +31,6 @@ const BatteryBoard = ({ progressId, setProgress }) => {
       http
         .get(`/api/dashboard/${progressId}`)
         .then(({ data }) => {
-          console.log(data);
           setVitData(() => {
             return data["data"]["vitData"];
           });
@@ -34,8 +38,10 @@ const BatteryBoard = ({ progressId, setProgress }) => {
             return data["data"]["bmsData"];
           });
           setBattery(() => {
-            console.log(data);
             return data["data"]["battery"];
+          });
+          setProgressData(() => {
+            return data["data"]["progress"];
           });
         })
         .catch(() => {
@@ -45,7 +51,13 @@ const BatteryBoard = ({ progressId, setProgress }) => {
           setBmsData(() => {
             return [];
           });
+          setBattery(() => {
+            return [];
+          });
           setProgress(() => {
+            return null;
+          });
+          setProgressData(() => {
             return null;
           });
         });
@@ -106,6 +118,11 @@ const BatteryBoard = ({ progressId, setProgress }) => {
 
 const S = {
   Wrap: styled.div`
+    margin-top: 20px;
+
+    > div {
+      margin-bottom: 70px;
+    }
     .BMS {
       position: relative;
       float: right;
@@ -113,7 +130,7 @@ const S = {
       height: 100%;
 
       .img-bms {
-        z-index: 99;
+        z-index: 1;
         position: absolute;
         left: 105px;
         div {
@@ -135,7 +152,7 @@ const S = {
       width: 50%;
       height: 100%;
       .img-test {
-        z-index: 99;
+        z-index: 1;
         position: absolute;
         left: 95px;
         div {
