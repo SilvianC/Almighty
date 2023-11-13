@@ -10,8 +10,5 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProgressIdDTO {
     private Long progressId;
-
-    public ProgressIdDTO(Progress progress){
-        this.progressId = progress.getId();
-    }
+    private String code;
 }

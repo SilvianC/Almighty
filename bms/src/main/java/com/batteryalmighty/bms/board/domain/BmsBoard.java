@@ -25,8 +25,6 @@ public class BmsBoard {
     @JoinColumn(name = "progress_id")
     private Progress progress;
 
-//    private Long progressId;
-
     private int overVoltageCount;
 
     private int underVoltageCount;
@@ -54,10 +52,5 @@ public class BmsBoard {
     private Double minTemperatureDischarge;
 
     private LocalDateTime receiveDate;
-    public void setBmsCount(int overVoltageCount, int underVoltageCount, int overCurrentCount){
-        this.overVoltageCount = overVoltageCount;
-        this.underVoltageCount = underVoltageCount;
-        this.overCurrentCount = overCurrentCount;
-    }
 
 }
