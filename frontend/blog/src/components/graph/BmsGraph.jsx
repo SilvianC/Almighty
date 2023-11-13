@@ -85,8 +85,12 @@ const BmsGraph = ({ data }) => {
           ["저전압", data && data.length !== 0 ? data["underVoltageCount"] : 0],
           ["과전류", data && data.length !== 0 ? data["overCurrentCount"] : 0],
           [
-            "온도이상",
-            data && data.length !== 0 ? data["abnormalTemperatureCount"] : 0,
+            "고온도",
+            data && data.length !== 0 ? data["overTemperatureCount"] : 0,
+          ],
+          [
+            "저온도",
+            data && data.length !== 0 ? data["underTemperatureCount"] : 0,
           ],
         ],
         dataLabels: {
