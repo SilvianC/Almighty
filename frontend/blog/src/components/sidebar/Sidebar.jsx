@@ -16,7 +16,7 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
 
   const handleClick = (index, itemIndex, item) => {
     setSelectedMenu(`${index}-${itemIndex}`);
-    setProgress(() => item.progressId);
+    setProgress(() => item.id);
   };
 
   useEffect(() => {

@@ -19,7 +19,7 @@ const RegistResult = ({ progress, setProgress }) => {
   const handleRegister = () => {
     const request = {
       progressId: progress,
-      toStatus: result,
+      resultStatus: result,
       responseReason:
         selectedOption +
         (selectedOption === "기타" ? " 상세 사유 : " + resonDetail : ""),
@@ -149,7 +149,7 @@ const RegistResult = ({ progress, setProgress }) => {
         )}
       </S.Reason>
       <S.Regist>
-        {!result || selectedOption === "사유 선택" ? (
+        {!result || selectedOption === "사유 선택" || progress == null ? (
           <button style={{ "background-color": "#D5DFE9" }} disabled>
             등록
           </button>
