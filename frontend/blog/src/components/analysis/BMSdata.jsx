@@ -151,7 +151,7 @@ const BMSdata = () => {
 
 const S = {
 	Wrap: styled.div`
-    width: 100%;
+    width: 98%;
 	`,
 	Header: styled.div`
 		display: flex;
@@ -160,18 +160,15 @@ const S = {
 		margin-top: 20px;
 		margin-bottom: 20px;
 
+		> img {
+			width: 30px;
+			height: 30px;
+		}
 		> span {
 			color: #1D1F25;
 			font-weight: bold;
 			font-size: 18px;
-			margin-left: 10px;
-		}
-		> p {
-			color: #034F9E;
-			margin-bottom: 0px;
-			margin-left: 20px;
-			font-weight: bold;
-			font-size: 20px;
+			margin-left: 5px;
 		}
 	`,
 	Option: styled.div`
@@ -198,13 +195,13 @@ const S = {
       background-color: #034f9e;
       z-index: 1;
       color: #f2f2f2;
-			transition: all 1s ease;
+			transition: all 0.3s ease;
     }
     > div > label > span {
       display: block;
       cursor: pointer;
       background-color: #f2f2f2;
-      padding: 0.375em 0.75em;
+      padding: 0.175em 0.65em;
       position: relative;
       margin-left: 0.0625em;
       border: 4px solid #e7ecf2;
@@ -227,7 +224,6 @@ const S = {
 		flex-direction: row;
 		justify-content: space-between;
 		transition: all 1s ease;
-		height: 100
 	`,
 	Container: styled.div`
 		display: flex;
@@ -236,28 +232,34 @@ const S = {
 		border-radius: 10px;
 		box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197), 0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 		width: 16%;
-		height: 200px;
+		height: 150px;
 		background-color: #E1ECFC;
 		position: relative;
 		transition: all 0.3s ease;
 	`,
 	ContainerImg: styled.div`
-	position: absolute;
-    bottom: 0;
-    right: 0;
+	
+	> img {
+		width: 50%;
+		height: 70%;
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		z-index: 1;
+    }
 	`,
 	ContainerTitle: styled.div`
 		color: #82858B;
 		font-size: 15px;
 		margin-left: 20px;
 		height: 10%;
-		z-index: 1;
+		z-index: 2;
 	`,
 	ContainerData: styled.div`
 		color: #1D1F25;
-		font-size: 30px;
+		font-size: 25px;
 		margin-left: 20px;
-		margin-top: 25px;
+		margin-top: 20px;
 		display: flex;
 		flex-direction: column;
 		justify-content: center;

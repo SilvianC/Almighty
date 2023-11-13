@@ -32,7 +32,7 @@ const S = {
 	`,
 	Reason: styled.div`
 		background-color: #F2F2F2;
-		width: 80%;
+		width: 85%;
 		height: 100px;
 		border-radius: 10px;
 		margin-left: 10px;
