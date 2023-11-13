@@ -1,9 +1,7 @@
 package com.batteryalmighty.bms.domain.mysql;
 
-import com.batteryalmighty.bms.domain.mongo.VitBoard;
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 
 import javax.persistence.*;
 

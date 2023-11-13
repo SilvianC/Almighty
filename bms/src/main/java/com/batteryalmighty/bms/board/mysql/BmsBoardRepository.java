@@ -1,6 +1,6 @@
-package com.batteryalmighty.bms.repository.mysql;
+package com.batteryalmighty.bms.board.mysql;
 
-import com.batteryalmighty.bms.bmsboard.domain.BmsBoard;
+import com.batteryalmighty.bms.board.domain.BmsBoard;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

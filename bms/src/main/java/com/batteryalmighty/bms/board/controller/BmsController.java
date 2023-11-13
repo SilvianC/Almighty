@@ -1,9 +1,9 @@
-package com.batteryalmighty.bms.bmsboard.controller;
+package com.batteryalmighty.bms.board.controller;
 
 import com.batteryalmighty.bms.exception.SuccessResponseEntity;
 import com.batteryalmighty.bms.processing.BmsProcessing;
-import com.batteryalmighty.bms.processing.Ekf;
-import com.batteryalmighty.bms.service.BmsService;
+import com.batteryalmighty.bms.board.service.Ekf;
+import com.batteryalmighty.bms.board.service.BmsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

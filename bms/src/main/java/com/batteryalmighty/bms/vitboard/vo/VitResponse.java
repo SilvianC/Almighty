@@ -1,6 +1,6 @@
-package com.batteryalmighty.bms.vo;
+package com.batteryalmighty.bms.vitboard.vo;
 
-import com.batteryalmighty.bms.domain.mongo.VitBoard;
+import com.batteryalmighty.bms.vitboard.domain.VitBoard;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

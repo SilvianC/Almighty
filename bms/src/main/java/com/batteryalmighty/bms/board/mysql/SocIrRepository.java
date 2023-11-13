@@ -1,6 +1,6 @@
-package com.batteryalmighty.bms.repository.mysql;
+package com.batteryalmighty.bms.board.mysql;
 
-import com.batteryalmighty.bms.domain.mysql.SocIr;
+import com.batteryalmighty.bms.board.domain.SocIr;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,10 +1,10 @@
-package com.batteryalmighty.bms.processing;
+package com.batteryalmighty.bms.board.service;
 
-import com.batteryalmighty.bms.domain.mysql.SocIr;
-import com.batteryalmighty.bms.domain.mysql.SocOcv;
-import com.batteryalmighty.bms.domain.mongo.VitBoard;
-import com.batteryalmighty.bms.repository.mysql.SocIrRepository;
-import com.batteryalmighty.bms.repository.mysql.SocOcvRepository;
+import com.batteryalmighty.bms.board.domain.SocIr;
+import com.batteryalmighty.bms.board.domain.SocOcv;
+import com.batteryalmighty.bms.vitboard.domain.VitBoard;
+import com.batteryalmighty.bms.board.mysql.SocIrRepository;
+import com.batteryalmighty.bms.board.mysql.SocOcvRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

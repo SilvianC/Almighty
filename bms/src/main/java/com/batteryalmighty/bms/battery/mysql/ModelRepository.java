@@ -1,4 +1,4 @@
-package com.batteryalmighty.bms.repository.mysql;
+package com.batteryalmighty.bms.battery.mysql;
 
 import com.batteryalmighty.bms.battery.domain.Model;
 import org.springframework.data.jpa.repository.JpaRepository;

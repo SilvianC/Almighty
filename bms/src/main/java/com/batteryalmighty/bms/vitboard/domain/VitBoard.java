@@ -1,4 +1,4 @@
-package com.batteryalmighty.bms.domain.mongo;
+package com.batteryalmighty.bms.vitboard.domain;
 
 import com.batteryalmighty.bms.domain.mysql.Progress;
 import lombok.*;

@@ -1,6 +1,6 @@
-package com.batteryalmighty.bms.repository.mongo;
+package com.batteryalmighty.bms.vitboard.mongo;
 
-import com.batteryalmighty.bms.domain.mongo.VitBoard;
+import com.batteryalmighty.bms.vitboard.domain.VitBoard;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;

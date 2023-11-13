@@ -1,4 +1,4 @@
-package com.batteryalmighty.bms.bmsboard.domain;
+package com.batteryalmighty.bms.board.domain;
 
 import lombok.*;
 
