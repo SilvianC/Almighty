@@ -4,6 +4,7 @@ import com.example.A201.progress.dto.ProgressDTO;
 import com.example.A201.progress.dto.ProgressResultDTO;
 import com.example.A201.exception.SuccessResponseEntity;
 import com.example.A201.progress.service.ProgressService;
+import com.example.A201.progress.vo.MailInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,8 @@ public class ProgressController {
 
     @PutMapping("{progress_id}")
     public ResponseEntity<?> updateProgress(@PathVariable("progress_id") Long progressId, @RequestBody ProgressResultDTO progress){
-        progressService.progressResult(progressId, progress);
+        MailInfo mailInfo = progressService.progressResult(progressId, progress);
+        progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
         return SuccessResponseEntity.toResponseEntity("반품 분석 완료", null);
     }
 }

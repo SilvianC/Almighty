@@ -14,7 +14,7 @@ function ReasonModal({ itemCode }) {
 
   const handleSendData = () => {
     http
-      .put(`/api/batteries/request`, {
+      .post(`/api/batteries/request`, {
         code: itemCode,
         reason: reason,
         id: 3,
