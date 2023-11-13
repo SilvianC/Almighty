@@ -6,7 +6,8 @@ import com.example.A201.chatbot.dto.ChatLogDto;
 import com.example.A201.chatbot.repository.ChatLogRepository;
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.repository.MemberRepository;
-import com.example.A201.progress.service.ProgressService;
+import com.example.A201.progress.domain.Progress;
+import com.example.A201.progress.repository.ProgressRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,8 @@ public class ChatLogService {
 
     private final BmsBoardRepository bmsBoardRepository;
 
+    private final ProgressRepository progressRepository;
+
 
     @Value("${openai.api.key}")
     private String openaiApiKey;
@@ -41,16 +44,26 @@ public class ChatLogService {
 
         BmsBoard bms = bmsBoardRepository.findByProgress(request.getProgressId())
                 .orElseThrow(() -> new EntityNotFoundException("해당 데이터 찾을 수 없습니다"));
+        Progress progress = progressRepository.findById(bms.getProgress().getId())
+                .orElseThrow(() -> new EntityNotFoundException("해당 분석 요청 찾을 수 없습니다."));
+
 
         log.debug("이게 맞노"+bms.getProgress());
         log.debug("=================================================================");
 
         String hardcodedQuestion = String.format("당신은 배터리 전문가입니다. 다음 데이터를 통해 배터리 상태를 판단하세요: " +
-                        "제조 날짜=%s, 과전류 횟수=%d, 과전압 횟수=%d, 수령 날짜=%s, 저전압 횟수=%d. " +
+                        "배터리 제조 날짜=%s, 과전류 횟수=%d, 과전압 횟수=%d, 배터리 보증 날짜=%s, 저전압 횟수=%d, 고온도 횟수=%d, 저온도 횟수=%d. " +
                         "답변은 반드시 '불량' 또는 '정상'으로 하며, 이유는 반드시 80자 이내로 설명하세요. 이유는 한줄로 설명하세요. 정보 부족같은 답은 불가능합니다"+
                         "답변 형식은 분석 결과:, 분석 내용: 형식으로 하세요. 예외는 없습니다. 분석 결과에는 불량 또는 정상을, 분석 내용에는 이유를 쓰세요. 분석 결과와 분석 내용 사이에는 엔터를 치세요." +
                         "중간에 빈 값이 존재 해도 티내지말고 주어진 정보로만 분석하세요. 이유에 정보 부족이라는 내용을 담지마세요. 부족하면 부족한대로 이유를 도출하세요",
-                bms.getMadeDate(), bms.getOverCurrentCount(), bms.getOverVoltageCount(), bms.getReceiveDate(), bms.getUnderVoltageCount());
+                progress.getBattery().getCreateDate(),
+                bms.getOverCurrentCount(),
+                bms.getOverVoltageCount(),
+                progress.getBattery().getCreateDate().plusYears(2),
+                bms.getUnderVoltageCount(),
+                bms.getOverTemperatureCount(),
+                bms.getUnderTemperatureCount()
+        );
         String botResponse = callOpenAIApi(hardcodedQuestion);
 
         Member member = memberRepository.findById(request.getMemberId())
