@@ -261,51 +261,35 @@ const TestGraph = ({ data, threshold, type }) => {
 
   return (
     <S.Wrap>
-      <img
-        class="VIT-INFO"
-        src="/Vector.png"
-        alt="Grapefruit slice atop a pile of other slices"
-      />
-
-      <S.Info>잘했다.</S.Info>
-
-      <p>VIT</p>
-
       <div>
-        <HighchartsReact highcharts={Highcharts} options={option} />
+        <img src="LineChart.png" className="line"></img>
+        <p>VIT</p>
       </div>
+
+      <HighchartsReact highcharts={Highcharts} options={option} />
     </S.Wrap>
   );
 };
 
 const S = {
   Wrap: styled.div`
-    flex: 1;
     padding: 10px;
-    > div {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-    .VIT-INFO {
-      position: relative;
-      left: 55px;
-      top: 15px;
+    div {
+      display: flex;
+      flex-direction: row;
+      .line {
+        width: 35px;
+        height: 35px;
+      }
     }
 
-    > p {
+    div > p {
       color: #034f9e;
       margin-bottom: 0px;
-      margin-left: 20px;
+      margin-left: 10px;
       font-weight: bold;
       font-size: 20px;
     }
-  `,
-  Info: styled.div`
-    position: relative;
-    left: 55px;
-    top: 15px;
-    width: 100px;
-    height: 100px;
   `,
 };
 export default TestGraph;

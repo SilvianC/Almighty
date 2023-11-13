@@ -4,7 +4,6 @@ import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";
 
 const BmsGraph = ({ data }) => {
-  console.log(data);
   const option = {
     chart: {
       type: "column",
@@ -115,52 +114,36 @@ const BmsGraph = ({ data }) => {
       ],
     },
   };
-  console.log(option);
   return (
     <S.Wrap>
-      <img
-        class="BMS-INFO"
-        src="/Vector.png"
-        alt="Grapefruit slice atop a pile of other slices"
-      />
-      <S.Info>잘했다.</S.Info>
-      <p>BMS</p>
-
       <div>
-        <HighchartsReact highcharts={Highcharts} options={option} />
+        <img src="BarChart.png" className="bar"></img>
+        <p>BMS</p>
       </div>
+      <HighchartsReact highcharts={Highcharts} options={option} />
     </S.Wrap>
   );
 };
 
 const S = {
   Wrap: styled.div`
-    flex: 1;
     padding: 10px;
-    .BMS-INFO {
-      position: relative;
-      left: 67px;
-      top: 15px;
+    z-index: 99;
+    div {
+      display: flex;
+      flex-direction: row;
+      .bar {
+        width: 35px;
+        height: 35px;
+      }
     }
-    > div {
-      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
-        0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    > p {
+    div > p {
       color: #034f9e;
       margin-bottom: 0px;
-      margin-left: 20px;
+      margin-left: 10px;
       font-weight: bold;
       font-size: 20px;
     }
-  `,
-  Info: styled.div`
-    position: relative;
-    left: 55px;
-    top: 15px;
-    width: 100px;
-    height: 100px;
   `,
 };
 export default BmsGraph;
