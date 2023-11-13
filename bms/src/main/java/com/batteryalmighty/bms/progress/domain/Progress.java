@@ -1,4 +1,4 @@
-package com.batteryalmighty.bms.domain.mysql;
+package com.batteryalmighty.bms.progress.domain;
 
 import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;

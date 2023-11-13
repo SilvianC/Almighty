@@ -1,6 +1,5 @@
 package com.batteryalmighty.bms.vitboard.domain;
 
-import com.batteryalmighty.bms.domain.mysql.Progress;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;

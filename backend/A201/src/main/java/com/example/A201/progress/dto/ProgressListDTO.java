@@ -8,7 +8,6 @@ import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @NoArgsConstructor
 public class ProgressListDTO {
 
@@ -18,4 +17,12 @@ public class ProgressListDTO {
     private LocalDateTime createdDate;
     @Enumerated(EnumType.STRING)
     private ProgressStatus currentStatus;
+
+    public ProgressListDTO(Long id, String companyName, String modelName, LocalDateTime createdDate, ProgressStatus currentStatus) {
+        this.id = id;
+        this.companyName = companyName;
+        this.modelName = modelName;
+        this.createdDate = createdDate;
+        this.currentStatus = currentStatus;
+    }
 }
