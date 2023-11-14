@@ -20,6 +20,7 @@ const TestGraph = ({ data, threshold, type }) => {
     chart: {
       type: "spline",
       panning: true, // 드래그로 이동을 활성화
+      borderRadius: 25, // 틀을 둥글게 조절하는 값
     },
     accessibility: {
       enabled: false,
@@ -136,58 +137,6 @@ const TestGraph = ({ data, threshold, type }) => {
           labels: {
             enabled: false,
           },
-          plotLines: [
-            {
-              value: threshold.overVoltage, // 수평선을 그릴 y-값 (원하는 기준값)
-              color: "red", // 수평선의 색상
-              width: 0.3, // 수평선의 두께
-              zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
-              label: {
-                align: "right", // 레이블의 위치 (선택 사항)
-                x: -10, // 레이블의 x-오프셋 (선택 사항)
-              },
-            },
-            {
-              value: threshold.underVoltage, // 수평선을 그릴 y-값 (원하는 기준값)
-              color: "blue", // 수평선의 색상
-              width: 0.3, // 수평선의 두께
-              zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
-              label: {
-                align: "right", // 레이블의 위치 (선택 사항)
-                x: -10, // 레이블의 x-오프셋 (선택 사항)
-              },
-            },
-            {
-              value: threshold.overCurrent, // 수평선을 그릴 y-값 (원하는 기준값)
-              color: "red", // 수평선의 색상
-              width: 0.1, // 수평선의 두께
-              zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
-              label: {
-                align: "right", // 레이블의 위치 (선택 사항)
-                x: -10, // 레이블의 x-오프셋 (선택 사항)
-              },
-            },
-            {
-              value: threshold.chargingMaxTemperature, // 수평선을 그릴 y-값 (원하는 기준값)
-              color: "red", // 수평선의 색상
-              width: 0.1, // 수평선의 두께
-              zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
-              label: {
-                align: "right", // 레이블의 위치 (선택 사항)
-                x: -10, // 레이블의 x-오프셋 (선택 사항)
-              },
-            },
-            {
-              value: threshold.chargingMinTemperature, // 수평선을 그릴 y-값 (원하는 기준값)
-              color: "blue", // 수평선의 색상
-              width: 0.1, // 수평선의 두께
-              zIndex: 1, // 수평선의 쌓임 순서 (선택 사항)
-              label: {
-                align: "right", // 레이블의 위치 (선택 사항)
-                x: -10, // 레이블의 x-오프셋 (선택 사항)
-              },
-            },
-          ],
         },
         {
           visible: false,
