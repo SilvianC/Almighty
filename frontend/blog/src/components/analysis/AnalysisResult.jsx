@@ -43,7 +43,7 @@ const AnalysisResult = ({ progressId }) => {
   const memberId = useRecoilValue(MemberIdState);
   const getBotResponse = async () => {
     try {
-      const response = await http.post(`/api/chat/interact/${progressId}`, {
+      const response = await http.post(`/api/chat/interact`, {
         timestamp: new Date(), // 현재 시간을 사용
         memberId: memberId,
         progressId: progressId,

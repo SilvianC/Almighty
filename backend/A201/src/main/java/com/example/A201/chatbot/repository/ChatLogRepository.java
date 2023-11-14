@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface ChatLogRepository extends JpaRepository<ChatLog, Long> {
 
 
-    @Query("select cl from ChatLog cl where cl.progress.id =: progressId")
+    @Query("select cl from ChatLog cl where cl.progress.id = :progressId")
     Optional<ChatLog> findByProgressId(@Param("progressId")Long progressId);
 
     @Transactional
