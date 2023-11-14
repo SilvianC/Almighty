@@ -14,6 +14,30 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const [resonDetail, setReasonDetail] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
+  const modalContentRef = useRef();
+
+  // const handleCloseModal = (e) => {
+  //   console.log("테스트", modalContentRef.current.contains(e.target));
+  //   if (isDropdownOpen && modalContentRef.current && !modalContentRef.current.contains(e.target)) {
+  //     setIsDropdownOpen(false);
+  //   }
+  // };
+
+
+  // useEffect(() => {
+  //   window.addEventListener('click', handleCloseModal);
+  //   return () => {
+  //     window.removeEventListener('click', handleCloseModal);
+  //   };
+  // }, [isDropdownOpen]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", onClose);
+    return () => {
+      document.removeEventListener("mousedown", onClose);
+    };
+  }, []);
+
   useEffect(() => {
     setSelectedOption(() => "사유 선택");
     setResult(() => null);
@@ -39,6 +63,10 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
       })
       .catch();
   };
+
+  const reason = (e) => {
+    setReasonDetail(e.target.value);
+  }
 
   /*
   const regist = () => {
@@ -76,13 +104,10 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   }
 
   return (
-    <S.Wrap
-      // ref={modalRef}
-      // onClick={(e)=>modalOutSideClick(e)}
-      >
-      <img src={CloseIcon} alt="close" onClick={onClose}/>
+    <S.Wrap ref={modalContentRef}>
       <S.Title>
         <p>결과 등록</p>
+        <img src={CloseIcon} alt="close" onClick={onClose} />
       </S.Title>
       <S.Option>
         <div>
@@ -155,11 +180,11 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
           )}
         </S.Dropdown>
         {selectedOption == "기타" && (
-          <input type="text" placeholder="상세 사유 입력" />
+          <input type="text" placeholder="상세 사유 입력" onChange={reason}/>
         )}
       </S.Reason>
       <S.Regist>
-        {!result || selectedOption === "사유 선택" || progress == null ? (
+        {!result || selectedOption === "사유 선택" || progress == null || (selectedOption === "기타")? (
           <button style={{ "background-color": "#D5DFE9" }} disabled>
             등록
           </button>
@@ -180,14 +205,14 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
 const S = {
   Wrap: styled.div`
     position: fixed;
-    top: 42%;
-    left: 58%;
+    bottom: 110px;
+    right: 20px;
     width: 40%;
-    padding-top: 20px;
+    padding-top: 30px;
     padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
     background-color: #f2f2f2;
-    // background: rgba(0, 0, 0, 0.5);
-    // padding: 6% 7.2% 6%;
     border: medium solid #A7BCD0;
     border-radius: 20px;
     display: flex;
@@ -195,32 +220,45 @@ const S = {
     justify-content: center;
     align-items: center;
     z-index: 3;
-
+    animation: slideInUp 0.5s ease;
+    
+    @keyframes slideInUp {
+      from {
+        transform: translateY(40%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+    `,
+  Title: styled.div`
+    // width: 85.6%;
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    
+    > p {
+      height: 100%;
+      border-radius: 10px;
+      color: #034f9e;
+      font-weight: bold;
+      font-size: 25px;
+      padding-left: 0.7rem;
+      padding-right: 0.7rem;
+    }
     > img {
       width: 30px;
       height: 30px;
       margin-bottom: 10px;
       margin-left: auto;
-      margin-right: 7.2%;
       cursor: pointer;
     }
-  `,
-  Title: styled.div`
-    width: 85.6%;
-    height: 40px;
-    background-color: #e7ecf2;
-    border-radius: 10px;
-    > p {
-      color: #034f9e;
-      font-weight: bold;
-      font-size: 25px;
-      line-height: 40px;
-      margin-left: 30px;
-    }
-  `,
-  Option: styled.div`
-    width: 85.6%;
-
+    `,
+    Option: styled.div`
+    // width: 85.6%;
+    width: 100%;
+    
     > div {
       display: flex;
       flex-wrap: wrap;
@@ -269,7 +307,8 @@ const S = {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 85.6%;
+    // width: 85.6%;
+    width: 100%;
 
     > p {
       font-size: 18px;
@@ -334,7 +373,8 @@ const S = {
     }
   `,
   Regist: styled.div`
-    width: 85.6%;
+    // width: 85.6%;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
@@ -343,7 +383,7 @@ const S = {
       background-color: #034f9e;
       border: none;
       border-radius: 0.375em;
-      width: 33.33%;
+      width: 20%;
       height: 3rem;
       color: #f2f2f2;
       font-weight: bold;

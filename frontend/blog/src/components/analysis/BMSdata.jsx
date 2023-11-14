@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import BMSIcon from "../../assets/images/icon-BMSdata.png";
 import TimeIcon from "../../assets/images/icon-Time.png";
+import CapacityIcon from "../../assets/images/icon-capacity.png";
 import VoltageIcon from "../../assets/images/icon-voltage.png";
 import TemperIcon from "../../assets/images/icon-temperature.png";
 
@@ -19,8 +20,8 @@ const BMSdata = () => {
 	return (
 		<S.Wrap>
 			<S.Header>
-				<img src={BMSIcon} alt="icon" />
-				<span>주요 데이터</span>
+				{/* <img src={BMSIcon} alt="icon" />
+				<span>주요 데이터</span> */}
 				<S.Option>
 					<div>
 						<label>
@@ -49,13 +50,21 @@ const BMSdata = () => {
 			{isCharge === "충전" ? (
 				<S.Data>
 					<S.Container>
-						<S.ContainerTitle>총 시간 / 총 용량</S.ContainerTitle>
+						<S.ContainerTitle>총 시간</S.ContainerTitle>
 						<S.ContainerData>
-							<span>2시간 19분</span>
 							<span>1000AH</span>
 						</S.ContainerData>
 						<S.ContainerImg>
 							<img src={TimeIcon} alt="time" />
+						</S.ContainerImg>
+					</S.Container>
+					<S.Container>
+						<S.ContainerTitle>총 용량</S.ContainerTitle>
+						<S.ContainerData>
+							<span>1000AH</span>
+						</S.ContainerData>
+						<S.ContainerImg>
+							<img src={CapacityIcon} alt="capacity" />
 						</S.ContainerImg>
 					</S.Container>
 					<S.Container style={{ backgroundColor: "#FACFCF", border: "3px solid rgba(216, 72, 72, 0.5)" }}>
@@ -172,8 +181,8 @@ const S = {
 		}
 	`,
 	Option: styled.div`
-		width: 15%;
-		margin-left: auto;
+		width: 10%;
+		// margin-left: auto;
 
 		> div {
 			display: flex;
@@ -240,8 +249,8 @@ const S = {
 	ContainerImg: styled.div`
 	
 	> img {
-		width: 50%;
-		height: 70%;
+		width: 8rem;
+		height: 8rem;
 		position: absolute;
 		bottom: 0;
 		right: 0;
@@ -251,6 +260,7 @@ const S = {
 	ContainerTitle: styled.div`
 		color: #82858B;
 		font-size: 15px;
+		font-weight: bold;
 		margin-left: 20px;
 		height: 10%;
 		z-index: 2;

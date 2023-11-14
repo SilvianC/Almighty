@@ -16,21 +16,28 @@ import RegistIcon from "../../assets/images/icon-regist.png";
 const Board = () => {
   const [progress, setProgress] = useState(null);
   const [isRegistModalOpen, setIsRegistModalOpen] = useState(false);
-  const modalRef = useRef < HTMLDivElement > (null);
+  // const modalRef = useRef<HTMLDivElement>(null);
   const [progressData, setProgressData] = useState(null);
 
   FirebaseComponent();
 
   const openRegistModal = () => {
-    setIsRegistModalOpen(!isRegistModalOpen);
+    console.log("열려라", isRegistModalOpen);
+    // setIsRegistModalOpen(true);
+    // setIsRegistModalOpen(!isRegistModalOpen);
+    setIsRegistModalOpen((prev) => !prev);
   };
-
+  
+  
   const closeRegistModal = () => {
+    console.log("닫혀라", isRegistModalOpen);
     setIsRegistModalOpen(false);
   };
 
   // const modalOutSideClick = (e) => {
-  //   if (modalRef.current && modalRef.current.contains(e.target)) {
+  //   console.log("밖" + e);
+  //   console.log("ref" + modalRef);
+  //   if (!modalRef.current.contains(e.target)) {
   //     return;
   //   }
   //   setIsRegistModalOpen(false);
@@ -57,14 +64,14 @@ const Board = () => {
         ></BatteryBoard>
       </S.Graph>
       <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
-      <RegistResult
-        progress={progress}
-        setProgress={setProgress}
-        // modalRef={modalRef}
-        // modalOutSideClick={modalOutSideClick}
-        isOpen={isRegistModalOpen}
-        onClose={closeRegistModal}
-      ></RegistResult>
+      {isRegistModalOpen && (
+        <RegistResult
+          progress={progress}
+          setProgress={setProgress}
+          isOpen={isRegistModalOpen}
+          onClose={closeRegistModal}
+        ></RegistResult>
+      )}
     </S.Wrap >
   );
 };
