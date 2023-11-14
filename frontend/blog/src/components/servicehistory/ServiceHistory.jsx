@@ -72,7 +72,7 @@ const ServiceHistory = ({
         반송 신청 결과
       </S.Title>
 
-      <Form>
+      <Form style={{ height: "90%" }}>
         <S.Table bordered>
           <thead className={"table-secondary"}>
             <tr>
