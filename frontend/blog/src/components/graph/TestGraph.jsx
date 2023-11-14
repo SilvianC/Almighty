@@ -53,6 +53,10 @@ const TestGraph = ({ data, threshold, type }) => {
       //   { start: [], end: [] }
       // );
       const newData = {
+        animation: {
+          duration: 1000, // 애니메이션 지속 시간 (밀리초)
+        },
+        lineWidth: 3, // 선의 굵기 설정
         name: transName[t],
         yAxis: 0,
         turboThreshold: 10000,
@@ -167,14 +171,13 @@ const TestGraph = ({ data, threshold, type }) => {
         label: {
           connectorAllowed: false,
         },
-        line: {
-          // 선 그래프에 대한 설정
-          lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
-        },
       },
       series: [
         ...datas,
         {
+          animation: {
+            duration: 1000, // 애니메이션 지속 시간 (밀리초)
+          },
           name: "잔량(%)",
           yAxis: 1,
           data: data.map((item) => {
