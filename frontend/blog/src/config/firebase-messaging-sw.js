@@ -11,13 +11,13 @@ function FirebaseComponent() {
   const memberId = useRecoilValue(MemberIdState);
   const [isLogin, setIsLogin] = useRecoilState(IsLoginState);
   const firebaseConfig = {
-    apiKey: "AIzaSyDmHguVkQXMt9KJyp26qRwA25oocAs7L50",
+    apiKey: process.env.REACT_APP_API_KEY,
     authDomain: "a201-822f6.firebaseapp.com",
     projectId: "a201-822f6",
     storageBucket: "a201-822f6.appspot.com",
-    messagingSenderId: "274097286993",
-    appId: "1:274097286993:web:3480ae4ea661778fd7ad70",
-    measurementId: "G-TP3XY36SH9",
+    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_APP_ID,
+    measurementId: process.env.REACT_APP_MEASUREMENT_ID,
   };
 
   const app = initializeApp(firebaseConfig);
