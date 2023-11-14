@@ -51,8 +51,8 @@ public class BmsService {
 
     public void uploadBoard(ProgressIdDTO progressIdDTO) {
 
-        String filename = "sample.csv";
-        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\vits\\" + filename;
+        String filename = progressIdDTO.getCode();
+        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
         try{
             List<String> vitBoards = Files.readAllLines(Paths.get(filePath));

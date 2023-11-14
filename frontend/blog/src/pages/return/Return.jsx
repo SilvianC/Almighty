@@ -89,7 +89,6 @@ const Return = () => {
     http
       .get(`/api/batteries/member/${memberId}`)
       .then(({ data }) => {
-        console.log(data);
         setData(() => {
           return data["data"];
         });

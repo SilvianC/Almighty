@@ -72,7 +72,7 @@ const ServiceHistory = ({
         반송 신청 결과
       </S.Title>
 
-      <Form>
+      <Form style={{ height: "90%" }}>
         <S.Table bordered>
           <thead className={"table-secondary"}>
             <tr>
@@ -105,7 +105,6 @@ const ServiceHistory = ({
 
               // 차이가 5초 이내인지 확인합니다.
               const isRecent = timeDifferenceInSeconds <= 5;
-              console.log(isRecent);
               return (
                 <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
                   <FirstTd

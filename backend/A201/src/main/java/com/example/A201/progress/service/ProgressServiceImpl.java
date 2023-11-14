@@ -94,7 +94,7 @@ public class ProgressServiceImpl implements ProgressService{
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
 
-        return new ProgressIdDTO(progress);
+        return new ProgressIdDTO(progress.getId(), progressdto.getCode());
     }
 
     @Override
