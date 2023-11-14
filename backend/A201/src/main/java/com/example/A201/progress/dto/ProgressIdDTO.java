@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ProgressIdDTO {
     private Long progressId;
+    private Long batteryId;
     private String code;
 }

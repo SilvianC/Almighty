@@ -50,8 +50,10 @@ public class BmsService {
     }
 
     public void uploadBoard(ProgressIdDTO progressIdDTO) {
+        log.info(progressIdDTO.getCode());
+        log.info(String.valueOf(progressIdDTO.getProgressId()));
 
-        String filename = progressIdDTO.getCode();
+        String filename = progressIdDTO.getCode() + ".csv";
         String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
         try{
@@ -207,7 +209,7 @@ public class BmsService {
                 .minTemperatureCharge(minTemperatureCharge)
                 .maxTemperatureDischarge(maxTemperatureDischarge)
                 .minTemperatureDischarge(minTemperatureDischarge)
-                .receiveDate(LocalDateTime.now())
+//                .receiveDate(LocalDateTime.now())
                 .build();
 
         bmsBoardRepository.save(bmsBoard);
