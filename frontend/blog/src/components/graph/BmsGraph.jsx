@@ -54,7 +54,6 @@ const BmsGraph = ({ data }) => {
     },
     tooltip: {
       formatter: function () {
-        console.log(this);
         return "<b>" + this.key + " : " + this.y + "</b>";
       },
     },
