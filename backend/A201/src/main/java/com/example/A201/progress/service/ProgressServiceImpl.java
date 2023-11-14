@@ -5,6 +5,7 @@ import com.example.A201.alarm.domain.constant.Title;
 import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.BatteryStatus;
+import com.example.A201.history.constant.ResultStatus;
 import com.example.A201.progress.constant.ProgressStatus;
 import com.example.A201.battery.domain.Battery;
 import com.example.A201.progress.domain.Progress;
@@ -14,7 +15,6 @@ import com.example.A201.progress.dto.ProgressIdDTO;
 import com.example.A201.progress.dto.ProgressListDTO;
 import com.example.A201.progress.dto.ProgressResultDTO;
 import com.example.A201.battery.repository.BatteryRepository;
-import com.example.A201.battery.service.BatteryService;
 import com.example.A201.firebase.FCMNotificationRequestDto;
 import com.example.A201.firebase.FCMNotificationService;
 import com.example.A201.progress.repository.ProgressRepository;
@@ -33,7 +33,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 import javax.mail.internet.MimeMessage;
 import javax.persistence.EntityNotFoundException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -72,6 +71,7 @@ public class ProgressServiceImpl implements ProgressService{
 
         progressRepository.save(progress);
 
+        battery.setBatteryStatus(BatteryStatus.InProgress);
 //        statusHistoryRepository.save(StatusHistory.builder()
 //                .toStatus(Status.Request)
 //                .fromStatus(battery.getBatteryStatus())
@@ -117,6 +117,7 @@ public class ProgressServiceImpl implements ProgressService{
 
         Battery battery = progress.getBattery();
         Member member = battery.getMember();
+        ResultStatus resultStatus = resultDto.getResultStatus();
 
 
 //        StatusHistory statusHistory = statusHistoryRepository.findByExpertStatusAndBatteryId(resultDto.getResultStatus(), battery.getId());
@@ -127,7 +128,7 @@ public class ProgressServiceImpl implements ProgressService{
 //        statusHistoryRepository.save(statusHistory);
 
         statusHistoryRepository.save(StatusHistory.builder()
-                .expertStatus(resultDto.getResultStatus())
+                .expertStatus(resultStatus)
                 .battery(battery)
                 .requestReason(progress.getReason())
                 .responseReason(resultDto.getResponseReason())
@@ -147,25 +148,31 @@ public class ProgressServiceImpl implements ProgressService{
 //        Long memberId = batteryService.getMemberId(progress.getBatteryId());
 
         alarmService.insertAlarm(AlarmDto.builder()
-                .title(resultDto.getResultStatus().equals("SdiFault")?"반송 수락":"반송 거절")
+                .title(resultStatus.equals("SdiFault")?"반송 수락":"반송 거절")
                 .content(reason)
                 .member(member.getMemberId())
                 .build());
         log.debug("여기까지 완료");
         fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
 //                .title(String.valueOf(progress.getToStatus()))
-                .title(String.valueOf(resultDto.getResultStatus()))
+                .title(String.valueOf(resultStatus))
                 .body(reason)
                 .targetUserId(member.getMemberId())
                 .receiver(Receiver.fromReceiver("일반 사용자"))
                 .build());
 
-        battery.setBatteryStatus(BatteryStatus.Analysis);
+        if(resultStatus.equals("SdiFault")){
+            battery.setBatteryStatus(BatteryStatus.Return);
+        }
+        else {
+            battery.setBatteryStatus(BatteryStatus.Normal);
+        }
+
         progress.changeStatus(ProgressStatus.Expert);
         return MailInfo.builder()
                 .email(member.getEmail())
                 .code(battery.getCode())
-                .result(resultDto.getResultStatus().toString())
+                .result(resultStatus.toString())
                 .build();
     }
 
@@ -184,6 +191,7 @@ public class ProgressServiceImpl implements ProgressService{
     }
 
     @Async
+    @Transactional
     public void requestToBMS(ProgressIdDTO progressIdDTO){
         try {
             WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
@@ -197,9 +205,8 @@ public class ProgressServiceImpl implements ProgressService{
         } catch (Exception e){
             e.printStackTrace();
         }
-
         Battery battery = batteryRepository.findById(progressIdDTO.getBatteryId())
                         .orElseThrow(() -> new EntityNotFoundException("해당하는 배터리를 찾을 수 없습니다."));
-        battery.setBatteryStatus(BatteryStatus.InProgress);
+        battery.setBatteryStatus(BatteryStatus.Analysis);
     }
 }
