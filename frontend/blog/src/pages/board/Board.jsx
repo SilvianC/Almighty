@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import BatteryBoard from "./BatteryBoard";
+import { useNavigate } from 'react-router-dom';
 import ChatComponent from "../../components/chatbot/ChatComponent";
 import RegisterReason from "../../components/analysis/RegistReason";
 import BMSData from "../../components/analysis/BMSdata";
@@ -8,7 +9,7 @@ import AnalysisResult from "../../components/analysis/AnalysisResult";
 import RegistResult from "../../components/analysis/RegistResult";
 import { BiLineChart } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
-import { IsLoginState } from "../../states/states";
+import { MemberIdState, AccessTokenState,RoleState,IsLoginState } from "../../states/states";
 import FirebaseComponent from "../../config/firebase-messaging-sw";
 import SideBar from "../../components/sidebar/Sidebar";
 import RegistIcon from "../../assets/images/icon-regist.png";
@@ -22,11 +23,16 @@ const Board = () => {
   const [battery, setBattery] = useState([]);
   const modalRef = useRef < HTMLDivElement > null;
   const [progressData, setProgressData] = useState(null);
-
+  const Role = useRecoilValue(RoleState);
+  const isLogin = useRecoilValue(IsLoginState);
+  const navigate = useNavigate();
+  const accessToken = useRecoilValue(AccessTokenState);
   useEffect(() => {
     if (progress != null) {
       http
-        .get(`/api/dashboard/${progress}`)
+        .get(`/api/dashboard/${progress}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
         .then(({ data }) => {
           setVitData(() => {
             return data["data"]["vitData"];
@@ -60,7 +66,6 @@ const Board = () => {
         });
     }
   }, [progress]);
-
   FirebaseComponent();
 
   const openRegistModal = () => {
@@ -70,6 +75,20 @@ const Board = () => {
   const closeRegistModal = () => {
     setIsRegistModalOpen(false);
   };
+
+  //--------------------------------------------------------------------------------
+  //이거 나중엔 풉시다 user, admin 구분 코드
+  // useEffect(() => {
+  //   if(isLogin != true){
+  //     alert("로그인 하세요")
+  //     navigate('/');
+  //   }
+  //   // Role이 'USER'이면 /return으로 리다이렉트
+  //   if (Role === 'USER') {
+  //     navigate('/return');
+  //   }
+  // }, [Role, navigate, isLogin]);
+  //--------------------------------------------------------------------------------
 
   // const modalOutSideClick = (e) => {
   //   if (modalRef.current && modalRef.current.contains(e.target)) {
