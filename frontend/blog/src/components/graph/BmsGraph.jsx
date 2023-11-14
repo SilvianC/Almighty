@@ -6,6 +6,7 @@ import styled from "styled-components";
 const BmsGraph = ({ data }) => {
   const option = {
     chart: {
+      backgroundColor: "#f2f2f2",
       type: "column",
       borderRadius: 25, // 틀을 둥글게 조절하는 값
       plotShadow: true, // 차트 영역에 그림자 표시 여부
