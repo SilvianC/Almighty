@@ -1,6 +1,12 @@
 import { useState, useEffect } from "react";
 import http from "../../api/http";
-import { BiChevronLeftCircle, BiChevronRightCircle } from "react-icons/bi";
+import {
+  BiChevronLeftCircle,
+  BiChevronRightCircle,
+  BiChevronDown,
+  BiChevronsDown,
+  BiChevronsUp,
+} from "react-icons/bi";
 import {
   Menu,
   MenuItem,
@@ -10,7 +16,8 @@ import {
 } from "react-pro-sidebar";
 import styled from "styled-components";
 
-const SideBar = ({ currentStatus, progress, setProgress }) => {
+const SideBar = ({ progress, setProgress }) => {
+  const [currentStatus, setCurrentStatus] = useState("request");
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
 
@@ -19,16 +26,35 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
     setProgress(() => item.id);
   };
 
+  const statusButtonClick = () => {
+    if (currentStatus === "request") {
+      setCurrentStatus("finished");
+    } else if (currentStatus === "finished") {
+      setCurrentStatus("request");
+    }
+  };
+
+  // useEffect(() => {
+  //   http
+  //     .get(`/api/batteries/progress/${currentStatus}`)
+  //     .then(({ data }) => {
+  //       setData(() => {
+  //         return data["data"];
+  //       });
+  //     })
+  //     .catch();
+  // }, []);
+
   useEffect(() => {
     http
-      .get(`/api/batteries/progress/request`)
+      .get(`/api/batteries/progress/${currentStatus}`)
       .then(({ data }) => {
         setData(() => {
           return data["data"];
         });
       })
       .catch();
-  }, []);
+  }, [currentStatus]);
 
   const groupedData = data.reduce((result, item) => {
     const date = item.createDate;
@@ -112,6 +138,21 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
           >
             {menuItems}
           </Menu>
+          <StatusButton>
+            {currentStatus === "finished" ? (
+              <BiChevronsDown
+                size={50}
+                color="#034f9e"
+                onClick={statusButtonClick}
+              />
+            ) : (
+              <BiChevronsUp
+                size={50}
+                color="#034f9e"
+                onClick={statusButtonClick}
+              />
+            )}
+          </StatusButton>
         </StyledSidebar>
       </SidebarContainer>
     </Wrapper>
@@ -192,6 +233,13 @@ const ToggleButton = styled.div`
   z-index: 100;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+`;
+
+const StatusButton = styled.div`
+  display: flex;
+  justify-content: center;
+  top: 80%;
+  z-index: 1000;
 `;
 
 export default SideBar;
