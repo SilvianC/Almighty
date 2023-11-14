@@ -13,15 +13,31 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BmsResponse {
-    int overVoltageCount;
+    private int overVoltageCount;
 
-    int underVoltageCount;
+    private int underVoltageCount;
 
-    int overCurrentCount;
+    private int overCurrentCount;
 
-    int overTemperatureCount;
+    private int overTemperatureCount;
 
-    int underTemperatureCount;
+    private int underTemperatureCount;
+
+    private double maxVoltageCharge;
+
+    private double minVoltageCharge;
+
+    private double maxVoltageDischarge;
+
+    private double minVoltageDischarge;
+
+    private double maxTemperatureCharge;
+
+    private double minTemperatureCharge;
+
+    private double maxTemperatureDischarge;
+
+    private double minTemperatureDischarge;
 
     public static BmsResponse bmsResponse(BmsBoard bmsBoard){
         return BmsResponse.builder()
@@ -31,6 +47,14 @@ public class BmsResponse {
                 .underVoltageCount(bmsBoard.getUnderVoltageCount())
                 .overTemperatureCount(bmsBoard.getOverTemperatureCount())
                 .underTemperatureCount(bmsBoard.getUnderTemperatureCount())
+                .maxVoltageCharge(bmsBoard.getMaxVoltageCharge())
+                .minVoltageCharge(bmsBoard.getMinVoltageCharge())
+                .maxVoltageDischarge(bmsBoard.getMaxVoltageDischarge())
+                .minVoltageDischarge(bmsBoard.getMinVoltageDischarge())
+                .maxTemperatureCharge(bmsBoard.getMaxTemperatureCharge())
+                .minTemperatureCharge(bmsBoard.getMinTemperatureCharge())
+                .maxTemperatureDischarge(bmsBoard.getMaxTemperatureDischarge())
+                .minTemperatureDischarge(bmsBoard.getMinTemperatureDischarge())
                 .build();
     }
 }

@@ -20,49 +20,12 @@ const BatteryBoard = ({
   setProgress,
   progressData,
   setProgressData,
+  vitData,
+  bmsData,
+  battery,
 }) => {
-  const [vitData, setVitData] = useState([]);
-  const [bmsData, setBmsData] = useState([]);
-  const [battery, setBattery] = useState([]);
   const [isopenbmsinfo, setIsopenbmsinfo] = useState(false);
   const [isopentestinfo, setIsopentestinfo] = useState(false);
-  useEffect(() => {
-    if (progressId != null) {
-      http
-        .get(`/api/dashboard/${progressId}`)
-        .then(({ data }) => {
-          setVitData(() => {
-            return data["data"]["vitData"];
-          });
-          setBmsData(() => {
-            return data["data"]["bmsData"];
-          });
-          setBattery(() => {
-            return data["data"]["battery"];
-          });
-          setProgressData(() => {
-            return data["data"]["progress"];
-          });
-        })
-        .catch(() => {
-          setVitData(() => {
-            return [];
-          });
-          setBmsData(() => {
-            return [];
-          });
-          setBattery(() => {
-            return [];
-          });
-          setProgress(() => {
-            return null;
-          });
-          setProgressData(() => {
-            return null;
-          });
-        });
-    }
-  }, [progressId]);
 
   return (
     <S.Wrap>
