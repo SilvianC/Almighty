@@ -72,6 +72,20 @@ const BuyTable = ({ data, onApplyClick }) => {
                         신청
                       </ApplyButton>
                     )}
+                    {/* {item.status === "Analysis" ? (
+                      <CompletedButton disabled>분석 중</CompletedButton>
+                    ) : (
+                      <ApplyButton onClick={() => onApplyClick(item)}>
+                        신청
+                      </ApplyButton>
+                    )}
+                    {item.status === "Return" ? (
+                      <CompletedButton disabled>반송 중</CompletedButton>
+                    ) : (
+                      <ApplyButton onClick={() => onApplyClick(item)}>
+                        신청
+                      </ApplyButton>
+                    )} */}
                   </td>
                 </tr>
               );

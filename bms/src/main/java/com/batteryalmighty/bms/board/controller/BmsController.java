@@ -20,7 +20,6 @@ public class BmsController {
 //        return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", bmsService.uploadCsv(file));
     }
 
-
     @GetMapping("/vits")
     public ResponseEntity<?> getAllVitBoard(){
         return SuccessResponseEntity.toResponseEntity("vit 데이터 불러오기 성공", bmsService.getVitBoardList());
