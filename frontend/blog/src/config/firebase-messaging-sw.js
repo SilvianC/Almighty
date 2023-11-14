@@ -24,7 +24,6 @@ function FirebaseComponent() {
   const messaging = getMessaging(app);
 
   useEffect(() => {
-    console.log(isLogin);
     if (isLogin == "") {
       requestPermission();
     }
