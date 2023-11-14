@@ -1,9 +1,10 @@
 package com.batteryalmighty.bms.board.service;
 
-import com.batteryalmighty.bms.battery.domain.Battery;
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.batteryalmighty.bms.battery.domain.Model;
-import com.batteryalmighty.bms.battery.mysql.BatteryRepository;
-import com.batteryalmighty.bms.battery.mysql.ModelRepository;
 import com.batteryalmighty.bms.progress.domain.Progress;
 import com.batteryalmighty.bms.progress.dto.ProgressIdDTO;
 import com.batteryalmighty.bms.progress.mysql.ProgressRepository;
@@ -16,6 +17,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -44,6 +46,10 @@ public class BmsService {
 
     private final Ekf ekf;
 
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+    private final AmazonS3 amazonS3Client;
+
     @PostConstruct
     public void initialize(){
         ekf.init();
@@ -53,15 +59,19 @@ public class BmsService {
         log.info(progressIdDTO.getCode());
         log.info(String.valueOf(progressIdDTO.getProgressId()));
 
-        String filename = progressIdDTO.getCode() + ".csv";
-        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
+        String filePath = "/charge/";
+        String filename = filePath + progressIdDTO.getCode() + ".csv";
+//        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
-        try{
-            List<String> vitBoards = Files.readAllLines(Paths.get(filePath));
-            socPredict(progressIdDTO.getProgressId(), vitBoards);
-
-        } catch (Exception e) {
-            e.printStackTrace();
+        try {
+            S3Object s3object = amazonS3Client.getObject(bucket, filename);
+            try (S3ObjectInputStream inputStream = s3object.getObjectContent();
+                 CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
+                socPredict(progressIdDTO.getProgressId(), csvReader);
+            }
+        } catch (IOException | CsvException e) {
+            // 예외 처리
+            throw new RuntimeException("CSV 파일 읽기 실패", e);
         }
 
 //        int num = 0;
@@ -96,7 +106,7 @@ public class BmsService {
 
     }
 
-    public void socPredict(Long progressId, List<String> vitBoards) {
+    public void socPredict(Long progressId, CSVReader csvReader) throws CsvException, IOException {
 
         Progress progress = progressRepository.findById(progressId)
                 .orElseThrow(() -> new IllegalStateException("찾는 프로세스 요청이 없습니다."));
@@ -121,16 +131,17 @@ public class BmsService {
         double maxTemperatureDischarge = Double.MIN_VALUE;
         double minTemperatureDischarge = Double.MAX_VALUE;
 
-        int size = vitBoards.size();
+
+        csvReader.readNext();
+        String[] values;
         int num = 0;
 
-        for(int i = 1;i < size;i++){
-            String[] temp = vitBoards.get(i).split(",");
+        while ((values = csvReader.readNext()) != null){
 
-            Double voltage = Double.valueOf(temp[0]);
-            Double current = Double.valueOf(temp[1]);
-            Double temperature = Double.valueOf(temp[2]);
-            Double time = Double.valueOf(temp[3]);
+            Double voltage = Double.valueOf(values[0]);
+            Double current = Double.valueOf(values[1]);
+            Double temperature = Double.valueOf(values[2]);
+            Double time = Double.valueOf(values[3]);
 
             ekf.predictx_(time, current);
             ekf.predictP();
@@ -192,6 +203,7 @@ public class BmsService {
             prevVolt = voltage;
             prevCurrent = current;
             prevTemperature = temperature;
+
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
