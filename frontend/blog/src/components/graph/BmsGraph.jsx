@@ -7,6 +7,8 @@ const BmsGraph = ({ data }) => {
   const option = {
     chart: {
       type: "column",
+      borderRadius: 25, // 틀을 둥글게 조절하는 값
+      plotShadow: true, // 차트 영역에 그림자 표시 여부
     },
     accessibility: {
       enabled: false,
@@ -28,7 +30,6 @@ const BmsGraph = ({ data }) => {
     plotOptions: {
       column: {
         minPointLength: 3, // 최소 높이 설정
-        pointPlacement: "between", // 0 값의 막대도 바닥에 표시
       },
       label: {
         connectorAllowed: false,
@@ -39,8 +40,6 @@ const BmsGraph = ({ data }) => {
       },
     },
     yAxis: {
-      startOnTick: true, // Y 축의 시작을 눈금에 맞춤
-
       min: 0, // 막대 그래프의 최소 값 설정
 
       title: {
@@ -57,41 +56,20 @@ const BmsGraph = ({ data }) => {
     series: [
       {
         colors: [
-          "#9b20d9",
-          "#9215ac",
-          "#861ec9",
-          "#7a17e6",
-          "#7010f9",
-          "#691af3",
-          "#6225ed",
-          "#5b30e7",
-          "#533be1",
-          "#4c46db",
-          "#4551d5",
-          "#3e5ccf",
-          "#3667c9",
-          "#2f72c3",
-          "#277dbd",
-          "#1f88b7",
-          "#1693b1",
-          "#0a9eaa",
-          "#03c69b",
-          "#00f194",
+          data && data["overVoltageCount"] > 2 ? "#FF0000" : "#451ff1",
+          data && data["underVoltageCount"] > 2 ? "#FF0000" : "#451ff1",
+          data && data["overCurrentCount"] > 1 ? "#FF0000" : "#451ff1",
+          data && data["overTemperatureCount"] > 2 ? "#FF0000" : "#451ff1",
+          data && data["underTemperatureCount"] > 2 ? "#FF0000" : "#451ff1",
         ],
         colorByPoint: true,
 
         data: [
-          ["과전압", data && data.length !== 0 ? data["overVoltageCount"] : 0],
-          ["저전압", data && data.length !== 0 ? data["underVoltageCount"] : 0],
-          ["과전류", data && data.length !== 0 ? data["overCurrentCount"] : 0],
-          [
-            "고온도",
-            data && data.length !== 0 ? data["overTemperatureCount"] : 0,
-          ],
-          [
-            "저온도",
-            data && data.length !== 0 ? data["underTemperatureCount"] : 0,
-          ],
+          ["과전압", data ? data["overVoltageCount"] : 0],
+          ["저전압", data ? data["underVoltageCount"] : 0],
+          ["과전류", data ? data["overCurrentCount"] : 0],
+          ["고온도", data ? data["overTemperatureCount"] : 0],
+          ["저온도", data ? data["underTemperatureCount"] : 0],
         ],
         dataLabels: {
           enabled: true,
