@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef  } from "react";
 import styled from "styled-components";
 import http from "../../api/http";
+import {ColorRing} from  'react-loader-spinner';
 import { useRecoilValue } from "recoil";
-import { MemberIdState } from "../../states/states";
+import { MemberIdState, AccessTokenState } from "../../states/states";
 import { BiMailSend } from "react-icons/bi";
 const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   const [requestReason, setRequestReason] = useState("");
   const memberId = useRecoilValue(MemberIdState);
+  const accessToken = useRecoilValue(AccessTokenState);
   const handleClose = (event) => {
     event.preventDefault();
     onClose();
   };
+
+
+
+  const boltRef = useRef(null);
+  const divRef = useRef(null);
+
+  // 로딩 상태를 추적하는 상태 변수
+  const [isLoading, setIsLoading] = useState(false);
   const handleSubmission = (event) => {
     event.preventDefault();
-
+    setIsLoading(true); // 요청 시작 시 로딩 상태를 true로 설정
     const data = {
       id: memberId,
       title: "반송 신청",
@@ -22,14 +32,18 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
     };
 
     http
-      .post("/api/batteries/progress/request", data)
+      .post("/api/batteries/progress/request", data, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then((response) => {
+        setIsLoading(false); // 요청 완료 시 로딩 상태를 false로 설정
         if (onSuccess) {
           onSuccess(); // 상위 컴포넌트에 성공을 알림
         }
         onClose(); // 요청이 성공적으로 완료되면 모달을 닫습니다.
       })
       .catch((error) => {
+        setIsLoading(false); // 요청 완료 시 로딩 상태를 false로 설정
         console.error("There was an error sending the request", error);
         if (onError) {
           onError(); // 상위 컴포넌트에 에러를 알림
@@ -39,6 +53,20 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   return (
     <>
       <S.Wrap>
+      {isLoading && (
+      <S.LoadingContainer>
+        <ColorRing
+          visible={true}
+          height="100"
+          width="100"
+          ariaLabel="blocks-loading"
+          wrapperStyle={{}}
+          wrapperClass="blocks-wrapper"
+          colors={['#b8c480', '#B2A3B5', '#F4442E', '#51E5FF', '#429EA6']}
+        />
+        <S.LoadingText>로딩 중...</S.LoadingText>
+      </S.LoadingContainer>
+    )}
         <S.Title>
           <BiMailSend />
           {"\u00A0"}반품 신청
@@ -72,6 +100,22 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
 };
 
 const S = {
+  LoadingContainer: styled.div`
+    position: absolute; // 상대 위치 설정
+    top: 10;
+    left: 10;
+    right: 10;
+    bottom: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); // 반투명 배경
+  `,
+  LoadingText: styled.div`
+    margin-top: 20px;
+    color: white;
+    font-size: 18px;
+  `,
   Wrap: styled.div`
     border: 1px solid #d3d3d3;
     margin: 20px;

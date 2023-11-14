@@ -26,11 +26,13 @@ const Board = () => {
   const Role = useRecoilValue(RoleState);
   const isLogin = useRecoilValue(IsLoginState);
   const navigate = useNavigate();
-
+  const accessToken = useRecoilValue(AccessTokenState);
   useEffect(() => {
     if (progress != null) {
       http
-        .get(`/api/dashboard/${progress}`)
+        .get(`/api/dashboard/${progress}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
         .then(({ data }) => {
           setVitData(() => {
             return data["data"]["vitData"];

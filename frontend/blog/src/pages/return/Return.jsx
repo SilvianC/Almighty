@@ -58,7 +58,7 @@ const Return = () => {
   //이거 나중엔 풉시다 user, admin 구분 코드
   // useEffect(() => {
   //   if(isLogin != true){
-  //     alert("로그인 해")
+  //     alert("로그인 하세요")
   //     navigate('/');
   //   }
   //   // Role이 'ADMIN'이면 /main으로 리다이렉트
