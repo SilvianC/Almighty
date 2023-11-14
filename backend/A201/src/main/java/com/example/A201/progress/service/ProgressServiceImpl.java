@@ -67,7 +67,9 @@ public class ProgressServiceImpl implements ProgressService{
                         .battery(battery)
                         .currentStatus(ProgressStatus.Request)
                         .reason(progressdto.getReason())
+//                        .createDate(LocalDateTime.now())
                         .build();
+
         progressRepository.save(progress);
 
 //        statusHistoryRepository.save(StatusHistory.builder()
@@ -76,7 +78,6 @@ public class ProgressServiceImpl implements ProgressService{
 //                .battery(battery)
 //                .requestReason(progress.getReason())
 //                .build());
-        battery.setBatteryStatus(BatteryStatus.InProgress);
 
         log.debug("여기까지 완료");
         log.debug("PROGRESS뜯어보기: "+progressdto.getId()+" "+progressdto.getCode()+" "+progressdto.getTitle()+" "+progressdto.getReason());
@@ -94,7 +95,7 @@ public class ProgressServiceImpl implements ProgressService{
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
 
-        return new ProgressIdDTO(progress.getId(), progressdto.getCode());
+        return new ProgressIdDTO(progress.getId(), battery.getId(),progressdto.getCode());
     }
 
     @Override
@@ -182,6 +183,7 @@ public class ProgressServiceImpl implements ProgressService{
         }
     }
 
+    @Async
     public void requestToBMS(ProgressIdDTO progressIdDTO){
         try {
             WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
@@ -196,5 +198,8 @@ public class ProgressServiceImpl implements ProgressService{
             e.printStackTrace();
         }
 
+        Battery battery = batteryRepository.findById(progressIdDTO.getBatteryId())
+                        .orElseThrow(() -> new EntityNotFoundException("해당하는 배터리를 찾을 수 없습니다."));
+        battery.setBatteryStatus(BatteryStatus.InProgress);
     }
 }

@@ -84,6 +84,8 @@ public class Ekf {
         ocv = nearOcv[0].getOcv() - (nearOcv[0].getSoc() - x_) * (nearOcv[0].getOcv() - nearOcv[1].getOcv()) / (nearOcv[0].getSoc() - nearOcv[1].getSoc());
         ir = nearIr[0].getIr() - (nearIr[0].getSoc() - x_) * (nearIr[0].getIr() - nearIr[1].getIr()) / (nearIr[0].getSoc() - nearIr[1].getSoc());
         x = x_ + K * (volt - (ocv + ir));
+        if(x > 100) x = 100;
+        if(x < 0) x = 0;
     }
 
     public void nextP(){
