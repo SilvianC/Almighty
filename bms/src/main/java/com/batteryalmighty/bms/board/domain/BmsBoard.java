@@ -4,6 +4,7 @@ import com.batteryalmighty.bms.progress.domain.Progress;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@EntityListeners(AuditingEntityListener.class)
 public class BmsBoard {
 
     @Id
@@ -51,6 +53,7 @@ public class BmsBoard {
 
     private Double minTemperatureDischarge;
 
+    @CreatedDate
     private LocalDateTime receiveDate;
 
 }
