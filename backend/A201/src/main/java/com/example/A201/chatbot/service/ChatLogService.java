@@ -45,8 +45,10 @@ public class ChatLogService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 분석 요청 찾을 수 없습니다."));
 
         Optional<ChatLog> chatLog = chatLogRepository.findByProgressId(progress.getId());
+
 //        System.out.println("progress===>");
 //        System.out.println(chatLog.get().getProgress());
+
         if(chatLog.isEmpty()){
             log.debug("debug:"+bms.getProgress());
             log.debug("=================================================================");
