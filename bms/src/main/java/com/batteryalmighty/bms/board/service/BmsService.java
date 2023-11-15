@@ -49,26 +49,13 @@ public class BmsService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
     private final AmazonS3 amazonS3Client;
-<<<<<<< HEAD
-
-    @PostConstruct
-    public void initialize(){
-        ekf.init();
-    }
-=======
->>>>>>> 3244df8f17861fcb2bc3660d8a852ec6ca2b992f
 
     public void uploadBoard(ProgressIdDTO progressIdDTO) {
         log.info(progressIdDTO.getCode());
         log.info(String.valueOf(progressIdDTO.getProgressId()));
 
-<<<<<<< HEAD
-        String filePath = "/charge/";
-=======
         String filePath = "battery/";
->>>>>>> 3244df8f17861fcb2bc3660d8a852ec6ca2b992f
         String filename = filePath + progressIdDTO.getCode() + ".csv";
-//        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
         try {
             S3Object s3object = amazonS3Client.getObject(bucket, filename);
@@ -164,7 +151,7 @@ public class BmsService {
             ekf.predictx(voltage);
             ekf.nextP();
 
-            log.info(String.valueOf(turn++));
+//            log.info(String.valueOf(turn++));
 
             VitBoard vitBoard = VitBoard.builder()
                     .voltage(voltage)
