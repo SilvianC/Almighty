@@ -53,4 +53,6 @@ public class BmsBoard {
 
     @CreatedDate
     private LocalDateTime receiveDate;
+
+    private LocalDateTime madeDate;
 }

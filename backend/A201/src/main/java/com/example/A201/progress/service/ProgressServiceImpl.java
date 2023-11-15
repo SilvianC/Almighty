@@ -53,7 +53,7 @@ public class ProgressServiceImpl implements ProgressService{
 
     @Override
     @Transactional
-    public void registerRequestProgress(ProgressDTO progressdto){
+    public ProgressIdDTO registerRequestProgress(ProgressDTO progressdto){
 
         Battery battery = batteryRepository.findByCode(progressdto.getCode())
                 .orElseThrow(() -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다"));
@@ -66,7 +66,6 @@ public class ProgressServiceImpl implements ProgressService{
                         .battery(battery)
                         .currentStatus(ProgressStatus.Init)
                         .reason(progressdto.getReason())
-//                        .createDate(LocalDateTime.now())
                         .build();
 
         progressRepository.save(progress);
@@ -94,7 +93,8 @@ public class ProgressServiceImpl implements ProgressService{
                 .targetUserId(progressdto.getId())
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
-        requestToBMS(new ProgressIdDTO(progress.getId(), battery.getId(),progressdto.getCode()), progress);
+//        requestToBMS(battery, progress);
+        return new ProgressIdDTO(progress.getId(), battery.getId(), progressdto.getCode());
     }
 
     @Override
@@ -190,8 +190,9 @@ public class ProgressServiceImpl implements ProgressService{
     }
 
     //@Async
+    @Override
     @Transactional
-    public void requestToBMS(ProgressIdDTO progressIdDTO, Progress progress){
+    public void requestToBMS(ProgressIdDTO progressIdDTO){
         try {
             WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
             webClient
@@ -204,8 +205,12 @@ public class ProgressServiceImpl implements ProgressService{
         } catch (Exception e){
             e.printStackTrace();
         }
+
         Battery battery = batteryRepository.findById(progressIdDTO.getBatteryId())
-                        .orElseThrow(() -> new EntityNotFoundException("해당하는 배터리를 찾을 수 없습니다."));
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 배터리를 찾을 수 없습니다."));
+        Progress progress = progressRepository.findById(progressIdDTO.getProgressId())
+                .orElseThrow(() -> new EntityNotFoundException("해당하는 분석 요청을 찾을 수 없습니다."));
+
         battery.setBatteryStatus(BatteryStatus.Analysis);
         progress.changeStatus(ProgressStatus.Request);
     }
