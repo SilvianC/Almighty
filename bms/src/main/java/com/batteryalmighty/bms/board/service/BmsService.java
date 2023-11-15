@@ -50,16 +50,11 @@ public class BmsService {
     private String bucket;
     private final AmazonS3 amazonS3Client;
 
-    @PostConstruct
-    public void initialize(){
-        ekf.init();
-    }
-
     public void uploadBoard(ProgressIdDTO progressIdDTO) {
         log.info(progressIdDTO.getCode());
         log.info(String.valueOf(progressIdDTO.getProgressId()));
 
-        String filePath = "/charge/";
+        String filePath = "battery/";
         String filename = filePath + progressIdDTO.getCode() + ".csv";
 //        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
@@ -134,7 +129,8 @@ public class BmsService {
 
         csvReader.readNext();
         String[] values;
-        int num = 0;
+        Boolean plusCurrent = false;
+        int turn = 0;
 
         while ((values = csvReader.readNext()) != null){
 
@@ -143,13 +139,20 @@ public class BmsService {
             Double temperature = Double.valueOf(values[2]);
             Double time = Double.valueOf(values[3]);
 
+            if(turn == 0){
+                if(current > 0)
+                    plusCurrent = true;
+                ekf.init(plusCurrent);
+//                turn += 1;
+            }
+
             ekf.predictx_(time, current);
             ekf.predictP();
             ekf.kalmanGain(current, voltage);
             ekf.predictx(voltage);
             ekf.nextP();
 
-            log.info(String.valueOf(num++));
+            log.info(String.valueOf(turn++));
 
             VitBoard vitBoard = VitBoard.builder()
                     .voltage(voltage)
