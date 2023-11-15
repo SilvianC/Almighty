@@ -14,7 +14,32 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
     onClose();
   };
 
+  const [loadingText, setLoadingText] = useState("");
+  const [textVisible, setTextVisible] = useState(false);
 
+  useEffect(() => {
+    const loadingTexts = ["데이터를 전송하고 있습니다...","BMS 데이터를 전송하고 있습니다...","EKF와 SOC를 계산하고 있습니다..." ,"잠시만 기다려주세요...", "거의 완료되었습니다..."];
+    let currentIndex = 0;
+
+    const updateText = () => {
+      // 텍스트 가시성을 먼저 false로 설정하여 페이드 아웃
+      if (currentIndex < loadingTexts.length){setTextVisible(false)};
+
+      // 텍스트를 변경하고, 페이드 인하기 전에 약간의 지연
+      setTimeout(() => {
+        if (currentIndex < loadingTexts.length) {
+          setLoadingText(loadingTexts[currentIndex]);
+          setTextVisible(true); // 페이드 인
+          currentIndex++;
+        }
+      }, 500); // 페이드 아웃 후 텍스트 변경까지의 지연 시간
+    };
+
+    const interval = setInterval(updateText, 6000);
+    if (currentIndex < loadingTexts.length){updateText()}; // 초기 텍스트 설정
+
+    return () => clearInterval(interval);
+  }, []);
 
   const boltRef = useRef(null);
   const divRef = useRef(null);
@@ -53,18 +78,18 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   return (
     <>
       <S.Wrap>
-      {isLoading && (
+      {(isLoading &&
       <S.LoadingContainer>
         <ColorRing
           visible={true}
-          height="100"
-          width="100"
+          height="150"
+          width="150"
           ariaLabel="blocks-loading"
           wrapperStyle={{}}
           wrapperClass="blocks-wrapper"
           colors={['#b8c480', '#B2A3B5', '#F4442E', '#51E5FF', '#429EA6']}
         />
-        <S.LoadingText>로딩 중...</S.LoadingText>
+        <S.LoadingText className={textVisible ? "visible" : ""}>{loadingText}</S.LoadingText>
       </S.LoadingContainer>
     )}
         <S.Title>
@@ -102,11 +127,13 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
 const S = {
   LoadingContainer: styled.div`
     position: absolute; // 상대 위치 설정
-    top: 10;
-    left: 10;
-    right: 10;
-    bottom: 10;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    bottom: 20px;
     display: flex;
+    border-radius: 10px;
+    flex-direction: column; // 아이템을 수직으로 정렬
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0.5); // 반투명 배경
@@ -114,7 +141,12 @@ const S = {
   LoadingText: styled.div`
     margin-top: 20px;
     color: white;
-    font-size: 18px;
+    font-size: 25px;
+    opacity: 0; // 초기 투명도
+    transition: opacity 0.5s ease-in-out; // 투명도 변경 애니메이션
+    &.visible {
+      opacity: 1;
+    }
   `,
   Wrap: styled.div`
     border: 1px solid #d3d3d3;

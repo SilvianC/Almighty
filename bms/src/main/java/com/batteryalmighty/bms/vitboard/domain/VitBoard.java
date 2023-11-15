@@ -1,11 +1,13 @@
 package com.batteryalmighty.bms.vitboard.domain;
 
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Builder
@@ -40,6 +42,10 @@ public class VitBoard {
 
     @Field(name = "Progress_id")
     private Long progressId;
+
+    @Field(name = "Date_time")
+    @CreatedDate
+    private LocalDateTime createdDate;
 
     public void predictEkf(Double ekf){
         this.soc = ekf;

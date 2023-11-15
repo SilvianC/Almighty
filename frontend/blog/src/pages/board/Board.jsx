@@ -9,7 +9,7 @@ import AnalysisResult from "../../components/analysis/AnalysisResult";
 import RegistResult from "../../components/analysis/RegistResult";
 import { BiLineChart } from "react-icons/bi";
 import { useRecoilValue } from "recoil";
-import { MemberIdState, AccessTokenState,RoleState,IsLoginState } from "../../states/states";
+import { MemberIdState, AccessTokenState, RoleState, IsLoginState } from "../../states/states";
 import FirebaseComponent from "../../config/firebase-messaging-sw";
 import SideBar from "../../components/sidebar/Sidebar";
 import RegistIcon from "../../assets/images/icon-regist.png";
@@ -100,37 +100,35 @@ const Board = () => {
   return (
     <S.Wrap>
       <SideBar progress={progress} setProgress={setProgress}></SideBar>
-      <MainComp>
-        <S.Summary>
-          <RegisterReason
-            progressData={progressData}
-            setProgressData={setProgressData}
-          ></RegisterReason>
-          <AnalysisResult progressId={progress}></AnalysisResult>
-        </S.Summary>
-        <BMSData data={bmsData}></BMSData>
-        <S.Graph>
-          {/* <BiLineChart></BiLineChart> */}
-          <BatteryBoard
-            progressId={progress}
-            setProgress={setProgress}
-            progressData={progressData}
-            setProgressData={setProgressData}
-            battery={battery}
-            vitData={vitData}
-            bmsData={bmsData}
-          ></BatteryBoard>
-        </S.Graph>
-        <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
+      <S.Summary>
+        <RegisterReason
+          progressData={progressData}
+          setProgressData={setProgressData}
+        ></RegisterReason>
+        <AnalysisResult progressId={progress}></AnalysisResult>
+      </S.Summary>
+      <BMSData data={bmsData}></BMSData>
+      <S.Graph>
+        {/* <BiLineChart></BiLineChart> */}
+        <BatteryBoard
+          progressId={progress}
+          setProgress={setProgress}
+          progressData={progressData}
+          setProgressData={setProgressData}
+          battery={battery}
+          vitData={vitData}
+          bmsData={bmsData}
+        ></BatteryBoard>
+      </S.Graph>
+      <img src={RegistIcon} alt="regist" onClick={openRegistModal} />
+      {isRegistModalOpen && (
         <RegistResult
           progress={progress}
           setProgress={setProgress}
-          // modalRef={modalRef}
-          // modalOutSideClick={modalOutSideClick}
           isOpen={isRegistModalOpen}
           onClose={closeRegistModal}
         ></RegistResult>
-      </MainComp>
+      )}
     </S.Wrap>
   );
 };
@@ -162,10 +160,10 @@ const S = {
   Summary: styled.div`
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     width: 98%;
+    margin-bottom: 40px;
   `,
 };
-
-const MainComp = styled.div``;
 
 export default Board;
