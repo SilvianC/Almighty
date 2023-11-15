@@ -54,7 +54,7 @@ const S = {
     padding-right: 20px;
     border-radius: 10px;
     background-color: #f2f2f2;
-    height: 90%;
+    height: 80%;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
       0px 12.52px 10.02px rgba(0, 0, 0, 0.035),

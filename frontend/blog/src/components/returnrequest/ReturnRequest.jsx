@@ -103,12 +103,12 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
             </S.LoadingText>
           </S.LoadingContainer>
         )}
-        <S.Title>
+        {/* <S.Title>
           <BiMailSend />
           {"\u00A0"}반품 신청
-        </S.Title>
+        </S.Title> */}
         <S.Form>
-          <S.FieldSet>
+          {/* <S.FieldSet>
             <S.Label>제품명</S.Label>
             <S.Input readOnly value={item ? item.code : ""} />
           </S.FieldSet>
@@ -119,14 +119,14 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
           <S.FieldSet>
             <S.Label>수령일</S.Label>
             <S.Input readOnly value={item ? item.id : ""} />
-          </S.FieldSet>
+          </S.FieldSet> */}
           <S.TextArea
             placeholder="반품 신청 사유를 입력하세요."
             value={requestReason}
             onChange={(e) => setRequestReason(e.target.value)}
           />
           <S.ButtonsWrap>
-            <S.CancelButton onClick={handleClose}>취소</S.CancelButton>
+
             <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton>
           </S.ButtonsWrap>
         </S.Form>
@@ -168,7 +168,7 @@ const S = {
     padding-right: 20px;
     border-radius: 10px;
     background-color: #f2f2f2;
-    height: 100%;
+    height: 80%;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
       0px 12.52px 10.02px rgba(0, 0, 0, 0.035),

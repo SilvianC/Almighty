@@ -7,6 +7,9 @@ import com.example.A201.battery.vo.BatteryDataResponse;
 import com.example.A201.exception.SuccessResponseEntity;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +47,8 @@ public class BatteryController {
 //    }
 
     @GetMapping("/member/{memberid}")
-    public ResponseEntity<?> getMemberBattery(@PathVariable("memberid") Long memberId) {
-        List<BatteryResponse> responses = batteryService.getBatteries(memberId);
+    public ResponseEntity<?> getMemberBattery(@PathVariable("memberid") Long memberId,@PageableDefault(size = 10) Pageable pageable) {
+        Page<BatteryResponse> responses = batteryService.getBatteries(memberId, pageable);
         return SuccessResponseEntity.toResponseEntity("배터리 데이터 불러오기 성공", responses);
     }
 

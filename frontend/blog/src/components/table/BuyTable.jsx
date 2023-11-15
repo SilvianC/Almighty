@@ -5,9 +5,24 @@ import { BsListUl, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import http from "../../api/http";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
-const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
-  const [checkedInputs, setCheckedInputs] = useState([]);
-
+import Pagination from "../pagenation/Pagination";
+const BuyTable = ({ data, onSuccess, onError, memberId, accessToken,setData }) => {
+  const [page, setPage] = useState(1);
+ 
+  useEffect(() => {
+    http
+        .get(`/api/batteries/member/${memberId}?page=${page - 1}`, {
+          headers: { Authorization: `Bearer ${accessToken}` },
+        })
+        .then(({ data }) => {
+          setData(data["data"]);
+          
+        })
+        .catch((error) => {
+          console.error("Error fetching batteries data", error);
+        });
+  }, [page])
+  
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -16,7 +31,8 @@ const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
         배터리 목록 및 반송 신청
       </S.Title>
       <div className="Container">
-        {data.map((item, idx) => {
+        {data["content"] && data["content"].map((item, idx) => {
+          
           return (
             <div
               className={
@@ -31,9 +47,9 @@ const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
             >
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h1>John Doe</h1>
-                  <p>{item.code}</p>
-                  <p>
+                  <h1>{item.code}</h1>
+                  <p>battery code/수령일</p>
+                  <div >
                     {item.status === "InProgress" ? (
                       <CompletedButton disabled>진행 중</CompletedButton>
                     ) : item.status === "Analysis" ? (
@@ -41,11 +57,11 @@ const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
                     ) : item.status === "Return" ? (
                       <CompletedButton disabled>반송 중</CompletedButton>
                     ) : (
-                      <ApplyButton onClick={() => onApplyClick(item)}>
+                      <ApplyButton >
                         신청
                       </ApplyButton>
                     )}
-                  </p>
+                  </div>
                 </div>
 
                 <div className="flip-card-back">
@@ -60,6 +76,8 @@ const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
           );
         })}
       </div>
+      <Pagination total={data["totalPages"]} page={page} setPage={setPage}></Pagination>
+    
     </S.Wrap>
   );
 };
@@ -70,10 +88,11 @@ const CompletedButton = styled(Button)`
   // 비활성화된 버튼 스타일
   background-color: #b6c0c9 !important;
   color: #000 !important;
-  width: 80px;
   font-weight: bold;
-  height: 30px;
+  width: 100px;
+  height: 50px;
   padding: 2px;
+  font-size:25px;
   cursor: not-allowed;
   &:hover {
     background-color: #b6c0c9;
@@ -83,9 +102,10 @@ const CompletedButton = styled(Button)`
 const ApplyButton = styled(Button)`
   background-color: #024c98; // 부트스트랩의 기본 파란색
   border-color: #007bff;
-  width: 80px;
-  height: 30px;
+  width: 100px;
+  height: 50px;
   font-weight: bold;
+  font-size:30px;
   padding: 2px;
   &:hover {
     background-color: #a5c7f8; // 호버 상태일 때 더 어두운 파란색
@@ -100,6 +120,23 @@ const ApplyButton = styled(Button)`
 
 const S = {
   Wrap: styled.div`
+  border: 1px solid #d3d3d3;
+  
+  padding: 60px;
+  padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+  padding-left: 25px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+  padding-right: 10px;
+  box-sizing: content-box;
+  overflow: auto; // 세로 방향으로만 스크롤바를 설정
+  height: 50%;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+    0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
+    0px 20px 80px rgba(0, 0, 0, 0.07);
+  @media (max-width: 768px) {
+    height: 300px;
+  }
     .Container {
       display: flex;
       flex-direction: row;
@@ -157,32 +194,22 @@ const S = {
 
     /* Style the front side (fallback if image is missing) */
     .flip-card-front {
-      background-color: #bbb;
+      background-color: #E7ECF2;
       color: black;
+       div {
+        position:relative;
+        top:200px;
+        
+      }
     }
 
     /* Style the back side */
     .flip-card-back {
-      background-color: dodgerblue;
+      background-color: #E7ECF2;
       color: white;
       transform: rotateY(180deg);
     }
-    border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 25px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    padding-right: 10px;
-    height: 600px;
-    overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
-    @media (max-width: 768px) {
-      height: 300px;
-    }
+    
   `,
   Title: styled.span`
     font-size: 30px;
@@ -196,36 +223,7 @@ const S = {
   Status: styled.span`
     font-size: 10px;
   `,
-  Form: styled.span``,
-  Table: styled(Table)`
-    border-collapse: collapse; // 테이블의 선을 없애기 위해 collapse 설정
-    background-color: #f2f2f2;
-    padding: 1px;
-
-    thead tr,
-    tbody tr {
-      border: none !important;
-      font-weight: bold;
-      font-size: 18px;
-    }
-    tbody > tr:hover {
-      background-color: #333333 !important;
-    }
-    tr:hover td {
-      background: #e7ecf2;
-    }
-    th,
-    td {
-      border: none !important; // 모든 th, td 태그에 적용된 기본 선을 제거
-      font-weight: bold;
-      background-color: #f2f2f2;
-    }
-
-    th {
-      background-color: #e7ecf2; // 하늘색 배경 적용
-      color: #034f9e;
-      font-weight: bold;
-      font-size: 20px;
-    }
-  `,
+  
 };
+
+

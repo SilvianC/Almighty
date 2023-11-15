@@ -6,6 +6,7 @@ import ReturnResponse from "../returnresponse/ReturnResponse";
 import { CSSTransition } from "react-transition-group";
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
 import http from "../../api/http";
+import Pagination from "../pagenation/Pagination";
 const status = {
   Normal: "정상",
   Request: "진행 중",
@@ -151,17 +152,8 @@ const ServiceHistory = ({
           />
         </S.ReturnResponseWrapper>
       </CSSTransition>
-      <PageControl>
-        {Array.from({ length: totalPage }, (_, index) => (
-          <PageButton
-            key={index}
-            active={page === index + 1}
-            onClick={() => handlePageClick(index + 1)}
-          >
-            {index + 1}
-          </PageButton>
-        ))}
-      </PageControl>
+    
+      <Pagination total={totalPage} page={page} setPage={setPage}></Pagination>
     </S.Wrap>
   );
 };
@@ -207,6 +199,23 @@ const StatusButton = styled(Button)`
 `;
 const S = {
   Wrap: styled.div`
+  border: 1px solid #d3d3d3;
+  margin: 20px;
+  padding: 60px;
+  padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
+  padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
+  padding-right: 20px;
+  border-radius: 10px;
+  background-color: #f2f2f2;
+  height: 80%;
+  box-sizing: content-box;
+  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
+    0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
+    0px 20px 80px rgba(0, 0, 0, 0.07);
+  @media (max-width: 768px) {
+    height: 300px;
+  }
+  overflow: auto;
     .Container {
       display: flex;
       flex-direction: row;
@@ -247,32 +256,17 @@ const S = {
 
     /* Style the front side (fallback if image is missing) */
     .flip-card-front {
-      background-color: #bbb;
+      background-color: #E7ECF2;
       color: black;
     }
 
     /* Style the back side */
     .flip-card-back {
-      background-color: dodgerblue;
+      background-color: #E7ECF2;
       color: white;
       transform: rotateY(180deg);
     }
-    border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    padding-right: 20px;
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    height: 600px;
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
-    @media (max-width: 768px) {
-      height: 300px;
-    }
-    overflow: auto;
+   
   `,
   ReturnResponseWrapper: styled.div`
     position: absolute;
