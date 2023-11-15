@@ -7,8 +7,6 @@ import http from "../../api/http";
 import CloseIcon from "../../assets/images/icon-close.png"
 
 const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
-  const navigate = useNavigate();
-
   const [selectedOption, setSelectedOption] = useState("사유 선택");
   const [result, setResult] = useState(null);
   const [resonDetail, setReasonDetail] = useState("");
@@ -40,49 +38,19 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
       .catch();
   };
 
-  /*
-  const regist = () => {
-    changeStatus(
-      { batteryId },
-      { status },
-      (data) => {
-        if (data.message === "상태 변경 완료") {
-          // alert("결과 등록이 완료 되었습니다.");
-        }
-      },
-      (error) => {
-        console.log(error);
-        // alert("다시 시도해주세요");
-      }
-      );
-      postHistory(
-        { batteryId, fromStatus, toStatus, requestReason },
-        (data) => {
-          if (data.message === "히스토리 등록 완료") {
-            // alert("결과 등록이 완료 되었습니다.");
-          }
-        },
-        (error) => {
-          console.log(error);
-        }
-        );
-        alert("결과 등록이 완료 되었습니다.");
-        navigate("/main");
-      }
-      */
+  const reason = (e) => {
+    setReasonDetail(e.target.value);
+  }
 
   if (!isOpen) {
     return null;
   }
 
   return (
-    <S.Wrap
-      // ref={modalRef}
-      // onClick={(e)=>modalOutSideClick(e)}
-      >
-      <img src={CloseIcon} alt="close" onClick={onClose}/>
+    <S.Wrap className="modal">
       <S.Title>
         <p>결과 등록</p>
+        <img src={CloseIcon} alt="close" onClick={onClose} />
       </S.Title>
       <S.Option>
         <div>
@@ -180,47 +148,61 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
 const S = {
   Wrap: styled.div`
     position: fixed;
-    top: 42%;
-    left: 58%;
+    left: auto;
+    right: 20px;
+    top: auto;
+    bottom: 110px;
     width: 40%;
-    padding-top: 20px;
+    height: 300px;
+    padding-top: 30px;
     padding-bottom: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
     background-color: #f2f2f2;
-    // background: rgba(0, 0, 0, 0.5);
-    // padding: 6% 7.2% 6%;
-    border: medium solid #A7BCD0;
+    // border: medium solid #A7BCD0;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 3;
-
+    animation: slideInUp 0.5s ease;
+    
+    @keyframes slideInUp {
+      from {
+        transform: translateY(40%);
+      }
+      to {
+        transform: translateY(0);
+      }
+    }
+    `,
+  Title: styled.div`
+    width: 100%;
+    height: 40px;
+    display: flex;
+    flex-direction: row;
+    
+    > p {
+      height: 100%;
+      border-radius: 10px;
+      color: #034f9e;
+      font-weight: bold;
+      font-size: 25px;
+      padding-left: 0.7rem;
+      padding-right: 0.7rem;
+    }
     > img {
       width: 30px;
       height: 30px;
       margin-bottom: 10px;
       margin-left: auto;
-      margin-right: 7.2%;
       cursor: pointer;
     }
-  `,
-  Title: styled.div`
-    width: 85.6%;
-    height: 40px;
-    background-color: #e7ecf2;
-    border-radius: 10px;
-    > p {
-      color: #034f9e;
-      font-weight: bold;
-      font-size: 25px;
-      line-height: 40px;
-      margin-left: 30px;
-    }
-  `,
-  Option: styled.div`
-    width: 85.6%;
-
+    `,
+    Option: styled.div`
+    width: 100%;
+    
     > div {
       display: flex;
       flex-wrap: wrap;
@@ -269,7 +251,7 @@ const S = {
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 85.6%;
+    width: 100%;
 
     > p {
       font-size: 18px;
@@ -334,7 +316,7 @@ const S = {
     }
   `,
   Regist: styled.div`
-    width: 85.6%;
+    width: 100%;
     display: flex;
     justify-content: flex-end;
     margin-top: 20px;
@@ -343,7 +325,7 @@ const S = {
       background-color: #034f9e;
       border: none;
       border-radius: 0.375em;
-      width: 33.33%;
+      width: 20%;
       height: 3rem;
       color: #f2f2f2;
       font-weight: bold;
@@ -351,5 +333,6 @@ const S = {
     }
   `,
 };
+
 
 export default RegistResult;
