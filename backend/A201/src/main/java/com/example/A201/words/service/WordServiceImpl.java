@@ -1,5 +1,13 @@
 package com.example.A201.words.service;
 
+import com.example.A201.battery.domain.Battery;
+import com.example.A201.battery.repository.BatteryRepository;
+import com.example.A201.history.constant.ResultStatus;
+import com.example.A201.progress.domain.Progress;
+import com.example.A201.progress.dto.ProgressDTO;
+import com.example.A201.progress.dto.ProgressResultDTO;
+import com.example.A201.progress.repository.ProgressRepository;
+import lombok.RequiredArgsConstructor;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.util.Units;
@@ -10,12 +18,18 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 @Service
+@RequiredArgsConstructor
 public class WordServiceImpl implements WordService{
-
+    private final ProgressRepository progressRepository;
     @Override
-    public void createWordDocument(String content, String fileName) throws IOException, InvalidFormatException {
+    public void createWordDocument(ProgressResultDTO progress, String fileName) throws IOException, InvalidFormatException {
+        Progress progressEntity = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new IllegalStateException("해당 배터리를 찾을 수 없습니다"));
+        Battery battery = progressEntity.getBattery();
         String directoryPath = "c:/batteryword/";
         File directory = new File(directoryPath);
 
@@ -25,7 +39,7 @@ public class WordServiceImpl implements WordService{
         }
 
         // 파일 생성 경로
-        String filePath = directoryPath + fileName;
+        String filePath = directoryPath + battery.getCode() + fileName;
         XWPFDocument document = new XWPFDocument();
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " + currentDir);
@@ -75,21 +89,21 @@ public class WordServiceImpl implements WordService{
         // 첫 번째 행 설정
         XWPFTableRow rowOne = table.getRow(0); // 이미 생성된 첫 번째 행 가져오기
         setCellText(rowOne.getCell(0), "ID", true);
-        setCellText(rowOne.addNewTableCell(), "더미ID", false);
+        setCellText(rowOne.addNewTableCell(), battery.getCode(), false);
         setCellText(rowOne.addNewTableCell(), "일자/시간", true);
-        setCellText(rowOne.addNewTableCell(), "더미 시간", false);
+        setCellText(rowOne.addNewTableCell(), LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)), false);
 
         // 두 번째 행 설정
         XWPFTableRow rowTwo = table.createRow();
         setCellText(rowTwo.getCell(0), "판단", true);
-        setCellText(rowTwo.getCell(1), "더미 판단", false);
+        setCellText(rowTwo.getCell(1), progress.getResultStatus().equals(ResultStatus.SdiFault)?"반품 승인":"반품 거절", false);
         setCellText(rowTwo.getCell(2), "기업명", true);
-        setCellText(rowTwo.getCell(3), "더미 기업명", false);
+        setCellText(rowTwo.getCell(3), battery.getMember().getCompany(), false);
 
 // 세 번째 행 설정
         XWPFTableRow rowThree = table.createRow();
         setCellText(rowThree.getCell(0), "귀책", true);
-        setCellText(rowThree.getCell(1), "더미 귀책", false);
+        setCellText(rowThree.getCell(1), progress.getResultStatus().equals(ResultStatus.Normal)?"정상":progress.getResultStatus().equals(ResultStatus.SdiFault)?"배터리 불량":"고객 귀책", false);
 
 // 네 번째 행 설정
         XWPFTableRow rowFour = table.createRow();
@@ -100,8 +114,18 @@ public class WordServiceImpl implements WordService{
         XWPFTableRow rowFive = table.createRow();
         XWPFTableCell cellFive = rowFive.getCell(0);
 
+        rowFive.setHeight(7000);
+
+        String extendedContent = null;
         // 셀에 내용 설정
-        String extendedContent = content;
+        if(progress.getResponseReason().equals("counter error")){
+            extendedContent = "비정상적인 데이터가 관측되었습니다.";
+
+        }else if(progress.getResponseReason().equals("communication error")){
+            extendedContent = "데이터에는 오류가 없습니다. 배터리 연결 또는 보관 상태 확인을 요망합니다.";
+        }else{
+            extendedContent = progress.getResponseReason();
+        }
         for (int i = 0; i < 300; i++) {
             extendedContent += "\n"; // 개행 문자 추가
         }
