@@ -4,6 +4,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.S3Object;
 import com.amazonaws.services.s3.model.S3ObjectInputStream;
 import com.batteryalmighty.bms.battery.domain.Model;
+import com.batteryalmighty.bms.board.domain.SocIr;
+import com.batteryalmighty.bms.board.domain.SocOcv;
+import com.batteryalmighty.bms.board.mysql.SocIrRepository;
+import com.batteryalmighty.bms.board.mysql.SocOcvRepository;
 import com.batteryalmighty.bms.progress.domain.Progress;
 import com.batteryalmighty.bms.progress.dto.ProgressIdDTO;
 import com.batteryalmighty.bms.progress.mysql.ProgressRepository;
@@ -29,13 +33,12 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 @Slf4j
-
 public class BmsService {
     private final VitBoardRepository vitBoardRepository;
     private final BmsBoardRepository bmsBoardRepository;
     private final ProgressRepository progressRepository;
-
-    private final Ekf ekf;
+    private final SocOcvRepository socOcvRepository;
+    private final SocIrRepository socIrRepository;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
@@ -50,45 +53,16 @@ public class BmsService {
 
         try {
             S3Object s3object = amazonS3Client.getObject(bucket, filename);
+
             try (S3ObjectInputStream inputStream = s3object.getObjectContent();
-                 CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream))) {
+                CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream)))
+            {
                 socPredict(progressIdDTO.getProgressId(), csvReader);
             }
         } catch (IOException | CsvException e) {
             // 예외 처리
             throw new RuntimeException("CSV 파일 읽기 실패", e);
         }
-
-//        int num = 0;
-//        try (InputStreamReader csvFile = new InputStreamReader(file.getInputStream(), "UTF-8");
-//             CSVReader csvReader = new CSVReader(csvFile)) {
-//
-//            csvReader.readNext();
-//            String[] values;
-//
-//            while ((values = csvReader.readNext()) != null) {
-//
-//                log.info(String.valueOf(num++));
-//
-//                VitBoard vitBoard = VitBoard.builder()
-//                        .voltage(Double.valueOf(values[0]))
-//                        .current(Double.valueOf(values[1]))
-//                        .temperature(Double.valueOf(values[2]))
-//                        .time(Double.valueOf(values[3]))
-//                        .soc(0.0)
-////                        .ekf(0.0)
-//                        .progressId(7L)
-//                        .build();
-//
-//                vitBoardRepository.save(vitBoard);
-//
-//            }
-//        } catch (IOException e) {
-//            throw new RuntimeException("파일 읽기 중 에러가 발생했습니다.");
-//        } catch (CsvException e) {
-//            throw new RuntimeException("CSV 파싱 중 에러가 발생했습니다.");
-//        }
-
     }
 
     public void socPredict(Long progressId, CSVReader csvReader) throws CsvException, IOException {
@@ -120,6 +94,9 @@ public class BmsService {
         csvReader.readNext();
         String[] values;
         int turn = 0;
+        List<SocOcv> socOcvs = socOcvRepository.findAll();
+        List<SocIr> socIrs = socIrRepository.findAll();
+        Ekf ekf = new Ekf(socOcvs, socIrs);
 
         while ((values = csvReader.readNext()) != null){
 
@@ -129,7 +106,6 @@ public class BmsService {
             Double time = Double.valueOf(values[3]);
 
             if(turn == 0){
-                if(current > 0)
                 ekf.init(current);
                 turn += 1;
             }
