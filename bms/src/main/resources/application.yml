@@ -38,4 +38,14 @@ logging:
           mongodb:
             core:
               MongoTemplate: DEBUG
-
+cloud:
+  aws:
+    s3:
+      bucket: almighty-bms
+    credentials:
+      accessKey: AKIAY7NKC36RIVWWCOY3
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false

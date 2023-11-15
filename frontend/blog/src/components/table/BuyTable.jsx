@@ -62,10 +62,8 @@ const BuyTable = ({ data, onApplyClick }) => {
               return (
                 <tr key={idx} style={{ hover: "#333333" }}>
                   <td className="text-center">{item.code}</td>
-                  {/* <td className="text-center">뭐하냐</td>
-                  <td className="text-center">크아악</td> */}
                   <td className="text-center">
-                    {item.status === "InProgress" ? (
+                    {item.status === "InProgress" ? ( 
                       <CompletedButton disabled>진행 중</CompletedButton>
                     ) : 
                       item.status === "Analysis" ? (

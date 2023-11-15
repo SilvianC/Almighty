@@ -148,7 +148,7 @@ public class ProgressServiceImpl implements ProgressService{
 //        Long memberId = batteryService.getMemberId(progress.getBatteryId());
 
         alarmService.insertAlarm(AlarmDto.builder()
-                .title(resultStatus.equals("SdiFault")?"반송 수락":"반송 거절")
+                .title(resultStatus.equals(ResultStatus.SdiFault)?"반송 수락":"반송 거절")
                 .content(reason)
                 .member(member.getMemberId())
                 .build());
@@ -161,7 +161,7 @@ public class ProgressServiceImpl implements ProgressService{
                 .receiver(Receiver.fromReceiver("일반 사용자"))
                 .build());
 
-        if(resultStatus.equals("SdiFault")){
+        if(resultStatus.equals(ResultStatus.SdiFault)){
             battery.setBatteryStatus(BatteryStatus.Return);
         }
         else {
