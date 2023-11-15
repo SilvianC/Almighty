@@ -3,10 +3,11 @@ import http from "../../api/http";
 import {
   BiChevronLeftCircle,
   BiChevronRightCircle,
-  BiChevronDown,
   BiChevronsDown,
   BiChevronsUp,
 } from "react-icons/bi";
+
+import { FiEdit, FiCheckSquare } from "react-icons/fi";
 import {
   Menu,
   MenuItem,
@@ -124,6 +125,18 @@ const SideBar = ({ progress, setProgress }) => {
             },
           }}
         >
+          <SidebarTitle>
+            {currentStatus === "request" ? (
+              <>
+                <FiEdit size={20} /> 분석 요청 리스트
+              </>
+            ) : (
+              <>
+                <FiCheckSquare size={20} />
+                분석 완료 리스트
+              </>
+            )}
+          </SidebarTitle>
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -138,19 +151,20 @@ const SideBar = ({ progress, setProgress }) => {
           >
             {menuItems}
           </Menu>
-          <StatusButton>
+          <StatusButton showSidebar={isButtonClicked || isHovering}>
             {currentStatus === "finished" ? (
-              <BiChevronsDown
-                size={50}
-                color="#034f9e"
-                onClick={statusButtonClick}
-              />
+              <>
+                <div onClick={statusButtonClick}>
+                  <FiEdit size={20} /> 분석 요청 리스트로
+                </div>
+              </>
             ) : (
-              <BiChevronsUp
-                size={50}
-                color="#034f9e"
-                onClick={statusButtonClick}
-              />
+              <>
+                <div onClick={statusButtonClick}>
+                  <FiCheckSquare size={20} />
+                  분석 완료 리스트로
+                </div>
+              </>
             )}
           </StatusButton>
         </StyledSidebar>
@@ -236,10 +250,17 @@ const ToggleButton = styled.div`
 `;
 
 const StatusButton = styled.div`
+  cursor: pointer;
+  color: #034f9e;
+  position: fixed;
+  bottom: 10px;
+  margin-left: 30px;
+`;
+
+const SidebarTitle = styled.div`
   display: flex;
   justify-content: center;
-  top: 80%;
-  z-index: 1000;
+  color: #034f9e;
 `;
 
 export default SideBar;
