@@ -2,14 +2,15 @@ import React, { forwardRef } from "react";
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";
+import BMSIcon from "../../assets/images/icon-counter.png";
 
 const BmsGraph = ({ data }) => {
   const option = {
     chart: {
-      backgroundColor: "#f2f2f2",
       type: "column",
-      borderRadius: 25, // 틀을 둥글게 조절하는 값
-      plotShadow: true, // 차트 영역에 그림자 표시 여부
+      backgroundColor: "#f9f9f9",
+      borderRadius: 10,
+      plotShadow: true,
     },
     accessibility: {
       enabled: false,
@@ -104,7 +105,7 @@ const BmsGraph = ({ data }) => {
   return (
     <S.Wrap>
       <div>
-        <img src="BarChart.png" className="bar"></img>
+        <img src={BMSIcon} className="bar"></img>
         <p>BMS</p>
       </div>
       <HighchartsReact highcharts={Highcharts} options={option} />
@@ -114,11 +115,12 @@ const BmsGraph = ({ data }) => {
 
 const S = {
   Wrap: styled.div`
-    padding: 10px;
-    z-index: 99;
+  padding-left: 5px;
+    z-index: 1;
     div {
       display: flex;
       flex-direction: row;
+      margin-bottom: 10px;
       .bar {
         width: 35px;
         height: 35px;

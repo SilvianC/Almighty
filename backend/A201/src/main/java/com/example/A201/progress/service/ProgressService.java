@@ -20,5 +20,4 @@ public interface ProgressService {
     void sendMail(String email, String code, String result);
 
     void requestToBMS(ProgressIdDTO progressIdDTO);
-
 }
