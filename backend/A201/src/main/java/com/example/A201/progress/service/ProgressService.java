@@ -9,7 +9,7 @@ import com.example.A201.progress.vo.MailInfo;
 import java.util.List;
 
 public interface ProgressService {
-    void registerRequestProgress(ProgressDTO progress);
+    ProgressIdDTO registerRequestProgress(ProgressDTO progress);
 
     List<ProgressListDTO> getRequestProgress();
 
@@ -19,4 +19,5 @@ public interface ProgressService {
 
     void sendMail(String email, String code, String result);
 
+    void requestToBMS(ProgressIdDTO progressIdDTO);
 }
