@@ -2,18 +2,9 @@ package com.batteryalmighty.bms.board.service;
 
 import com.batteryalmighty.bms.board.domain.SocIr;
 import com.batteryalmighty.bms.board.domain.SocOcv;
-import com.batteryalmighty.bms.vitboard.domain.VitBoard;
-import com.batteryalmighty.bms.board.mysql.SocIrRepository;
-import com.batteryalmighty.bms.board.mysql.SocOcvRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
 public class Ekf {
     private double Q = 2E-06;
     private int R = 2500;
@@ -40,10 +31,10 @@ public class Ekf {
 
     private double maxCap;
 
-    private final SocIrRepository socIrRepository;
-
-    private final SocOcvRepository socOcvRepository;
-
+    public Ekf(List<SocOcv> socOcvs, List<SocIr> socIrs){
+        this.socOcvs = socOcvs;
+        this.socIrs = socIrs;
+    }
     public void init(Double current){
         if(current > 0)
             x = 0;
@@ -55,8 +46,6 @@ public class Ekf {
 
         prevTime = 0;
         maxCap = 1.8022316896675852;
-        socOcvs = socOcvRepository.findAll();
-        socIrs = socIrRepository.findAll();
         nearOcv = new SocOcv[2];
         nearIr = new SocIr[2];
     }
