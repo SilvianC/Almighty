@@ -25,11 +25,11 @@ const BuyTable = ({ data, onSuccess, onError, memberId, accessToken,setData }) =
   
   return (
     <S.Wrap>
-      <S.Title className="d-flex align-items-center">
+      {/* <S.Title className="d-flex align-items-center">
         <BsListUl />
         {"\u00A0"}
         배터리 목록 및 반송 신청
-      </S.Title>
+      </S.Title> */}
       <div className="Container">
         {data["content"] && data["content"].map((item, idx) => {
           
@@ -47,8 +47,8 @@ const BuyTable = ({ data, onSuccess, onError, memberId, accessToken,setData }) =
             >
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h1>{item.code}</h1>
-                  <p>battery code/수령일</p>
+                  <h1 style={{ marginTop: "25px" ,fontWeight: "bolder"}}>{item.code}</h1>
+                  <p>battery code</p>
                   <div >
                     {item.status === "InProgress" ? (
                       <CompletedButton disabled>진행 중</CompletedButton>
@@ -129,7 +129,7 @@ const S = {
   box-sizing: content-box;
   overflow: auto; // 세로 방향으로만 스크롤바를 설정
   height: 50%;
-  border-radius: 10px;
+  
   background-color: #f2f2f2;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
@@ -138,6 +138,8 @@ const S = {
     height: 300px;
   }
     .Container {
+      justify-content: center;
+      
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
@@ -146,18 +148,10 @@ const S = {
       background-color: transparent;
       width: 400px;
       height: 400px;
-      border: 1px solid #f1f1f1;
+      border: 3px red #f1f1f1;
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
-    }
-
-    /* This container is needed to position the front and back side */
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.8s;
-      transform-style: preserve-3d;
+      margin: 30px;
+      border-radius: 40px;
     }
     .flip-card1 {
       background-color: transparent;
@@ -165,6 +159,19 @@ const S = {
       height: 400px;
       border: 1px solid #f1f1f1;
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
+      margin: 30px;
+      border-radius: 40px;
+    }
+
+    /* This container is needed to position the front and back side */
+    .flip-card-inner {
+     
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
     }
 
     /* This container is needed to position the front and back side */
@@ -185,22 +192,24 @@ const S = {
     /* Position the front and back side */
     .flip-card-front,
     .flip-card-back {
+      border-radius: 30px;
       position: absolute;
       width: 100%;
       height: 100%;
       -webkit-backface-visibility: hidden; /* Safari */
       backface-visibility: hidden;
+      
     }
 
     /* Style the front side (fallback if image is missing) */
     .flip-card-front {
       background-color: #E7ECF2;
       color: black;
-       div {
+      div {
         position:relative;
         top:200px;
-        
       }
+      
     }
 
     /* Style the back side */
@@ -208,6 +217,7 @@ const S = {
       background-color: #E7ECF2;
       color: white;
       transform: rotateY(180deg);
+      
     }
     
   `,

@@ -121,7 +121,7 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
             <S.Input readOnly value={item ? item.id : ""} />
           </S.FieldSet> */}
           <S.TextArea
-            placeholder="반품 신청 사유를 입력하세요."
+            placeholder="반품 신청 사유를 입력"
             value={requestReason}
             onChange={(e) => setRequestReason(e.target.value)}
           />
@@ -227,14 +227,18 @@ const S = {
     height: 40px;
   `,
   SubmitButton: styled.button`
+    position:relative;
+    top:10px;
+    left:100px;
     background-color: #024c98; // 부트스트랩의 기본 파란색
     border-color: #007bff;
-    width: 80px;
+    width: 100px;
     cursor: pointer;
     color: white;
-    height: 40px;
+    height: 50px;
     border-radius: 5px;
     padding: 2px;
+    font-size:30px;
     &:hover {
       background-color: #a5c7f8; // 호버 상태일 때 더 어두운 파란색
       border-color: #0056b3;
