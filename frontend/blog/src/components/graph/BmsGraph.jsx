@@ -115,12 +115,11 @@ const BmsGraph = ({ data }) => {
 
 const S = {
   Wrap: styled.div`
-  padding-left: 5px;
+    padding-left: 5px;
     z-index: 1;
     div {
       display: flex;
       flex-direction: row;
-      margin-bottom: 10px;
       .bar {
         width: 35px;
         height: 35px;
