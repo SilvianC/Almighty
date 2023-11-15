@@ -21,8 +21,8 @@ public class ChatLogController {
 
     private final ChatLogService chatLogService;
 
-//    @PostMapping("/interact/{progressId}")
-    @PostMapping("/interact")
+   //@PostMapping("/interact/{progressId}")
+   @PostMapping("/interact")
     public ResponseEntity<ChatLogDto> interactWithBot(@RequestBody ChatLogDto request) {
         ChatLogDto response = chatLogService.getAnswerFromChatGPT(request);
         return ResponseEntity.ok(response);

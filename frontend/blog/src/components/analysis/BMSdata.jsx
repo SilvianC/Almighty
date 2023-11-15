@@ -77,7 +77,12 @@ const BMSdata = ({ data }) => {
           >
             <S.ContainerTitle>최대 전압</S.ContainerTitle>
             <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
-              <span>{isDataExist ? data.maxVoltageCharge.toFixed(4) : 0}V</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.maxVoltageCharge.toFixed(4)
+                  : 0}
+                V
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={VoltageIcon} alt="voltage" />
@@ -86,7 +91,12 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>최소 전압</S.ContainerTitle>
             <S.ContainerData>
-              <span>{isDataExist ? data.minVoltageCharge.toFixed(4) : 0}V</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.minVoltageCharge.toFixed(4)
+                  : 0}
+                V
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={VoltageIcon} alt="voltage" />
@@ -96,7 +106,10 @@ const BMSdata = ({ data }) => {
             <S.ContainerTitle>최대 온도</S.ContainerTitle>
             <S.ContainerData>
               <span>
-                {isDataExist ? data.maxTemperatureCharge.toFixed(4) : 0}℃
+                {isDataExist && data !== null
+                  ? data.maxTemperatureCharge.toFixed(4)
+                  : 0}
+                ℃
               </span>
             </S.ContainerData>
             <S.ContainerImg>
@@ -112,7 +125,10 @@ const BMSdata = ({ data }) => {
             <S.ContainerTitle>최저 온도</S.ContainerTitle>
             <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
               <span>
-                {isDataExist ? data.minTemperatureCharge.toFixed(4) : 0}℃
+                {isDataExist && data !== null
+                  ? data.minTemperatureCharge.toFixed(4)
+                  : 0}
+                ℃
               </span>
             </S.ContainerData>
             <S.ContainerImg>
@@ -135,7 +151,12 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>최대 전압</S.ContainerTitle>
             <S.ContainerData>
-              <span>3.9755V</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.maxVoltageDischarge.toFixed(4)
+                  : 0}
+                V
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={VoltageIcon} alt="voltage" />
@@ -149,7 +170,12 @@ const BMSdata = ({ data }) => {
           >
             <S.ContainerTitle>최소 전압</S.ContainerTitle>
             <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
-              <span>2.6125V</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.minVoltageDischarge.toFixed(4)
+                  : 0}
+                V
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={VoltageIcon} alt="voltage" />
@@ -158,7 +184,12 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>최대 온도</S.ContainerTitle>
             <S.ContainerData>
-              <span>37.3095℃</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.maxTemperatureDischarge.toFixed(4)
+                  : 0}
+                ℃
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={TemperIcon} alt="temperature" />
@@ -167,7 +198,12 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>최저 온도</S.ContainerTitle>
             <S.ContainerData>
-              <span>24.3890℃</span>
+              <span>
+                {isDataExist && data !== null
+                  ? data.minTemperatureDischarge.toFixed(4)
+                  : 0}
+                ℃
+              </span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={TemperIcon} alt="temperature" />

@@ -190,7 +190,7 @@ public class ProgressServiceImpl implements ProgressService{
         }
     }
 
-    @Async
+    //@Async
     @Transactional
     public void requestToBMS(ProgressIdDTO progressIdDTO){
         try {
