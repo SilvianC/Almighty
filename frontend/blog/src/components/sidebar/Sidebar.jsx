@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import http from "../../api/http";
-import { BiChevronLeftCircle, BiChevronRightCircle } from "react-icons/bi";
+import {
+  BiChevronLeftCircle,
+  BiChevronRightCircle,
+  BiChevronsDown,
+  BiChevronsUp,
+} from "react-icons/bi";
+
+import { FiEdit, FiCheckSquare } from "react-icons/fi";
 import {
   Menu,
   MenuItem,
@@ -10,7 +17,8 @@ import {
 } from "react-pro-sidebar";
 import styled from "styled-components";
 
-const SideBar = ({ currentStatus, progress, setProgress }) => {
+const SideBar = ({ progress, setProgress }) => {
+  const [currentStatus, setCurrentStatus] = useState("request");
   const [data, setData] = useState([]);
   const [selectedMenu, setSelectedMenu] = useState(null);
 
@@ -19,16 +27,35 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
     setProgress(() => item.id);
   };
 
+  const statusButtonClick = () => {
+    if (currentStatus === "request") {
+      setCurrentStatus("finished");
+    } else if (currentStatus === "finished") {
+      setCurrentStatus("request");
+    }
+  };
+
+  // useEffect(() => {
+  //   http
+  //     .get(`/api/batteries/progress/${currentStatus}`)
+  //     .then(({ data }) => {
+  //       setData(() => {
+  //         return data["data"];
+  //       });
+  //     })
+  //     .catch();
+  // }, []);
+
   useEffect(() => {
     http
-      .get(`/api/batteries/progress/request`)
+      .get(`/api/batteries/progress/${currentStatus}`)
       .then(({ data }) => {
         setData(() => {
           return data["data"];
         });
       })
       .catch();
-  }, []);
+  }, [currentStatus]);
 
   const groupedData = data.reduce((result, item) => {
     const date = item.createDate;
@@ -98,6 +125,18 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
             },
           }}
         >
+          <SidebarTitle>
+            {currentStatus === "request" ? (
+              <>
+                <FiEdit size={20} /> 분석 요청 리스트
+              </>
+            ) : (
+              <>
+                <FiCheckSquare size={20} />
+                분석 완료 리스트
+              </>
+            )}
+          </SidebarTitle>
           <Menu
             menuItemStyles={{
               button: ({ level, active, disabled }) => {
@@ -112,6 +151,22 @@ const SideBar = ({ currentStatus, progress, setProgress }) => {
           >
             {menuItems}
           </Menu>
+          <StatusButton showSidebar={isButtonClicked || isHovering}>
+            {currentStatus === "finished" ? (
+              <>
+                <div onClick={statusButtonClick}>
+                  <FiEdit size={20} /> 분석 요청 리스트로
+                </div>
+              </>
+            ) : (
+              <>
+                <div onClick={statusButtonClick}>
+                  <FiCheckSquare size={20} />
+                  분석 완료 리스트로
+                </div>
+              </>
+            )}
+          </StatusButton>
         </StyledSidebar>
       </SidebarContainer>
     </Wrapper>
@@ -192,6 +247,20 @@ const ToggleButton = styled.div`
   z-index: 100;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
+`;
+
+const StatusButton = styled.div`
+  cursor: pointer;
+  color: #034f9e;
+  position: fixed;
+  bottom: 10px;
+  margin-left: 30px;
+`;
+
+const SidebarTitle = styled.div`
+  display: flex;
+  justify-content: center;
+  color: #034f9e;
 `;
 
 export default SideBar;
