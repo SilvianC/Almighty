@@ -18,9 +18,16 @@ const TestGraph = ({ data, threshold, type }) => {
   const datas = [];
   let option = {
     chart: {
+      backgroundColor: "#f2f2f2",
       type: "spline",
       panning: true, // 드래그로 이동을 활성화
       borderRadius: 25, // 틀을 둥글게 조절하는 값
+      events: {
+        load: function () {
+          this.legend.allItems[1].hide();
+          this.legend.allItems[2].hide();
+        },
+      },
     },
     accessibility: {
       enabled: false,
@@ -53,9 +60,22 @@ const TestGraph = ({ data, threshold, type }) => {
       //   { start: [], end: [] }
       // );
       const newData = {
+        lineWidth: 3, // 선의 굵기 설정
         name: transName[t],
         yAxis: 0,
         turboThreshold: 10000,
+        events: {
+          legendItemClick: function (event) {
+            const seriesIndex = this.index;
+            const series = this.chart.series[seriesIndex];
+            if (!series.visible) {
+              series.show();
+              this.chart.series[(seriesIndex + 1) % 3].hide();
+              this.chart.series[(seriesIndex + 2) % 3].hide();
+            }
+            return false; // 기본 동작 막기
+          },
+        },
         data: data.map((item, idx) => {
           return {
             x: item["time"] * 3600,
@@ -149,7 +169,7 @@ const TestGraph = ({ data, threshold, type }) => {
 
       xAxis: {
         title: {
-          text: "Time",
+          text: "Time(s)",
         },
 
         // categories: x,
@@ -167,14 +187,13 @@ const TestGraph = ({ data, threshold, type }) => {
         label: {
           connectorAllowed: false,
         },
-        line: {
-          // 선 그래프에 대한 설정
-          lineWidth: 2, // 선의 굵기 설정 (기본값은 2)
-        },
       },
       series: [
         ...datas,
         {
+          animation: {
+            duration: 1000, // 애니메이션 지속 시간 (밀리초)
+          },
           name: "잔량(%)",
           yAxis: 1,
           data: data.map((item) => {

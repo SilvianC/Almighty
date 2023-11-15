@@ -63,4 +63,5 @@ jwt:
   access-token-validity-in-seconds: 43200 # 12??
 openai:
   api:
-    key: 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
+    # key: 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
+    key: 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

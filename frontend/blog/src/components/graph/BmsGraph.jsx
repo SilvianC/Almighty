@@ -6,6 +6,7 @@ import styled from "styled-components";
 const BmsGraph = ({ data }) => {
   const option = {
     chart: {
+      backgroundColor: "#f2f2f2",
       type: "column",
       borderRadius: 25, // 틀을 둥글게 조절하는 값
       plotShadow: true, // 차트 영역에 그림자 표시 여부
@@ -52,15 +53,19 @@ const BmsGraph = ({ data }) => {
     legend: {
       enabled: false, // 범례 비활성화
     },
-
+    tooltip: {
+      formatter: function () {
+        return "<b>" + this.key + " : " + this.y + "</b>";
+      },
+    },
     series: [
       {
         colors: [
-          data && data["overVoltageCount"] > 2 ? "#FF0000" : "#451ff1",
-          data && data["underVoltageCount"] > 2 ? "#FF0000" : "#451ff1",
-          data && data["overCurrentCount"] > 1 ? "#FF0000" : "#451ff1",
-          data && data["overTemperatureCount"] > 2 ? "#FF0000" : "#451ff1",
-          data && data["underTemperatureCount"] > 2 ? "#FF0000" : "#451ff1",
+          data && data["overVoltageCount"] > 2 ? "#FF0000" : "#4589F4",
+          data && data["underVoltageCount"] > 2 ? "#FF0000" : "#4589F4",
+          data && data["overCurrentCount"] > 1 ? "#FF0000" : "#4589F4",
+          data && data["overTemperatureCount"] > 2 ? "#FF0000" : "#4589F4",
+          data && data["underTemperatureCount"] > 2 ? "#FF0000" : "#4589F4",
         ],
         colorByPoint: true,
 
@@ -74,7 +79,7 @@ const BmsGraph = ({ data }) => {
         dataLabels: {
           enabled: true,
           color: "#FFFFFF",
-          align: "right",
+          align: "center",
           format: "{point.y:.f}", // one decimal
           y: 10, // 10 pixels down from the top
           style: {

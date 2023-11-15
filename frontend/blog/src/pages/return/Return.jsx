@@ -2,11 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import BuyTable from "../../components/table/BuyTable";
 import styled, { css, createGlobalStyle } from "styled-components";
 import http from "../../api/http";
+import { useNavigate } from 'react-router-dom';
 import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import { CSSTransition } from "react-transition-group";
 import { useRecoilValue } from "recoil";
-import { MemberIdState } from "../../states/states";
+import { MemberIdState, AccessTokenState,RoleState,IsLoginState } from "../../states/states";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SideBar from "../../components/sidebar/Sidebar";
@@ -18,12 +19,15 @@ const Return = () => {
   const [data2, setData2] = useState([]);
   const [history, setHistory] = useState([]);
   const memberId = useRecoilValue(MemberIdState);
+  const Role = useRecoilValue(RoleState);
+  const isLogin = useRecoilValue(IsLoginState);
   const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
   //const memberId = 1;
   const [showReturnRequest, setShowReturnRequest] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-
+  const accessToken = useRecoilValue(AccessTokenState);
   const handleSuccess = () => {
     toast.success("반품 요청이 성공적으로 처리되었습니다.");
     fetchServiceHistory();
@@ -37,7 +41,9 @@ const Return = () => {
 
   const fetchBatteryItems = () => {
     http
-      .get(`/api/batteries/member/${memberId}`)
+      .get(`/api/batteries/member/${memberId}`,{
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then(({ data }) => {
         setData(() => {
           return data["data"];
@@ -48,10 +54,26 @@ const Return = () => {
       });
   };
 
+  //--------------------------------------------------------------------------------
+  //이거 나중엔 풉시다 user, admin 구분 코드
+  // useEffect(() => {
+  //   if(isLogin != true){
+  //     alert("로그인 하세요")
+  //     navigate('/');
+  //   }
+  //   // Role이 'ADMIN'이면 /main으로 리다이렉트
+  //   if (Role === 'ADMIN') {
+  //     navigate('/main');
+  //   }
+  // }, [Role, navigate, isLogin]);
+  //--------------------------------------------------------------------------------
+
   // 서비스 히스토리 데이터를 불러오는 함수
   const fetchServiceHistory = (pageNum) => {
     http
-      .get(`/api/batteries/history/members/${memberId}?page=${pageNum - 1}`)
+      .get(`/api/batteries/history/members/${memberId}?page=${pageNum - 1}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then(({ data }) => {
         setData2(data.data.content);
         setTotalPages(data.data.totalPages);
@@ -87,7 +109,9 @@ const Return = () => {
 
   useEffect(() => {
     http
-      .get(`/api/batteries/member/${memberId}`)
+      .get(`/api/batteries/member/${memberId}`, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
       .then(({ data }) => {
         setData(() => {
           return data["data"];
