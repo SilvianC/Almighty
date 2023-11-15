@@ -91,25 +91,25 @@ const TestGraph = ({ data, threshold, type }) => {
           t === "temperatureMeasured"
             ? "teal"
             : t === "voltageMeasured"
-              ? "darkorange"
-              : "purple",
+            ? "darkorange"
+            : "purple",
         zones:
           t === "temperatureMeasured"
             ? [
-              {
-                value: threshold.chargingMinTemperature,
-                color: "blue",
-              },
-              {
-                value: threshold.chargingMaxTemperature,
-                color: "teal",
-              },
-              {
-                color: "red",
-              },
-            ]
+                {
+                  value: threshold.chargingMinTemperature,
+                  color: "blue",
+                },
+                {
+                  value: threshold.chargingMaxTemperature,
+                  color: "teal",
+                },
+                {
+                  color: "red",
+                },
+              ]
             : t === "voltageMeasured"
-              ? [
+            ? [
                 {
                   value: threshold.underVoltage,
                   color: "blue",
@@ -122,7 +122,7 @@ const TestGraph = ({ data, threshold, type }) => {
                   color: "red",
                 },
               ]
-              : [
+            : [
                 {
                   value: threshold.overCurrent,
                   color: "purple",
@@ -243,11 +243,10 @@ const TestGraph = ({ data, threshold, type }) => {
 
 const S = {
   Wrap: styled.div`
-  padding-right: 5px;
+    padding-right: 5px;
     div {
       display: flex;
       flex-direction: row;
-      margin-bottom: 10px;
       .line {
         width: 35px;
         height: 35px;
