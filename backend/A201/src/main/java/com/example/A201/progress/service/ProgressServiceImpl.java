@@ -182,7 +182,69 @@ public class ProgressServiceImpl implements ProgressService{
             MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, false, "UTF-8");
             mimeMessageHelper.setTo(email); // 메일 수신자
             mimeMessageHelper.setSubject(code + " 배터리 반송 건에 대하여"); // 메일 제목
-            mimeMessageHelper.setText(String.format("%s 배터리의 분석 결과 %s", code, result)); // 메일 본문 내용, HTML 여부
+            String content = null;
+            String type = null;
+            if(result.equals(ResultStatus.Normal.toString())){
+                type = "정상";
+                content = "다시 한 번 확인 후 같은 현상이 반복된다면 연락부탁드립니다.";
+            } else if (result.equals(ResultStatus.SdiFault.toString())) {
+                type = "제품 결함";
+                content = "제품 이용에 불편을 드려 죄송합니다.<br/>빠른 시일 내에 배터리 교체를 위해 연락드리겠습니다.";
+            } else if (result.equals(ResultStatus.CustomerFault.toString())) {
+                type = "연결 이상";
+                content = "제품의 연결 상태와 보관 상태를 확인해 주시기 바랍니다.<br/>다시 한 번 확인 후 같은 현상이 반복된다면 연락부탁드립니다.";
+            }
+
+            String html =
+                    String.format("<!DOCTYPE html>\n" +
+                    "<html lang=\"en\">\n" +
+                    "<head>\n" +
+                    "    <meta charset=\"UTF-8\">\n" +
+                    "    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n" +
+                    "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                    "    <title>Your Email Subject</title>\n" +
+                    "    <style>\n" +
+                    "        body {\n" +
+                    "            font-family: 'Arial', sans-serif;\n" +
+                    "            line-height: 1.6;\n" +
+                    "            color: #333;\n" +
+                    "            background-color: #f4f4f4;\n" +
+                    "            margin: 0;\n" +
+                    "            padding: 0;\n" +
+                    "        }\n" +
+                    "        .container {\n" +
+                    "            max-width: 600px;\n" +
+                    "            margin: 20px auto;\n" +
+                    "            background-color: #fff;\n" +
+                    "            padding: 20px;\n" +
+                    "            border-radius: 5px;\n" +
+                    "            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+                    "        }\n" +
+                    "        h1, p {\n" +
+                    "            margin-bottom: 20px;\n" +
+                    "        }\n" +
+                    "        .signature {\n" +
+                    "            margin-top: 40px;\n" +
+                    "            font-style: italic;\n" +
+                    "            color: #888;\n" +
+                    "        }\n" +
+                    "    </style>\n" +
+                    "</head>\n" +
+                    "<body>\n" +
+                    "    <div class=\"container\">\n" +
+                    "        <h1>요청하신 배터리 분석 결과를 알려드립니다.</h1>\n" +
+                    "        <p>%s의 분석 결과 %s으로 확인 되었습니다.</p>\n" +
+                    "        <p>%s</p>\n" +
+                    "        <p>감사합니다.</p>\n" +
+                    "        <div class=\"signature\">\n" +
+                    "            <img src='https://www.batteryalmighty.co.kr/static/media/sdilogo.ea7cb21ee752a072f2db.png'>\n" +
+                    "        </div>\n" +
+                    "    </div>\n" +
+                    "</body>\n" +
+                    "</html>", code, type, content);
+//            mimeMessageHelper.setText(String.format("%s 배터리의 분석 결과 %s으로 확인되었습니다. %s", code, type, content), true); // 메일 본문 내용, HTML 여부
+            mimeMessageHelper.setText(String.format("%s", html), true); // 메일 본문 내용, HTML 여부
+
             javaMailSender.send(mimeMessage);
         } catch (Exception e) {
             log.info("메일 전송 오류");
