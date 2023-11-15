@@ -56,7 +56,6 @@ public class BmsService {
 
         String filePath = "battery/";
         String filename = filePath + progressIdDTO.getCode() + ".csv";
-//        String filePath = "C:\\자율프로젝트\\S09P31S103\\data\\battery\\" + filename;
 
         try {
             S3Object s3object = amazonS3Client.getObject(bucket, filename);
@@ -152,7 +151,7 @@ public class BmsService {
             ekf.predictx(voltage);
             ekf.nextP();
 
-            log.info(String.valueOf(turn++));
+//            log.info(String.valueOf(turn++));
 
             VitBoard vitBoard = VitBoard.builder()
                     .voltage(voltage)
