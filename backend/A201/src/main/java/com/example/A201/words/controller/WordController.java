@@ -25,7 +25,7 @@ public class WordController {
     @PostMapping("/createWord")
     public String createWordDocument(@RequestBody String content) throws InvalidFormatException {
         try {
-            wordService.createWordDocument(content, "output.docx");
+            wordService.createWordDocument(null, "output.docx");
             return "Word 파일이 성공적으로 생성되었습니다.";
         } catch (IOException e) {
             e.printStackTrace();
