@@ -18,7 +18,7 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
-    const loadingTexts = ["데이터를 전송하고 있습니다...","EKF와 SOC를 계산하고 있습니다..." ,"잠시만 기다려주세요...", "거의 완료되었습니다..."];
+    const loadingTexts = ["데이터를 전송하고 있습니다...","BMS 데이터를 전송하고 있습니다...","EKF와 SOC를 계산하고 있습니다..." ,"잠시만 기다려주세요...", "거의 완료되었습니다..."];
     let currentIndex = 0;
 
     const updateText = () => {
@@ -35,7 +35,7 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
       }, 500); // 페이드 아웃 후 텍스트 변경까지의 지연 시간
     };
 
-    const interval = setInterval(updateText, 4000);
+    const interval = setInterval(updateText, 6000);
     if (currentIndex < loadingTexts.length){updateText()}; // 초기 텍스트 설정
 
     return () => clearInterval(interval);
