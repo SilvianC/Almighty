@@ -38,8 +38,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: "a201almighty@gmail.com"
-    password: "ehopnqerxfvxkbmc"
+    username: "{MAIL}"
+    password: "{MAIL_PW}"
     properties:
       mail:
         smtp:
@@ -52,7 +52,7 @@ spring:
 #      data-locations: classpath*:db/h2/data.sql
 
 bms:
-  url: http://k9a201.p.ssafy.io:8085
+  url: "{BMS_URL}"
 
 logging:
   level:
@@ -64,4 +64,4 @@ jwt:
 openai:
   api:
     # key: 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
-    key: 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
+    key: "{S3_Key}"
