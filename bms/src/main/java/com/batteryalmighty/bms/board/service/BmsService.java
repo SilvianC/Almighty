@@ -140,9 +140,8 @@ public class BmsService {
 
             if(turn == 0){
                 if(current > 0)
-                    plusCurrent = true;
-                ekf.init(plusCurrent);
-//                turn += 1;
+                ekf.init(current);
+                turn += 1;
             }
 
             ekf.predictx_(time, current);
