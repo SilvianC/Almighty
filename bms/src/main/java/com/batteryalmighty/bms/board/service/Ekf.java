@@ -44,10 +44,10 @@ public class Ekf {
 
     private final SocOcvRepository socOcvRepository;
 
-    public void init(Boolean plus){
-        if(plus)
+    public void init(Double current){
+        if(current > 0)
             x = 0;
-        if(!plus)
+        if(current <= 0)
             x = 100;
         Q = 2E-06;
         R = 2500;

@@ -53,7 +53,7 @@ public class ProgressServiceImpl implements ProgressService{
 
     @Override
     @Transactional
-    public ProgressIdDTO registerRequestProgress(ProgressDTO progressdto){
+    public void registerRequestProgress(ProgressDTO progressdto){
 
         Battery battery = batteryRepository.findByCode(progressdto.getCode())
                 .orElseThrow(() -> new EntityNotFoundException("해당 배터리를 찾을 수 없습니다"));
@@ -64,7 +64,7 @@ public class ProgressServiceImpl implements ProgressService{
 
         Progress progress = Progress.builder()
                         .battery(battery)
-                        .currentStatus(ProgressStatus.Request)
+                        .currentStatus(ProgressStatus.Init)
                         .reason(progressdto.getReason())
 //                        .createDate(LocalDateTime.now())
                         .build();
@@ -94,8 +94,7 @@ public class ProgressServiceImpl implements ProgressService{
                 .targetUserId(progressdto.getId())
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
-
-        return new ProgressIdDTO(progress.getId(), battery.getId(),progressdto.getCode());
+        requestToBMS(new ProgressIdDTO(progress.getId(), battery.getId(),progressdto.getCode()), progress);
     }
 
     @Override
@@ -192,7 +191,7 @@ public class ProgressServiceImpl implements ProgressService{
 
     //@Async
     @Transactional
-    public void requestToBMS(ProgressIdDTO progressIdDTO){
+    public void requestToBMS(ProgressIdDTO progressIdDTO, Progress progress){
         try {
             WebClient webClient = WebClient.builder().baseUrl(bmsurl).build();
             webClient
@@ -208,5 +207,6 @@ public class ProgressServiceImpl implements ProgressService{
         Battery battery = batteryRepository.findById(progressIdDTO.getBatteryId())
                         .orElseThrow(() -> new EntityNotFoundException("해당하는 배터리를 찾을 수 없습니다."));
         battery.setBatteryStatus(BatteryStatus.Analysis);
+        progress.changeStatus(ProgressStatus.Request);
     }
 }

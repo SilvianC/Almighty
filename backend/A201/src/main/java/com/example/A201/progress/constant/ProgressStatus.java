@@ -4,5 +4,5 @@ import lombok.Getter;
 
 @Getter
 public enum ProgressStatus {
-    Request, AiModel, Expert;
+    Init, Request, Expert;
 }

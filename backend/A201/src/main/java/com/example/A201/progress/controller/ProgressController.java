@@ -21,8 +21,7 @@ public class ProgressController {
 
     @PostMapping("/request")
     public ResponseEntity<?> requestProgress(@RequestBody ProgressDTO progress) {
-        ProgressIdDTO progressIdDTO = progressService.registerRequestProgress(progress);
-        progressService.requestToBMS(progressIdDTO);
+        progressService.registerRequestProgress(progress);
         return SuccessResponseEntity.toResponseEntity("반품 분석 요청 완료", null);
     }
 

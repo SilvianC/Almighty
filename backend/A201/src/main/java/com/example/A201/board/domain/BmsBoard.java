@@ -51,7 +51,6 @@ public class BmsBoard {
 
     private Double minTemperatureDischarge;
 
-    private LocalDateTime madeDate;
-
+    @CreatedDate
     private LocalDateTime receiveDate;
 }
