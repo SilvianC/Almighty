@@ -13,44 +13,7 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
     event.preventDefault();
     onClose();
   };
-
-  const [loadingText, setLoadingText] = useState("");
-  const [textVisible, setTextVisible] = useState(false);
-
-  useEffect(() => {
-    const loadingTexts = [
-      "데이터를 전송하고 있습니다...",
-      "BMS 데이터를 전송하고 있습니다...",
-      "EKF와 SOC를 계산하고 있습니다...",
-      "잠시만 기다려주세요...",
-      "거의 완료되었습니다...",
-    ];
-    let currentIndex = 0;
-
-    const updateText = () => {
-      // 텍스트 가시성을 먼저 false로 설정하여 페이드 아웃
-      if (currentIndex < loadingTexts.length) {
-        setTextVisible(false);
-      }
-
-      // 텍스트를 변경하고, 페이드 인하기 전에 약간의 지연
-      setTimeout(() => {
-        if (currentIndex < loadingTexts.length) {
-          setLoadingText(loadingTexts[currentIndex]);
-          setTextVisible(true); // 페이드 인
-          currentIndex++;
-        }
-      }, 500); // 페이드 아웃 후 텍스트 변경까지의 지연 시간
-    };
-
-    const interval = setInterval(updateText, 6000);
-    if (currentIndex < loadingTexts.length) {
-      updateText();
-    } // 초기 텍스트 설정
-
-    return () => clearInterval(interval);
-  }, []);
-
+  console.log("df");
   const boltRef = useRef(null);
   const divRef = useRef(null);
 
@@ -75,7 +38,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
         if (onSuccess) {
           onSuccess(); // 상위 컴포넌트에 성공을 알림
         }
-        onClose();
       })
       .catch((error) => {
         setIsLoading(false); // 요청 완료 시 로딩 상태를 false로 설정
