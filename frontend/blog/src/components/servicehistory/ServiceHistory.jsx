@@ -1,14 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
 import styled, { keyframes } from "styled-components";
 import ReturnResponse from "../returnresponse/ReturnResponse";
 import { CSSTransition } from "react-transition-group";
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
-import { format, isWithinInterval, subSeconds } from "date-fns";
-import { useRecoilValue } from "recoil";
-import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
 const status = {
   Normal: "정상",
@@ -71,65 +67,75 @@ const ServiceHistory = ({
         {"\u00A0"}
         반송 신청 결과
       </S.Title>
+      <div className="Container">
+        {data.map((item, idx) => {
+          // 상태에 따른 색상 결정
+          const statusColor =
+            {
+              Normal: "#28a745", // 정상 - 녹색
+              Request: "#ffc107", // 진행 중 - 노란색
+              Upload: "#17a2b8", // 데이터 업로드 - 하늘색
+              Analysis: "#007bff", // 분석 중 - 파란색
+              CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
+              SdiFault: "#034F9E", // 제품 결함 - 검정색
+            }[item.expertStatus] || "#6c757d"; // 기본 - 회색
 
-      <Form style={{ height: "90%" }}>
-        <S.Table bordered>
-          <thead className={"table-secondary"}>
-            <tr>
-              <th className="w-auto text-center">제품명</th>
-              <th className="w-auto text-center">신청일</th>
-              <th className="w-25 text-center">결과</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, idx) => {
-              // 상태에 따른 색상 결정
-              const statusColor =
-                {
-                  Normal: "#28a745", // 정상 - 녹색
-                  Request: "#ffc107", // 진행 중 - 노란색
-                  Upload: "#17a2b8", // 데이터 업로드 - 하늘색
-                  Analysis: "#007bff", // 분석 중 - 파란색
-                  CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
-                  SdiFault: "#034F9E", // 제품 결함 - 검정색
-                }[item.expertStatus] || "#6c757d"; // 기본 - 회색
+          // item.date 문자열을 Date 객체로 변환합니다.
+          const itemDate = new Date(item.date);
 
-              // item.date 문자열을 Date 객체로 변환합니다.
-              const itemDate = new Date(item.date);
+          // item.date를 "YYYY-MM-DD" 형식으로 포맷합니다.
+          const formattedDate = itemDate.toISOString().split("T")[0];
 
-              // item.date를 "YYYY-MM-DD" 형식으로 포맷합니다.
-              const formattedDate = itemDate.toISOString().split("T")[0];
+          // 현재 시간과 item.date의 차이를 계산합니다.
+          const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
 
-              // 현재 시간과 item.date의 차이를 계산합니다.
-              const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
+          // 차이가 5초 이내인지 확인합니다.
+          const isRecent = timeDifferenceInSeconds <= 5;
 
-              // 차이가 5초 이내인지 확인합니다.
-              const isRecent = timeDifferenceInSeconds <= 5;
-              return (
-                <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
+          return (
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h1>John Doe</h1>
+                  <p></p>
+                  <p>{formattedDate}</p>
                   <FirstTd
                     className={isRecent ? "flash-highlight" : ""}
                     statusColor={statusColor}
                   >
                     {item.code}
                   </FirstTd>
-                  <td className={isRecent ? "flash-highlight" : ""}>
-                    {formattedDate}
-                  </td>
-                  <td className={isRecent ? "flash-highlight" : ""}>
-                    <StatusButton
-                      onClick={() => handleStatusButtonClick(item)}
-                      status={item.expertStatus} // status prop을 전달합니다
-                    >
-                      {status[item.expertStatus]}
-                    </StatusButton>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </S.Table>
-      </Form>
+                </div>
+                <div className="flip-card-back">
+                  <ReturnResponse item={item} />
+                </div>
+              </div>
+            </div>
+          );
+          // return (
+          //   <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
+          //     <FirstTd
+          //       className={isRecent ? "flash-highlight" : ""}
+          //       statusColor={statusColor}
+          //     >
+          //       {item.code}
+          //     </FirstTd>
+          //     <td className={isRecent ? "flash-highlight" : ""}>
+          //       {formattedDate}
+          //     </td>
+          //     <td className={isRecent ? "flash-highlight" : ""}>
+          //       <StatusButton
+          //         onClick={() => handleStatusButtonClick(item)}
+          //         status={item.expertStatus} // status prop을 전달합니다
+          //       >
+          //         {status[item.expertStatus]}
+          //       </StatusButton>
+          //     </td>
+          //   </tr>
+          // );
+        })}
+      </div>
+
       <CSSTransition
         in={showReturnResponse}
         timeout={300}
@@ -201,6 +207,56 @@ const StatusButton = styled(Button)`
 `;
 const S = {
   Wrap: styled.div`
+    .Container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 400px;
+      height: 400px;
+      border: 1px solid #f1f1f1;
+      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+    }
+
+    /* This container is needed to position the front and back side */
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    /* Do an horizontal flip when you move the mouse over the flip box container */
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Position the front and back side */
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden; /* Safari */
+      backface-visibility: hidden;
+    }
+
+    /* Style the front side (fallback if image is missing) */
+    .flip-card-front {
+      background-color: #bbb;
+      color: black;
+    }
+
+    /* Style the back side */
+    .flip-card-back {
+      background-color: dodgerblue;
+      color: white;
+      transform: rotateY(180deg);
+    }
     border: 1px solid #d3d3d3;
     margin: 20px;
     padding: 60px;
@@ -216,6 +272,7 @@ const S = {
     @media (max-width: 768px) {
       height: 300px;
     }
+    overflow: auto;
   `,
   ReturnResponseWrapper: styled.div`
     position: absolute;

@@ -2,14 +2,21 @@ import React, { useEffect, useState, useRef } from "react";
 import BuyTable from "../../components/table/BuyTable";
 import styled, { css, createGlobalStyle } from "styled-components";
 import http from "../../api/http";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import ServiceHistory from "../../components/servicehistory/ServiceHistory";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import { CSSTransition } from "react-transition-group";
 import { useRecoilValue } from "recoil";
-import { MemberIdState, AccessTokenState,RoleState,IsLoginState } from "../../states/states";
+import "./Return.css";
+import {
+  MemberIdState,
+  AccessTokenState,
+  RoleState,
+  IsLoginState,
+} from "../../states/states";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 import SideBar from "../../components/sidebar/Sidebar";
 
 const Return = () => {
@@ -29,6 +36,7 @@ const Return = () => {
   const [totalPages, setTotalPages] = useState(0);
   const accessToken = useRecoilValue(AccessTokenState);
   const handleSuccess = () => {
+    console.log("handle");
     toast.success("반품 요청이 성공적으로 처리되었습니다.");
     fetchServiceHistory();
     fetchBatteryItems();
@@ -36,12 +44,13 @@ const Return = () => {
 
   // 에러 시 호출될 함수
   const handleError = () => {
+    console.log("handle no");
     toast.error("반품 요청 처리 중 오류가 발생했습니다.");
   };
 
   const fetchBatteryItems = () => {
     http
-      .get(`/api/batteries/member/${memberId}`,{
+      .get(`/api/batteries/member/${memberId}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
@@ -134,10 +143,46 @@ const Return = () => {
     <>
       <GlobalStyles />
       <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
-
+      <div className="tabs">
+        <input id="all" type="radio" name="tab_item" />
+        <label className="tab_item" for="all">
+          Tab 1
+        </label>
+        <input id="programming" type="radio" name="tab_item" />
+        <label className="tab_item" for="programming">
+          Tab 2
+        </label>
+        <div className="tab_content" id="all_content">
+          <S.BuyTableContainer>
+            <BuyTable
+              onSuccess={handleSuccess}
+              onError={handleError}
+              data={data}
+              onApplyClick={(item) => {
+                setSelectedItem(item);
+                setShowReturnRequest(true);
+              }}
+            ></BuyTable>
+          </S.BuyTableContainer>
+        </div>
+        <div className="tab_content" id="programming_content">
+          <S.ReturnResultTableContainer>
+            <ServiceHistory
+              data={history}
+              page={page}
+              setPage={setPage}
+              totalPage={totalPages}
+              fetchServiceHistory={fetchServiceHistory}
+            />
+          </S.ReturnResultTableContainer>
+        </div>
+      </div>
+      {/* 
       <S.Container>
         <S.BuyTableContainer>
           <BuyTable
+            onSuccess={handleSuccess}
+            onError={handleError}
             data={data}
             onApplyClick={(item) => {
               setSelectedItem(item);
@@ -147,42 +192,36 @@ const Return = () => {
         </S.BuyTableContainer>
 
         <S.ReturnResultTableContainer>
-          <CSSTransition
+          {/* <CSSTransition
             in={!showReturnRequest}
             timeout={300}
             classNames="fade"
             unmountOnExit
             nodeRef={serviceHistoryRef} // CSSTransition에 ref를 지정
           >
-            <div ref={serviceHistoryRef}>
-              <ServiceHistory
-                data={history}
-                page={page}
-                setPage={setPage}
-                totalPage={totalPages}
-                fetchServiceHistory={fetchServiceHistory}
-              />
-            </div>
-          </CSSTransition>
-
-          <CSSTransition
+            <div ref={serviceHistoryRef}> */}
+      {/* <ServiceHistory
+            data={history}
+            page={page}
+            setPage={setPage}
+            totalPage={totalPages}
+            fetchServiceHistory={fetchServiceHistory}
+          /> */}
+      {/* </div> */}
+      {/* </CSSTransition> */}
+      {/* <CSSTransition
             in={showReturnRequest}
             timeout={300}
             classNames="slide-down"
             unmountOnExit
             nodeRef={returnRequestRef} // CSSTransition에 ref를 지정
           >
-            <S.ReturnRequestWrapper ref={returnRequestRef}>
-              <ReturnRequest
-                onClose={() => setShowReturnRequest(false)}
-                item={selectedItem}
-                onSuccess={handleSuccess}
-                onError={handleError}
-              />
-            </S.ReturnRequestWrapper>
-          </CSSTransition>
-        </S.ReturnResultTableContainer>
-      </S.Container>
+            <S.ReturnRequestWrapper
+              ref={returnRequestRef}
+            ></S.ReturnRequestWrapper>
+          </CSSTransition> */}
+      {/* </S.ReturnResultTableContainer>
+      </S.Container>  */}
     </>
   );
 };

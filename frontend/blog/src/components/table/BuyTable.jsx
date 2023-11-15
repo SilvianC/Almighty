@@ -1,44 +1,13 @@
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
-import { BiCaretRight } from "react-icons/bi";
 import styled from "styled-components";
 import { BsListUl, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
-import { Modal, Col, Row } from "react-bootstrap";
-import ModelTable from "./ModelTable";
-import ReasonModal from "../reason/ReasonModal";
 import http from "../../api/http";
-const BuyTable = ({ data, onApplyClick }) => {
-  const [showModal, setShowModal] = useState(false);
-  const [showReasonModal, setShowReasonModal] = useState(false);
-  const [selectedModelId, setSelectedModelId] = useState(null);
+import ReturnRequest from "../../components/returnrequest/ReturnRequest";
+const BuyTable = ({ data, onApplyClick, onSuccess, onError }) => {
   const [checkedInputs, setCheckedInputs] = useState([]);
-  const [selectedItemCode, setSelectedItemCode] = useState(null);
 
-  const handleSave = () => {
-    http.put(`/api/batteries/request`, checkedInputs).then().catch();
-  };
-
-  const openReasonModal = (itemCode) => {
-    setSelectedItemCode(itemCode);
-    setShowReasonModal(true);
-  };
-
-  const closeReasonModal = () => {
-    setSelectedItemCode(null);
-    setShowReasonModal(false);
-  };
-
-  const handleIconClick = (modelId, code) => {
-    setSelectedModelId(modelId);
-    setShowModal(true);
-  };
-
-  const handleClose = () => {
-    setShowModal(false);
-    setSelectedModelId(null);
-  };
   return (
     <S.Wrap>
       <S.Title className="d-flex align-items-center">
@@ -46,43 +15,51 @@ const BuyTable = ({ data, onApplyClick }) => {
         {"\u00A0"}
         배터리 목록 및 반송 신청
       </S.Title>
-
-      <S.Form>
-        <S.Table bordered>
-          <thead className={"table-secondary"}>
-            <tr>
-              <th className="w-auto text-center">제품명</th>
-              {/* <th className="w-25 text-center">여기다</th>
-              <th className="w-25 text-center">뭐하지</th> */}
-              <th className="w-auto text-center">반송 신청</th>
-            </tr>
-          </thead>
-          <tbody style={{ hover: "#333333" }}>
-            {data.map((item, idx) => {
-              return (
-                <tr key={idx} style={{ hover: "#333333" }}>
-                  <td className="text-center">{item.code}</td>
-                  <td className="text-center">
-                    {item.status === "InProgress" ? ( 
+      <div className="Container">
+        {data.map((item, idx) => {
+          return (
+            <div
+              className={
+                item.status === "InProgress"
+                  ? "flip-card1"
+                  : item.status === "Analysis"
+                  ? "flip-card1"
+                  : item.status === "Return"
+                  ? "flip-card1"
+                  : "flip-card"
+              }
+            >
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h1>John Doe</h1>
+                  <p>{item.code}</p>
+                  <p>
+                    {item.status === "InProgress" ? (
                       <CompletedButton disabled>진행 중</CompletedButton>
-                    ) : 
-                      item.status === "Analysis" ? (
-                        <CompletedButton disabled>분석 중</CompletedButton>
-                      ) : 
-                      item.status === "Return" ? (
-                        <CompletedButton disabled>반송 중</CompletedButton>
-                      ) : (
-                        <ApplyButton onClick={() => onApplyClick(item)}>
-                          신청
-                        </ApplyButton>
-                      )}
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </S.Table>
-      </S.Form>
+                    ) : item.status === "Analysis" ? (
+                      <CompletedButton disabled>분석 중</CompletedButton>
+                    ) : item.status === "Return" ? (
+                      <CompletedButton disabled>반송 중</CompletedButton>
+                    ) : (
+                      <ApplyButton onClick={() => onApplyClick(item)}>
+                        신청
+                      </ApplyButton>
+                    )}
+                  </p>
+                </div>
+
+                <div className="flip-card-back">
+                  <ReturnRequest
+                    item={item}
+                    onSuccess={onSuccess}
+                    onError={onError}
+                  />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </S.Wrap>
   );
 };
@@ -123,6 +100,73 @@ const ApplyButton = styled(Button)`
 
 const S = {
   Wrap: styled.div`
+    .Container {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 400px;
+      height: 400px;
+      border: 1px solid #f1f1f1;
+      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+    }
+
+    /* This container is needed to position the front and back side */
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+    .flip-card1 {
+      background-color: transparent;
+      width: 400px;
+      height: 400px;
+      border: 1px solid #f1f1f1;
+      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+    }
+
+    /* This container is needed to position the front and back side */
+    .flip-card-inner1 {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    /* Do an horizontal flip when you move the mouse over the flip box container */
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    /* Position the front and back side */
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden; /* Safari */
+      backface-visibility: hidden;
+    }
+
+    /* Style the front side (fallback if image is missing) */
+    .flip-card-front {
+      background-color: #bbb;
+      color: black;
+    }
+
+    /* Style the back side */
+    .flip-card-back {
+      background-color: dodgerblue;
+      color: white;
+      transform: rotateY(180deg);
+    }
     border: 1px solid #d3d3d3;
     margin: 20px;
     padding: 60px;
