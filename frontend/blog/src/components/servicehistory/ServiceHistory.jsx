@@ -61,15 +61,25 @@ const ServiceHistory = ({
     <S.Wrap ref={wrapperRef}>
       <div className="Container">
         {data.map((item, idx) => {
-          const statusColor =
+          const statusBackgroundColor =
             {
-              Normal: "#1D1F25", // 정상 - 녹색
+              Normal: "#DEDEDE", // 정상 - 회색
               Request: "#FAD551", // 진행 중 - 노란색
               Upload: "#B7C8D9", // 데이터 업로드 - 하늘색
               Analysis: "#034F9E", // 분석 중 - 파란색
               CustomerFault: "#D84848", // 고객 귀책 - 빨간색
-              SdiFault: "#1D1F25", // 제품 결함 - 검정색
+              SdiFault: "#034F9E", // 제품 결함 - 파란색
             }[item.expertStatus] || "#1D1F25"; // 기본 - 회색
+
+          const statusFontColor =
+            {
+              Normal: "#1D1F25", // 정상 - 검정색
+              Request: "#FAD551", // 진행 중 - 노란색
+              Upload: "#B7C8D9", // 데이터 업로드 - 하늘색
+              Analysis: "#034F9E", // 분석 중 - 파란색
+              CustomerFault: "#D84848", // 고객 귀책 - 빨간색
+              SdiFault: "#034F9E", // 제품 결함 - 파란색
+            }[item.expertStatus] || "#1D1F25"; // 기본 - 검정색
 
           const status =
             {
@@ -88,11 +98,13 @@ const ServiceHistory = ({
 
           return (
             <div className="flip-card">
-              <div className="flip-card-inner">
+              <div className="flip-card-inner"
+                style={{ borderTopColor: statusBackgroundColor }}
+              >
                 <div className="flip-card-front">
                   <h1 style={{ marginTop: "25px", fontWeight: "bolder", }}>{item.code}</h1>
                   <p>신청일자 {formattedDate}</p>
-                  <h4 style={{ color: statusColor, }}>{status}</h4>
+                  <h4 style={{ color: statusFontColor, }}>{status}</h4>
                 </div>
                 <div className="flip-card-back">
                   <ReturnResponse item={item} />
@@ -158,8 +170,8 @@ const S = {
     }
     .flip-card {
       background-color: transparent;
-      width: 18%;
-      height: 400px;
+      width: 15%;
+      height: 200px;
       perspective: 1000px;
       margin: 13px;
       border-radius: 20px;
@@ -181,8 +193,9 @@ const S = {
       text-align: center;
       transition: transform 0.8s;
       transform-style: preserve-3d;
-      border: 20px solid #212061;
-      border-radius: 20px;
+      // border: 20px solid #212061;
+      border-radius: 10px;
+      border-top: 13px solid;
     }
 
     .flip-card:hover .flip-card-inner {
@@ -201,16 +214,19 @@ const S = {
     .flip-card-front {
       background-color: #e7ecf2;
       color: black;
-
+      
+      > h1 {
+        font-size: 1.4rem;
+      }
       > p {
-        font-size: 1.2rem;
+        font-size: 1rem;
         color: #82858B;
       }
       > h4 {
-        font-size: 1.5rem;
+        font-size: 1.4rem;
         font-weight: bold;
         position: absolute;
-        bottom: 40px;
+        bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
       }

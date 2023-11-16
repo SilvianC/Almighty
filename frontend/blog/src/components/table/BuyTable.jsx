@@ -31,11 +31,6 @@ const BuyTable = ({
 
   return (
     <S.Wrap>
-      {/* <S.Title className="d-flex align-items-center">
-        <BsListUl />
-        {"\u00A0"}
-        배터리 목록 및 반송 신청
-      </S.Title> */}
       <div className="Container">
         {data["content"] &&
           data["content"].map((item, idx) => {
@@ -51,13 +46,14 @@ const BuyTable = ({
                     : "flip-card"
                 }
               >
-                {/* <div className="flip-card-upper"></div> */}
+                <div className="flip-card-upper">
+                  <div className="flip-card-upper-box">.</div>
+                </div>
                 <div className="flip-card-inner">
                   <div className="flip-card-front">
                     <h1 style={{ marginTop: "25px", fontWeight: "bolder" }}>
                       {item.code}
                     </h1>
-                    {/* <p>battery code</p> */}
 
                     {item.status === "InProgress" ? (
                       <CompletedButton disabled>진행 중</CompletedButton>
@@ -66,7 +62,7 @@ const BuyTable = ({
                     ) : item.status === "Return" ? (
                       <CompletedButton disabled>반송 중</CompletedButton>
                     ) : (
-                      <ApplyButton style={{ backgroundColor: "#AEC6DE"}}>신청</ApplyButton>
+                      <ApplyButton style={{ backgroundColor: "#C7CFD7"}}>신청</ApplyButton>
                     )}
                   </div>
 
@@ -98,19 +94,19 @@ const CompletedButton = styled.div`
   width: 100%;
   height: 50px;
   padding: 2px;
-  font-size: 30px;
+  font-size: 1.7rem;
   position: absolute;
-  top: 50%;
+  top: 61.5%;
 `;
 
 const ApplyButton = styled.div`
   width: 100%;
   height: 50px;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 1.7rem;
   padding: 2px;
   position: absolute;
-  top: 50%;
+  top: 61.5%;
 `;
 
 const S = {
@@ -142,20 +138,43 @@ const S = {
     }
     .flip-card {
       background-color: transparent;
-      width: 18%;
-      height: 400px;
-      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+      width: 15%;
+      height: 300px;
+      perspective: 1000px;
       margin: 13px;
       border-radius: 20px;
+      margin-bottom: 60px;
     }
     .flip-card1 {
       background-color: transparent;
-      width: 18%;
-      height: 400px;
-
-      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+      width: 15%;
+      height: 300px;
+      perspective: 1000px;
       margin: 13px;
       border-radius: 20px;
+      margin-bottom: 60px;
+    }
+
+    .flip-card-upper {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card-upper-box {
+      width: 40%;
+      height: 2rem;
+      background-color: #a0adba;
+      color: #212061;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+    }
+
+    .flip-card:hover .flip-card-upper-box {
+      transform: rotateY(180deg);
     }
 
     .flip-card-inner {
@@ -165,7 +184,10 @@ const S = {
       text-align: center;
       transition: transform 0.8s;
       transform-style: preserve-3d;
-      border: 20px solid #212061;
+      border-top: 1rem solid #a0adba;
+      border-bottom: 1rem solid #a0adba;
+      border-left: 1.5rem solid #a0adba;
+      border-right: 1.5rem solid #a0adba;
       border-radius: 20px;
     }
 
@@ -173,7 +195,6 @@ const S = {
       transform: rotateY(180deg);
     }
 
-    /* Position the front and back side */
     .flip-card-front,
     .flip-card-back {
       position: absolute;
@@ -186,10 +207,13 @@ const S = {
     .flip-card-front {
       background-color: #e7ecf2;
       color: black;
+
+      > h1 {
+        font-size: 1.2rem;
+      }
       div {
-        background-color: #dedede;
+        background-color: #BED6C7;
         position: relative;
-        // top: 130px;
       }
     }
 
