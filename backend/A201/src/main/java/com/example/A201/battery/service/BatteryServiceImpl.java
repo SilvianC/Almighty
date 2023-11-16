@@ -11,6 +11,9 @@ import com.example.A201.battery.vo.BatteryDataResponse;
 import com.example.A201.member.domain.Member;
 import com.example.A201.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,6 +39,7 @@ public class BatteryServiceImpl implements BatteryService{
         Model batterymodel = modelRepository.findByModelName(batteryDTO.getModelName())
                         .orElseGet(() ->{
                             Model model = Model.builder()
+                                    .capacity(1700)
                                     .modelName(batteryDTO.getModelName())
                                     .overVoltageThreshold(4.213)
                                     .underVoltageThreshold(2.8)
@@ -89,9 +93,9 @@ public class BatteryServiceImpl implements BatteryService{
     }
 
     @Override
-    public List<BatteryResponse> getBatteries(Long memberId){
-        List<Battery> batteries = batteryRepository.findByMember(memberId);
-        return batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList());
+    public Page<BatteryResponse> getBatteries(Long memberId, Pageable pageable){
+        Page<Battery> batteries = batteryRepository.findByMember(memberId, pageable);
+        return new PageImpl<>(batteries.stream().map(battery -> BatteryResponse.batteryResponse(battery)).collect(Collectors.toList()),pageable,batteries.getTotalElements());
     }
 
     @Override

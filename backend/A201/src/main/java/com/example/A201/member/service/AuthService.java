@@ -144,12 +144,17 @@ public class AuthService {
 
     // 로그아웃
     @Transactional
-    public void logout(String requestAccessTokenInHeader) {
+    public void logout(String requestAccessTokenInHeader, String memberId) {
         String requestAccessToken = resolveToken(requestAccessTokenInHeader);
         String principal = getPrincipal(requestAccessToken);
 
         // Redis에 저장되어 있는 RT 삭제
         String refreshTokenInRedis = redisService.getValues("RT(" + SERVER + "):" + principal);
+        String fcmToken = redisService.getValues(memberId);
+        log.info("fcm {}",fcmToken);
+        if(fcmToken != null){
+            redisService.deleteValues(memberId);
+        }
         if (refreshTokenInRedis != null) {
             redisService.deleteValues("RT(" + SERVER + "):" + principal);
         }
