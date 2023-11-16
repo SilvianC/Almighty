@@ -126,7 +126,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
             onChange={(e) => setRequestReason(e.target.value)}
           />
           <S.ButtonsWrap>
-
             <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton>
           </S.ButtonsWrap>
         </S.Form>
@@ -227,9 +226,9 @@ const S = {
     height: 40px;
   `,
   SubmitButton: styled.button`
-    position:relative;
-    top:10px;
-    left:100px;
+    position: relative;
+    top: 10px;
+    left: 60px;
     background-color: #024c98; // 부트스트랩의 기본 파란색
     border-color: #007bff;
     width: 100px;
@@ -238,7 +237,7 @@ const S = {
     height: 50px;
     border-radius: 5px;
     padding: 2px;
-    font-size:30px;
+    font-size: 30px;
     &:hover {
       background-color: #a5c7f8; // 호버 상태일 때 더 어두운 파란색
       border-color: #0056b3;

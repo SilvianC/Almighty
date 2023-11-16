@@ -21,7 +21,6 @@ public class WordController {
     @Autowired
     private final WordService wordService;
 
-
     @PostMapping("/createWord")
     public String createWordDocument(@RequestBody String content) throws InvalidFormatException {
         try {
