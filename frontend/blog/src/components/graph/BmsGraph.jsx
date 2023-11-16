@@ -62,11 +62,11 @@ const BmsGraph = ({ data }) => {
     series: [
       {
         colors: [
-          data && data["overVoltageCount"] > 2 ? "#FF0000" : "#4589F4",
-          data && data["underVoltageCount"] > 2 ? "#FF0000" : "#4589F4",
-          data && data["overCurrentCount"] > 1 ? "#FF0000" : "#4589F4",
-          data && data["overTemperatureCount"] > 2 ? "#FF0000" : "#4589F4",
-          data && data["underTemperatureCount"] > 2 ? "#FF0000" : "#4589F4",
+          data && data["overVoltageCount"] > 5 ? "#FF0000" : "#4589F4",
+          data && data["underVoltageCount"] > 5 ? "#FF0000" : "#4589F4",
+          data && data["overCurrentCount"] > 5 ? "#FF0000" : "#4589F4",
+          data && data["overTemperatureCount"] > 5 ? "#FF0000" : "#4589F4",
+          data && data["underTemperatureCount"] > 5 ? "#FF0000" : "#4589F4",
         ],
         colorByPoint: true,
 
