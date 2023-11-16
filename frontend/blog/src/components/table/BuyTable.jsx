@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import styled from "styled-components";
-import { BsListUl, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import http from "../../api/http";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import Pagination from "../pagenation/Pagination";
+import styled from "styled-components";
+
 const BuyTable = ({
   data,
   onSuccess,
@@ -143,6 +142,11 @@ const S = {
       0px 20px 80px rgba(0, 0, 0, 0.07);
     @media (max-width: 768px) {
       height: 300px;
+      /* 스크롤바 숨김 */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
     }
     .Container {
       display: flex;
@@ -176,6 +180,8 @@ const S = {
       text-align: center;
       transition: transform 0.8s;
       transform-style: preserve-3d;
+      border: 20px solid #212061;
+      border-radius: 20px;
     }
 
     /* This container is needed to position the front and back side */
