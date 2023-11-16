@@ -8,5 +8,5 @@ import java.io.IOException;
 
 public interface WordService  {
 
-    void createWordDocument(ProgressResultDTO content, String fileName) throws IOException, InvalidFormatException;
+    byte[] createWordDocument(ProgressResultDTO content, String fileName) throws IOException, InvalidFormatException;
 }
