@@ -91,7 +91,7 @@ const TestGraph = ({ data, threshold, type }) => {
           t === "temperatureMeasured"
             ? "#2EFE2E"
             : t === "voltageMeasured"
-            ? "darkorange"
+            ? "#D0FA58"
             : "#F5DA81",
         zones:
           t === "temperatureMeasured"
@@ -116,7 +116,7 @@ const TestGraph = ({ data, threshold, type }) => {
                 },
                 {
                   value: threshold.overVoltage,
-                  color: "darkorange",
+                  color: "#D0FA58",
                 },
                 {
                   color: "red",

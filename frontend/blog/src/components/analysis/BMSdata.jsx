@@ -25,17 +25,18 @@ const BMSdata = ({ data }) => {
 
   const convertDecimalTime = (decimalTime) => {
     const h = Math.floor(decimalTime);
-    const m = Math.floor((decimalTime - h) * 60)
-    const s = Math.floor((decimalTime - h) * 60 - m) * 60
+    const m = Math.floor((decimalTime - h) * 60);
+    const s = Math.floor(((decimalTime - h) * 60 - m) * 60);
+    
     setHour(()=>h);
     setMinute(()=> m);
-    setSecond(()=>s)
+    setSecond(()=>s);
   };
 
   useEffect(() => {
     if (data != null) {
       setIsDataExist(() => true);
-      convertDecimalTime(data.chargeTime)
+      convertDecimalTime(data.chargeTime);
     } else {
       setIsDataExist(() => false);
     }
