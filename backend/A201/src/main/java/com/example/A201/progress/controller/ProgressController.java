@@ -60,12 +60,11 @@ public class ProgressController {
             httpHeaders.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
             httpHeaders.setContentLength(wordDocument.length);
             httpHeaders.setContentDispositionFormData("attachment", "downloaded-file.docx");
-            progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
         } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
             log.info("Word 파일 생성에 실패하였습니다.");
         }
-
+        progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
         return new ResponseEntity<>(wordDocument, httpHeaders, HttpStatus.OK);
     }
 }
