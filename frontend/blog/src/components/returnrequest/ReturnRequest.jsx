@@ -9,11 +9,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   const [requestReason, setRequestReason] = useState("");
   const memberId = useRecoilValue(MemberIdState);
   const accessToken = useRecoilValue(AccessTokenState);
-  const handleClose = (event) => {
-    event.preventDefault();
-    onClose();
-  };
-
   const [loadingText, setLoadingText] = useState("");
   const [textVisible, setTextVisible] = useState(false);
 
@@ -108,8 +103,8 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
           {/* <S.FieldSet>
             <S.Label>제품명</S.Label>
             <S.Input readOnly value={item ? item.code : ""} />
-          </S.FieldSet>
-          <S.FieldSet>
+            </S.FieldSet>
+            <S.FieldSet>
             <S.Label>제품 ID</S.Label>
             <S.Input readOnly value={item ? item.id : ""} />
           </S.FieldSet>
@@ -161,19 +156,11 @@ const S = {
       display: none;
     }
     scrollbar-width: none;
-    border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    padding-right: 20px;
-    border-radius: 10px;
-    background-color: #f2f2f2;
+
+    background-color: #e7ecf2;
     height: 80%;
     overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
+
     @media (max-width: 768px) {
       height: 300px;
     }
@@ -184,9 +171,7 @@ const S = {
     color: #1d1f25;
     padding-bottom: 10px;
   `,
-  Form: styled.form`
-    /* 필요한 스타일을 여기에 추가하실 수 있습니다. */
-  `,
+  Form: styled.form``,
   FieldSet: styled.div`
     margin-bottom: 15px;
   `,
@@ -205,17 +190,14 @@ const S = {
   `,
   TextArea: styled.textarea`
     width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #d3d3d3;
-    margin-top: 15px;
-    height: 150px;
+    margin-top: 50px;
+    height: 180px;
     resize: vertical;
   `,
   ButtonsWrap: styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    position: absolute;
+    top: 285px;
+    right: 50%;
   `,
   CancelButton: styled.button`
     background-color: #e0e0e0;

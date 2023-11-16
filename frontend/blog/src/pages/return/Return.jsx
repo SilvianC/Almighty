@@ -141,7 +141,6 @@ const Return = () => {
     //   .catch();
     fetchServiceHistory(page);
   }, [memberId, page]);
-  console.log(isCheck);
 
   return (
     <>
@@ -177,6 +176,8 @@ const Return = () => {
             onSuccess={handleSuccess}
             onError={handleError}
             data={data}
+            setData={setData}
+            memberId={memberId}
           ></BuyTable>
         </div>
         <div className="tab_content" id="programming_content">

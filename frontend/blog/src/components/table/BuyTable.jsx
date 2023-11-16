@@ -21,6 +21,7 @@ const BuyTable = ({
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
+        console.log(data);
         setData(data["data"]);
       })
       .catch((error) => {
@@ -56,17 +57,16 @@ const BuyTable = ({
                       {item.code}
                     </h1>
                     <p>battery code</p>
-                    <div>
-                      {item.status === "InProgress" ? (
-                        <CompletedButton disabled>진행 중</CompletedButton>
-                      ) : item.status === "Analysis" ? (
-                        <CompletedButton disabled>분석 중</CompletedButton>
-                      ) : item.status === "Return" ? (
-                        <CompletedButton disabled>반송 중</CompletedButton>
-                      ) : (
-                        <ApplyButton>신청</ApplyButton>
-                      )}
-                    </div>
+
+                    {item.status === "InProgress" ? (
+                      <CompletedButton disabled>진행 중</CompletedButton>
+                    ) : item.status === "Analysis" ? (
+                      <CompletedButton disabled>분석 중</CompletedButton>
+                    ) : item.status === "Return" ? (
+                      <CompletedButton disabled>반송 중</CompletedButton>
+                    ) : (
+                      <ApplyButton>신청</ApplyButton>
+                    )}
                   </div>
 
                   <div className="flip-card-back">
@@ -92,38 +92,21 @@ const BuyTable = ({
 
 export default BuyTable;
 
-const CompletedButton = styled(Button)`
+const CompletedButton = styled.div`
   // 비활성화된 버튼 스타일
-  background-color: #b6c0c9 !important;
-  color: #000 !important;
   font-weight: bold;
-  width: 100px;
+  width: 100%;
   height: 50px;
   padding: 2px;
-  font-size: 25px;
-  cursor: not-allowed;
-  &:hover {
-    background-color: #b6c0c9;
-  }
+  font-size: 30px;
 `;
 
-const ApplyButton = styled(Button)`
-  background-color: #024c98; // 부트스트랩의 기본 파란색
-  border-color: #007bff;
-  width: 100px;
+const ApplyButton = styled.div`
+  width: 100%;
   height: 50px;
   font-weight: bold;
   font-size: 30px;
   padding: 2px;
-  &:hover {
-    background-color: #a5c7f8; // 호버 상태일 때 더 어두운 파란색
-    border-color: #0056b3;
-  }
-  &:focus,
-  &:active {
-    background-color: #0056b3; // 클릭 상태일 때 색상
-    border-color: #0056b3;
-  }
 `;
 
 const S = {
@@ -202,7 +185,6 @@ const S = {
     /* Position the front and back side */
     .flip-card-front,
     .flip-card-back {
-      border-radius: 30px;
       position: absolute;
       width: 100%;
       height: 100%;
@@ -215,8 +197,9 @@ const S = {
       background-color: #e7ecf2;
       color: black;
       div {
+        background-color: #dedede;
         position: relative;
-        top: 200px;
+        top: 130px;
       }
     }
 
