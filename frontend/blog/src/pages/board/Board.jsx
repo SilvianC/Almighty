@@ -29,7 +29,7 @@ const Board = () => {
   const modalRef = useRef < HTMLDivElement > null;
   const [progressData, setProgressData] = useState(null);
   const Role = useRecoilValue(RoleState);
-  const isLogin = useRecoilValue(IsLoginState);
+  const memberId = useRecoilValue(MemberIdState);
   const navigate = useNavigate();
   const accessToken = useRecoilValue(AccessTokenState);
   useEffect(() => {
@@ -83,16 +83,14 @@ const Board = () => {
 
   //--------------------------------------------------------------------------------
   //이거 나중엔 풉시다 user, admin 구분 코드
-  // useEffect(() => {
-  //   if(isLogin != true){
-  //     alert("로그인 하세요")
-  //     navigate('/');
-  //   }
-  //   // Role이 'USER'이면 /return으로 리다이렉트
-  //   if (Role === 'USER') {
-  //     navigate('/return');
-  //   }
-  // }, [Role, navigate, isLogin]);
+  useEffect(() => {
+    if(memberId == null){
+      alert("로그인 하세요")
+      navigate('/');
+    }else if (Role === 'USER') {
+      navigate('/return');
+    }
+  }, [Role, navigate, memberId]);
   //--------------------------------------------------------------------------------
 
   // const modalOutSideClick = (e) => {
