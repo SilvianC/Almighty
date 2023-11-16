@@ -122,11 +122,11 @@ function Header() {
         {/* PC에서만 보이는 탭들 */}
         {memberId && (
           <S.PCTabs>
-            <NavItem>
+            {/* <NavItem>
               <S.CustomNavLink href="#" onClick={() => navigate("/return")}>
                 Return
               </S.CustomNavLink>
-            </NavItem>
+            </NavItem> */}
             {/* <NavItem className="alarm">
               <S.Alarm
                 className="alarmImage"

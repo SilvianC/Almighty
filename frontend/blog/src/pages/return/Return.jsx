@@ -69,16 +69,14 @@ const Return = () => {
 
   //--------------------------------------------------------------------------------
   //이거 나중엔 풉시다 user, admin 구분 코드
-  // useEffect(() => {
-  //   if(isLogin != true){
-  //     alert("로그인 하세요")
-  //     navigate('/');
-  //   }
-  //   // Role이 'ADMIN'이면 /main으로 리다이렉트
-  //   if (Role === 'ADMIN') {
-  //     navigate('/main');
-  //   }
-  // }, [Role, navigate, isLogin]);
+  useEffect(() => {
+    if(memberId == null){
+      alert("로그인 하세요")
+      navigate('/');
+    }else if (Role === 'ADMIN') {
+      navigate('/main');
+    }
+  }, [Role, navigate, memberId]);
   //--------------------------------------------------------------------------------
 
   // 서비스 히스토리 데이터를 불러오는 함수

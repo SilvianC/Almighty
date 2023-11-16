@@ -43,6 +43,7 @@ public class ChatLogService {
                 .orElseThrow(() -> new EntityNotFoundException("해당 데이터 찾을 수 없습니다"));
 
         Optional<ChatLog> chatLog = chatLogRepository.findByProgressId(request.getProgressId());
+
         if(chatLog.isEmpty()){
             System.out.println("progress empty");
             String hardcodedQuestion = String.format("당신은 배터리 전문가입니다. 다음 데이터를 통해 배터리 상태를 판단하세요: " +
@@ -61,6 +62,7 @@ public class ChatLogService {
                     bms.getOverTemperatureCount(),
                     bms.getUnderTemperatureCount()
             );
+
             String botResponse = callOpenAIApi(hardcodedQuestion);
             Member member = memberRepository.findById(request.getMemberId())
                     .orElseThrow(() -> new IllegalArgumentException("Member not found!"));
@@ -71,7 +73,6 @@ public class ChatLogService {
                     .progress(progressRepository.findById(request.getProgressId()).orElse(null))
                     .botResponse(botResponse)
                     .build());
-
 
             return ChatLogDto.builder()
                     .botResponse(botResponse)
@@ -114,7 +115,6 @@ public class ChatLogService {
         requestBody.put("model", "gpt-4-1106-preview");
         log.info("Sending request to OpenAI API with body: {}", requestBody);
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-
         try {
             ResponseEntity<Map> response = restTemplate.exchange(ENDPOINT_URL, HttpMethod.POST, entity, Map.class);
             Map<String, Object> responseBody = response.getBody();
