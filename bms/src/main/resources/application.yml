@@ -12,6 +12,8 @@ spring:
     password: "almighty201"
   data:
     mongodb:
+      username: almighty
+      password: wjswldmltls
       host: k9a201.p.ssafy.io
 #      host: localhost
       port: 27017
