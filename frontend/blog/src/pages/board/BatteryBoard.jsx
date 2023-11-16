@@ -44,7 +44,10 @@ const BatteryBoard = ({
           />
           {isopenbmsinfo && (
             <div>
-              <p>잘했다.</p>
+              <p>
+                측정 기간동안 나타난 전압, 전력, 온도 이상의 횟수를 나타내는
+                그래프
+              </p>
             </div>
           )}
         </div>
@@ -64,7 +67,9 @@ const BatteryBoard = ({
           />
           {isopentestinfo && (
             <div>
-              <p>잘했다.</p>
+              <p>
+                시간에 따른 전압, 전력, 온도와 배터리 잔량을 나타내는 그래프
+              </p>
             </div>
           )}
         </div>
@@ -97,9 +102,9 @@ const S = {
         position: absolute;
         left: 105px;
         div {
+          padding: 10px;
           opacity: 0.7;
           width: 300px;
-          height: 150px;
           left: 30px;
           top: -10px;
           text-align: center;
@@ -119,9 +124,9 @@ const S = {
         position: absolute;
         left: 95px;
         div {
+          padding: 10px;
           opacity: 0.7;
           width: 300px;
-          height: 150px;
           left: 30px;
           top: -10px;
           text-align: center;
