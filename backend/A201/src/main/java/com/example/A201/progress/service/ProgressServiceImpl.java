@@ -237,7 +237,7 @@ public class ProgressServiceImpl implements ProgressService{
                     "        <p>%s</p>\n" +
                     "        <p>감사합니다.</p>\n" +
                     "        <div class=\"signature\">\n" +
-                    "            <img src='https://www.batteryalmighty.co.kr/static/media/sdilogo.ea7cb21ee752a072f2db.png'>\n" +
+                    "            <img src='https://www.batteryalmighty.co.kr/static/media/sdilogo.ea7cb21ee752a072f2db.png' width='100px' height='30px'>\n" +
                     "        </div>\n" +
                     "    </div>\n" +
                     "</body>\n" +
