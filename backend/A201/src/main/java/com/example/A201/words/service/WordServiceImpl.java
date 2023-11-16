@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -27,19 +30,19 @@ import java.time.format.FormatStyle;
 public class WordServiceImpl implements WordService{
     private final ProgressRepository progressRepository;
     @Override
-    public void createWordDocument(ProgressResultDTO progress, String fileName) throws IOException, InvalidFormatException {
+    public byte[] createWordDocument(ProgressResultDTO progress, String fileName) throws IOException, InvalidFormatException {
         Progress progressEntity = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new IllegalStateException("해당 배터리를 찾을 수 없습니다"));
         Battery battery = progressEntity.getBattery();
-        String directoryPath = "c:/batteryword/";
-        File directory = new File(directoryPath);
+//        String directoryPath = "c:/batteryword/";
+//        File directory = new File(directoryPath);
 
         // 디렉토리가 없으면 생성
-        if (!directory.exists()) {
-            directory.mkdirs(); // 여러 중첩 디렉토리를 생성할 수도 있으므로 mkdirs() 사용
-        }
+//        if (!directory.exists()) {
+//            directory.mkdirs(); // 여러 중첩 디렉토리를 생성할 수도 있으므로 mkdirs() 사용
+//        }
 
         // 파일 생성 경로
-        String filePath = directoryPath + battery.getCode() + fileName;
+//        String filePath = directoryPath + battery.getCode() + fileName;
         XWPFDocument document = new XWPFDocument();
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " + currentDir);
@@ -118,17 +121,24 @@ public class WordServiceImpl implements WordService{
 
         String extendedContent = null;
         // 셀에 내용 설정
-        if(progress.getResponseReason().equals("counter error")){
-            extendedContent = "비정상적인 데이터가 관측되었습니다.";
-
-        }else if(progress.getResponseReason().equals("communication error")){
-            extendedContent = "데이터에는 오류가 없습니다. 배터리 연결 또는 보관 상태 확인을 요망합니다.";
+        if(progress.getResponseReason().equals("전압 이상")){
+            extendedContent = "전압에 대해 비정상적인 수치가 감지되었습니다. 확인 후 교체가 필요합니다.";
+        }else if(progress.getResponseReason().equals("전류 이상")){
+            extendedContent = "전압에 대해 비정상적인 수치가 감지되었습니다. 확인 후 교체가 필요합니다.";
+        }else if(progress.getResponseReason().equals("온도 이상")){
+            extendedContent = "전압에 대해 비정상적인 수치가 감지되었습니다. 확인 후 교체가 필요합니다.";
+        }else if(progress.getResponseReason().equals("복합 이상")){
+            extendedContent = "전반적으로 비정상적인 수치가 감지되었습니다. 확인 후 교체가 필요합니다.";
+        }else if(progress.getResponseReason().equals("연결 이상")){
+            extendedContent = "연결 상태가 불량한 것으로 판단되는 데이터가 감지되었습니다. 배터리 연결 또는 보관 상태 확인을 요망합니다.";
+        }else if(progress.getResponseReason().equals("배터리 노화")){
+            extendedContent = "배터리의 노화로 인한 이상으로 판단됩니다. 배터리 교체가 필요합니다.";
+        }else if(progress.getResponseReason().equals("정상")){
+            extendedContent = "데이터에 이상이 감지되지 않았습니다. 배터리 연결 또는 보관 상태 확인을 요망합니다.";
         }else{
             extendedContent = progress.getResponseReason();
         }
-        for (int i = 0; i < 300; i++) {
-            extendedContent += "\n"; // 개행 문자 추가
-        }
+
         cellFive.setText(extendedContent);
 
 
@@ -137,9 +147,18 @@ public class WordServiceImpl implements WordService{
         mergeCellHorizontally(table, 3, 0, 3);
         mergeCellHorizontally(table, 4, 0, 3);
         //rowFive.setHeight((short)600);
-
-        try (FileOutputStream out = new FileOutputStream(filePath)) {
-            document.write(out);
+//        try (FileOutputStream out = new FileOutputStream(filePath)) {
+//            document.write(out);
+//            out.close();
+//        }
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            document.write(byteArrayOutputStream);
+            byte[] output = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            return output;
+        }
+        finally {
+            document.close();
         }
     }
 
