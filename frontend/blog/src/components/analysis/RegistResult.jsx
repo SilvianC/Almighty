@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { ColorRing } from "react-loader-spinner";
 import { changeStatus, postHistory } from "../../api/battery";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -11,6 +12,7 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const [result, setResult] = useState(null);
   const [resonDetail, setReasonDetail] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setSelectedOption(() => "사유 선택");
@@ -23,6 +25,7 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
     setIsDropdownOpen(!isDropdownOpen);
   };
   const handleRegister = () => {
+    setIsLoading(true);
     const request = {
       progressId: progress,
       resultStatus: result,
@@ -46,8 +49,11 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
         link.click();
         document.body.removeChild(link);
         window.location.reload();
+        setIsLoading(false);
       })
-      .catch();
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
   const reason = (e) => {
@@ -60,6 +66,19 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
 
   return (
     <S.Wrap className="modal">
+      {isLoading && (
+        <S.LoadingContainer>
+          <ColorRing
+            visible={true}
+            height="150"
+            width="150"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={["#b8c480", "#B2A3B5", "#F4442E", "#51E5FF", "#429EA6"]}
+          />
+        </S.LoadingContainer>
+      )}
       <S.Title>
         <p>결과 등록</p>
         <img src={CloseIcon} alt="close" onClick={onClose} />
@@ -139,7 +158,10 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
         )}
       </S.Reason>
       <S.Regist>
-        {!result || selectedOption === "사유 선택" || progress == null ? (
+        {!result ||
+        selectedOption === "사유 선택" ||
+        progress == null ||
+        isLoading ? (
           <button style={{ "background-color": "#D5DFE9" }} disabled>
             등록
           </button>
@@ -343,6 +365,16 @@ const S = {
       font-weight: bold;
       font-size: 20px;
     }
+  `,
+  LoadingContainer: styled.div`
+    position: absolute; // 상대 위치 설정
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column; // 아이템을 수직으로 정렬
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); // 반투명 배경
+    z-index: 4;
   `,
 };
 
