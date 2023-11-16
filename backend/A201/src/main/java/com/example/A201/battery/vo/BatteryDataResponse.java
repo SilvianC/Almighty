@@ -16,6 +16,7 @@ public class BatteryDataResponse {
     private Double overVoltage;
     private Double underVoltage;
     private Double overCurrent;
+    private Double underCurrent;
     private Double chargingMaxTemperature;
     private Double chargingMinTemperature;
     private Double dischargingMaxTemperature;
@@ -27,6 +28,7 @@ public class BatteryDataResponse {
                 .overVoltage(battery.getModel().getOverVoltageThreshold())
                 .underVoltage(battery.getModel().getUnderVoltageThreshold())
                 .overCurrent(battery.getModel().getOverCurrentChargeThreshold())
+                .underCurrent(battery.getModel().getOverCurrentDischargeThreshold())
                 .chargingMaxTemperature(battery.getModel().getMaxTemperatureChargeThreshold())
                 .chargingMinTemperature(battery.getModel().getMinTemperatureChargeThreshold())
                 .dischargingMaxTemperature(battery.getModel().getMaxTemperatureDischargeThreshold())
