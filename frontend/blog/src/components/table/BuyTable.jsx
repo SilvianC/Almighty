@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import styled from "styled-components";
-import { BsListUl, BsFillFileEarmarkTextFill } from "react-icons/bs";
 import Button from "react-bootstrap/Button";
 import http from "../../api/http";
 import ReturnRequest from "../../components/returnrequest/ReturnRequest";
 import Pagination from "../pagenation/Pagination";
+import styled from "styled-components";
+
 const BuyTable = ({
   data,
   onSuccess,
@@ -145,6 +144,11 @@ const S = {
       0px 20px 80px rgba(0, 0, 0, 0.07);
     @media (max-width: 768px) {
       height: 300px;
+      /* 스크롤바 숨김 */
+      &::-webkit-scrollbar {
+        display: none;
+      }
+      scrollbar-width: none;
     }
     .Container {
       display: flex;
@@ -159,6 +163,7 @@ const S = {
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
       margin: 13px;
       border-radius: 20px;
+      border: 20px solid #000;
     }
     .flip-card1 {
       background-color: transparent;
@@ -168,6 +173,7 @@ const S = {
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
       margin: 13px;
       border-radius: 20px;
+      border: 20px solid #000;
     }
 
     /* This container is needed to position the front and back side */

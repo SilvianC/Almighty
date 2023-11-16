@@ -4,7 +4,7 @@ import http from "../../api/http";
 import { ColorRing } from "react-loader-spinner";
 import { useRecoilValue } from "recoil";
 import { MemberIdState, AccessTokenState } from "../../states/states";
-import { BiMailSend } from "react-icons/bi";
+
 const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   const [requestReason, setRequestReason] = useState("");
   const memberId = useRecoilValue(MemberIdState);
@@ -50,9 +50,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
 
     return () => clearInterval(interval);
   }, []);
-
-  const boltRef = useRef(null);
-  const divRef = useRef(null);
 
   // 로딩 상태를 추적하는 상태 변수
   const [isLoading, setIsLoading] = useState(false);
@@ -159,6 +156,11 @@ const S = {
     }
   `,
   Wrap: styled.div`
+    /* 스크롤바 숨김 */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
     border: 1px solid #d3d3d3;
     margin: 20px;
     padding: 60px;
