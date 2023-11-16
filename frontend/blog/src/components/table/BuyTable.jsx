@@ -163,7 +163,6 @@ const S = {
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
       margin: 13px;
       border-radius: 20px;
-      border: 20px solid #000;
     }
     .flip-card1 {
       background-color: transparent;
@@ -173,7 +172,6 @@ const S = {
       perspective: 1000px; /* Remove this if you don't want the 3D effect */
       margin: 13px;
       border-radius: 20px;
-      border: 20px solid #000;
     }
 
     /* This container is needed to position the front and back side */
@@ -184,6 +182,8 @@ const S = {
       text-align: center;
       transition: transform 0.8s;
       transform-style: preserve-3d;
+      border: 20px solid #212061;
+      border-radius: 20px;
     }
 
     /* This container is needed to position the front and back side */
