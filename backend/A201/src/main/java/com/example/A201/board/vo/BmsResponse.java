@@ -13,6 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class BmsResponse {
+    private int capacity;
+
     private int overVoltageCount;
 
     private int underVoltageCount;
@@ -45,6 +47,7 @@ public class BmsResponse {
 
     public static BmsResponse bmsResponse(BmsBoard bmsBoard){
         return BmsResponse.builder()
+                .capacity(bmsBoard.getProgress().getBattery().getModel().getCapacity())
                 .overCurrentCount(bmsBoard.getOverCurrentCount())
                 .overVoltageCount(bmsBoard.getOverVoltageCount())
                 .underVoltageCount(bmsBoard.getUnderVoltageCount())
