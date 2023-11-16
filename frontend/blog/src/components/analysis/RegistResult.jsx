@@ -13,6 +13,10 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const [resonDetail, setReasonDetail] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [dropdown, setdropdown] = useState([]);
+  const sdiList = ["전압 이상", "전류 이상", "온도 이상", "복합 이상", "기타"];
+  const customerList = ["연결 이상", "배터리 노화", "기타"];
+  const normalList = ["정상"];
 
   useEffect(() => {
     setSelectedOption(() => "사유 선택");
@@ -21,7 +25,24 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
     setIsDropdownOpen(() => false);
   }, [progress]);
 
+  useEffect(() => {
+    if (result === null) {
+      setdropdown(() => []);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "SdiFault") {
+      setdropdown(() => [...sdiList]);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "CustomerFault") {
+      setdropdown(() => [...customerList]);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "Normal") {
+      setdropdown(() => [...normalList]);
+      setSelectedOption(() => "정상");
+    }
+  }, [result]);
+
   const toggleDropdown = () => {
+    console.log(dropdown);
     setIsDropdownOpen(!isDropdownOpen);
   };
   const handleRegister = () => {
@@ -65,7 +86,7 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   }
 
   return (
-    <S.Wrap className="modal">
+    <S.Wrap className="modal" style={{ overflow: "visible" }}>
       {isLoading && (
         <S.LoadingContainer>
           <ColorRing
@@ -126,30 +147,18 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
           <button onClick={toggleDropdown}>{selectedOption}</button>
           {isDropdownOpen && (
             <div className="content">
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                counter error
-              </span>
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                communication error
-              </span>
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                기타
-              </span>
+              {dropdown.map((item) => {
+                return (
+                  <span
+                    onClick={(e) => {
+                      setSelectedOption(e.target.textContent);
+                      toggleDropdown();
+                    }}
+                  >
+                    {item}
+                  </span>
+                );
+              })}
             </div>
           )}
         </S.Dropdown>
