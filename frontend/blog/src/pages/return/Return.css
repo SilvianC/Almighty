@@ -37,10 +37,9 @@ input[name="tab_item"] {
 /* 탭 컨텐츠 스타일 */
 .tab_content {
   display: none;
-  padding: 40px 40px 0;
+
   clear: both;
   overflow: hidden;
-  
 }
 
 /* 선택 된 탭 콘텐츠를 표시 */

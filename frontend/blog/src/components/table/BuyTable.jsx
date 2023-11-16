@@ -129,8 +129,6 @@ const ApplyButton = styled(Button)`
 
 const S = {
   Wrap: styled.div`
-    border: 1px solid #d3d3d3;
-
     padding: 60px;
     padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
     padding-left: 25px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
@@ -139,7 +137,7 @@ const S = {
     overflow: auto; // 세로 방향으로만 스크롤바를 설정
     height: 50%;
 
-    background-color: #f2f2f2;
+    background-color: #ffffff;
     box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
       0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
       0px 20px 80px rgba(0, 0, 0, 0.07);

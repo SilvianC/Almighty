@@ -34,6 +34,7 @@ const Return = () => {
   const [showReturnRequest, setShowReturnRequest] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [isCheck, setIsCheck] = useState(true);
   const accessToken = useRecoilValue(AccessTokenState);
   const handleSuccess = () => {
     console.log("handle");
@@ -84,7 +85,6 @@ const Return = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
-        console.log(data)
         setData2(data.data.content);
         setTotalPages(data.data.totalPages);
         // 추가된 상태로 현재 페이지와 총 페이지 수를 설정합니다.
@@ -123,7 +123,6 @@ const Return = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
-        
         setData(() => {
           return data["data"];
         });
@@ -141,35 +140,45 @@ const Return = () => {
     //   .catch();
     fetchServiceHistory(page);
   }, [memberId, page]);
- 
+  console.log(isCheck);
+  function uncheckCheckbox() {
+    var checkbox = document.getElementById("all");
+    console.log(checkbox.checked);
+    checkbox.checked = false;
+    console.log(checkbox.checked);
+  }
   return (
     <>
       <GlobalStyles />
       <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
       <div className="tabs">
-        <input id="all" type="radio" name="tab_item" />
+        <input id="all" type="radio" name="tab_item" checked />
         <label className="tab_item" for="all">
           배터리 목록 및 반송 신청
         </label>
         <input id="programming" type="radio" name="tab_item" />
-        <label className="tab_item" for="programming">
+        <label
+          className="tab_item"
+          for="programming"
+          onClick={() => uncheckCheckbox()}
+        >
           반송 신청 결과
         </label>
         <div className="tab_content" id="all_content">
-          <S.BuyTableContainer>
-            <BuyTable
-              onSuccess={handleSuccess}
-              onError={handleError}
-              data={data}
-              setData={setData}
-              memberId={memberId}
-              accessToken={accessToken}
-            ></BuyTable>
-          </S.BuyTableContainer>
+          <BuyTable
+            onSuccess={handleSuccess}
+            onError={handleError}
+            data={data}
+            onApplyClick={(item) => {
+              setSelectedItem(item);
+              setShowReturnRequest(true);
+            }}
+          ></BuyTable>
         </div>
         <div className="tab_content" id="programming_content">
           <S.ReturnResultTableContainer>
             <ServiceHistory
+              setIsCheck={setIsCheck}
               data={history}
               page={page}
               setPage={setPage}
@@ -241,13 +250,13 @@ const S = {
   `,
   BuyTableContainer: styled.div`
     flex: 0.8;
-   
     @media (max-width: 768px) {
       padding-top: 60px;
     }
   `,
   ReturnResultTableContainer: styled.div`
-   
+    flex: 1;
+    position: relative; // 이 부분이 추가되어야 합니다.
   `,
   Title: styled.div`
     font-size: 30px;
