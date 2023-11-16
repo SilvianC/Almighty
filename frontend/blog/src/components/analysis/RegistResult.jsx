@@ -4,7 +4,7 @@ import { changeStatus, postHistory } from "../../api/battery";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import http from "../../api/http";
-import CloseIcon from "../../assets/images/icon-close.png"
+import CloseIcon from "../../assets/images/icon-close.png";
 
 const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const [selectedOption, setSelectedOption] = useState("사유 선택");
@@ -31,8 +31,20 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
         (selectedOption === "기타" ? " 상세 사유 : " + resonDetail : ""),
     };
     http
-      .put(`/api/batteries/progress/${progress}`, request)
+      .put(`/api/batteries/progress/${progress}`, request, {
+        responseType: "arraybuffer",
+      })
       .then(({ data }) => {
+        const blob = new Blob([data], {
+          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `결과보고서_${progress}.docx`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
         window.location.reload();
       })
       .catch();
@@ -40,7 +52,7 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
 
   const reason = (e) => {
     setReasonDetail(e.target.value);
-  }
+  };
 
   if (!isOpen) {
     return null;
@@ -167,7 +179,7 @@ const S = {
     align-items: center;
     z-index: 3;
     animation: slideInUp 0.5s ease;
-    
+
     @keyframes slideInUp {
       from {
         transform: translateY(40%);
@@ -176,13 +188,13 @@ const S = {
         transform: translateY(0);
       }
     }
-    `,
+  `,
   Title: styled.div`
     width: 100%;
     height: 40px;
     display: flex;
     flex-direction: row;
-    
+
     > p {
       height: 100%;
       border-radius: 10px;
@@ -199,10 +211,10 @@ const S = {
       margin-left: auto;
       cursor: pointer;
     }
-    `,
-    Option: styled.div`
+  `,
+  Option: styled.div`
     width: 100%;
-    
+
     > div {
       display: flex;
       flex-wrap: wrap;
@@ -333,6 +345,5 @@ const S = {
     }
   `,
 };
-
 
 export default RegistResult;
