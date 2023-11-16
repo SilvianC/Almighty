@@ -6,8 +6,8 @@ import CapacityIcon from "../../assets/images/icon-capacity.png";
 import VoltageIcon from "../../assets/images/icon-voltage.png";
 import TemperIcon from "../../assets/images/icon-temperature.png";
 
-const BMSdata = ({ data }) => {
-  console.log("데이터 확인", data);
+const BMSdata = ({ data, battery }) => {
+  console.log(battery);
 
   const [isCharge, setIsCharge] = useState("충전");
   const [isDataExist, setIsDataExist] = useState(false);
@@ -26,16 +26,16 @@ const BMSdata = ({ data }) => {
   const convertDecimalTime = (decimalTime) => {
     const h = Math.floor(decimalTime);
     const m = Math.floor((decimalTime - h) * 60);
-    const s = Math.floor(((decimalTime - h) * 60 - m) * 60);
-    
-    setHour(()=>h);
-    setMinute(()=> m);
-    setSecond(()=>s);
+    const s = Math.floor((decimalTime - h) * 60 - m) * 60;
+    setHour(() => h);
+    setMinute(() => m);
+    setSecond(() => s);
   };
 
   useEffect(() => {
     if (data != null) {
       setIsDataExist(() => true);
+      convertDecimalTime(data.chargeTime);
       convertDecimalTime(data.chargeTime);
     } else {
       setIsDataExist(() => false);
@@ -43,11 +43,11 @@ const BMSdata = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
-    if(data!=null){
+    if (data != null) {
       if (isCharge === "충전") {
-        convertDecimalTime(data.chargeTime)
+        convertDecimalTime(data.chargeTime);
       } else {
-        convertDecimalTime(data.dischargeTime)
+        convertDecimalTime(data.dischargeTime);
       }
     }
   }, [isCharge]);
@@ -102,15 +102,27 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>총 용량</S.ContainerTitle>
             <S.ContainerData>
-              <span>1000AH</span>
+              <span>{isDataExist && data !== null ? "1000AH" : "-"}</span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={CapacityIcon} alt="capacity" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container style={{ backgroundColor: "#FFE3E3" }}>
+          <S.Container
+            style={
+              data != null && data.maxVoltageCharge > battery.overVoltage
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
             <S.ContainerTitle>최대 전압</S.ContainerTitle>
-            <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+            <S.ContainerData
+              style={
+                data != null && data.maxVoltageCharge > battery.overVoltage
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.maxVoltageCharge.toFixed(4) + "V"
@@ -121,9 +133,21 @@ const BMSdata = ({ data }) => {
               <img src={VoltageIcon} alt="voltage" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container>
+          <S.Container
+            style={
+              data != null && data.minVoltageCharge < battery.underVoltage
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
             <S.ContainerTitle>최소 전압</S.ContainerTitle>
-            <S.ContainerData>
+            <S.ContainerData
+              style={
+                data != null && data.minVoltageCharge < battery.underVoltage
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.minVoltageCharge.toFixed(4) + "V"
@@ -134,9 +158,23 @@ const BMSdata = ({ data }) => {
               <img src={VoltageIcon} alt="voltage" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container>
+          <S.Container
+            style={
+              data != null &&
+              data.maxTemperatureCharge > battery.chargingMaxTemperature
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
             <S.ContainerTitle>최대 온도</S.ContainerTitle>
-            <S.ContainerData>
+            <S.ContainerData
+              style={
+                data != null &&
+                data.maxTemperatureCharge > battery.chargingMaxTemperature
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.maxTemperatureCharge.toFixed(4) + "℃"
@@ -147,9 +185,23 @@ const BMSdata = ({ data }) => {
               <img src={TemperIcon} alt="temperature" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container style={{ backgroundColor: "#FFE3E3" }}>
+          <S.Container
+            style={
+              data != null &&
+              data.minTemperatureCharge < battery.chargingMinTemperature
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
             <S.ContainerTitle>최저 온도</S.ContainerTitle>
-            <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+            <S.ContainerData
+              style={
+                data != null &&
+                data.minTemperatureCharge < battery.chargingMinTemperature
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.minTemperatureCharge.toFixed(4) + "℃"
@@ -179,15 +231,28 @@ const BMSdata = ({ data }) => {
           <S.Container>
             <S.ContainerTitle>총 용량</S.ContainerTitle>
             <S.ContainerData>
-              <span>1000AH</span>
+              <span>{isDataExist && data !== null ? "1000AH" : "-"}</span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={CapacityIcon} alt="capacity" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container>
+          <S.Container
+            style={
+              data != null && data.maxVoltageDischarge > battery.overVoltage
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
+            {" "}
             <S.ContainerTitle>최대 전압</S.ContainerTitle>
-            <S.ContainerData>
+            <S.ContainerData
+              style={
+                data != null && data.maxVoltageDischarge > battery.overVoltage
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.maxVoltageDischarge.toFixed(4) + "V"
@@ -198,9 +263,22 @@ const BMSdata = ({ data }) => {
               <img src={VoltageIcon} alt="voltage" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container style={{ backgroundColor: "#FFE3E3" }}>
+          <S.Container
+            style={
+              data != null && data.minVoltageDischarge < battery.underVoltage
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
+            {" "}
             <S.ContainerTitle>최소 전압</S.ContainerTitle>
-            <S.ContainerData style={{ color: "#D84848", fontWeight: "bold" }}>
+            <S.ContainerData
+              style={
+                data != null && data.minVoltageDischarge < battery.underVoltage
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.minVoltageDischarge.toFixed(4) + "V"
@@ -211,9 +289,24 @@ const BMSdata = ({ data }) => {
               <img src={VoltageIcon} alt="voltage" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container>
+          <S.Container
+            style={
+              data != null &&
+              data.maxTemperatureDischarge > battery.dischargingMaxTemperature
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
+            {" "}
             <S.ContainerTitle>최대 온도</S.ContainerTitle>
-            <S.ContainerData>
+            <S.ContainerData
+              style={
+                data != null &&
+                data.maxTemperatureDischarge > battery.dischargingMaxTemperature
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.maxTemperatureDischarge.toFixed(4) + "℃"
@@ -224,9 +317,24 @@ const BMSdata = ({ data }) => {
               <img src={TemperIcon} alt="temperature" />
             </S.ContainerImg>
           </S.Container>
-          <S.Container>
+          <S.Container
+            style={
+              data != null &&
+              data.minTemperatureDischarge < battery.dischargingMinTemperature
+                ? { backgroundColor: "#FFE3E3" }
+                : null
+            }
+          >
+            {" "}
             <S.ContainerTitle>최저 온도</S.ContainerTitle>
-            <S.ContainerData>
+            <S.ContainerData
+              style={
+                data != null &&
+                data.minTemperatureDischarge < battery.dischargingMinTemperature
+                  ? { color: "#D84848", fontWeight: "bold" }
+                  : null
+              }
+            >
               <span>
                 {isDataExist && data !== null
                   ? data.minTemperatureDischarge.toFixed(4) + "℃"

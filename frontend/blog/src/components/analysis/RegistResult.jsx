@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
+import { ColorRing } from "react-loader-spinner";
 import { changeStatus, postHistory } from "../../api/battery";
 import { useNavigate } from "react-router-dom";
 import { Navigate } from "react-router-dom";
@@ -11,6 +12,11 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   const [result, setResult] = useState(null);
   const [resonDetail, setReasonDetail] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [dropdown, setdropdown] = useState([]);
+  const sdiList = ["전압 이상", "전류 이상", "온도 이상", "복합 이상", "기타"];
+  const customerList = ["연결 이상", "배터리 노화", "기타"];
+  const normalList = ["정상"];
 
   useEffect(() => {
     setSelectedOption(() => "사유 선택");
@@ -19,10 +25,28 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
     setIsDropdownOpen(() => false);
   }, [progress]);
 
+  useEffect(() => {
+    if (result === null) {
+      setdropdown(() => []);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "SdiFault") {
+      setdropdown(() => [...sdiList]);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "CustomerFault") {
+      setdropdown(() => [...customerList]);
+      setSelectedOption(() => "사유 선택");
+    } else if (result === "Normal") {
+      setdropdown(() => [...normalList]);
+      setSelectedOption(() => "정상");
+    }
+  }, [result]);
+
   const toggleDropdown = () => {
+    console.log(dropdown);
     setIsDropdownOpen(!isDropdownOpen);
   };
   const handleRegister = () => {
+    setIsLoading(true);
     const request = {
       progressId: progress,
       resultStatus: result,
@@ -46,8 +70,11 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
         link.click();
         document.body.removeChild(link);
         window.location.reload();
+        setIsLoading(false);
       })
-      .catch();
+      .catch(() => {
+        setIsLoading(false);
+      });
   };
 
   const reason = (e) => {
@@ -59,7 +86,20 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
   }
 
   return (
-    <S.Wrap className="modal">
+    <S.Wrap className="modal" style={{ overflow: "visible" }}>
+      {isLoading && (
+        <S.LoadingContainer>
+          <ColorRing
+            visible={true}
+            height="150"
+            width="150"
+            ariaLabel="blocks-loading"
+            wrapperStyle={{}}
+            wrapperClass="blocks-wrapper"
+            colors={["#b8c480", "#B2A3B5", "#F4442E", "#51E5FF", "#429EA6"]}
+          />
+        </S.LoadingContainer>
+      )}
       <S.Title>
         <p>결과 등록</p>
         <img src={CloseIcon} alt="close" onClick={onClose} />
@@ -107,30 +147,18 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
           <button onClick={toggleDropdown}>{selectedOption}</button>
           {isDropdownOpen && (
             <div className="content">
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                counter error
-              </span>
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                communication error
-              </span>
-              <span
-                onClick={(e) => {
-                  setSelectedOption(e.target.textContent);
-                  toggleDropdown();
-                }}
-              >
-                기타
-              </span>
+              {dropdown.map((item) => {
+                return (
+                  <span
+                    onClick={(e) => {
+                      setSelectedOption(e.target.textContent);
+                      toggleDropdown();
+                    }}
+                  >
+                    {item}
+                  </span>
+                );
+              })}
             </div>
           )}
         </S.Dropdown>
@@ -139,7 +167,10 @@ const RegistResult = ({ progress, setProgress, isOpen, onClose }) => {
         )}
       </S.Reason>
       <S.Regist>
-        {!result || selectedOption === "사유 선택" || progress == null ? (
+        {!result ||
+        selectedOption === "사유 선택" ||
+        progress == null ||
+        isLoading ? (
           <button style={{ "background-color": "#D5DFE9" }} disabled>
             등록
           </button>
@@ -343,6 +374,16 @@ const S = {
       font-weight: bold;
       font-size: 20px;
     }
+  `,
+  LoadingContainer: styled.div`
+    position: absolute; // 상대 위치 설정
+    display: flex;
+    border-radius: 10px;
+    flex-direction: column; // 아이템을 수직으로 정렬
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.5); // 반투명 배경
+    z-index: 4;
   `,
 };
 
