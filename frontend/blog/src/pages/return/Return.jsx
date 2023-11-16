@@ -16,6 +16,8 @@ import {
 } from "../../states/states";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ListIcon from "../../assets/images/icon-batterylist.png";
+import ResultIcon from "../../assets/images/icon-returnresult.png";
 
 import SideBar from "../../components/sidebar/Sidebar";
 
@@ -123,7 +125,7 @@ const Return = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
-        
+
         setData(() => {
           return data["data"];
         });
@@ -141,7 +143,7 @@ const Return = () => {
     //   .catch();
     fetchServiceHistory(page);
   }, [memberId, page]);
- 
+
   return (
     <>
       <GlobalStyles />
@@ -149,10 +151,12 @@ const Return = () => {
       <div className="tabs">
         <input id="all" type="radio" name="tab_item" />
         <label className="tab_item" for="all">
+          <img src={ListIcon} alt="list" className="tab_img" />
           배터리 목록 및 반송 신청
         </label>
         <input id="programming" type="radio" name="tab_item" />
         <label className="tab_item" for="programming">
+          <img src={ResultIcon} alt="result" className="tab_img" />
           반송 신청 결과
         </label>
         <div className="tab_content" id="all_content">
@@ -168,15 +172,13 @@ const Return = () => {
           </S.BuyTableContainer>
         </div>
         <div className="tab_content" id="programming_content">
-          <S.ReturnResultTableContainer>
-            <ServiceHistory
-              data={history}
-              page={page}
-              setPage={setPage}
-              totalPage={totalPages}
-              fetchServiceHistory={fetchServiceHistory}
-            />
-          </S.ReturnResultTableContainer>
+          <ServiceHistory
+            data={history}
+            page={page}
+            setPage={setPage}
+            totalPage={totalPages}
+            fetchServiceHistory={fetchServiceHistory}
+          />
         </div>
       </div>
       {/* 

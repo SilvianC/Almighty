@@ -28,78 +28,62 @@ const ServiceHistory = ({
   const [selectedItem, setSelectedItem] = useState(null);
   const wrapperRef = useRef(null);
   const now = new Date();
-  // 클릭 이벤트 리스너를 설정합니다.
   useEffect(() => {
-    // 클릭 이벤트를 처리하는 함수입니다.
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        // 컴포넌트의 외부 클릭이 감지되면 ReturnResponse를 닫습니다.
         setShowReturnResponse(false);
       }
     }
-    // 클릭 리스너를 추가합니다.
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // 컴포넌트가 언마운트될 때 리스너를 제거합니다.
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [wrapperRef]); // 빈 배열을 넣으면 컴포넌트가 마운트될 때 한 번만 실행됩니다.
+  }, [wrapperRef]);
+
+  console.log("데이터 형식 확인", data);
+
   const handleStatusButtonClick = (item) => {
     http
       .get(`/api/batteries/history/response/${item.historyId}`)
       .then((response) => {
-        // 응답 데이터로 상태를 설정합니다.
         setSelectedItem({ ...item, responseData: response.data });
-        setShowReturnResponse(true); // ReturnResponse 컴포넌트를 표시합니다.
+        setShowReturnResponse(true);
       })
       .catch((error) => {
         console.error("There was an error fetching the response", error);
-        // 필요하다면 여기서 오류 처리를 하세요.
       });
   };
+
   const handlePageClick = (pageNumber) => {
     setPage(pageNumber);
     fetchServiceHistory(pageNumber);
   };
+
   return (
     <S.Wrap ref={wrapperRef}>
-      <S.Title className="d-flex align-items-center">
-        <BsFillClipboard2CheckFill />
-        {"\u00A0"}
-        반송 신청 결과
-      </S.Title>
       <div className="Container">
         {data.map((item, idx) => {
-          // 상태에 따른 색상 결정
           const statusColor =
             {
-              Normal: "#28a745", // 정상 - 녹색
-              Request: "#ffc107", // 진행 중 - 노란색
-              Upload: "#17a2b8", // 데이터 업로드 - 하늘색
-              Analysis: "#007bff", // 분석 중 - 파란색
-              CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
-              SdiFault: "#034F9E", // 제품 결함 - 검정색
-            }[item.expertStatus] || "#6c757d"; // 기본 - 회색
+              Normal: "#DEDEDE", // 정상 - 녹색
+              Request: "#FAD551", // 진행 중 - 노란색
+              Upload: "#B7C8D9", // 데이터 업로드 - 하늘색
+              Analysis: "#034F9E", // 분석 중 - 파란색
+              CustomerFault: "#D84848", // 고객 귀책 - 빨간색
+              SdiFault: "#1D1F25", // 제품 결함 - 검정색
+            }[item.expertStatus] || "#DEDEDE"; // 기본 - 회색
 
-          // item.date 문자열을 Date 객체로 변환합니다.
           const itemDate = new Date(item.date);
-
-          // item.date를 "YYYY-MM-DD" 형식으로 포맷합니다.
           const formattedDate = itemDate.toISOString().split("T")[0];
-
-          // 현재 시간과 item.date의 차이를 계산합니다.
           const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
-
-          // 차이가 5초 이내인지 확인합니다.
           const isRecent = timeDifferenceInSeconds <= 5;
 
           return (
-            <div className="flip-card">
+            <div className="flip-card" style={{ borderTop: `15px solid ${statusColor}` }}>
               <div className="flip-card-inner">
                 <div className="flip-card-front">
-                  <h1>John Doe</h1>
-                  <p></p>
-                  <p>{formattedDate}</p>
+                  <h1>{item.code}</h1>
+                  <p>신청일자 {formattedDate}</p>
                   <FirstTd
                     className={isRecent ? "flash-highlight" : ""}
                     statusColor={statusColor}
@@ -142,7 +126,7 @@ const ServiceHistory = ({
         timeout={300}
         classNames="slide-down"
         unmountOnExit
-        nodeRef={wrapperRef} // CSSTransition에 nodeRef를 추가합니다.
+        nodeRef={wrapperRef}
       >
         <S.ReturnResponseWrapper ref={wrapperRef}>
           <ReturnResponse
@@ -152,7 +136,7 @@ const ServiceHistory = ({
           />
         </S.ReturnResponseWrapper>
       </CSSTransition>
-    
+
       <Pagination total={totalPage} page={page} setPage={setPage}></Pagination>
     </S.Wrap>
   );
@@ -166,24 +150,21 @@ const buttonColors = {
   SdiFault: "#034F9E", // 제품 결함 - 검정색
 };
 export default ServiceHistory;
-// TableRow styled component
-// 첫 번째 td에 적용할 styled component
+
 const FirstTd = styled.td`
-  position: relative; // 상대적 위치 지정
+  position: relative;
   &:before {
     content: "";
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
-    width: 10px; // 선의 두께
-    background: ${(props) => props.statusColor}; // prop에서 받은 색상 적용
+    width: 10px;
+    background: ${(props) => props.statusColor};
   }
-  // 필요한 추가 스타일
 `;
 
 const StatusButton = styled(Button)`
-  /* 여기에 버튼 스타일 추가 */
   width: 90px;
   font-size: 17px !important;
   border-radius: 5px;
@@ -194,24 +175,19 @@ const StatusButton = styled(Button)`
     buttonColors[props.status] || "#B6C0C9"} !important;
   color: #000 !important;
   &:hover {
-    background-color: #ffffff !important; /* 호버 스타일링 */
+    background-color: #ffffff !important;
   }
 `;
 const S = {
   Wrap: styled.div`
-  border: 1px solid #d3d3d3;
-  margin: 20px;
-  padding: 60px;
-  padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-  padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-  padding-right: 20px;
-  border-radius: 10px;
+  width: 92%;
+  padding-top: 50px;
+  padding-left: 40px;
+  padding-right: 40px;
+  margin-bottom: 100px;
   background-color: #f2f2f2;
-  height: 80%;
   box-sizing: content-box;
-  box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-    0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-    0px 20px 80px rgba(0, 0, 0, 0.07);
+  border-radius: 10px;
   @media (max-width: 768px) {
     height: 300px;
   }
@@ -220,16 +196,17 @@ const S = {
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: center;
     }
     .flip-card {
-      background-color: transparent;
+      // background-color: transparent;
       width: 400px;
       height: 400px;
-      border: 1px solid #f1f1f1;
-      perspective: 1000px; /* Remove this if you don't want the 3D effect */
+      perspective: 1000px;
+      border-top: 15px solid;
+      margin: 10px 30px 60px;
     }
 
-    /* This container is needed to position the front and back side */
     .flip-card-inner {
       position: relative;
       width: 100%;
@@ -239,28 +216,33 @@ const S = {
       transform-style: preserve-3d;
     }
 
-    /* Do an horizontal flip when you move the mouse over the flip box container */
     .flip-card:hover .flip-card-inner {
       transform: rotateY(180deg);
     }
 
-    /* Position the front and back side */
     .flip-card-front,
     .flip-card-back {
       position: absolute;
       width: 100%;
       height: 100%;
-      -webkit-backface-visibility: hidden; /* Safari */
+      -webkit-backface-visibility: hidden;
       backface-visibility: hidden;
+
+      > h1 {
+        font-weight: bold;
+        margin-top: 30px;
+      }
+      > p {
+        font-size: 1.5rem;
+        color: #82858B;
+      }
     }
 
-    /* Style the front side (fallback if image is missing) */
     .flip-card-front {
       background-color: #E7ECF2;
       color: black;
     }
 
-    /* Style the back side */
     .flip-card-back {
       background-color: #E7ECF2;
       color: white;
@@ -270,10 +252,10 @@ const S = {
   `,
   ReturnResponseWrapper: styled.div`
     position: absolute;
-    top: 0; // 상단에서 시작
+    top: 0;
     width: 100%;
     right: 1px;
-    z-index: 2; // 필요에 따라 적절한 z-index 설정
+    z-index: 2;
   `,
   Title: styled.span`
     font-size: 30px;
@@ -289,7 +271,7 @@ const S = {
   `,
   PageBox: styled.span``,
   Table: styled(Table)`
-    border-collapse: collapse; // 테이블의 선을 없애기 위해 collapse 설정
+    border-collapse: collapse;
     background-color: #f2f2f2;
     text-align: center;
     padding: 1px;
