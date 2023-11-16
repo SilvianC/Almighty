@@ -36,6 +36,7 @@ const Return = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [isCheck, setIsCheck] = useState(true);
   const accessToken = useRecoilValue(AccessTokenState);
+
   const handleSuccess = () => {
     console.log("handle");
     toast.success("반품 요청이 성공적으로 처리되었습니다.");
@@ -141,27 +142,34 @@ const Return = () => {
     fetchServiceHistory(page);
   }, [memberId, page]);
   console.log(isCheck);
-  function uncheckCheckbox() {
-    var checkbox = document.getElementById("all");
-    console.log(checkbox.checked);
-    checkbox.checked = false;
-    console.log(checkbox.checked);
-  }
+
   return (
     <>
       <GlobalStyles />
       <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
       <div className="tabs">
-        <input id="all" type="radio" name="tab_item" checked />
+        <input
+          id="all"
+          type="radio"
+          name="tab_item"
+          onChange={() => {
+            setIsCheck(() => true);
+          }}
+          checked={isCheck}
+        />
         <label className="tab_item" for="all">
           배터리 목록 및 반송 신청
         </label>
-        <input id="programming" type="radio" name="tab_item" />
-        <label
-          className="tab_item"
-          for="programming"
-          onClick={() => uncheckCheckbox()}
-        >
+        <input
+          id="programming"
+          type="radio"
+          name="tab_item"
+          onChange={() => {
+            setIsCheck(() => false);
+          }}
+          checked={!isCheck}
+        />
+        <label className="tab_item" for="programming">
           반송 신청 결과
         </label>
         <div className="tab_content" id="all_content">
@@ -169,16 +177,11 @@ const Return = () => {
             onSuccess={handleSuccess}
             onError={handleError}
             data={data}
-            onApplyClick={(item) => {
-              setSelectedItem(item);
-              setShowReturnRequest(true);
-            }}
           ></BuyTable>
         </div>
         <div className="tab_content" id="programming_content">
           <S.ReturnResultTableContainer>
             <ServiceHistory
-              setIsCheck={setIsCheck}
               data={history}
               page={page}
               setPage={setPage}

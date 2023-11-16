@@ -4,7 +4,7 @@ function Pagination({ total, page, setPage }) {
   const generatePageNumbers = () => {
     const pages = [];
     const p = 5 * Math.floor((page - 1) / 5);
-
+    console.log(pages);
     if (p + 5 <= total) {
       // 전체 페이지 수가 표시할 총 페이지 수보다 작을 경우, 모든 페이지를 표시
       for (let i = p; i < p + 5; i++) {
@@ -49,8 +49,7 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button`
-
-border: 1px solid #dee2e6;  
+  border: 1px solid #dee2e6;
   border-radius: 8px;
   padding: 8px;
   margin: 0;
@@ -71,11 +70,11 @@ border: 1px solid #dee2e6;
   }
 
   &[aria-current] {
-    background: #448AFF;
+    background: #448aff;
     font-weight: bold;
     cursor: revert;
     transform: revert;
-    color:white;
+    color: white;
   }
 `;
 
