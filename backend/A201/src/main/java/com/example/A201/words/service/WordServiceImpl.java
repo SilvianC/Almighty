@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -46,8 +47,9 @@ public class WordServiceImpl implements WordService{
         XWPFDocument document = new XWPFDocument();
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " + currentDir);
+        URL resource = getClass().getClassLoader().getResource("images/sdilogo.png");
         // 이미지 워터마크 추가
-        String imgPath = "./assets/images/sdilogo.png"; // 이미지 파일 경로
+        String imgPath = resource.getFile(); // 이미지 파일 경로
         addImageWatermark(document, imgPath);
 
         XWPFParagraph titleParagraph  = document.createParagraph();

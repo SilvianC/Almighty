@@ -66,4 +66,4 @@ jwt:
 openai:
   api:
     # key: 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
-    key: "{S3_Key}"
+    key: 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

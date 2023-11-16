@@ -19,6 +19,8 @@ public class Model {
 
     private String modelName;
 
+    private int capacity;
+
     @Setter
     @ColumnDefault("4.213")
     private Double overVoltageThreshold;  // 과전압 임계값

@@ -15,6 +15,8 @@ public class Model {
     @Column(name = "model_id")
     private Long id;
 
+    private int capacity;
+
     private Double overVoltageThreshold;   // 과전압 임계값
 
     private Double underVoltageThreshold;  // 저전압 임계값

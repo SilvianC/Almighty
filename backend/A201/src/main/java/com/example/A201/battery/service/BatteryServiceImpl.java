@@ -39,6 +39,7 @@ public class BatteryServiceImpl implements BatteryService{
         Model batterymodel = modelRepository.findByModelName(batteryDTO.getModelName())
                         .orElseGet(() ->{
                             Model model = Model.builder()
+                                    .capacity(1700)
                                     .modelName(batteryDTO.getModelName())
                                     .overVoltageThreshold(4.213)
                                     .underVoltageThreshold(2.8)

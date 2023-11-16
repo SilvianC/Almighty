@@ -43,9 +43,9 @@ public class VitBoard {
     @Field(name = "Progress_id")
     private Long progressId;
 
-    @Field(name = "Date_time")
-    @CreatedDate
-    private LocalDateTime createdDate;
+//    @Field(name = "Date_time")
+//    @CreatedDate
+//    private LocalDateTime createdDate;
 
     public void predictEkf(Double ekf){
         this.soc = ekf;
