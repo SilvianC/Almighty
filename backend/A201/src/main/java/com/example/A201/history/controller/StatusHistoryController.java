@@ -46,7 +46,7 @@ public class StatusHistoryController {
     }
 
     @GetMapping("/members/{memberId}")
-    public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id, @PageableDefault(size = 8) Pageable pageable){
+    public ResponseEntity<?> getAllHistories(@PathVariable("memberId") Long id, @PageableDefault(size = 10) Pageable pageable){
         Page<StatusHistoryResponse> responses = statusHistoryService.getAllHistoriesByMember(id, pageable);
         return SuccessResponseEntity.toResponseEntity("히스토리 조회 완료", responses);
     }

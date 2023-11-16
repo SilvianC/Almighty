@@ -53,19 +53,19 @@ public class ProgressController {
     public ResponseEntity<?> updateProgress(@PathVariable("progress_id") Long progressId, @RequestBody ProgressResultDTO progress){
         MailInfo mailInfo = progressService.progressResult(progressId, progress);
         byte[] wordDocument = null;
+        HttpHeaders httpHeaders = new HttpHeaders();
         try {
             wordDocument = wordService.createWordDocument(progress, "_" + progress.getProgressId() + ".zip");
             log.info("Word 파일이 성공적으로 생성되었습니다.");
+            httpHeaders.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+            httpHeaders.setContentLength(wordDocument.length);
+            httpHeaders.setContentDispositionFormData("attachment", "downloaded-file.docx");
+            progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
         } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
             log.info("Word 파일 생성에 실패하였습니다.");
         }
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
-        httpHeaders.setContentLength(wordDocument.length);
-        httpHeaders.setContentDispositionFormData("attachment", "downloaded-file.docx");
-        progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
         return new ResponseEntity<>(wordDocument, httpHeaders, HttpStatus.OK);
     }
 }

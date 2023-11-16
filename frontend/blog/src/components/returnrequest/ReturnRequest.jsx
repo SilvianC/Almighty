@@ -1,29 +1,32 @@
-import React, { useEffect, useState,useRef  } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import http from "../../api/http";
-import {ColorRing} from  'react-loader-spinner';
+import { ColorRing } from "react-loader-spinner";
 import { useRecoilValue } from "recoil";
 import { MemberIdState, AccessTokenState } from "../../states/states";
-import { BiMailSend } from "react-icons/bi";
+
 const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   const [requestReason, setRequestReason] = useState("");
   const memberId = useRecoilValue(MemberIdState);
   const accessToken = useRecoilValue(AccessTokenState);
-  const handleClose = (event) => {
-    event.preventDefault();
-    onClose();
-  };
-
   const [loadingText, setLoadingText] = useState("");
   const [textVisible, setTextVisible] = useState(false);
 
   useEffect(() => {
-    const loadingTexts = ["데이터를 전송하고 있습니다...","BMS 데이터를 전송하고 있습니다...","EKF와 SOC를 계산하고 있습니다..." ,"잠시만 기다려주세요...", "거의 완료되었습니다..."];
+    const loadingTexts = [
+      "데이터를 전송하고 있습니다...",
+      "BMS 데이터를 전송하고 있습니다...",
+      "EKF와 SOC를 계산하고 있습니다...",
+      "잠시만 기다려주세요...",
+      "거의 완료되었습니다...",
+    ];
     let currentIndex = 0;
 
     const updateText = () => {
       // 텍스트 가시성을 먼저 false로 설정하여 페이드 아웃
-      if (currentIndex < loadingTexts.length){setTextVisible(false)};
+      if (currentIndex < loadingTexts.length) {
+        setTextVisible(false);
+      }
 
       // 텍스트를 변경하고, 페이드 인하기 전에 약간의 지연
       setTimeout(() => {
@@ -36,13 +39,12 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
     };
 
     const interval = setInterval(updateText, 6000);
-    if (currentIndex < loadingTexts.length){updateText()}; // 초기 텍스트 설정
+    if (currentIndex < loadingTexts.length) {
+      updateText();
+    } // 초기 텍스트 설정
 
     return () => clearInterval(interval);
   }, []);
-
-  const boltRef = useRef(null);
-  const divRef = useRef(null);
 
   // 로딩 상태를 추적하는 상태 변수
   const [isLoading, setIsLoading] = useState(false);
@@ -65,7 +67,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
         if (onSuccess) {
           onSuccess(); // 상위 컴포넌트에 성공을 알림
         }
-        onClose(); // 요청이 성공적으로 완료되면 모달을 닫습니다.
       })
       .catch((error) => {
         setIsLoading(false); // 요청 완료 시 로딩 상태를 false로 설정
@@ -78,46 +79,37 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
   return (
     <>
       <S.Wrap>
-      {(isLoading &&
-      <S.LoadingContainer>
-        <ColorRing
-          visible={true}
-          height="150"
-          width="150"
-          ariaLabel="blocks-loading"
-          wrapperStyle={{}}
-          wrapperClass="blocks-wrapper"
-          colors={['#b8c480', '#B2A3B5', '#F4442E', '#51E5FF', '#429EA6']}
-        />
-        <S.LoadingText className={textVisible ? "visible" : ""}>{loadingText}</S.LoadingText>
-      </S.LoadingContainer>
-    )}
-        <S.Title>
-          <BiMailSend />
-          {"\u00A0"}반품 신청
-        </S.Title>
+        {isLoading && (
+          <S.LoadingContainer>
+            <ColorRing
+              visible={true}
+              height="150"
+              width="150"
+              ariaLabel="blocks-loading"
+              wrapperStyle={{}}
+              wrapperClass="blocks-wrapper"
+              colors={["#b8c480", "#B2A3B5", "#F4442E", "#51E5FF", "#429EA6"]}
+            />
+            <S.LoadingText className={textVisible ? "visible" : ""}>
+              {loadingText}
+            </S.LoadingText>
+          </S.LoadingContainer>
+        )}
         <S.Form>
-          <S.FieldSet>
-            <S.Label>제품명</S.Label>
-            <S.Input readOnly value={item ? item.code : ""} />
-          </S.FieldSet>
-          <S.FieldSet>
-            <S.Label>제품 ID</S.Label>
-            <S.Input readOnly value={item ? item.id : ""} />
-          </S.FieldSet>
-          <S.FieldSet>
-            <S.Label>수령일</S.Label>
-            <S.Input readOnly value={item ? item.id : ""} />
-          </S.FieldSet>
-          <S.TextArea
-            placeholder="반품 신청 사유를 입력하세요."
+          <textarea
+            name="reason"
+            id="reason"
+            placeholder="반품 신청 사유 입력란"
+            value={requestReason}
+            onChange={(e) => setRequestReason(e.target.value)}>
+          </textarea>
+          <button onClick={handleSubmission}>신청</button>
+          {/* <S.TextArea
+            placeholder="반품 신청 사유 입력"
             value={requestReason}
             onChange={(e) => setRequestReason(e.target.value)}
           />
-          <S.ButtonsWrap>
-            <S.CancelButton onClick={handleClose}>취소</S.CancelButton>
-            <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton>
-          </S.ButtonsWrap>
+          <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton> */}
         </S.Form>
       </S.Wrap>
     </>
@@ -149,19 +141,15 @@ const S = {
     }
   `,
   Wrap: styled.div`
-    border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    padding-right: 20px;
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    height: 600px;
-    overflow-y: auto; // 세로 방향으로만 스크롤바를 설정
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+
+    background-color: #e7ecf2;
+    height: 80%;
+    overflow-y: auto;
+
     @media (max-width: 768px) {
       height: 300px;
     }
@@ -173,7 +161,49 @@ const S = {
     padding-bottom: 10px;
   `,
   Form: styled.form`
-    /* 필요한 스타일을 여기에 추가하실 수 있습니다. */
+    padding-left: 20px;
+    padding-right: 20px;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > textarea { 
+      width: 100%;
+      height: 180px;
+      border-radius: 10px;
+      color: #82858B;
+      background-color: #F2F2F2;
+      border: none;
+      font-size: 1.3rem;
+      margin-top: 10%;
+      resize: none;
+      overflow-y: auto;
+    }
+    > button {
+      margin-top: 40px;
+      background-color: #024c98;
+      border: none;
+      width: 40%;
+      cursor: pointer;
+      color: #F2F2F2;
+      height: 50px;
+      border-radius: 10px;
+      padding: 2px;
+      font-size: 25px;
+      
+      &:hover {
+        background-color: #B6C0C9;
+        border: none;
+      }
+      &:focus,
+      &:active {
+        background-color: #0056b3;
+        border-color: #0056b3;
+      }
+    }
   `,
   FieldSet: styled.div`
     margin-bottom: 15px;
@@ -193,17 +223,15 @@ const S = {
   `,
   TextArea: styled.textarea`
     width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #d3d3d3;
+    height: 180px;
+    border-radius: 10px;
+    color: #82858B;
+    background-color: #F2F2F2;
+    border: none;
+    font-size: 1.3rem;
     margin-top: 15px;
-    height: 150px;
-    resize: vertical;
-  `,
-  ButtonsWrap: styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+    resize: none;
+    overflow-y: auto;
   `,
   CancelButton: styled.button`
     background-color: #e0e0e0;
@@ -216,21 +244,23 @@ const S = {
     height: 40px;
   `,
   SubmitButton: styled.button`
-    background-color: #024c98; // 부트스트랩의 기본 파란색
-    border-color: #007bff;
-    width: 80px;
+    margin-top: 40px;
+    background-color: #024c98;
+    border: none;
+    width: 40%;
     cursor: pointer;
-    color: white;
-    height: 40px;
-    border-radius: 5px;
+    color: #F2F2F2;
+    height: 50px;
+    border-radius: 10px;
     padding: 2px;
+    font-size: 25px;
     &:hover {
-      background-color: #a5c7f8; // 호버 상태일 때 더 어두운 파란색
-      border-color: #0056b3;
+      background-color: #B6C0C9;
+      border: none;
     }
     &:focus,
     &:active {
-      background-color: #0056b3; // 클릭 상태일 때 색상
+      background-color: #0056b3;
       border-color: #0056b3;
     }
   `,
