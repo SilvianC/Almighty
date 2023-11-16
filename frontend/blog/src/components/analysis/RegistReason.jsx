@@ -15,7 +15,11 @@ const RegistReason = ({ progressData, setProgressData }) => {
             ? progressData.reason
             : "선택된 배터리가 없습니다."}
         </span>
-        <p>{progressData != null ? "(" + progressData.date + ")" : ""}</p>
+        <p>
+          {progressData != null
+            ? "(" + progressData.date.replace("T", " ").split(".")[0] + ")"
+            : ""}
+        </p>
       </S.Reason>
     </S.Wrap>
   );
@@ -30,8 +34,8 @@ const S = {
     justify-content: space-between;
   `,
   Title: styled.div`
-  display: flex;
-  width: 20%;
+    display: flex;
+    width: 20%;
 
     > img {
       width: 35px;
@@ -39,9 +43,9 @@ const S = {
     }
     > p {
       color: #034f9e;
-			font-size: 20px;
+      font-size: 20px;
       font-weight: bold;
-			margin-bottom: 0px;
+      margin-bottom: 0px;
       margin-left: 10px;
     }
   `,

@@ -72,15 +72,14 @@ public class BmsService {
 
         Model model = progress.getBattery().getModel();
 
+        // BMS Count
         int overVoltageCount = 0;
         int underVoltageCount = 0;
         int overCurrentCount = 0;
         int underTemperatureCount = 0;
         int overTemperatureCount = 0;
-        double prevCurrent = 0;
-        double prevVolt = 0;
-        double prevTemperature = 0;
 
+        // BMS Max,Min Data
         double maxVoltageCharge = Double.MIN_VALUE;
         double minVoltageCharge = Double.MAX_VALUE;
         double maxVoltageDischarge = Double.MIN_VALUE;
@@ -90,6 +89,15 @@ public class BmsService {
         double maxTemperatureDischarge = Double.MIN_VALUE;
         double minTemperatureDischarge = Double.MAX_VALUE;
 
+        // BMS TIME
+        double chargeTime = 0;
+        double dischargeTime = 0;
+
+        // prev VIT Data
+        double prevCurrent = 0;
+        double prevVolt = 0;
+        double prevTemperature = 0;
+        double prevTime = 0;
 
         csvReader.readNext();
         String[] values;
@@ -133,7 +141,6 @@ public class BmsService {
             if(prevVolt < model.getOverVoltageThreshold() && voltage >= model.getOverVoltageThreshold()) overVoltageCount++;
             if(prevVolt > model.getUnderVoltageThreshold() && voltage <= model.getUnderVoltageThreshold()) underVoltageCount++;
 
-
             // 충전 상태 (양전류)
             if(current > 0){
                 // count 체크
@@ -148,12 +155,15 @@ public class BmsService {
                 // 최대, 최소 온도
                 if(temperature > maxTemperatureCharge) maxTemperatureCharge = temperature;
                 if(temperature < minTemperatureCharge) minTemperatureCharge = temperature;
+
+                // 충전 시간
+                chargeTime += (time - prevTime);
             }
 
             // 방전 상태 (음전류)
             if(current <= 0){
                 // count 체크
-                if(prevCurrent < model.getOverCurrentDischargeThreshold() && current >= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
+                if(prevCurrent > model.getOverCurrentDischargeThreshold() && current <= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
                 if(prevTemperature < model.getMinTemperatureDischargeThreshold() && temperature >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
                 if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && temperature >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
 
@@ -164,13 +174,16 @@ public class BmsService {
                 // 최대, 최소 온도
                 if(temperature > maxTemperatureDischarge) maxTemperatureDischarge = temperature;
                 if(temperature < minTemperatureDischarge) minTemperatureDischarge = temperature;
+
+                // 방전 시간
+                dischargeTime += (time - prevTime);
             }
 
             // 전에 값 갱신
             prevVolt = voltage;
             prevCurrent = current;
             prevTemperature = temperature;
-
+            prevTime = time;
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
@@ -188,66 +201,12 @@ public class BmsService {
                 .minTemperatureCharge(minTemperatureCharge)
                 .maxTemperatureDischarge(maxTemperatureDischarge)
                 .minTemperatureDischarge(minTemperatureDischarge)
-//                .receiveDate(LocalDateTime.now())
+                .chargeTime(chargeTime)
+                .dischargeTime(dischargeTime)
                 .build();
 
         bmsBoardRepository.save(bmsBoard);
 
-//        List<VitBoard> vitBoards = vitBoardRepository.findVitBoardByProgressId(7L);
-//        Battery battery = batteryRepository.findById(1L)
-//                .orElseThrow(() -> new IllegalStateException("찾는 배터리가 없습니다."));
-//        Model model = modelRepository.findById(battery.getId())
-//                .orElseThrow(() -> new IllegalStateException("찾는 배터리 모델이 없습니다."));
-//
-//
-//        for (VitBoard vitBoard : vitBoards) {
-//
-//
-//            // ekf 업데이트
-//            // vitBoard.predictEkf(ekf.get());
-//
-//            Query findVit = new Query(Criteria.where("_id").is(vitBoard.getId()));
-//            Update updateEkf = new Update();
-//            updateEkf.set("Soc", ekf.get());
-//            mongoTemplate.updateFirst(findVit, updateEkf, VitBoard.class);
-//
-//            if(prevVolt < model.getOverVoltageThreshold() && voltage >= model.getOverVoltageThreshold()) overVoltageCount++;
-//            if(prevVolt > model.getUnderVoltageThreshold() && voltage <= model.getUnderVoltageThreshold()) underVoltageCount++;
-//
-//            // 충전 상태 (양전류)
-//            if(current > 0){
-//                if(prevCurrent < model.getOverCurrentChargeThreshold() && current >= model.getOverCurrentChargeThreshold()) overCurrentCount++;
-//                if(prevTemperature < model.getMinTemperatureChargeThreshold() && temperature >= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
-//                if(prevTemperature < model.getMaxTemperatureChargeThreshold() && temperature >= model.getMaxTemperatureChargeThreshold()) overTemperatureCount++;
-//            }
-//
-//            // 방전 상태 (음전류)
-//            if(current <= 0){
-//                if(prevCurrent < model.getOverCurrentDischargeThreshold() && current >= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
-//                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && temperature >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
-//                if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && temperature >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
-//            }
-//
-//            // 전에 값 갱신
-//            prevVolt = voltage;
-//            prevCurrent = current;
-//            prevTemperature = temperature;
-//        }
-//
-//        BmsBoard bmsBoard = BmsBoard.builder()
-////                .progress(7L)
-//                .overVoltageCount(overVoltageCount)
-//                .underVoltageCount(underVoltageCount)
-//                .overCurrentCount(overCurrentCount)
-//                .underTemperatureCount(underTemperatureCount)
-//                .overTemperatureCount(overTemperatureCount)
-//                .build();
-
-//        bmsBoardRepository.save(bmsBoard);
-
-//        BmsBoard bmsBoard = bmsBoardRepository.findByProgressId(7L)
-//                .orElseThrow(() -> new IllegalStateException("찾는 BMS가 없습니다."));
-//        bmsBoard.setBmsCount(overVoltageCount, underVoltageCount, overCurrentCount);
     }
 
     public List<BmsBoard> getBms(){
