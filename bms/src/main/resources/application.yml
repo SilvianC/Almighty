@@ -1,0 +1,53 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: monitoring
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost/bms?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
+    url: jdbc:mysql://k9a201.p.ssafy.io/almighty?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=UTF-8&charSet=utf8mb4
+    username: root
+#    password: ssafy
+    password: "almighty201"
+  data:
+    mongodb:
+      username: almighty
+      password: wjswldmltls
+      host: k9a201.p.ssafy.io
+#      host: localhost
+      port: 27017
+      database: bms
+
+  #  hikari:
+  #      maximum-pool-size: 10
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        orm.jdbc.bind: TRACE
+      springframework:
+        data:
+          mongodb:
+            core:
+              MongoTemplate: DEBUG
+cloud:
+  aws:
+    s3:
+      bucket: almighty-bms
+    credentials:
+      accessKey: AKIAY7NKC36RIVWWCOY3
+      secretKey: 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
+    region:
+      static: ap-northeast-2
+    stack:
+      auto: false
