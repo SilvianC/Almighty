@@ -102,7 +102,7 @@ const BMSdata = ({ data, battery }) => {
           <S.Container>
             <S.ContainerTitle>총 용량</S.ContainerTitle>
             <S.ContainerData>
-              <span>{isDataExist && data !== null ? "1000AH" : "-"}</span>
+              <span>{isDataExist && data !== null ? data.capacity + "mA" : "-"}</span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={CapacityIcon} alt="capacity" />
@@ -231,7 +231,7 @@ const BMSdata = ({ data, battery }) => {
           <S.Container>
             <S.ContainerTitle>총 용량</S.ContainerTitle>
             <S.ContainerData>
-              <span>{isDataExist && data !== null ? "1000AH" : "-"}</span>
+              <span>{isDataExist && data !== null ? data.capacity + "mA" : "-"}</span>
             </S.ContainerData>
             <S.ContainerImg>
               <img src={CapacityIcon} alt="capacity" />
