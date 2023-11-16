@@ -55,7 +55,7 @@ spring:
 #      data-locations: classpath*:db/h2/data.sql
 
 bms:
-  url: http://localhost:8085
+  url: http://k9a201.p.ssafy.io:8085
 
 logging:
   level:

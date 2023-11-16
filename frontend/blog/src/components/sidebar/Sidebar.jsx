@@ -125,48 +125,53 @@ const SideBar = ({ progress, setProgress }) => {
             },
           }}
         >
-          <SidebarTitle>
-            {currentStatus === "request" ? (
-              <>
-                <FiEdit size={20} /> 분석 요청 리스트
-              </>
-            ) : (
-              <>
-                <FiCheckSquare size={20} />
-                분석 완료 리스트
-              </>
-            )}
-          </SidebarTitle>
-          <Menu
-            menuItemStyles={{
-              button: ({ level, active, disabled }) => {
-                // only apply styles on first level elements of the tree
-                if (level === 1)
-                  return {
-                    color: active ? "#1d1f25" : "#000000",
-                    backgroundColor: active ? "#e7ecf2" : "#d5dfe9",
-                  };
-              },
-            }}
-          >
-            {menuItems}
-          </Menu>
-          <StatusButton showSidebar={isButtonClicked || isHovering}>
-            {currentStatus === "finished" ? (
-              <>
-                <div onClick={statusButtonClick}>
-                  <FiEdit size={20} /> 분석 요청 리스트로
-                </div>
-              </>
-            ) : (
-              <>
-                <div onClick={statusButtonClick}>
+          <SidebarContent>
+            <SidebarTitle>
+              {currentStatus === "request" ? (
+                <>
+                  <FiEdit size={20} /> 분석 요청 리스트
+                </>
+              ) : (
+                <>
                   <FiCheckSquare size={20} />
-                  분석 완료 리스트로
-                </div>
-              </>
-            )}
-          </StatusButton>
+                  분석 완료 리스트
+                </>
+              )}
+            </SidebarTitle>
+            <ProgressList>
+              <Menu
+                menuItemStyles={{
+                  button: ({ level, active, disabled }) => {
+                    // only apply styles on first level elements of the tree
+                    if (level === 1)
+                      return {
+                        color: active ? "#1d1f25" : "#000000",
+                        backgroundColor: active ? "#e7ecf2" : "#d5dfe9",
+                      };
+                  },
+                }}
+              >
+                {menuItems}
+              </Menu>
+            </ProgressList>
+            <StatusButton showSidebar={isButtonClicked || isHovering}>
+              {currentStatus === "finished" ? (
+                <>
+                  <div onClick={statusButtonClick}>
+                    <FiEdit size={20} />
+                    분석 요청 리스트로
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div onClick={statusButtonClick}>
+                    <FiCheckSquare size={20} />
+                    분석 완료 리스트로
+                  </div>
+                </>
+              )}
+            </StatusButton>
+          </SidebarContent>
         </StyledSidebar>
       </SidebarContainer>
     </Wrapper>
@@ -212,21 +217,15 @@ const SidebarContainer = styled.div`
   color: #fff;
   font-weight: bold;
   position: fixed;
+  overflow-y: hidden;
+
   top: 0;
   left: ${(props) => (props.showSidebar ? "0" : "-230px")};
 
   transition: left 0.5s, margin-right 0.5s;
   z-index: 99;
-  overflow-y: auto;
-  overflow-x: hidden;
-
-  /* 스크롤바 숨김 */
-  &::-webkit-scrollbar {
-    display: none;
-  }
 
   /* Firefox 브라우저에 대한 스크롤바 숨김 */
-  scrollbar-width: none;
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
@@ -252,15 +251,32 @@ const ToggleButton = styled.div`
 const StatusButton = styled.div`
   cursor: pointer;
   color: #034f9e;
-  position: fixed;
   bottom: 10px;
-  margin-left: 30px;
 `;
 
 const SidebarTitle = styled.div`
   display: flex;
   justify-content: center;
   color: #034f9e;
+`;
+
+const SidebarContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
+  align-items: center;
+`;
+
+const ProgressList = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  /* 스크롤바 숨김 */
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  scrollbar-width: none;
 `;
 
 export default SideBar;

@@ -3,16 +3,15 @@ import styled from "styled-components";
 import http from "../../api/http";
 import { useRecoilValue } from "recoil";
 import { MemberIdState } from "../../states/states";
+import AiIcon from "../../assets/images/icon-ai.png";
 
 const AnalysisResult = ({ progressId }) => {
   const formatResponse = (response) => {
     const responseLines = response.split("\n");
-    let color = "#1D1F25"; // 기본 색상
+    let color = "#1D1F25";
     if (responseLines[0].includes("불량")) {
-      //   backgroundColor = "pink"; // '불량'일 경우 배경색
       color = "#D84848";
     } else if (responseLines[0].includes("정상")) {
-      //   backgroundColor = "lightblue"; // '정상'일 경우 배경색
       color = "#034F9E";
     }
 
@@ -44,7 +43,7 @@ const AnalysisResult = ({ progressId }) => {
   const getBotResponse = async () => {
     try {
       const response = await http.post(`/api/chat/interact`, {
-        timestamp: new Date(), // 현재 시간을 사용
+        timestamp: new Date(),
         memberId: memberId,
         progressId: progressId,
       });
@@ -66,6 +65,7 @@ const AnalysisResult = ({ progressId }) => {
   return (
     <S.Wrap>
       <S.Title>
+        <img src={AiIcon} alt="result" />
         <p>분석 결과</p>
       </S.Title>
       {<>{formatResponse(botResponse)}</>}
@@ -75,28 +75,37 @@ const AnalysisResult = ({ progressId }) => {
 
 const S = {
   Wrap: styled.div`
-    width: 50%;
+    width: 49%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   `,
   Title: styled.div`
+  display: flex;
+  width: 20%;
+
+    > img {
+      width: 35px;
+      height: 35px;
+    }
     > p {
-      color: #1d1f25;
+      color: #034f9e;
       font-weight: bold;
-      font-size: 18px;
-      margin: 0px;
+      font-size: 20px;
+	    margin-bottom: 0px;
+      margin-left: 10px;
     }
   `,
   Result: styled.div`
-    width: 85.6%;
+    width: 80%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   `,
 };
 const ResponseWrapper = styled.div`
   background-color: #f2f2f2;
   width: 85%;
-  height: 100px;
+  height: 80px;
   border-radius: 10px;
   margin-left: 10px;
   display: flex;

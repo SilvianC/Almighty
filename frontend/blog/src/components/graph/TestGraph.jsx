@@ -7,6 +7,7 @@ import React, {
 import Highcharts from "highcharts/highstock";
 import HighchartsReact from "highcharts-react-official";
 import styled from "styled-components";
+import VITIcon from "../../assets/images/icon-VIT.png";
 
 const transName = {
   voltageMeasured: "전압(Volts)",
@@ -18,10 +19,11 @@ const TestGraph = ({ data, threshold, type }) => {
   const datas = [];
   let option = {
     chart: {
-      backgroundColor: "#f2f2f2",
+      backgroundColor: "#f9f9f9",
+      plotShadow: true,
       type: "spline",
-      panning: true, // 드래그로 이동을 활성화
-      borderRadius: 25, // 틀을 둥글게 조절하는 값
+      panning: true,
+      borderRadius: 10,
       events: {
         load: function () {
           this.legend.allItems[1].hide();
@@ -230,7 +232,7 @@ const TestGraph = ({ data, threshold, type }) => {
   return (
     <S.Wrap>
       <div>
-        <img src="LineChart.png" className="line"></img>
+        <img src={VITIcon} className="line"></img>
         <p>VIT</p>
       </div>
 
@@ -241,7 +243,7 @@ const TestGraph = ({ data, threshold, type }) => {
 
 const S = {
   Wrap: styled.div`
-    padding: 10px;
+    padding-right: 5px;
     div {
       display: flex;
       flex-direction: row;

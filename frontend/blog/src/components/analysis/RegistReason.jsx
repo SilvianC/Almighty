@@ -1,17 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import ReasonIcon from "../../assets/images/icon-reason.png";
 
 const RegistReason = ({ progressData, setProgressData }) => {
   return (
     <S.Wrap>
       <S.Title>
+        <img src={ReasonIcon} alt="reason" />
         <p>신청 사유</p>
       </S.Title>
       <S.Reason>
         <span>
           {progressData != null
             ? progressData.reason
-            : "선택된 베터리가 없습니다."}
+            : "선택된 배터리가 없습니다."}
         </span>
         <p>{progressData != null ? "(" + progressData.date + ")" : ""}</p>
       </S.Reason>
@@ -21,22 +23,32 @@ const RegistReason = ({ progressData, setProgressData }) => {
 
 const S = {
   Wrap: styled.div`
-    width: 50%;
+    width: 49%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
   `,
   Title: styled.div`
+  display: flex;
+  width: 20%;
+
+    > img {
+      width: 35px;
+      height: 35px;
+    }
     > p {
-      color: #1d1f25;
-      font-size: 18px;
-      margin: 0px;
+      color: #034f9e;
+			font-size: 20px;
+      font-weight: bold;
+			margin-bottom: 0px;
+      margin-left: 10px;
     }
   `,
   Reason: styled.div`
     background-color: #f2f2f2;
-    width: 85%;
-    height: 100px;
+    width: 80%;
+    height: 80px;
     border-radius: 10px;
     margin-left: 10px;
     display: flex;
