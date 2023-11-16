@@ -104,12 +104,6 @@ const ReturnRequest = ({ onClose, item, onSuccess, onError }) => {
             onChange={(e) => setRequestReason(e.target.value)}>
           </textarea>
           <button onClick={handleSubmission}>신청</button>
-          {/* <S.TextArea
-            placeholder="반품 신청 사유 입력"
-            value={requestReason}
-            onChange={(e) => setRequestReason(e.target.value)}
-          />
-          <S.SubmitButton onClick={handleSubmission}>신청</S.SubmitButton> */}
         </S.Form>
       </S.Wrap>
     </>
@@ -141,6 +135,9 @@ const S = {
     }
   `,
   Wrap: styled.div`
+    width: 100%;
+    height: 100% !important;
+
     &::-webkit-scrollbar {
       display: none;
     }
@@ -172,27 +169,28 @@ const S = {
 
     > textarea { 
       width: 100%;
-      height: 180px;
+      height: 150px;
       border-radius: 10px;
       color: #82858B;
       background-color: #F2F2F2;
       border: none;
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       margin-top: 10%;
       resize: none;
       overflow-y: auto;
     }
     > button {
-      margin-top: 40px;
-      background-color: #024c98;
+      margin-top: 20px;
+      background-color: #C7CFD7;
       border: none;
-      width: 40%;
+      width: 80%;
       cursor: pointer;
-      color: #F2F2F2;
+      color: #1D1F25;
       height: 50px;
       border-radius: 10px;
       padding: 2px;
-      font-size: 25px;
+      font-size: 1.7rem;
+      font-weight: bold;
       
       &:hover {
         background-color: #B6C0C9;

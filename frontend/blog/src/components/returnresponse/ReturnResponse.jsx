@@ -39,8 +39,11 @@ const S = {
       height: 300px;
     }
 
+    > h1 {
+      font-size: 1.4rem;
+    }
     > p {
-      font-size: 1.2rem;
+      font-size: 1rem;
       color: #82858B;
     }
     > textarea {
@@ -50,9 +53,9 @@ const S = {
       color: #82858B;
       background-color: #F2F2F2;
       border: none;
-      font-size: 1.5rem;
-      margin-top: 15px;
-      height: 150px;
+      font-size: 1rem;
+      // margin-top: 15px;
+      height: 80px;
       resize: none;
       overflow-y: auto;
     }
