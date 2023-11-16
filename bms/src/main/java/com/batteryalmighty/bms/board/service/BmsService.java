@@ -72,15 +72,14 @@ public class BmsService {
 
         Model model = progress.getBattery().getModel();
 
+        // BMS Count
         int overVoltageCount = 0;
         int underVoltageCount = 0;
         int overCurrentCount = 0;
         int underTemperatureCount = 0;
         int overTemperatureCount = 0;
-        double prevCurrent = 0;
-        double prevVolt = 0;
-        double prevTemperature = 0;
 
+        // BMS Max,Min Data
         double maxVoltageCharge = Double.MIN_VALUE;
         double minVoltageCharge = Double.MAX_VALUE;
         double maxVoltageDischarge = Double.MIN_VALUE;
@@ -90,6 +89,15 @@ public class BmsService {
         double maxTemperatureDischarge = Double.MIN_VALUE;
         double minTemperatureDischarge = Double.MAX_VALUE;
 
+        // BMS TIME
+        double chargeTime = 0;
+        double dischargeTime = 0;
+
+        // prev VIT Data
+        double prevCurrent = 0;
+        double prevVolt = 0;
+        double prevTemperature = 0;
+        double prevTime = 0;
 
         csvReader.readNext();
         String[] values;
@@ -147,6 +155,9 @@ public class BmsService {
                 // 최대, 최소 온도
                 if(temperature > maxTemperatureCharge) maxTemperatureCharge = temperature;
                 if(temperature < minTemperatureCharge) minTemperatureCharge = temperature;
+
+                // 충전 시간
+                chargeTime += (time - prevTime);
             }
 
             // 방전 상태 (음전류)
@@ -163,13 +174,16 @@ public class BmsService {
                 // 최대, 최소 온도
                 if(temperature > maxTemperatureDischarge) maxTemperatureDischarge = temperature;
                 if(temperature < minTemperatureDischarge) minTemperatureDischarge = temperature;
+
+                // 방전 시간
+                dischargeTime += (time - prevTime);
             }
 
             // 전에 값 갱신
             prevVolt = voltage;
             prevCurrent = current;
             prevTemperature = temperature;
-
+            prevTime = time;
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
@@ -187,6 +201,8 @@ public class BmsService {
                 .minTemperatureCharge(minTemperatureCharge)
                 .maxTemperatureDischarge(maxTemperatureDischarge)
                 .minTemperatureDischarge(minTemperatureDischarge)
+                .chargeTime(chargeTime)
+                .dischargeTime(dischargeTime)
                 .build();
 
         bmsBoardRepository.save(bmsBoard);

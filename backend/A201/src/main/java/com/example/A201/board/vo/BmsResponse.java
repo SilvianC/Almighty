@@ -39,9 +39,12 @@ public class BmsResponse {
 
     private double minTemperatureDischarge;
 
+    private double chargeTime;
+
+    private double dischargeTime;
+
     public static BmsResponse bmsResponse(BmsBoard bmsBoard){
         return BmsResponse.builder()
-//                .abnormalTemperatureCount(bmsBoard.getAbnormalTemperatureCount())
                 .overCurrentCount(bmsBoard.getOverCurrentCount())
                 .overVoltageCount(bmsBoard.getOverVoltageCount())
                 .underVoltageCount(bmsBoard.getUnderVoltageCount())
@@ -55,6 +58,8 @@ public class BmsResponse {
                 .minTemperatureCharge(bmsBoard.getMinTemperatureCharge())
                 .maxTemperatureDischarge(bmsBoard.getMaxTemperatureDischarge())
                 .minTemperatureDischarge(bmsBoard.getMinTemperatureDischarge())
+                .chargeTime(bmsBoard.getChargeTime())
+                .dischargeTime(bmsBoard.getDischargeTime())
                 .build();
     }
 }
