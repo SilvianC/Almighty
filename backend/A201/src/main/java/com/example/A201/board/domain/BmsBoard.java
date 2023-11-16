@@ -25,6 +25,8 @@ public class BmsBoard {
     @JoinColumn(name = "progress_id")
     private Progress progress;
 
+    private int capacity;
+
     private Double chargeTime;
 
     private Double dischargeTime;

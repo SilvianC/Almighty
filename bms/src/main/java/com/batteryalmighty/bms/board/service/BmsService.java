@@ -124,7 +124,7 @@ public class BmsService {
             ekf.predictx(voltage);
             ekf.nextP();
 
-//            log.info(String.valueOf(turn++));
+            log.info(String.valueOf(turn++));
 
             VitBoard vitBoard = VitBoard.builder()
                     .voltage(voltage)
@@ -187,6 +187,7 @@ public class BmsService {
         }
 
         BmsBoard bmsBoard = BmsBoard.builder()
+                .capacity(model.getCapacity())
                 .progress(progress)
                 .overVoltageCount(overVoltageCount)
                 .underVoltageCount(underVoltageCount)
