@@ -36,7 +36,9 @@ const Return = () => {
   const [showReturnRequest, setShowReturnRequest] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [isCheck, setIsCheck] = useState(true);
   const accessToken = useRecoilValue(AccessTokenState);
+
   const handleSuccess = () => {
     console.log("handle");
     toast.success("반품 요청이 성공적으로 처리되었습니다.");
@@ -86,7 +88,6 @@ const Return = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
-        console.log(data)
         setData2(data.data.content);
         setTotalPages(data.data.totalPages);
         // 추가된 상태로 현재 페이지와 총 페이지 수를 설정합니다.
@@ -125,7 +126,6 @@ const Return = () => {
         headers: { Authorization: `Bearer ${accessToken}` },
       })
       .then(({ data }) => {
-
         setData(() => {
           return data["data"];
         });
@@ -149,27 +149,40 @@ const Return = () => {
       <GlobalStyles />
       <ToastContainer position={toast.POSITION.BOTTOM_RIGHT} />
       <div className="tabs">
-        <input id="all" type="radio" name="tab_item" />
+        <input
+          id="all"
+          type="radio"
+          name="tab_item"
+          onChange={() => {
+            setIsCheck(() => true);
+          }}
+          checked={isCheck}
+        />
         <label className="tab_item" for="all">
           <img src={ListIcon} alt="list" className="tab_img" />
           배터리 목록 및 반송 신청
         </label>
-        <input id="programming" type="radio" name="tab_item" />
+        <input
+          id="programming"
+          type="radio"
+          name="tab_item"
+          onChange={() => {
+            setIsCheck(() => false);
+          }}
+          checked={!isCheck}
+        />
         <label className="tab_item" for="programming">
           <img src={ResultIcon} alt="result" className="tab_img" />
           반송 신청 결과
         </label>
         <div className="tab_content" id="all_content">
-          <S.BuyTableContainer>
-            <BuyTable
-              onSuccess={handleSuccess}
-              onError={handleError}
-              data={data}
-              setData={setData}
-              memberId={memberId}
-              accessToken={accessToken}
-            ></BuyTable>
-          </S.BuyTableContainer>
+          <BuyTable
+            onSuccess={handleSuccess}
+            onError={handleError}
+            data={data}
+            setData={setData}
+            memberId={memberId}
+          ></BuyTable>
         </div>
         <div className="tab_content" id="programming_content">
           <ServiceHistory
@@ -243,13 +256,13 @@ const S = {
   `,
   BuyTableContainer: styled.div`
     flex: 0.8;
-   
     @media (max-width: 768px) {
       padding-top: 60px;
     }
   `,
   ReturnResultTableContainer: styled.div`
-   
+    flex: 1;
+    position: relative; // 이 부분이 추가되어야 합니다.
   `,
   Title: styled.div`
     font-size: 30px;

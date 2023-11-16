@@ -58,9 +58,10 @@ function Header() {
   const setLoginstate = useResetRecoilState(IsLoginState);
   async function handleLogout() {
     try {
+
       await http
         .post(
-          "/api/auth/logout",
+          `/api/auth/logout/${memberId}`,
           {},
           {
             headers: {

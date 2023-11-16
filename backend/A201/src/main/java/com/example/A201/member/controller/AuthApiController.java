@@ -36,6 +36,7 @@ public class AuthApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
     // loginId
     @GetMapping("/check/{loginId}")
     public ResponseEntity<?> checkDuplication(@PathVariable String loginId) {
@@ -45,6 +46,7 @@ public class AuthApiController {
             return ResponseEntity.status(HttpStatus.OK).body("사용 가능한 loginId 입니다.");
         }
     }
+
     // 로그인 -> 토큰 발급
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody AuthDto.LoginDto loginDto) {
@@ -93,11 +95,12 @@ public class AuthApiController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 재발급 필요
         }
     }
+
     // 토큰 재발급
     @PostMapping("/reissue")
 //    public ResponseEntity<?> reissue(@CookieValue(name = "refresh-token") String requestRefreshToken,
     public ResponseEntity<?> reissue(@RequestHeader() Map<String, String> headers) {
-        System.out.println("headers: "+headers);
+        System.out.println("headers: " + headers);
         String requestAccessToken = headers.get("authorization");
         String requestRefreshToken = headers.get("refresh_token");
         AuthDto.TokenDto reissuedTokenDto = authService.reissue(requestAccessToken, requestRefreshToken);
@@ -127,11 +130,12 @@ public class AuthApiController {
     }
 
     // 로그아웃
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout(@RequestHeader(value="Authorization", required=false) String requestAccessToken) {
+    @PostMapping("/logout/{memberId}")
+    public ResponseEntity<?> logout(@RequestHeader(value = "Authorization", required = false) String requestAccessToken,
+                                    @PathVariable("memberId") String memberId) {
         log.debug("asdasdasdas");
         log.debug(requestAccessToken);
-        authService.logout(requestAccessToken);
+        authService.logout(requestAccessToken, memberId);
         ResponseCookie refreshTokenCookie = ResponseCookie.from("refresh_token", "")
                 .maxAge(0)
                 .path("/")

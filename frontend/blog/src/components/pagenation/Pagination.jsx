@@ -49,33 +49,33 @@ const Nav = styled.nav`
 `;
 
 const Button = styled.button`
-
-border: 1px solid #dee2e6;  
-  border-radius: 8px;
+  // border: 1px solid #dee2e6;
+  // border-radius: 8px;
+  border: none;
   padding: 8px;
   margin: 0;
   background: 007bff;
-  color: black;
-  font-size: 1rem;
+  color: #034F9E;
+  font-size: 1.5rem;
 
   &:hover {
-    background: tomato;
+    background: #DEDEDE;
     cursor: pointer;
     transform: translateY(-2px);
   }
 
   &[disabled] {
-    background: grey;
+    background: transparent;
     cursor: revert;
     transform: revert;
   }
 
   &[aria-current] {
-    background: #448AFF;
+    background: #D5DFE9;
     font-weight: bold;
     cursor: revert;
     transform: revert;
-    color:white;
+    color: #034F9E;
   }
 `;
 
