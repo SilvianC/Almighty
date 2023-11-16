@@ -18,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
@@ -27,19 +30,19 @@ import java.time.format.FormatStyle;
 public class WordServiceImpl implements WordService{
     private final ProgressRepository progressRepository;
     @Override
-    public void createWordDocument(ProgressResultDTO progress, String fileName) throws IOException, InvalidFormatException {
+    public byte[] createWordDocument(ProgressResultDTO progress, String fileName) throws IOException, InvalidFormatException {
         Progress progressEntity = progressRepository.findById(progress.getProgressId()).orElseThrow(() -> new IllegalStateException("해당 배터리를 찾을 수 없습니다"));
         Battery battery = progressEntity.getBattery();
-        String directoryPath = "c:/batteryword/";
-        File directory = new File(directoryPath);
+//        String directoryPath = "c:/batteryword/";
+//        File directory = new File(directoryPath);
 
         // 디렉토리가 없으면 생성
-        if (!directory.exists()) {
-            directory.mkdirs(); // 여러 중첩 디렉토리를 생성할 수도 있으므로 mkdirs() 사용
-        }
+//        if (!directory.exists()) {
+//            directory.mkdirs(); // 여러 중첩 디렉토리를 생성할 수도 있으므로 mkdirs() 사용
+//        }
 
         // 파일 생성 경로
-        String filePath = directoryPath + battery.getCode() + fileName;
+//        String filePath = directoryPath + battery.getCode() + fileName;
         XWPFDocument document = new XWPFDocument();
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " + currentDir);
@@ -137,9 +140,18 @@ public class WordServiceImpl implements WordService{
         mergeCellHorizontally(table, 3, 0, 3);
         mergeCellHorizontally(table, 4, 0, 3);
         //rowFive.setHeight((short)600);
-
-        try (FileOutputStream out = new FileOutputStream(filePath)) {
-            document.write(out);
+//        try (FileOutputStream out = new FileOutputStream(filePath)) {
+//            document.write(out);
+//            out.close();
+//        }
+        try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
+            document.write(byteArrayOutputStream);
+            byte[] output = byteArrayOutputStream.toByteArray();
+            byteArrayOutputStream.close();
+            return output;
+        }
+        finally {
+            document.close();
         }
     }
 

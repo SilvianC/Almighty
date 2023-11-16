@@ -10,10 +10,18 @@ import com.example.A201.words.service.WordService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @RestController
 @RequestMapping("/api/batteries/progress")
@@ -44,14 +52,20 @@ public class ProgressController {
     @PutMapping("{progress_id}")
     public ResponseEntity<?> updateProgress(@PathVariable("progress_id") Long progressId, @RequestBody ProgressResultDTO progress){
         MailInfo mailInfo = progressService.progressResult(progressId, progress);
+        byte[] wordDocument = null;
         try {
-            wordService.createWordDocument(progress,  "_" + progress.getProgressId() + ".docx");
+            wordDocument = wordService.createWordDocument(progress, "_" + progress.getProgressId() + ".zip");
             log.info("Word 파일이 성공적으로 생성되었습니다.");
         } catch (IOException | InvalidFormatException e) {
             e.printStackTrace();
             log.info("Word 파일 생성에 실패하였습니다.");
         }
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.valueOf("application/vnd.openxmlformats-officedocument.wordprocessingml.document"));
+        httpHeaders.setContentLength(wordDocument.length);
+        httpHeaders.setContentDispositionFormData("attachment", "downloaded-file.docx");
         progressService.sendMail(mailInfo.getEmail(), mailInfo.getCode(), mailInfo.getResult());
-        return SuccessResponseEntity.toResponseEntity("반품 분석 완료", null);
+        return new ResponseEntity<>(wordDocument, httpHeaders, HttpStatus.OK);
     }
 }
