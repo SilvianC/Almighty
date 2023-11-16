@@ -36,6 +36,7 @@ const BMSdata = ({ data, battery }) => {
     if (data != null) {
       setIsDataExist(() => true);
       convertDecimalTime(data.chargeTime);
+      convertDecimalTime(data.chargeTime);
     } else {
       setIsDataExist(() => false);
     }
