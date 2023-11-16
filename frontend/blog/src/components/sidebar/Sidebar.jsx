@@ -82,7 +82,7 @@ const SideBar = ({ progress, setProgress }) => {
           }}
         >
           <div>
-            {item.companyName} {item.modelName}
+            {item.companyName} {item.code}
           </div>
         </MenuItem>
       ))}
@@ -225,7 +225,6 @@ const SidebarContainer = styled.div`
   transition: left 0.5s, margin-right 0.5s;
   z-index: 99;
 
-  /* Firefox 브라우저에 대한 스크롤바 숨김 */
   box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
     0px 12.52px 10.02px rgba(0, 0, 0, 0.035), 0px 20px 80px rgba(0, 0, 0, 0.07);
 `;
