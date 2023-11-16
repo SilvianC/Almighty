@@ -71,29 +71,20 @@ public class ProgressServiceImpl implements ProgressService{
         progressRepository.save(progress);
 
         battery.setBatteryStatus(BatteryStatus.InProgress);
-//        statusHistoryRepository.save(StatusHistory.builder()
-//                .toStatus(Status.Request)
-//                .fromStatus(battery.getBatteryStatus())
-//                .battery(battery)
-//                .requestReason(progress.getReason())
-//                .build());
 
-        log.debug("여기까지 완료");
         log.debug("PROGRESS뜯어보기: "+progressdto.getId()+" "+progressdto.getCode()+" "+progressdto.getTitle()+" "+progressdto.getReason());
-        log.debug("ID 뭐야!:"+ progressdto.getId());
         alarmService.insertAlarm(AlarmDto.builder()
                 .title(progressdto.getTitle())
                 .content(progressdto.getReason())
                 .member(progressdto.getId())
                 .build());
-        log.debug("여기까지 완료22");
+
         fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
                 .title(progressdto.getTitle())
                 .body(progressdto.getReason())
                 .targetUserId(progressdto.getId())
                 .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
                 .build());
-//        requestToBMS(battery, progress);
         return new ProgressIdDTO(progress.getId(), battery.getId(), progressdto.getCode());
     }
 

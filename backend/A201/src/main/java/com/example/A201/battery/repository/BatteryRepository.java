@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface BatteryRepository extends JpaRepository<Battery,Long> {
     Optional<Battery> findByCode(String code);
 
-    @Query("select b from Battery b where b.member.memberId=:memberId order by b.id desc")
+    @Query("select b from Battery b where b.member.memberId=:memberId order by b.code desc")
     List<Battery> findByMember(@Param("memberId") Long memberId);
 
     Optional<Battery> findById(Long batteryId);
