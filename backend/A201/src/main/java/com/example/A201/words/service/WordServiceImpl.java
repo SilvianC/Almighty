@@ -14,6 +14,7 @@ import org.apache.poi.util.Units;
 import org.apache.poi.xwpf.model.XWPFHeaderFooterPolicy;
 import org.apache.poi.xwpf.usermodel.*;
 import org.openxmlformats.schemas.wordprocessingml.x2006.main.*;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
@@ -47,10 +48,11 @@ public class WordServiceImpl implements WordService{
         XWPFDocument document = new XWPFDocument();
         String currentDir = System.getProperty("user.dir");
         System.out.println("Current dir: " + currentDir);
-        URL resource = getClass().getClassLoader().getResource("images/sdilogo.png");
+        InputStream resource = getClass().getResourceAsStream("/images/sdilogo.png");
+//        ClassPathResource cpr = new ClassPathResource("images/sdilogo.png");
         // 이미지 워터마크 추가
-        String imgPath = resource.getFile(); // 이미지 파일 경로
-        addImageWatermark(document, imgPath);
+//        String imgPath = resource.getFile(); // 이미지 파일 경로
+        addImageWatermark(document, resource.readAllBytes());
 
         XWPFParagraph titleParagraph  = document.createParagraph();
         titleParagraph.setAlignment(ParagraphAlignment.CENTER);
@@ -190,11 +192,11 @@ public class WordServiceImpl implements WordService{
         run.setBold(isBold);
     }
 
-    private void addImageWatermark(XWPFDocument document, String imgPath) throws IOException, InvalidFormatException {
-        byte[] imageBytes;
-        try (FileInputStream fis = new FileInputStream(imgPath)) {
-            imageBytes = IOUtils.toByteArray(fis);
-        }
+    private void addImageWatermark(XWPFDocument document, byte[] imgPath) throws IOException, InvalidFormatException {
+        byte[] imageBytes = imgPath;
+//        try (FileInputStream fis = new FileInputStream(imgPath)) {
+//            imageBytes = IOUtils.toByteArray(fis);
+//        }
 
         XWPFHeaderFooterPolicy policy = new XWPFHeaderFooterPolicy(document);
         XWPFHeader header = policy.createHeader(XWPFHeaderFooterPolicy.DEFAULT);
@@ -206,7 +208,7 @@ public class WordServiceImpl implements WordService{
         // 이미지를 페이지에 맞게 크게 조절
         int width = Units.toEMU(300); // 예시: 페이지 너비에 맞게 조절
         int height = Units.toEMU(50); // 예시: 페이지 높이에 맞게 조절
-        run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, imgPath, width, height);
+        run.addPicture(new ByteArrayInputStream(imageBytes), XWPFDocument.PICTURE_TYPE_PNG, "img.png", width, height);
     }
 
 }
