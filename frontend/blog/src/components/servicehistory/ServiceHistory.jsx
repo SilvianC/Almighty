@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
-import Form from "react-bootstrap/Form";
 import styled, { keyframes } from "styled-components";
 import ReturnResponse from "../returnresponse/ReturnResponse";
 import { CSSTransition } from "react-transition-group";
 import { BsFillClipboard2CheckFill } from "react-icons/bs";
-import { format, isWithinInterval, subSeconds } from "date-fns";
-import { useRecoilValue } from "recoil";
-import { MemberIdState } from "../../states/states";
 import http from "../../api/http";
+import Pagination from "../pagenation/Pagination";
 const status = {
   Normal: "정상",
   Request: "진행 중",
@@ -31,111 +28,87 @@ const ServiceHistory = ({
   const [selectedItem, setSelectedItem] = useState(null);
   const wrapperRef = useRef(null);
   const now = new Date();
-  // 클릭 이벤트 리스너를 설정합니다.
   useEffect(() => {
-    // 클릭 이벤트를 처리하는 함수입니다.
     function handleClickOutside(event) {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
-        // 컴포넌트의 외부 클릭이 감지되면 ReturnResponse를 닫습니다.
         setShowReturnResponse(false);
       }
     }
-    // 클릭 리스너를 추가합니다.
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
-      // 컴포넌트가 언마운트될 때 리스너를 제거합니다.
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [wrapperRef]); // 빈 배열을 넣으면 컴포넌트가 마운트될 때 한 번만 실행됩니다.
+  }, [wrapperRef]);
+
   const handleStatusButtonClick = (item) => {
     http
       .get(`/api/batteries/history/response/${item.historyId}`)
       .then((response) => {
-        // 응답 데이터로 상태를 설정합니다.
         setSelectedItem({ ...item, responseData: response.data });
-        setShowReturnResponse(true); // ReturnResponse 컴포넌트를 표시합니다.
+        setShowReturnResponse(true);
       })
       .catch((error) => {
         console.error("There was an error fetching the response", error);
-        // 필요하다면 여기서 오류 처리를 하세요.
       });
   };
+
   const handlePageClick = (pageNumber) => {
     setPage(pageNumber);
     fetchServiceHistory(pageNumber);
   };
+
   return (
     <S.Wrap ref={wrapperRef}>
-      <S.Title className="d-flex align-items-center">
-        <BsFillClipboard2CheckFill />
-        {"\u00A0"}
-        반송 신청 결과
-      </S.Title>
+      <div className="Container">
+        {data.map((item, idx) => {
+          const statusColor =
+            {
+              Normal: "#1D1F25", // 정상 - 녹색
+              Request: "#FAD551", // 진행 중 - 노란색
+              Upload: "#B7C8D9", // 데이터 업로드 - 하늘색
+              Analysis: "#034F9E", // 분석 중 - 파란색
+              CustomerFault: "#D84848", // 고객 귀책 - 빨간색
+              SdiFault: "#1D1F25", // 제품 결함 - 검정색
+            }[item.expertStatus] || "#1D1F25"; // 기본 - 회색
 
-      <Form style={{ height: "90%" }}>
-        <S.Table bordered>
-          <thead className={"table-secondary"}>
-            <tr>
-              <th className="w-auto text-center">제품명</th>
-              <th className="w-auto text-center">신청일</th>
-              <th className="w-25 text-center">결과</th>
-            </tr>
-          </thead>
-          <tbody>
-            {data.map((item, idx) => {
-              // 상태에 따른 색상 결정
-              const statusColor =
-                {
-                  Normal: "#28a745", // 정상 - 녹색
-                  Request: "#ffc107", // 진행 중 - 노란색
-                  Upload: "#17a2b8", // 데이터 업로드 - 하늘색
-                  Analysis: "#007bff", // 분석 중 - 파란색
-                  CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
-                  SdiFault: "#034F9E", // 제품 결함 - 검정색
-                }[item.expertStatus] || "#6c757d"; // 기본 - 회색
+          const status =
+            {
+              Normal: "정상",
+              Request: "진행 중",
+              Upload: "데이터 업로드",
+              Analysis: "분석 중",
+              CustomerFault: "고객 귀책",
+              SdiFault: "제품 결함",
+            }[item.expertStatus] || "정상";
 
-              // item.date 문자열을 Date 객체로 변환합니다.
-              const itemDate = new Date(item.date);
+          const itemDate = new Date(item.date);
+          const formattedDate = itemDate.toISOString().split("T")[0];
+          const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
+          const isRecent = timeDifferenceInSeconds <= 5;
 
-              // item.date를 "YYYY-MM-DD" 형식으로 포맷합니다.
-              const formattedDate = itemDate.toISOString().split("T")[0];
+          return (
+            <div className="flip-card">
+              <div className="flip-card-inner">
+                <div className="flip-card-front">
+                  <h1 style={{ marginTop: "25px", fontWeight: "bolder", }}>{item.code}</h1>
+                  <p>신청일자 {formattedDate}</p>
+                  <h4 style={{ color: statusColor, }}>{status}</h4>
+                </div>
+                <div className="flip-card-back">
+                  <ReturnResponse item={item} />
+                </div>
+              </div>
+            </div>
+          );
+        })}
+      </div>
 
-              // 현재 시간과 item.date의 차이를 계산합니다.
-              const timeDifferenceInSeconds = Math.abs(now - itemDate) / 1000;
-
-              // 차이가 5초 이내인지 확인합니다.
-              const isRecent = timeDifferenceInSeconds <= 5;
-              return (
-                <tr key={idx} className={isRecent ? "flash-highlight" : ""}>
-                  <FirstTd
-                    className={isRecent ? "flash-highlight" : ""}
-                    statusColor={statusColor}
-                  >
-                    {item.code}
-                  </FirstTd>
-                  <td className={isRecent ? "flash-highlight" : ""}>
-                    {formattedDate}
-                  </td>
-                  <td className={isRecent ? "flash-highlight" : ""}>
-                    <StatusButton
-                      onClick={() => handleStatusButtonClick(item)}
-                      status={item.expertStatus} // status prop을 전달합니다
-                    >
-                      {status[item.expertStatus]}
-                    </StatusButton>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </S.Table>
-      </Form>
       <CSSTransition
         in={showReturnResponse}
         timeout={300}
         classNames="slide-down"
         unmountOnExit
-        nodeRef={wrapperRef} // CSSTransition에 nodeRef를 추가합니다.
+        nodeRef={wrapperRef}
       >
         <S.ReturnResponseWrapper ref={wrapperRef}>
           <ReturnResponse
@@ -145,84 +118,116 @@ const ServiceHistory = ({
           />
         </S.ReturnResponseWrapper>
       </CSSTransition>
-      <PageControl>
-        {Array.from({ length: totalPage }, (_, index) => (
-          <PageButton
-            key={index}
-            active={page === index + 1}
-            onClick={() => handlePageClick(index + 1)}
-          >
-            {index + 1}
-          </PageButton>
-        ))}
-      </PageControl>
+
+      <Pagination total={totalPage} page={page} setPage={setPage}></Pagination>
     </S.Wrap>
   );
 };
-const buttonColors = {
-  Normal: "#28a745", // 정상 - 녹색
-  Request: "#ffc107", // 진행 중 - 노란색
-  Upload: "#17a2b8", // 데이터 업로드 - 하늘색
-  Analysis: "#007bff", // 분석 중 - 파란색
-  CustomerFault: "#dc3545", // 고객 귀책 - 빨간색
-  SdiFault: "#034F9E", // 제품 결함 - 검정색
-};
 export default ServiceHistory;
-// TableRow styled component
-// 첫 번째 td에 적용할 styled component
-const FirstTd = styled.td`
-  position: relative; // 상대적 위치 지정
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 10px; // 선의 두께
-    background: ${(props) => props.statusColor}; // prop에서 받은 색상 적용
-  }
-  // 필요한 추가 스타일
-`;
 
-const StatusButton = styled(Button)`
-  /* 여기에 버튼 스타일 추가 */
-  width: 90px;
-  font-size: 17px !important;
-  border-radius: 5px;
-  font-weight: bold;
-  height: 30px;
-  padding: 2px;
-  background-color: ${(props) =>
-    buttonColors[props.status] || "#B6C0C9"} !important;
-  color: #000 !important;
-  &:hover {
-    background-color: #ffffff !important; /* 호버 스타일링 */
-  }
-`;
 const S = {
   Wrap: styled.div`
-    border: 1px solid #d3d3d3;
-    margin: 20px;
-    padding: 60px;
-    padding-top: 20px; // 상단 navbar의 높이만큼 패딩을 줍니다.
-    padding-left: 20px; // 왼쪽 navbar의 너비만큼 패딩을 줍니다.
-    padding-right: 20px;
-    border-radius: 10px;
-    background-color: #f2f2f2;
-    height: 600px;
-    box-shadow: 0px 2.77px 2.21px rgba(0, 0, 0, 0.0197),
-      0px 12.52px 10.02px rgba(0, 0, 0, 0.035),
-      0px 20px 80px rgba(0, 0, 0, 0.07);
-    @media (max-width: 768px) {
-      height: 300px;
+  width: 92%;
+  padding: 60px;
+  padding-top: 20px;
+  padding-left: 25px;
+  padding-right: 10px;
+  overflow: auto;
+  height: 50%;
+  background-color: #f2f2f2;
+  box-sizing: content-box;
+  border-radius: 10px;
+  @media (max-width: 768px) {
+    height: 300px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    scrollbar-width: none;
+  }
+    .Container {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: space-around;
+      justify-content: center;
+    }
+    .Container {
+      display: flex;
+      flex-wrap: wrap;
+      align-content: space-around;
+      justify-content: center;
+    }
+    .flip-card {
+      background-color: transparent;
+      width: 18%;
+      height: 400px;
+      perspective: 1000px;
+      margin: 13px;
+      border-radius: 20px;
+    }
+    .flip-card1 {
+      background-color: transparent;
+      width: 18%;
+      height: 400px;
+
+      perspective: 1000px;
+      margin: 13px;
+      border-radius: 20px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.8s;
+      transform-style: preserve-3d;
+      border: 20px solid #212061;
+      border-radius: 20px;
+    }
+
+    .flip-card:hover .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+      background-color: #e7ecf2;
+      color: black;
+
+      > p {
+        font-size: 1.2rem;
+        color: #82858B;
+      }
+      > h4 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        position: absolute;
+        bottom: 40px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+
+    .flip-card-back {
+      background-color: #e7ecf2;
+      color: black;
+      transform: rotateY(180deg);
     }
   `,
   ReturnResponseWrapper: styled.div`
     position: absolute;
-    top: 0; // 상단에서 시작
+    top: 0;
     width: 100%;
     right: 1px;
-    z-index: 2; // 필요에 따라 적절한 z-index 설정
+    z-index: 2;
   `,
   Title: styled.span`
     font-size: 30px;
@@ -238,7 +243,7 @@ const S = {
   `,
   PageBox: styled.span``,
   Table: styled(Table)`
-    border-collapse: collapse; // 테이블의 선을 없애기 위해 collapse 설정
+    border-collapse: collapse;
     background-color: #f2f2f2;
     text-align: center;
     padding: 1px;

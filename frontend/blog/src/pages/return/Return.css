@@ -1,0 +1,58 @@
+/* 탭 전체 스타일 */
+.tabs {
+  margin-top: 50px;
+  /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); */
+  margin: 0 auto;
+}
+
+/* 탭 스타일 */
+.tab_item {
+  background-color: #E7ECF2;
+  line-height: 50px;
+  font-size: 25px;
+  text-align: center;
+  color: #1D1F25;
+  display: block;
+  float: left;
+  text-align: center;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  cursor: pointer;
+}
+.tab_img {
+  margin-right: 10px;
+}
+.tab_item:hover {
+  opacity: 0.75;
+  border-bottom: 4px solid #888888;
+}
+
+/* 라디오 버튼 UI삭제*/
+input[name="tab_item"] {
+  display: none;
+}
+
+/* 탭 컨텐츠 스타일 */
+.tab_content {
+  display: none;
+  clear: both;
+  overflow: hidden;
+}
+
+/* 선택 된 탭 콘텐츠를 표시 */
+#all:checked ~ #all_content,
+#programming:checked ~ #programming_content {
+  display: block;
+}
+
+/* 선택된 탭 스타일 */
+.tabs input:checked + .tab_item {
+  background-color: #F2F2F2;
+  color: #1D1F25;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
