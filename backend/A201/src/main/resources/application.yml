@@ -17,6 +17,8 @@ spring:
 
   data:
     mongodb:
+      username: almighty
+      password: wjswldmltls
       host: k9a201.p.ssafy.io
       port: 27017
       database: bms
@@ -55,7 +57,8 @@ spring:
 #      data-locations: classpath*:db/h2/data.sql
 
 bms:
-  url: http://k9a201.p.ssafy.io:8085
+#  url: http://k9a201.p.ssafy.io:8085
+  url: http://localhost:8085
 
 logging:
   level:
