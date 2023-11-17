@@ -107,7 +107,7 @@
 
 ### 화면 설계서
 
-<img src="./assets//images/figma.png" width="600">
+<img src="./assets/images/figma.png" width="600">
 
 ### Git 컨벤션
 
