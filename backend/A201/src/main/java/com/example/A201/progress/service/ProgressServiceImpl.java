@@ -5,6 +5,7 @@ import com.example.A201.alarm.domain.constant.Title;
 import com.example.A201.alarm.dto.AlarmDto;
 import com.example.A201.alarm.service.AlarmService;
 import com.example.A201.battery.constant.BatteryStatus;
+import com.example.A201.exception.CustomException;
 import com.example.A201.history.constant.ResultStatus;
 import com.example.A201.progress.constant.ProgressStatus;
 import com.example.A201.battery.domain.Battery;
@@ -73,18 +74,23 @@ public class ProgressServiceImpl implements ProgressService{
         battery.setBatteryStatus(BatteryStatus.InProgress);
 
         log.debug("PROGRESS뜯어보기: "+progressdto.getId()+" "+progressdto.getCode()+" "+progressdto.getTitle()+" "+progressdto.getReason());
-        alarmService.insertAlarm(AlarmDto.builder()
-                .title(progressdto.getTitle())
-                .content(progressdto.getReason())
-                .member(progressdto.getId())
-                .build());
+        try{
+            alarmService.insertAlarm(AlarmDto.builder()
+                    .title(progressdto.getTitle())
+                    .content(progressdto.getReason())
+                    .member(progressdto.getId())
+                    .build());
 
-        fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
-                .title(progressdto.getTitle())
-                .body(progressdto.getReason())
-                .targetUserId(progressdto.getId())
-                .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
-                .build());
+            fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
+                    .title(progressdto.getTitle())
+                    .body(progressdto.getReason())
+                    .targetUserId(progressdto.getId())
+                    .receiver(Receiver.fromReceiver(Title.fromTitle(progressdto.getTitle()).getTo()))
+                    .build());
+        } catch (CustomException e){
+            e.printStackTrace();
+            log.info("알람 전송 실패");
+        }
         return new ProgressIdDTO(progress.getId(), battery.getId(), progressdto.getCode());
     }
 
@@ -102,7 +108,7 @@ public class ProgressServiceImpl implements ProgressService{
     @Transactional
     public MailInfo progressResult(Long progressId, ProgressResultDTO resultDto){
 
-        Progress progress = progressRepository.findById(progressId)
+        Progress progress = progressRepository.findByProgressId(progressId)
                 .orElseThrow(() -> new EntityNotFoundException("해당 반품 요청을 찾을 수 없습니다"));
 
         Battery battery = progress.getBattery();
@@ -143,13 +149,19 @@ public class ProgressServiceImpl implements ProgressService{
                 .member(member.getMemberId())
                 .build());
         log.debug("여기까지 완료");
-        fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
+        try {
+            fcmNotificationService.sendNotificationByToken(FCMNotificationRequestDto.builder()
 //                .title(String.valueOf(progress.getToStatus()))
-                .title(String.valueOf(resultStatus))
-                .body(reason)
-                .targetUserId(member.getMemberId())
-                .receiver(Receiver.fromReceiver("일반 사용자"))
-                .build());
+                    .title(String.valueOf(resultStatus))
+                    .body(reason)
+                    .targetUserId(member.getMemberId())
+                    .receiver(Receiver.fromReceiver("일반 사용자"))
+                    .build());
+        } catch (CustomException e){
+            e.printStackTrace();
+            log.info("알람 전송 실패");
+        }
+
 
         if(resultStatus.equals(ResultStatus.SdiFault)){
             battery.setBatteryStatus(BatteryStatus.Return);
