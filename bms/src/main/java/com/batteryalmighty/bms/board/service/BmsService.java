@@ -145,8 +145,8 @@ public class BmsService {
             if(current > 0){
                 // count 체크
                 if(prevCurrent < model.getOverCurrentChargeThreshold() && current >= model.getOverCurrentChargeThreshold()) overCurrentCount++;
+                if(prevTemperature < model.getMinTemperatureChargeThreshold() && temperature >= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
                 if(prevTemperature < model.getMaxTemperatureChargeThreshold() && temperature >= model.getMaxTemperatureChargeThreshold()) overTemperatureCount++;
-                if(prevTemperature > model.getMinTemperatureChargeThreshold() && temperature <= model.getMinTemperatureChargeThreshold()) underTemperatureCount++;
 
                 // 최대, 최소 전압
                 if(voltage > maxVoltageCharge) maxVoltageCharge = voltage;
@@ -164,8 +164,8 @@ public class BmsService {
             if(current <= 0){
                 // count 체크
                 if(prevCurrent > model.getOverCurrentDischargeThreshold() && current <= model.getOverCurrentDischargeThreshold()) overCurrentCount++;
+                if(prevTemperature < model.getMinTemperatureDischargeThreshold() && temperature >= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
                 if(prevTemperature < model.getMaxTemperatureDischargeThreshold() && temperature >= model.getMaxTemperatureDischargeThreshold()) overTemperatureCount++;
-                if(prevTemperature > model.getMinTemperatureDischargeThreshold() && temperature <= model.getMinTemperatureDischargeThreshold()) underTemperatureCount++;
 
                 // 최대, 최소 전압
                 if(voltage > maxVoltageDischarge) maxVoltageDischarge = voltage;

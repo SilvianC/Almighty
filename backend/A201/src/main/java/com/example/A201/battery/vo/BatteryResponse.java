@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class BatteryResponse {
     private String code;
 
-    private String modelName;
+    private Long modelId;
 
     private Long memberId;
 
@@ -25,7 +25,7 @@ public class BatteryResponse {
     public static BatteryResponse batteryResponse(Battery battery){
         return BatteryResponse.builder()
                 .code(battery.getCode())
-                .modelName(battery.getModel().getModelName())
+                .modelId(battery.getModel().getId())
                 .memberId(battery.getMember().getMemberId())
                 .Id(battery.getId())
                 .status(battery.getBatteryStatus().toString())
