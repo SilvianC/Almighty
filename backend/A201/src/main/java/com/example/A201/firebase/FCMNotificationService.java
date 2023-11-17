@@ -38,7 +38,7 @@ public class FCMNotificationService {
             log.info("유저에게 보내는 메시지{}",requestDto.toString());
             String token = valueOperations.get(String.valueOf(requestDto.getTargetUserId()));
             if (token == null) {
-                throw new CustomException(ErrorCode.USER_NOT_FOUND);
+                return "알림 전송 실패";
             }
             Notification notification = Notification.builder()
                     .setTitle(requestDto.getTitle())
