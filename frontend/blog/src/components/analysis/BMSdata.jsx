@@ -26,7 +26,7 @@ const BMSdata = ({ data, battery }) => {
   const convertDecimalTime = (decimalTime) => {
     const h = Math.floor(decimalTime);
     const m = Math.floor((decimalTime - h) * 60);
-    const s = Math.floor((decimalTime - h) * 60 - m) * 60;
+    const s = Math.floor(((decimalTime - h) * 60 - m) * 60);
     setHour(() => h);
     setMinute(() => m);
     setSecond(() => s);
