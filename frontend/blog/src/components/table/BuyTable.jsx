@@ -51,9 +51,10 @@ const BuyTable = ({
                 </div>
                 <div className="flip-card-inner">
                   <div className="flip-card-front">
-                    <h1 style={{ marginTop: "25px", fontWeight: "bolder" }}>
+                    <h1 style={{ marginTop: "15px", fontWeight: "bolder" }}>
                       {item.code}
                     </h1>
+                    {item.modelName}
 
                     {item.status === "InProgress" ? (
                       <CompletedButton disabled>진행 중</CompletedButton>
