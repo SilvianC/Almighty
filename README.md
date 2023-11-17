@@ -102,7 +102,7 @@
 
 ### 서비스 아키텍처
 
-<img src="./assets/images/arch.png" width="600">
+<img src="./assets/images/architecture.png" width="600">
 
 
 ### 화면 설계서
