@@ -18,7 +18,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ListIcon from "../../assets/images/icon-batterylist.png";
 import ResultIcon from "../../assets/images/icon-returnresult.png";
-
+import FirebaseComponent from "../../config/firebase-messaging-sw";
 import SideBar from "../../components/sidebar/Sidebar";
 
 const Return = () => {
@@ -45,7 +45,7 @@ const Return = () => {
     fetchServiceHistory();
     fetchBatteryItems();
   };
-
+  FirebaseComponent();
   // 에러 시 호출될 함수
   const handleError = () => {
     console.log("handle no");
