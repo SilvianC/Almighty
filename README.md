@@ -121,7 +121,6 @@
   - React 18.2.0, React-recoil 0.7.7, React-router-dom 6.16.0
   - axios 1.4.0, Material-UI, bootstrap 5.3.2
   - Node.js, npm, env-cmd 10.1.0
-  - Web RTC, openvidu-browser
 - ETC
   - nginx 1.25.1
   - redis:latest
